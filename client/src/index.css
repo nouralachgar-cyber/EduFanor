@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-burgundy: #800020;
+  --color-burgundy-hover: #600018;
+  --color-medicalRed: #D45060;
+  --color-cream: #F3E6D5;
+  --color-cream-light: #FFF9F2;
+  --color-cream-dark: #1a1214;
+  --color-cream-darkCard: #261b1e;
+}
+
+body {
+  background-color: var(--color-cream-light);
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+}
+
+.dark body {
+  background-color: var(--color-cream-dark);
+}
