@@ -1,88 +1,158 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, Heart, ShieldAlert, BookOpen, Clock, Award } from 'lucide-react';
+import { Search, Clock, BookOpen, ArrowRight, ArrowLeft, HeartPulse, Wind, Flame, CheckCircle2, SearchX } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const categoryIcons = {
+  cpr: HeartPulse,
+  choking: Wind,
+  burns: Flame,
+};
+
+const categoryColors = {
+  cpr: 'bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400',
+  choking: 'bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400',
+  burns: 'bg-orange-50 text-orange-600 dark:bg-orange-950/30 dark:text-orange-400',
+};
+
 export default function Courses() {
-  const { t } = useTranslation();
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const { t, i18n } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState('');
+  const isAr = i18n.language === 'ar';
+
+  const courses = t('coursesData', { returnObjects: true }) || [];
+
+  const filteredCourses = courses.filter(course =>
+    course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    course.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalLessons = courses.reduce((sum, c) => sum + (c.lessons || 0), 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
-      
-      {/* Header */}
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-burgundy/10 text-burgundy dark:text-cream text-xs font-bold">
-          <Heart className="w-4 h-4 text-medicalRed fill-medicalRed" />
-          <span>{t('coursesPage.badge')}</span>
+    <div className="page-container">
+      <div className="page-content py-10 space-y-8">
+        {/* Header */}
+        <div className="text-center space-y-4 max-w-2xl mx-auto">
+          <span className="chip bg-brand-soft text-brand-ink">
+            <HeartPulse className="h-3.5 w-3.5" />
+            <span>{t('coursesPage.badge')}</span>
+          </span>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight">
+            {t('coursesPage.title')}
+          </h1>
+          <p className="text-ink-muted text-sm leading-relaxed">
+            {t('coursesPage.subtitle')}
+          </p>
         </div>
-        <h1 className="text-4xl font-extrabold text-burgundy dark:text-cream">
-          {t('coursesPage.title')}
-        </h1>
-        <p className="text-gray-600 dark:text-gray-300 max-w-xl mx-auto text-sm">
-          {t('coursesPage.subtitle')}
-        </p>
-      </div>
 
-      {/* Filter & Search Bar */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-cream-darkCard p-4 rounded-3xl border border-cream dark:border-gray-800 shadow-sm">
-        
-        {/* Categories */}
-        <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
-          <button
-            onClick={() => setSelectedCategory('all')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-              selectedCategory === 'all'
-                ? 'bg-burgundy text-white shadow-md'
-                : 'bg-cream/50 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-            }`}
-          >
-            {t('coursesPage.categories.all')}
-          </button>
-          <button
-            onClick={() => setSelectedCategory('cpr')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-              selectedCategory === 'cpr'
-                ? 'bg-burgundy text-white shadow-md'
-                : 'bg-cream/50 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-            }`}
-          >
-            {t('coursesPage.categories.cpr')}
-          </button>
-          <button
-            onClick={() => setSelectedCategory('bleeding')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-              selectedCategory === 'bleeding'
-                ? 'bg-burgundy text-white shadow-md'
-                : 'bg-cream/50 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-            }`}
-          >
-            {t('coursesPage.categories.bleeding')}
-          </button>
-          <button
-            onClick={() => setSelectedCategory('burns')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-              selectedCategory === 'burns'
-                ? 'bg-burgundy text-white shadow-md'
-                : 'bg-cream/50 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-            }`}
-          >
-            {t('coursesPage.categories.burns')}
-          </button>
+        {/* Stats Bar */}
+        <div className="flex justify-center gap-6 text-center">
+          <div>
+            <p className="text-2xl font-extrabold text-ink">{courses.length}</p>
+            <p className="text-[11px] font-bold text-ink-muted">{t('coursesPage.statsCourses')}</p>
+          </div>
+          <div className="w-px bg-line" />
+          <div>
+            <p className="text-2xl font-extrabold text-ink">{totalLessons}</p>
+            <p className="text-[11px] font-bold text-ink-muted">{t('coursesPage.statsLessons')}</p>
+          </div>
         </div>
 
         {/* Search */}
-        <div className="relative w-full md:w-72">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 rtl:right-3 rtl:left-auto" />
-          <input
-            type="text"
-            placeholder={t('coursesPage.searchPlaceholder')}
-            className="w-full pl-9 pr-4 rtl:pr-9 rtl:pl-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-transparent text-sm outline-none focus:ring-2 focus:ring-burgundy"
-          />
+        <div className="flex justify-center">
+          <div className="relative w-full max-w-md">
+            <Search className={`h-4 w-4 absolute top-1/2 -translate-y-1/2 text-ink-muted ${isAr ? 'right-4' : 'left-4'}`} />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder={t('coursesPage.searchPlaceholder')}
+              className={`input ${isAr ? 'pr-11 pl-4' : 'pl-11 pr-4'}`}
+            />
+          </div>
         </div>
 
-      </div>
+        {/* Course Grid */}
+        {filteredCourses.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {filteredCourses.map((course) => {
+              const isCompleted = localStorage.getItem(`completed_${course.id}`) === 'true';
+              const CategoryIcon = categoryIcons[course.category] || HeartPulse;
+              const colorClass = categoryColors[course.category] || 'bg-brand-soft text-brand-ink';
 
+              return (
+                <div key={course.id} className="course-card">
+                  <div className="flex items-start justify-between">
+                    <div className={`icon-box h-11 w-11 ${colorClass}`}>
+                      <CategoryIcon className="h-5 w-5" />
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs text-ink-muted">
+                      <Clock className="h-3.5 w-3.5" />
+                      <span>{course.duration}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="chip bg-brand-soft text-brand-ink">{course.level}</span>
+                      {isCompleted && (
+                        <span className="chip bg-success-soft text-success-ink">
+                          <CheckCircle2 className="h-3 w-3" />
+                          {t('coursesPage.completed')}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-base font-extrabold text-ink">{course.title}</h3>
+                    <p className="text-xs text-ink-muted leading-relaxed line-clamp-2">
+                      {course.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-line flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs text-ink-muted font-bold">
+                      <BookOpen className="h-4 w-4 text-primary" />
+                      <span>{course.lessons} {t('coursesPage.lessonsCount')}</span>
+                    </div>
+
+                    <Link
+                      to={`/lesson?id=${course.id}`}
+                      className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                        isCompleted
+                          ? 'bg-success-soft text-success-ink'
+                          : 'bg-primary text-white hover:bg-primary-hover'
+                      }`}
+                    >
+                      <span>
+                        {isCompleted ? t('coursesPage.continueCourse') : t('coursesPage.startCourse')}
+                      </span>
+                      {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="empty-state card">
+            <div className="icon-box h-14 w-14 bg-surface-muted text-ink-muted">
+              <SearchX className="h-7 w-7" />
+            </div>
+            <h3 className="text-base font-extrabold text-ink">
+              {t('coursesPage.emptyTitle')}
+            </h3>
+            <p className="text-xs text-ink-muted max-w-xs">
+              {t('coursesPage.emptyDesc')}
+            </p>
+            <button
+              onClick={() => setSearchTerm('')}
+              className="btn-secondary px-4 py-2 text-xs mt-2"
+            >
+              {t('coursesPage.resetSearch')}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
