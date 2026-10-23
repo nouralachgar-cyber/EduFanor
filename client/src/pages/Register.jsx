@@ -1,394 +1,163 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ShieldAlert, Lock, Mail, User, AlertCircle, Eye, EyeOff, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 
-const EduFanorRegisterForm = () => {
+export default function Register() {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
-  const auth = useContext(AuthContext);
-
   const isAr = i18n.language === 'ar';
-
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { register } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleRegisterSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setErrorMsg('');
-
-    if (password !== confirmPassword) {
-      setErrorMsg(isAr ? 'كلمات المرور غير متطابقة!' : 'Passwords do not match!');
-      return;
-    }
-
     setLoading(true);
 
-    const fullName = `${firstName} ${lastName}`.trim();
+    const result = await register(name, email, password);
+    setLoading(false);
 
-    // التعامل مع التسجيل سواء كان عبر دالة الـ Context أو محلياً
-    if (auth && auth.register) {
-      const result = await auth.register(fullName, email, password);
-      setLoading(false);
-      if (result && result.success) {
-        navigate('/dashboard');
-      } else {
-        setErrorMsg(result?.message || (isAr ? 'فشل إنشاء الحساب' : 'Registration failed'));
-      }
+    if (result.success) {
+      navigate('/courses');
     } else {
-      setTimeout(() => {
-        const userData = {
-          name: fullName || (isAr ? 'مستخدم جديد' : 'New User'),
-          email: email || 'user@edufanor.com',
-        };
-        localStorage.clear();
-        localStorage.setItem('user_name', userData.name);
-        localStorage.setItem('user_email', userData.email);
-        localStorage.setItem('token', 'fake-jwt-token');
-
-        setLoading(false);
-        navigate('/dashboard');
-      }, 600);
+      setErrorMsg(result.message);
     }
   };
 
+  const highlights = [
+    t('auth.point1'),
+    t('auth.point2'),
+    t('auth.point3'),
+  ];
+
   return (
-    <StyledWrapper>
-      <form className="form" onSubmit={handleRegisterSubmit}>
-        
-        {/* زر الرجوع للرئيسية */}
-        <div className="form-top shadow-sm">
-          <Link to="/" className="back-link" title={isAr ? 'الرجوع للرئيسية' : 'Back to Home'}>
-            {isAr ? <ArrowRight className="w-4 h-4 text-[#8A6BBE]" /> : <ArrowLeft className="w-4 h-4 text-[#8A6BBE]" />}
-            <span>{isAr ? 'الرئيسية' : 'Home'}</span>
-          </Link>
-        </div>
-
-        {/* Header */}
-        <div className="form-header">
-          <Link to="/">
-            <img src="/edufanor.png" alt="EduFanor Logo" className="form-logo" />
-          </Link>
-          <h2 className="form-title">
-            {t('auth.registerTitle', { defaultValue: isAr ? 'إنشاء حساب جديد' : 'Create an Account' })}
-          </h2>
-          <p className="form-subtitle">
-            {t('auth.registerSubtitle', { defaultValue: isAr ? 'سجل الآن وابدأ رحلتك في تعلم الإسعافات الأولية' : 'Sign up now and start learning first-aid' })}
-          </p>
-        </div>
-
-        {errorMsg && <div className="error-banner">{errorMsg}</div>}
-
-        {/* First & Last Name */}
-        <div className="flex-row-inputs">
-          <div className="input-group">
-            <label>{t('auth.firstName', { defaultValue: isAr ? 'الاسم الأول' : 'First Name' })}</label>
-            <div className="inputForm">
-              <input 
-                type="text" 
-                required 
-                className="input" 
-                placeholder={isAr ? 'الاسم الأول' : 'First name'} 
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
+    <div className="min-h-[85vh] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md">
+        <div className="card p-6 sm:p-8 space-y-6">
+          {/* Header */}
+          <div className="text-center space-y-3">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white shadow-lift">
+              <ShieldAlert className="h-7 w-7 text-teal" />
+            </div>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-extrabold text-ink">
+                {t('auth.registerTitle')}
+              </h2>
+              <p className="text-xs text-ink-muted">
+                {t('auth.registerSubtitle')}
+              </p>
             </div>
           </div>
-          <div className="input-group">
-            <label>{t('auth.lastName', { defaultValue: isAr ? 'اسم العائلة' : 'Last Name' })}</label>
-            <div className="inputForm">
-              <input 
-                type="text" 
-                required 
-                className="input" 
-                placeholder={isAr ? 'اسم العائلة' : 'Last name'} 
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+
+          {errorMsg && (
+            <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 text-xs flex items-center gap-2 font-bold">
+              <AlertCircle className="h-4 w-4 shrink-0" />
+              <span>{errorMsg}</span>
+            </div>
+          )}
+
+          {/* Form */}
+          <form className="space-y-4" onSubmit={handleRegister}>
+            <div className="space-y-1.5">
+              <label className="label">
+                <User className="h-3.5 w-3.5 text-primary" />
+                <span>{t('auth.name')}</span>
+              </label>
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder={t('auth.namePlaceholder')}
+                className="input"
               />
             </div>
+
+            <div className="space-y-1.5">
+              <label className="label">
+                <Mail className="h-3.5 w-3.5 text-primary" />
+                <span>{t('auth.email')}</span>
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t('auth.emailPlaceholder')}
+                className="input"
+                dir="ltr"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="label">
+                <Lock className="h-3.5 w-3.5 text-primary" />
+                <span>{t('auth.password')}</span>
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={t('auth.passwordPlaceholder')}
+                  className={`input ${isAr ? 'pe-11' : 'ps-11'}`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={`absolute top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink transition-colors ${isAr ? 'left-3' : 'right-3'}`}
+                  aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary w-full py-3.5 text-sm"
+            >
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  {t('auth.registering')}
+                </span>
+              ) : (
+                <span className="flex items-center gap-2">
+                  {t('auth.registerBtn')}
+                  {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+                </span>
+              )}
+            </button>
+          </form>
+
+          <div className="text-center text-xs text-ink-muted">
+            {t('auth.hasAccount')}{' '}
+            <Link to="/login" className="text-primary font-bold hover:underline">
+              {t('auth.signIn')}
+            </Link>
           </div>
         </div>
 
-        {/* Email Field */}
-        <div className="flex-column">
-          <label>{t('auth.email', { defaultValue: isAr ? 'البريد الإلكتروني' : 'Email' })}</label>
+        {/* Highlights */}
+        <div className="mt-6 space-y-2">
+          {highlights.map((point, idx) => (
+            <div key={idx} className="flex items-center gap-2 text-xs text-ink-muted">
+              <CheckCircle2 className="h-3.5 w-3.5 text-teal-deep shrink-0" />
+              <span>{point}</span>
+            </div>
+          ))}
         </div>
-        <div className="inputForm">
-          <input 
-            type="email" 
-            required 
-            className="input" 
-            placeholder={isAr ? 'أدخل بريدك الإلكتروني' : 'Enter your Email'} 
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-
-        {/* Password Field */}
-        <div className="flex-column">
-          <label>{t('auth.password', { defaultValue: isAr ? 'كلمة المرور' : 'Password' })}</label>
-        </div>
-        <div className="inputForm">
-          <input 
-            type="password" 
-            required 
-            className="input" 
-            placeholder={isAr ? 'أدخل كلمة المرور' : 'Enter your Password'} 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        {/* Confirm Password Field */}
-        <div className="flex-column">
-          <label>{t('auth.confirmPassword', { defaultValue: isAr ? 'تأكيد كلمة المرور' : 'Confirm Password' })}</label>
-        </div>
-        <div className="inputForm">
-          <input 
-            type="password" 
-            required 
-            className="input" 
-            placeholder={isAr ? 'أعد إدخال كلمة المرور' : 'Confirm your Password'} 
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
-
-        {/* Submit Button */}
-        <button type="submit" className="button-submit" disabled={loading}>
-          {loading 
-            ? t('auth.signingUp', { defaultValue: isAr ? 'جاري إنشاء الحساب...' : 'Creating Account...' }) 
-            : t('auth.signUpBtn', { defaultValue: isAr ? 'إنشاء حساب' : 'Sign Up' })
-          }
-        </button>
-
-        {/* Login Redirect */}
-        <p className="p">
-          {t('auth.hasAccount', { defaultValue: isAr ? 'لديك حساب بالفعل؟' : 'Already have an account?' })} 
-          <Link to="/login" className="span">
-            {t('auth.signIn', { defaultValue: isAr ? 'تسجيل الدخول' : 'Sign In' })}
-          </Link>
-        </p>
-
-      </form>
-    </StyledWrapper>
+      </div>
+    </div>
   );
 }
-
-const StyledWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #FCFAFF;
-  padding: 20px;
-
-  .dark & {
-    background-color: #17121D;
-  }
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    background-color: #ffffff;
-    padding: 30px;
-    width: 440px;
-    border-radius: 24px;
-    box-shadow: 0 10px 25px rgba(73, 48, 93, 0.08);
-    border: 1px solid #EDE6F5;
-    font-family: inherit;
-    position: relative;
-
-    .dark & {
-      background-color: #21192B;
-      border-color: #3B2B4C;
-      color: #F8F4FC;
-    }
-  }
-
-  .error-banner {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    text-align: center;
-    font-weight: 600;
-  }
-
-  .form-top {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 2px;
-  }
-
-  .back-link {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #8A6BBE;
-    text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background-color: #F4EFFB;
-    transition: all 0.2s ease-in-out;
-
-    .dark & {
-      background-color: #17121D;
-    }
-
-    &:hover {
-      background-color: #E9E0F5;
-      transform: translateX(-2px);
-    }
-  }
-
-  .form-header {
-    text-align: center;
-    margin-bottom: 5px;
-  }
-
-  .form-logo {
-    height: 40px;
-    object-fit: contain;
-    margin-bottom: 8px;
-    transition: transform 0.2s;
-    cursor: pointer;
-
-    &:hover {
-      transform: scale(1.05);
-    }
-  }
-
-  .form-title {
-    font-size: 20px;
-    font-weight: 900;
-    color: #49305D;
-    .dark & {
-      color: #FFFFFF;
-    }
-  }
-
-  .form-subtitle {
-    font-size: 12px;
-    color: #6B5E7C;
-    .dark & {
-      color: #C9BED5;
-    }
-  }
-
-  .flex-column > label, .input-group > label {
-    color: #49305D;
-    font-weight: 700;
-    font-size: 13px;
-    .dark & {
-      color: #E9E0F5;
-    }
-  }
-
-  .flex-row-inputs {
-    display: flex;
-    gap: 10px;
-  }
-
-  .input-group {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .inputForm {
-    border: 1.5px solid #EDE6F5;
-    border-radius: 12px;
-    height: 46px;
-    display: flex;
-    align-items: center;
-    padding-left: 12px;
-    padding-right: 12px;
-    transition: 0.2s ease-in-out;
-    background-color: #FCFAFF;
-
-    .dark & {
-      background-color: #17121D;
-      border-color: #3B2B4C;
-    }
-  }
-
-  .input {
-    border-radius: 10px;
-    border: none;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    color: #1F142E;
-    font-size: 13px;
-
-    .dark & {
-      color: #FFFFFF;
-    }
-  }
-
-  .input:focus {
-    outline: none;
-  }
-
-  .inputForm:focus-within {
-    border: 1.5px solid #8A6BBE;
-    box-shadow: 0 0 0 3px rgba(138, 107, 190, 0.15);
-  }
-
-  .span {
-    font-size: 13px;
-    margin-left: 5px;
-    color: #8A6BBE;
-    font-weight: 700;
-    cursor: pointer;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .button-submit {
-    margin: 10px 0 5px 0;
-    background-color: #49305D;
-    border: none;
-    color: white;
-    font-size: 14px;
-    font-weight: 700;
-    border-radius: 12px;
-    height: 48px;
-    width: 100%;
-    cursor: pointer;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background-color: #39244A;
-    }
-  }
-
-  .p {
-    text-align: center;
-    color: #6B5E7C;
-    font-size: 13px;
-    margin: 6px 0;
-    .dark & {
-      color: #C9BED5;
-    }
-  }
-`;
-
-export default EduFanorRegisterForm;

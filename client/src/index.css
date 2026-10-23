@@ -1,59 +1,44 @@
 @import "tailwindcss";
 
-/* 1. تفعيل Dark Variant الخاص بـ Tailwind v4 عبر الكلاس .dark */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* 2. تعريف متغيرات الألوان الخاصة بـ EduFanor (Deep Plum Theme) */
+@theme {
+  --color-plum: #49305D;
+  --color-plum-dark: #39244A;
+  --color-lavender: #8A6BBE;
+  --color-lavender-light: #E9E0F5;
+  --color-cream: #FCFAFF;
+  --color-dark-bg: #17121D;
+  --color-dark-card: #21192B;
+  --color-dark-border: #3B2B4C;
+
+  --font-sans: "Tajawal", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
 :root {
-  --bg-main: #F8F4FC;
+  --bg-main: #FCFAFF;
   --card-bg: #FFFFFF;
-  --sidebar-bg: #F6F0FA;
-  --text-primary: #2C1B33;
-  --text-muted: #796882;
-  --border-color: #ECE1F2;
+  --text-primary: #1F142E;
+  --text-muted: #6B5E7C;
+  --border-color: #EDE6F5;
 }
 
-/* 3. تطبيق ألوان الوضع الداكن عند وجود كلاس dark */
 .dark {
-  --bg-main: #211526;       /* خلفية بنفسجية غامقة بحال Navbar */
-  --card-bg: #35213D;       /* خلفية البطاقات أفتح شوية */
-  --sidebar-bg: #1E1123;    /* القائمة الجانبية */
-  --text-primary: #F8F4FC;   /* نصوص فاتحة */
-  --text-muted: #C4B8CC;
-  --border-color: #35213D;  /* حدود متناسقة */
+  --bg-main: #17121D;
+  --card-bg: #21192B;
+  --text-primary: #F8F4FC;
+  --text-muted: #C9BED5;
+  --border-color: #3B2B4C;
 }
 
-/* 4. إجبار الصفحات والبطاقات على تحويل ألوانها فوراً */
 body {
-  background-color: var(--bg-main) !important;
-  color: var(--text-primary) !important;
-  font-family: 'Plus Jakarta Sans', 'Tajawal', sans-serif;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.dark body {
-  background-color: #211526 !important;
-  color: #F8F4FC !important;
-}
-
-/* تحويل البطاقات البيضاء فـ الوضع الداكن */
-.dark .bg-white,
-.dark div[class*="bg-white"] {
-  background-color: #35213D !important;
-  border-color: #493B58 !important;
-  color: #F8F4FC !important;
-}
-
-.dark aside {
-  background-color: #1E1123 !important;
-  border-color: #35213D !important;
-}
-
-@keyframes spinSlow {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.animate-spin-slow {
-  animation: spinSlow 8s linear infinite;
+html {
+  scroll-behavior: smooth;
 }

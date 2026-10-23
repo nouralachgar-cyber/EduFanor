@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
-import { BookOpen, Search, Clock, Award, CheckCircle2, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Search, Clock, BookOpen, ArrowRight, ArrowLeft, ShieldCheck, SearchX } from 'lucide-react';
 
 export default function Courses() {
   const { t, i18n } = useTranslation();
@@ -10,135 +9,131 @@ export default function Courses() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const courses = [
-    {
-      id: "cpr",
-      title: isAr ? "أساسيات الإنعاش القلبي الرئوي (CPR)" : "First Aid & CPR Basics",
-      description: isAr ? "تعلم الخطوات التطبيقية للتعامل مع السكتات القلبية المفاجئة والتنفس الاصطناعي." : "Essential hands-on steps for handling cardiac arrest and emergency resuscitation.",
-      lessons: 6,
-      category: "cpr",
-      duration: "1h 45m",
-      level: isAr ? "مبتدئ" : "Beginner",
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80"
-    },
-    {
-      id: "choking",
-      title: isAr ? "إسعاف حالات الاختناق" : "Choking Relief & Heimlich",
-      description: isAr ? "التقنيات الصحيحة لإسعاف الغصص والاختناق للكبار والأطفال." : "Proper techniques for choking emergencies using back blows and abdominal thrusts.",
-      lessons: 5,
-      category: "choking",
-      duration: "2h 10m",
-      level: isAr ? "متوسط" : "Intermediate",
-      image: "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=600&q=80"
-    },
-    {
-      id: "burns",
-      title: isAr ? "العناية بالحروق والجروح" : "Wound Care & Burn Management",
-      description: isAr ? "كيفية تنظيف وتطهير الجروح والتعامل مع درجات الحروق المختلفة." : "Cleaning, dressing wounds, and responding to various burn degrees.",
-      lessons: 4,
-      category: "burns",
-      duration: "1h 15m",
-      level: isAr ? "مبتدئ" : "Beginner",
-      image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=600&q=80"
-    }
-  ];
+  // جلب المساقات من الترجمة
+  const courses = t('coursesData', { returnObjects: true }) || [];
 
-  const filteredCourses = courses.filter((course) => {
-    const matchesCategory = selectedCategory === 'all' || course.category === selectedCategory;
+  const filteredCourses = courses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           course.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    const matchesCategory = selectedCategory === 'all' || course.category === selectedCategory;
+    return matchesSearch && matchesCategory;
   });
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] bg-[#F8F4FC] dark:bg-[#150D18] text-[#2C1B33] dark:text-[#F8F4FC]">
-      <Sidebar />
-
-      <main className="flex-1 p-6 lg:p-8 space-y-8 max-w-[1400px]">
+    <div className="min-h-screen bg-[#FCFAFF] dark:bg-[#17121D] text-[#1F142E] dark:text-[#F8F4FC] p-6 lg:p-12 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto space-y-10">
+        
         {/* Header Section */}
-        <div className="space-y-2">
-          <h1 className="text-2xl font-extrabold text-[#3B2042] dark:text-white flex items-center gap-2">
-            <BookOpen className="w-6 h-6 text-[#8A6BBE]" />
-            <span>{isAr ? 'المساقات التعليمية' : 'All Courses'}</span>
+        <div className="text-center space-y-4 max-w-2xl mx-auto">
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#E9E0F5] text-[#49305D] dark:bg-[#2B2037] dark:text-[#E9E0F5]">
+            <ShieldCheck className="w-4 h-4 text-[#8A6BBE]" />
+            {t('coursesPage.badge')}
+          </span>
+          <h1 className="text-3xl lg:text-5xl font-black text-[#49305D] dark:text-white tracking-tight">
+            {t('coursesPage.title')}
           </h1>
-          <p className="text-xs text-[#796882] dark:text-gray-300">
-            {isAr ? 'استكشف مساقات الإسعافات الأولية وتدرب على المهارات المنقذة للحياة.' : 'Explore first-aid courses and build practical life-saving skills.'}
+          <p className="text-xs lg:text-sm text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed">
+            {t('coursesPage.subtitle')}
           </p>
         </div>
 
-        {/* Search & Categories Bar */}
-        <div className="flex flex-col sm:flex-row justify-between gap-4">
-          <div className="relative flex-1">
-            <Search className={`w-4 h-4 absolute top-3.5 ${isAr ? 'right-4' : 'left-4'} text-gray-400`} />
+        {/* Search & Filter Bar */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-[#21192B] p-4 rounded-3xl border border-[#EDE6F5] dark:border-[#3B2B4C] shadow-sm">
+          <div className="relative w-full md:w-96">
+            <Search className={`absolute top-3.5 ${isAr ? 'right-4' : 'left-4'} w-4 h-4 text-[#6B5E7C] dark:text-[#C9BED5]`} />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={isAr ? 'ابحث عن مساق...' : 'Search courses...'}
-              className={`w-full py-2.5 ${isAr ? 'pr-11 pl-4' : 'pl-11 pr-4'} bg-white dark:bg-[#211526] border border-[#EFE8F4] dark:border-[#35213D] rounded-full text-xs font-bold outline-none focus:ring-2 focus:ring-[#8A6BBE]`}
+              placeholder={t('coursesPage.searchPlaceholder')}
+              className={`w-full py-3 ${isAr ? 'pr-11 pl-4' : 'pl-11 pr-4'} rounded-2xl border border-[#EDE6F5] dark:border-[#3B2B4C] bg-[#FCFAFF] dark:bg-[#17121D] text-xs font-bold text-[#1F142E] dark:text-[#F8F4FC] outline-none focus:border-[#8A6BBE] transition-colors`}
             />
           </div>
 
-          <div className="flex gap-2 overflow-x-auto">
+          {/* Category Filters */}
+          <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
             {['all', 'cpr', 'choking', 'burns'].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-bold capitalize transition-all ${
+                className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-[#3B2042] text-white'
-                    : 'bg-white dark:bg-[#211526] text-[#796882] border border-[#EFE8F4] dark:border-[#35213D]'
+                    ? 'bg-[#49305D] text-white shadow-md'
+                    : 'bg-[#F4EFFB] dark:bg-[#2B2037] text-[#6B5E7C] dark:text-[#C9BED5] hover:bg-[#E9E0F5]'
                 }`}
               >
-                {cat === 'all' ? (isAr ? 'الكل' : 'All') : cat}
+                {t(`filter.${cat}`)}
               </button>
             ))}
           </div>
         </div>
 
         {/* Courses Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {filteredCourses.map((course) => {
-            const isCompleted = localStorage.getItem(`completed_${course.id}`) === 'true';
-
-            return (
-              <div key={course.id} className="bg-white dark:bg-[#211526] rounded-3xl border border-[#EFE8F4] dark:border-[#35213D] overflow-hidden shadow-sm flex flex-col justify-between">
-                <div>
-                  <div className="relative h-40 overflow-hidden">
-                    <img src={course.image} alt={course.title} className="w-full h-full object-cover" />
-                    <span className="absolute top-3 left-3 px-3 py-1 bg-black/50 backdrop-blur-md text-white text-[10px] font-bold rounded-full">
+        {filteredCourses.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredCourses.map((course) => (
+              <div 
+                key={course.id}
+                className="rounded-3xl bg-white dark:bg-[#21192B] border border-[#EDE6F5] dark:border-[#3B2B4C] p-6 space-y-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-[#E9E0F5] text-[#49305D] dark:bg-[#2B2037] dark:text-[#E9E0F5]">
                       {course.level}
                     </span>
+                    <div className="flex items-center gap-1 text-xs text-[#6B5E7C] dark:text-[#C9BED5] font-semibold">
+                      <Clock className="w-3.5 h-3.5 text-[#8A6BBE]" />
+                      <span>{course.duration}</span>
+                    </div>
                   </div>
 
-                  <div className="p-5 space-y-3">
-                    <h3 className="font-extrabold text-sm text-[#3B2042] dark:text-white flex justify-between items-center">
-                      <span>{course.title}</span>
-                      {isCompleted && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
-                    </h3>
-                    <p className="text-xs text-[#796882] dark:text-gray-300 leading-relaxed line-clamp-2">
-                      {course.description}
-                    </p>
-                  </div>
+                  <h3 className="text-lg font-black text-[#49305D] dark:text-white leading-snug">
+                    {course.title}
+                  </h3>
+
+                  <p className="text-xs text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed line-clamp-2">
+                    {course.description}
+                  </p>
                 </div>
 
-                <div className="p-5 pt-0 border-t border-[#EFE8F4] dark:border-[#35213D] flex justify-between items-center mt-4">
-                  <span className="text-xs font-bold text-[#796882] flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5" /> {course.duration}
-                  </span>
+                <div className="pt-4 border-t border-[#EDE6F5] dark:border-[#3B2B4C] flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#8A6BBE]">
+                    <BookOpen className="w-4 h-4" />
+                    <span>{course.lessons} {t('coursesPage.lessonsCount')}</span>
+                  </div>
+
                   <Link
                     to={`/lesson?id=${course.id}`}
-                    className="px-4 py-2 rounded-full bg-[#3B2042] hover:bg-[#2A1630] text-white text-xs font-bold flex items-center gap-1"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#49305D] hover:bg-[#39244A] text-white text-xs font-bold transition-all shadow-sm cursor-pointer"
                   >
-                    <span>{isCompleted ? (isAr ? 'مكتمل ✓' : 'Completed') : (isAr ? 'بدء الدرس' : 'Start Lesson')}</span>
-                    {isAr ? <ArrowLeft className="w-3.5 h-3.5" /> : <ArrowRight className="w-3.5 h-3.5" />}
+                    <span>{t('coursesPage.startCourse')}</span>
+                    {isAr ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
                   </Link>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </main>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 space-y-4">
+            <div className="mx-auto w-16 h-16 rounded-full bg-[#F4EFFB] dark:bg-[#2B2037] flex items-center justify-center text-[#8A6BBE]">
+              <SearchX className="w-8 h-8" />
+            </div>
+            <h3 className="text-lg font-black text-[#49305D] dark:text-white">
+              {t('coursesPage.emptyTitle')}
+            </h3>
+            <p className="text-xs text-[#6B5E7C] dark:text-[#C9BED5] max-w-sm mx-auto">
+              {t('coursesPage.emptyDesc')}
+            </p>
+            <button
+              onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
+              className="px-6 py-2.5 rounded-full bg-[#49305D] text-white text-xs font-bold transition-all cursor-pointer"
+            >
+              {t('coursesPage.resetSearch')}
+            </button>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

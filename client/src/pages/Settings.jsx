@@ -1,174 +1,171 @@
-import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Globe, User, Lock, Save, Bell } from 'lucide-react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Settings as SettingsIcon, Globe, Moon, Sun, Bell, ShieldCheck, Info, Check } from 'lucide-react';
 
 export default function Settings() {
-  const [darkMode, setDarkMode] = useState(false);
-  const [lang, setLang] = useState('ar');
-  const [name, setName] = useState('نورا لجار');
-  const [email, setEmail] = useState('nlachgar12@gmail.com');
-  const [notifications, setNotifications] = useState(true);
-  const [savedMessage, setSavedMessage] = useState(false);
+  const { t, i18n } = useTranslation();
+  const isAr = i18n.language === 'ar';
+  const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
+  const [notificationsEnabled, setNotificationsEnabled] = useState(() => localStorage.getItem('notifications') !== 'off');
 
-  // تحميل الإعدادات المحفوظة
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('edu_theme');
-    if (savedTheme === 'dark') {
-      setDarkMode(true);
-    }
-  }, []);
+  const toggleLanguage = () => {
+    i18n.changeLanguage(isAr ? 'en' : 'ar');
+  };
 
-  const handleThemeToggle = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
+  const toggleDarkMode = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
     if (newMode) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('edu_theme', 'dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('edu_theme', 'light');
+      localStorage.setItem('theme', 'light');
     }
   };
 
-  const handleLanguageChange = (selectedLang) => {
-    setLang(selectedLang);
-    document.documentElement.setAttribute('dir', selectedLang === 'ar' ? 'rtl' : 'ltr');
-    document.documentElement.setAttribute('lang', selectedLang);
+  const toggleNotifications = () => {
+    const newState = !notificationsEnabled;
+    setNotificationsEnabled(newState);
+    localStorage.setItem('notifications', newState ? 'on' : 'off');
   };
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    setSavedMessage(true);
-    setTimeout(() => setSavedMessage(false), 3000);
-  };
+  const settingSections = [
+    {
+      title: t('settingsPage.languageTitle'),
+      desc: t('settingsPage.languageDesc'),
+      icon: Globe,
+      color: 'bg-brand-soft text-brand-ink',
+      action: (
+        <button onClick={toggleLanguage} className="btn-primary px-4 py-2 text-xs">
+          {isAr ? 'English' : 'العربية'}
+        </button>
+      ),
+    },
+    {
+      title: t('settingsPage.verifiedTitle'),
+      desc: t('settingsPage.verifiedDesc'),
+      icon: ShieldCheck,
+      color: 'bg-success-soft text-success-ink',
+      action: (
+        <span className="chip bg-success-soft text-success-ink">
+          <Check className="h-3 w-3" />
+          {t('settingsPage.active')}
+        </span>
+      ),
+    },
+  ];
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8 animate-fadeIn">
-      
-      {/* Page Header */}
-      <div>
-        <h1 className="text-3xl font-extrabold text-burgundy dark:text-cream">
-          {lang === 'ar' ? 'إعدادات المنصة والحساب' : 'Platform & Account Settings'}
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
-          {lang === 'ar' ? 'قم بتخصيص تجربتك التعليمية في أكاديمية EduFanor.' : 'Customize your learning experience on EduFanor academy.'}
-        </p>
-      </div>
-
-      {savedMessage && (
-        <div className="p-4 rounded-xl bg-green-100 border border-green-300 text-green-700 font-medium">
-          {lang === 'ar' ? '✓ تم حفظ التغييرات بنجاح!' : '✓ Changes saved successfully!'}
+    <div className="page-container">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+        {/* Header */}
+        <div className="text-center space-y-3">
+          <span className="chip bg-brand-soft text-brand-ink">
+            <SettingsIcon className="h-3.5 w-3.5" />
+            <span>{t('nav.settings')}</span>
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-ink">
+            {t('settingsPage.title')}
+          </h1>
+          <p className="text-xs text-ink-muted">
+            {t('settingsPage.subtitle')}
+          </p>
         </div>
-      )}
 
-      <form onSubmit={handleSave} className="space-y-6">
-        
-        {/* Appearance & Theme Settings */}
-        <div className="bg-white dark:bg-cream-darkCard border border-cream dark:border-gray-800 rounded-2xl p-6 shadow-sm space-y-4">
-          <h2 className="text-xl font-bold text-burgundy dark:text-cream flex items-center gap-2">
-            <Sun className="w-5 h-5 text-medicalRed" />
-            {lang === 'ar' ? 'المظهر والوضع الليلي' : 'Appearance & Dark Mode'}
-          </h2>
-          <div className="flex items-center justify-between py-3 border-t border-gray-100 dark:border-gray-800">
-            <div>
-              <p className="font-semibold text-gray-800 dark:text-gray-200">
-                {lang === 'ar' ? 'الوضع الليلي (Dark Mode)' : 'Dark Mode'}
-              </p>
-              <p className="text-sm text-gray-500">
-                {lang === 'ar' ? 'تخفيف الإضاءة لحماية العين أثناء الدراسة ليلاً' : 'Reduce eye strain during night study sessions'}
-              </p>
+        {/* Settings Card */}
+        <div className="card p-6 sm:p-8 space-y-4">
+          {settingSections.map((section, idx) => {
+            const Icon = section.icon;
+            return (
+              <div key={idx} className="flex items-center justify-between p-4 rounded-xl bg-surface-muted border border-line">
+                <div className="flex items-center gap-3">
+                  <div className={`icon-box h-10 w-10 ${section.color}`}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-extrabold text-xs text-ink">{section.title}</h4>
+                    <p className="text-[11px] text-ink-muted mt-0.5">{section.desc}</p>
+                  </div>
+                </div>
+                {section.action}
+              </div>
+            );
+          })}
+
+          {/* Theme Toggle */}
+          <div className="flex items-center justify-between p-4 rounded-xl bg-surface-muted border border-line">
+            <div className="flex items-center gap-3">
+              <div className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
+                {isDarkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+              </div>
+              <div>
+                <h4 className="font-extrabold text-xs text-ink">
+                  {isAr ? 'الوضع الليلي' : 'Dark Mode'}
+                </h4>
+                <p className="text-[11px] text-ink-muted mt-0.5">
+                  {isAr ? 'تفعيل المظهر الداكن للواجهة' : 'Enable dark appearance'}
+                </p>
+              </div>
             </div>
             <button
-              type="button"
-              onClick={handleThemeToggle}
-              className={`relative inline-flex h-7 w-14 items-center rounded-full transition-colors ${
-                darkMode ? 'bg-burgundy' : 'bg-gray-300'
+              onClick={toggleDarkMode}
+              className={`relative h-6 w-11 rounded-full transition-colors duration-200 ${
+                isDarkMode ? 'bg-primary' : 'bg-line-strong'
               }`}
+              role="switch"
+              aria-checked={isDarkMode}
             >
               <span
-                className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                  darkMode ? (lang === 'ar' ? '-translate-x-8' : 'translate-x-8') : (lang === 'ar' ? '-translate-x-1' : 'translate-x-1')
+                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                  isDarkMode ? (isAr ? '-translate-x-5' : 'translate-x-5') : 'translate-x-0.5'
+                }`}
+              />
+            </button>
+          </div>
+
+          {/* Notifications */}
+          <div className="flex items-center justify-between p-4 rounded-xl bg-surface-muted border border-line">
+            <div className="flex items-center gap-3">
+              <div className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
+                <Bell className="h-5 w-5" />
+              </div>
+              <div>
+                <h4 className="font-extrabold text-xs text-ink">
+                  {isAr ? 'الإشعارات' : 'Notifications'}
+                </h4>
+                <p className="text-[11px] text-ink-muted mt-0.5">
+                  {isAr ? 'تذكير يومي بالتعلم والتحديات' : 'Daily learning reminders and challenges'}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={toggleNotifications}
+              className={`relative h-6 w-11 rounded-full transition-colors duration-200 ${
+                notificationsEnabled ? 'bg-primary' : 'bg-line-strong'
+              }`}
+              role="switch"
+              aria-checked={notificationsEnabled}
+            >
+              <span
+                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200 ${
+                  notificationsEnabled ? (isAr ? '-translate-x-5' : 'translate-x-5') : 'translate-x-0.5'
                 }`}
               />
             </button>
           </div>
         </div>
 
-        {/* Language Settings */}
-        <div className="bg-white dark:bg-cream-darkCard border border-cream dark:border-gray-800 rounded-2xl p-6 shadow-sm space-y-4">
-          <h2 className="text-xl font-bold text-burgundy dark:text-cream flex items-center gap-2">
-            <Globe className="w-5 h-5 text-medicalRed" />
-            {lang === 'ar' ? 'لغة المنصة' : 'Platform Language'}
-          </h2>
-          <div className="grid grid-cols-2 gap-4 pt-2">
-            <button
-              type="button"
-              onClick={() => handleLanguageChange('ar')}
-              className={`p-4 rounded-xl border-2 font-bold transition-all ${
-                lang === 'ar'
-                  ? 'border-burgundy bg-burgundy/10 text-burgundy dark:text-cream'
-                  : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400'
-              }`}
-            >
-              العربية (الافتراضية)
-            </button>
-            <button
-              type="button"
-              onClick={() => handleLanguageChange('en')}
-              className={`p-4 rounded-xl border-2 font-bold transition-all ${
-                lang === 'en'
-                  ? 'border-burgundy bg-burgundy/10 text-burgundy dark:text-cream'
-                  : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400'
-              }`}
-            >
-              English
-            </button>
+        {/* About */}
+        <div className="card p-6 space-y-3 text-center">
+          <div className="mx-auto icon-box h-10 w-10 bg-brand-soft text-brand-ink">
+            <Info className="h-5 w-5" />
           </div>
+          <h3 className="text-sm font-extrabold text-ink">{t('settingsPage.aboutTitle')}</h3>
+          <p className="text-xs text-ink-muted">{t('settingsPage.aboutDesc')}</p>
+          <p className="text-[10px] text-ink-muted font-mono">{t('settingsPage.version')}</p>
         </div>
-
-        {/* Profile Details */}
-        <div className="bg-white dark:bg-cream-darkCard border border-cream dark:border-gray-800 rounded-2xl p-6 shadow-sm space-y-4">
-          <h2 className="text-xl font-bold text-burgundy dark:text-cream flex items-center gap-2">
-            <User className="w-5 h-5 text-medicalRed" />
-            {lang === 'ar' ? 'معلومات الحساب الشخصي' : 'Personal Account Information'}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {lang === 'ar' ? 'الاسم الكامل' : 'Full Name'}
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent dark:text-white focus:ring-2 focus:ring-burgundy outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {lang === 'ar' ? 'البريد الإلكتروني' : 'Email Address'}
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent dark:text-white focus:ring-2 focus:ring-burgundy outline-none"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Save Button */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-burgundy hover:bg-burgundy-hover text-white font-bold shadow-md hover:shadow-lg transition-all"
-          >
-            <Save className="w-5 h-5" />
-            {lang === 'ar' ? 'حفظ التغييرات' : 'Save Changes'}
-          </button>
-        </div>
-
-      </form>
+      </div>
     </div>
   );
 }

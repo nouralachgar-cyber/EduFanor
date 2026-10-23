@@ -1,20 +1,33 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import PublicLandingPage from './pages/PublicLandingPage';
 import Login from './pages/Login';
 import About from './pages/About';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Courses from './pages/Courses';
 import Lesson from './pages/Lesson';
 import Settings from './pages/Settings';
-import Register from './pages/Register';
 import AITutor from './pages/AITutor';
 import AdminDashboard from './pages/AdminDashboard';
+import Profile from './pages/Profile';
+import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         {/* الواجهة العامة */}
         <Route path="/" element={<PublicLandingPage />} />
@@ -22,7 +35,7 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
 
-        {/* مسار لوحة تحكم الأدمن (محمي حصرياً لنورة noura@edufanor.com) */}
+        {/* مسار لوحة تحكم الأدمن (محمي حصرياً) */}
         <Route 
           path="/admin" 
           element={
@@ -32,12 +45,20 @@ export default function App() {
           } 
         />
 
-        {/* المسارات المحمية الخاصة بالطلاب المسجلين فقط */}
+        {/* المسارات المحمية الخاصة بالطلاب المسجلين */}
         <Route 
           path="/dashboard" 
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           } 
         />
@@ -74,8 +95,8 @@ export default function App() {
           } 
         />
 
-        {/* توجيه أي مسار آخر غير معروف إلى الصفحة الرئيسية */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* صفحة غير موجودة */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
