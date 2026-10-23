@@ -1,133 +1,171 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Sun, Moon, Globe, Menu, X, ShieldAlert, User, LogOut, LayoutDashboard } from 'lucide-react';
-import { AuthContext } from '../context/AuthContext';
+import { 
+  Globe, 
+  Sun, 
+  Moon, 
+  Bell, 
+  ChevronDown, 
+  User, 
+  LogOut, 
+  LayoutDashboard, 
+  BookOpen, 
+  Award, 
+  HelpCircle, 
+  Bot 
+} from 'lucide-react';
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
-  const { user, logout } = useContext(AuthContext);
-  const [darkMode, setDarkMode] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
   const navigate = useNavigate();
 
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark');
+
+  const isAr = i18n.language === 'ar';
+
   useEffect(() => {
-    const savedTheme = localStorage.getItem('edu_theme');
-    if (savedTheme === 'dark') {
-      setDarkMode(true);
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
+    const root = document.documentElement;
+    const body = document.body;
 
-  const toggleDarkMode = () => {
-    if (darkMode) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('edu_theme', 'light');
-      setDarkMode(false);
+    if (isDark) {
+      root.classList.add('dark');
+      body.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('edu_theme', 'dark');
-      setDarkMode(true);
+      root.classList.remove('dark');
+      body.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
     }
-  };
+  }, [isDark]);
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'ar' ? 'en' : 'ar';
-    i18n.changeLanguage(newLang);
-    document.documentElement.setAttribute('dir', newLang === 'ar' ? 'rtl' : 'ltr');
-    document.documentElement.setAttribute('lang', newLang);
+  useEffect(() => {
+    const currentLang = i18n.language || 'ar';
+    const isArabic = currentLang === 'ar';
+    document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
+    document.documentElement.lang = currentLang;
+    localStorage.setItem('i18nextLng', currentLang);
+  }, [i18n.language]);
+
+  const toggleTheme = () => setIsDark(prev => !prev);
+
+  const toggleLang = () => {
+    const nextLang = isAr ? 'en' : 'ar';
+    i18n.changeLanguage(nextLang);
   };
 
   const handleLogout = () => {
-    logout();
-    navigate('/login');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user_name');
+    navigate('/');
   };
 
+  const navLinks = [
+    { name: t('nav.dashboard', { defaultValue: isAr ? 'لوحة التحكم' : 'Dashboard' }), path: '/dashboard', icon: LayoutDashboard },
+    { name: t('nav.myCourses', { defaultValue: isAr ? 'مساقاتي' : 'My Courses' }), path: '/courses', icon: BookOpen },
+    { name: t('nav.myProgress', { defaultValue: isAr ? 'تقدمي' : 'My Progress' }), path: '/progress', icon: Award },
+    { name: t('nav.quizzes', { defaultValue: isAr ? 'الاختبارات' : 'Quizzes' }), path: '/quizzes', icon: HelpCircle },
+    { name: t('nav.aiTutor', { defaultValue: isAr ? 'المساعد الذكي' : 'AI Tutor' }), path: '/ai-tutor', icon: Bot },
+  ];
+
   return (
-    <nav className="sticky top-0 z-50 bg-cream-light dark:bg-cream-dark border-b border-cream dark:border-gray-800 shadow-sm transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20 items-center">
-          
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-burgundy flex items-center justify-center text-white shadow-md">
-              <ShieldAlert className="w-6 h-6 text-medicalRed" />
+    <header className="bg-[#49305D] text-white sticky top-0 z-50 shadow-md h-16 flex items-center justify-between px-6 transition-colors duration-300">
+      <div className="flex items-center gap-8">
+        <Link to="/dashboard" className="flex items-center gap-3 group">
+          {/* خلفية بيضاء خفيفة خلف اللوجو لكي يبرز بوضوح فائق */}
+          <div className="bg-white/95 px-2 py-1 rounded-xl shadow-sm transition-transform duration-300 group-hover:scale-105">
+            <img
+              src="/edufanor.png"
+              alt="EduFanor Logo"
+              className="h-8 w-auto object-contain"
+            />
+          </div>
+        </Link>
+
+        <nav className="hidden lg:flex items-center gap-2 text-xs font-semibold">
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            const isActive = location.pathname === link.path;
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full transition-all ${
+                  isActive ? 'bg-white/20 text-white font-bold shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                <span>{link.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <button
+          onClick={toggleLang}
+          type="button"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold transition-all cursor-pointer"
+        >
+          <Globe className="w-3.5 h-3.5 text-[#E9B9C8]" />
+          <span>{isAr ? 'English' : 'عربي'}</span>
+        </button>
+
+        <button
+          onClick={toggleTheme}
+          type="button"
+          className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all cursor-pointer"
+        >
+          {isDark ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-[#E9B9C8]" />}
+        </button>
+
+        <button type="button" className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white relative">
+          <Bell className="w-4 h-4" />
+          <span className="absolute top-1 right-1 w-2 h-2 bg-[#E9B9C8] rounded-full"></span>
+        </button>
+
+        <div className="relative">
+          <button
+            onClick={() => setProfileOpen(prev => !prev)}
+            type="button"
+            className="flex items-center gap-2 p-1 rounded-full hover:bg-white/10 transition-all cursor-pointer"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&q=80"
+              alt="Profile"
+              className="w-8 h-8 rounded-full border-2 border-[#E9B9C8] object-cover"
+            />
+            <ChevronDown className="w-3.5 h-3.5 text-white/70" />
+          </button>
+
+          {profileOpen && (
+            <div className={`absolute top-full mt-2 ${isAr ? 'left-0' : 'right-0'} w-48 bg-white dark:bg-[#2B2037] text-[#1F142E] dark:text-[#F8F4FC] rounded-2xl shadow-xl p-2 border border-[#EDE6F5] dark:border-[#493B58] text-xs space-y-1 z-50`}>
+              <div className="px-3 py-2 font-bold border-b border-gray-100 dark:border-gray-700">
+                نورة
+              </div>
+              <Link
+                to="/settings"
+                onClick={() => setProfileOpen(false)}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl font-semibold hover:bg-[#F4EFFB] dark:hover:bg-[#3B2B4C]"
+              >
+                <User className="w-4 h-4 text-[#8A6BBE]" />
+                <span>{t('nav.profile', { defaultValue: isAr ? 'الملف الشخصي' : 'Profile' })}</span>
+              </Link>
+              <button
+                onClick={handleLogout}
+                type="button"
+                className="w-full flex items-center gap-2 px-3 py-2 text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>{t('nav.logout', { defaultValue: isAr ? 'تسجيل الخروج' : 'Logout' })}</span>
+              </button>
             </div>
-            <span className="text-2xl font-extrabold text-burgundy dark:text-cream tracking-tight">
-              Edu<span className="text-medicalRed">Fanor</span>
-            </span>
-          </Link>
-
-          {/* Nav Links */}
-          <div className="hidden md:flex items-center gap-8 font-medium text-gray-700 dark:text-gray-200">
-            <Link to="/" className="hover:text-burgundy dark:hover:text-medicalRed transition-colors">
-              {t('nav.home', 'الرئيسية')}
-            </Link>
-            <Link to="/courses" className="hover:text-burgundy dark:hover:text-medicalRed transition-colors">
-              {t('nav.courses', 'الدورات')}
-            </Link>
-            <Link to="/ai-tutor" className="hover:text-burgundy dark:hover:text-medicalRed transition-colors">
-              {t('nav.aiTutor', 'المساعد الذكي')}
-            </Link>
-          </div>
-
-          {/* Controls & User State */}
-          <div className="hidden md:flex items-center gap-4">
-            <button
-              onClick={toggleDarkMode}
-              className="p-2.5 rounded-full bg-cream dark:bg-gray-800 text-burgundy dark:text-yellow-400 hover:scale-105 transition-all shadow-sm"
-            >
-              {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cream dark:bg-gray-800 text-burgundy dark:text-cream text-sm font-bold shadow-sm"
-            >
-              <Globe className="w-4 h-4 text-medicalRed" />
-              <span>{i18n.language === 'ar' ? 'EN' : 'عربي'}</span>
-            </button>
-
-            {/* Ila kan user msajjel, ghadi يبان Dashboard & Profil */}
-            {user ? (
-              <div className="flex items-center gap-3">
-                <Link
-                  to="/dashboard"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-burgundy hover:bg-burgundy-hover text-white font-bold shadow-md transition-all"
-                >
-                  <LayoutDashboard className="w-4 h-4" />
-                  <span>{t('nav.dashboard', 'لوحة التحكم')}</span>
-                </Link>
-
-                <button
-                  onClick={handleLogout}
-                  className="p-2.5 rounded-xl bg-red-50 dark:bg-red-950/40 text-medicalRed hover:bg-red-100 transition-colors"
-                  title="Logout"
-                >
-                  <LogOut className="w-5 h-5" />
-                </button>
-              </div>
-            ) : (
-              /* Ila ma-kansher msajjel, ghadi يبان Login wa Register */
-              <div className="flex items-center gap-2">
-                <Link
-                  to="/login"
-                  className="px-4.5 py-2 rounded-xl text-burgundy dark:text-cream font-semibold hover:bg-burgundy/10 transition-colors"
-                >
-                  {t('nav.login', 'تسجيل الدخول')}
-                </Link>
-                <Link
-                  to="/register"
-                  className="px-5 py-2.5 rounded-xl bg-burgundy hover:bg-burgundy-hover text-white font-bold shadow-md transition-all"
-                >
-                  {t('nav.getStarted', 'ابدأ الآن')}
-                </Link>
-              </div>
-            )}
-          </div>
-
+          )}
         </div>
       </div>
-    </nav>
+    </header>
   );
 }

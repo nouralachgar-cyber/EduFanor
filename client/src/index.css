@@ -1,21 +1,59 @@
 @import "tailwindcss";
 
-@theme {
-  --color-burgundy: #800020;
-  --color-burgundy-hover: #600018;
-  --color-medicalRed: #D45060;
-  --color-cream: #F3E6D5;
-  --color-cream-light: #FFF9F2;
-  --color-cream-dark: #1a1214;
-  --color-cream-darkCard: #261b1e;
+/* 1. تفعيل Dark Variant الخاص بـ Tailwind v4 عبر الكلاس .dark */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 2. تعريف متغيرات الألوان الخاصة بـ EduFanor (Deep Plum Theme) */
+:root {
+  --bg-main: #F8F4FC;
+  --card-bg: #FFFFFF;
+  --sidebar-bg: #F6F0FA;
+  --text-primary: #2C1B33;
+  --text-muted: #796882;
+  --border-color: #ECE1F2;
 }
 
+/* 3. تطبيق ألوان الوضع الداكن عند وجود كلاس dark */
+.dark {
+  --bg-main: #211526;       /* خلفية بنفسجية غامقة بحال Navbar */
+  --card-bg: #35213D;       /* خلفية البطاقات أفتح شوية */
+  --sidebar-bg: #1E1123;    /* القائمة الجانبية */
+  --text-primary: #F8F4FC;   /* نصوص فاتحة */
+  --text-muted: #C4B8CC;
+  --border-color: #35213D;  /* حدود متناسقة */
+}
+
+/* 4. إجبار الصفحات والبطاقات على تحويل ألوانها فوراً */
 body {
-  background-color: var(--color-cream-light);
-  font-family: 'Tajawal', sans-serif;
-  min-height: 100vh;
+  background-color: var(--bg-main) !important;
+  color: var(--text-primary) !important;
+  font-family: 'Plus Jakarta Sans', 'Tajawal', sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .dark body {
-  background-color: var(--color-cream-dark);
+  background-color: #211526 !important;
+  color: #F8F4FC !important;
+}
+
+/* تحويل البطاقات البيضاء فـ الوضع الداكن */
+.dark .bg-white,
+.dark div[class*="bg-white"] {
+  background-color: #35213D !important;
+  border-color: #493B58 !important;
+  color: #F8F4FC !important;
+}
+
+.dark aside {
+  background-color: #1E1123 !important;
+  border-color: #35213D !important;
+}
+
+@keyframes spinSlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 8s linear infinite;
 }
