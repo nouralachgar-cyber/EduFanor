@@ -58,6 +58,12 @@ const resources = {
         point2: "متابعة تقدّمك خطوة بخطوة",
         point3: "دليل طوارئ سريع في متناول يدك"
       },
+      mission: {
+        badge: "هدفنا الأسمى",
+        title: "نعلمك كيف تتدخل في الوقت المناسب لإنقاذ حياة",
+        desc: "هدفنا من منصة EduFanor ليس مجرد تقديم دروس نظرية، بل تمكين كل شخص عادي من اكتساب المهارات والثقة للتعامل مع الحالات الطارئة ومساعدة أي محتاج ريثما تصل فرق الإسعاف المختصة.",
+        btn: "انضم إلينا وابدأ التعلم"
+      },
       studentCard: {
         title: "بطاقة طالب أكاديمي",
         subtitle: "بطاقتك الرسمية المسجلة في منصة EduFanor للإسعافات الأولية",
@@ -392,6 +398,12 @@ const resources = {
         point1: "Interactive lessons in clear academic language",
         point2: "Track your progress step by step",
         point3: "A quick emergency guide always at hand"
+      },
+      mission: {
+        badge: "Our Core Mission",
+        title: "Empowering Everyone to Save Lives in Critical Moments",
+        desc: "Our goal with EduFanor is not just academic theory, but empowering everyday individuals with the skills and confidence to assist anyone in need while waiting for professional help.",
+        btn: "Join Us & Start Learning"
       },
       studentCard: {
         title: "Academic Student Badge",

@@ -7,9 +7,12 @@ import {
   Mail, Phone, ShieldCheck, Send
 } from 'lucide-react';
 import GlobalEmergencySection from '../components/GlobalEmergencySection';
+import { PixelImage } from '../components/PixelImage';
+import { AnimatedGridPattern } from '../components/AnimatedGridPattern';
+import { Text3DFlip } from '../components/Text3DFlip';
 
 export default function PublicLandingPage() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const isAr = i18n.language === 'ar';
@@ -35,8 +38,16 @@ export default function PublicLandingPage() {
   const toggleTheme = () => setIsDark(prev => !prev);
 
   return (
-    <div className="min-h-screen bg-[#FCFAFF] dark:bg-[#17121D] text-[#1F142E] dark:text-[#F8F4FC] font-sans transition-colors duration-300 overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#FCFAFF] dark:bg-[#17121D] text-[#1F142E] dark:text-[#F8F4FC] font-sans transition-colors duration-300 overflow-x-hidden">
       
+      {/* 🌟 Animated Grid Background Effect */}
+      <AnimatedGridPattern
+        numSquares={35}
+        maxOpacity={0.12}
+        duration={3}
+        className="[mask-image:radial-gradient(1200px_circle_at_center,white,transparent)] inset-x-0 inset-y-0 h-full w-full skew-y-12"
+      />
+
       {/* 🌐 Navbar الرئيسي */}
       <header className="sticky top-0 z-50 bg-[#FCFAFF]/95 dark:bg-[#17121D]/95 backdrop-blur-md border-b border-[#EDE6F5] dark:border-[#2B2037] px-6 lg:px-16 h-20 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -88,18 +99,19 @@ export default function PublicLandingPage() {
       </header>
 
       {/* 🚀 Hero Section */}
-      <section id="home" className="relative max-w-[1700px] mx-auto px-6 lg:px-16 py-12 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center overflow-hidden">
+      <section id="home" className="relative max-w-[1700px] mx-auto px-6 lg:px-16 py-12 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center overflow-hidden z-10">
         <div className="lg:col-span-6 space-y-8 z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E9E0F5] dark:bg-[#2B2037] border border-[#8A6BBE]/30 text-xs font-bold text-[#49305D] dark:text-[#E9E0F5]">
             <ShieldAlert className="w-4 h-4 text-[#8A6BBE]" />
             <span>{isAr ? 'منصة تعليم الإسعافات الأولية' : 'First Aid Education Platform'}</span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-black text-[#49305D] dark:text-white tracking-tight leading-[1.25] flex flex-col gap-2">
-            <span>{isAr ? 'كن مستعداً' : 'Be Ready'}</span>
-            <span>{isAr ? 'كن واثقاً' : 'Be Confident'}</span>
-            <span className="text-[#8A6BBE]">{isAr ? 'أنقذ الأرواح' : 'Save Lives'}</span>
-          </h1>
+          {/* 🌟 3D Flip Effect on Hero Title */}
+          <div className="text-4xl sm:text-6xl font-black text-[#49305D] dark:text-white tracking-tight leading-[1.25] flex flex-col gap-2">
+            <Text3DFlip textClassName="text-[#49305D] dark:text-white" flipTextClassName="text-[#8A6BBE]">
+              {isAr ? 'كن مستعداً وأنقذ حياة' : 'Be Ready & Save Lives'}
+            </Text3DFlip>
+          </div>
 
           <p className="text-sm lg:text-base text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed font-medium max-w-xl">
             {isAr 
@@ -126,7 +138,7 @@ export default function PublicLandingPage() {
           </div>
         </div>
 
-        <div className="lg:col-span-6 relative flex items-center justify-center py-6">
+        <div className="lg:col-span-6 relative flex items-center justify-center py-6 z-10">
           <div className="absolute w-[600px] h-[600px] bg-gradient-to-tr from-[#8A6BBE]/40 via-[#C5A8E8]/35 to-transparent dark:from-[#8A6BBE]/30 dark:via-[#49305D]/25 rounded-full blur-[100px] pointer-events-none -z-10" />
 
           <div className="relative w-full max-w-[760px] flex items-center justify-center">
@@ -144,7 +156,7 @@ export default function PublicLandingPage() {
       </section>
 
       {/* 🌟 Features Section */}
-      <section id="features" className="bg-[#F4EFFB] dark:bg-[#21192B] py-20 px-6 lg:px-16 border-t border-b border-[#EDE6F5] dark:border-[#2B2037]">
+      <section id="features" className="relative z-10 bg-[#F4EFFB]/80 dark:bg-[#21192B]/80 backdrop-blur-sm py-20 px-6 lg:px-16 border-t border-b border-[#EDE6F5] dark:border-[#2B2037]">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center space-y-3">
             <span className="text-xs font-black uppercase tracking-wider text-[#8A6BBE]">
@@ -210,11 +222,60 @@ export default function PublicLandingPage() {
         </div>
       </section>
 
+      {/* 🎯 Our Mission Section with PixelImage & Text3DFlip */}
+      <section className="relative z-10 py-20 px-6 lg:px-16 bg-[#F4EFFB]/80 dark:bg-[#21192B]/80 backdrop-blur-sm border-t border-b border-[#EDE6F5] dark:border-[#3B2B4C]">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Text Description */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E9E0F5] dark:bg-[#2B2037] border border-[#8A6BBE]/30 text-xs font-bold text-[#49305D] dark:text-[#E9E0F5]">
+              <ShieldAlert className="w-4 h-4 text-[#8A6BBE]" />
+              <span>{t('mission.badge')}</span>
+            </div>
+
+            {/* 🌟 3D Flip Effect on Mission Title */}
+            <div className="text-3xl lg:text-4xl font-black text-[#49305D] dark:text-white tracking-tight leading-tight">
+              <Text3DFlip textClassName="text-[#49305D] dark:text-white" flipTextClassName="text-[#8A6BBE]">
+                {t('mission.title')}
+              </Text3DFlip>
+            </div>
+
+            <p className="text-xs lg:text-sm text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed font-medium">
+              {t('mission.desc')}
+            </p>
+
+            <div className="pt-2">
+              <Link 
+                to="/register" 
+                className="px-7 py-3.5 rounded-full bg-[#49305D] hover:bg-[#39244A] text-white font-extrabold text-xs shadow-md transition-all inline-flex items-center gap-2"
+              >
+                <span>{t('mission.btn')}</span>
+                {isAr ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
+              </Link>
+            </div>
+          </div>
+
+          {/* Save Image with Pixel Effect */}
+          <div className="lg:col-span-6 flex items-center justify-center">
+            <div className="w-full max-w-md rounded-3xl overflow-hidden shadow-2xl border border-[#EDE6F5] dark:border-[#3B2B4C] bg-white dark:bg-[#17121D] p-3">
+              <PixelImage
+                src="/save.png"
+                customGrid={{ rows: 4, cols: 6 }}
+                grayscaleAnimation={true}
+              />
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* 🌍 3D Globe Emergency Section */}
-      <GlobalEmergencySection />
+      <div className="relative z-10">
+        <GlobalEmergencySection />
+      </div>
 
       {/* 📖 About Section */}
-      <section id="about" className="max-w-6xl mx-auto px-6 py-20 space-y-12">
+      <section id="about" className="relative z-10 max-w-6xl mx-auto px-6 py-20 space-y-12">
         <div className="text-center space-y-3">
           <span className="text-xs font-black uppercase tracking-wider text-[#8A6BBE]">
             {isAr ? 'عن منصة EduFanor' : 'About EduFanor'}
@@ -230,7 +291,7 @@ export default function PublicLandingPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="p-8 rounded-3xl bg-[#F4EFFB] dark:bg-[#21192B] border border-[#EDE6F5] dark:border-[#493B58] space-y-4">
+          <div className="p-8 rounded-3xl bg-[#F4EFFB] dark:bg-[#21192B] border border-[#EDE6F5] dark:border-[#493B58] space-y-4 shadow-sm">
             <h3 className="text-xl font-black text-[#49305D] dark:text-white">{isAr ? 'مهمتنا' : 'Our Mission'}</h3>
             <p className="text-xs lg:text-sm text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed">
               {isAr 
@@ -239,7 +300,7 @@ export default function PublicLandingPage() {
             </p>
           </div>
 
-          <div className="p-8 rounded-3xl bg-[#F4EFFB] dark:bg-[#21192B] border border-[#EDE6F5] dark:border-[#493B58] space-y-4">
+          <div className="p-8 rounded-3xl bg-[#F4EFFB] dark:bg-[#21192B] border border-[#EDE6F5] dark:border-[#493B58] space-y-4 shadow-sm">
             <h3 className="text-xl font-black text-[#49305D] dark:text-white">{isAr ? 'رؤيتنا' : 'Our Vision'}</h3>
             <p className="text-xs lg:text-sm text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed">
               {isAr 
@@ -251,7 +312,7 @@ export default function PublicLandingPage() {
       </section>
 
       {/* 🌟 Footer الاحترافي الجديد */}
-      <footer className="bg-[#17121D] text-[#F8F4FC] border-t border-[#2B2037] pt-16 pb-8 px-6 lg:px-16 transition-colors duration-300">
+      <footer className="relative z-10 bg-[#17121D] text-[#F8F4FC] border-t border-[#2B2037] pt-16 pb-8 px-6 lg:px-16 transition-colors duration-300">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-12 border-b border-[#2B2037]">
           
           {/* Brand Section */}
@@ -330,7 +391,7 @@ export default function PublicLandingPage() {
               </li>
             </ul>
 
-            {/* Social Media Icons (SVG مباشر لتجنب أي أخطاء استيراد) */}
+            {/* Social Media Icons */}
             <div className="pt-2 space-y-2">
               <span className="text-[11px] font-bold text-[#8C7B9E]">
                 {isAr ? 'تابعنا على منصات التواصل' : 'Follow Us'}

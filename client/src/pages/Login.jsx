@@ -37,26 +37,30 @@ export default function Login() {
   ];
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FCFAFF] dark:bg-[#17121D] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-16 transition-colors duration-300">
       <div className="w-full max-w-md">
-        <div className="card p-6 sm:p-8 space-y-6">
+        
+        {/* Card Container */}
+        <div className="rounded-3xl bg-white dark:bg-[#21192B] border border-[#EDE6F5] dark:border-[#3B2B4C] p-6 sm:p-8 space-y-6 shadow-sm">
+          
           {/* Header */}
           <div className="text-center space-y-3">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white shadow-lift">
-              <ShieldAlert className="h-7 w-7 text-teal" />
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#49305D] text-white shadow-md">
+              <ShieldAlert className="h-7 w-7 text-[#8A6BBE]" />
             </div>
             <div className="space-y-1">
-              <h2 className="text-2xl font-extrabold text-ink">
+              <h2 className="text-2xl font-black text-[#49305D] dark:text-white">
                 {t('auth.loginTitle')}
               </h2>
-              <p className="text-xs text-ink-muted">
+              <p className="text-xs text-[#6B5E7C] dark:text-[#C9BED5]">
                 {t('auth.loginSubtitle')}
               </p>
             </div>
           </div>
 
+          {/* Error Message */}
           {errorMsg && (
-            <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 text-xs flex items-center gap-2 font-bold">
+            <div className="p-3.5 rounded-2xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 text-xs flex items-center gap-2 font-bold">
               <AlertCircle className="h-4 w-4 shrink-0" />
               <span>{errorMsg}</span>
             </div>
@@ -64,9 +68,11 @@ export default function Login() {
 
           {/* Form */}
           <form className="space-y-4" onSubmit={handleLogin}>
+            
+            {/* Email Field */}
             <div className="space-y-1.5">
-              <label className="label">
-                <Mail className="h-3.5 w-3.5 text-primary" />
+              <label className="flex items-center gap-2 text-xs font-bold text-[#49305D] dark:text-[#F8F4FC]">
+                <Mail className="h-3.5 w-3.5 text-[#8A6BBE]" />
                 <span>{t('auth.email')}</span>
               </label>
               <input
@@ -75,14 +81,15 @@ export default function Login() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t('auth.emailPlaceholder')}
-                className="input"
+                className="w-full rounded-2xl border border-[#EDE6F5] dark:border-[#3B2B4C] bg-[#FCFAFF] dark:bg-[#17121D] px-4 py-3 text-xs font-semibold text-[#1F142E] dark:text-[#F8F4FC] outline-none focus:border-[#8A6BBE] transition-colors"
                 dir="ltr"
               />
             </div>
 
+            {/* Password Field */}
             <div className="space-y-1.5">
-              <label className="label">
-                <Lock className="h-3.5 w-3.5 text-primary" />
+              <label className="flex items-center gap-2 text-xs font-bold text-[#49305D] dark:text-[#F8F4FC]">
+                <Lock className="h-3.5 w-3.5 text-[#8A6BBE]" />
                 <span>{t('auth.password')}</span>
               </label>
               <div className="relative">
@@ -92,12 +99,12 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={t('auth.passwordPlaceholder')}
-                  className={`input ${isAr ? 'pe-11' : 'ps-11'}`}
+                  className={`w-full rounded-2xl border border-[#EDE6F5] dark:border-[#3B2B4C] bg-[#FCFAFF] dark:bg-[#17121D] px-4 py-3 text-xs font-semibold text-[#1F142E] dark:text-[#F8F4FC] outline-none focus:border-[#8A6BBE] transition-colors ${isAr ? 'pl-11' : 'pr-11'}`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className={`absolute top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink transition-colors ${isAr ? 'left-3' : 'right-3'}`}
+                  className={`absolute top-1/2 -translate-y-1/2 p-1 text-[#6B5E7C] dark:text-[#C9BED5] hover:text-[#49305D] dark:hover:text-white transition-colors cursor-pointer ${isAr ? 'left-3' : 'right-3'}`}
                   aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -105,10 +112,11 @@ export default function Login() {
               </div>
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full py-3.5 text-sm"
+              className="w-full py-3.5 rounded-2xl bg-[#49305D] hover:bg-[#39244A] text-white font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -124,23 +132,25 @@ export default function Login() {
             </button>
           </form>
 
-          <div className="text-center text-xs text-ink-muted">
+          {/* Footer Link to Register */}
+          <div className="text-center text-xs text-[#6B5E7C] dark:text-[#C9BED5]">
             {t('auth.noAccount')}{' '}
-            <Link to="/register" className="text-primary font-bold hover:underline">
+            <Link to="/register" className="text-[#8A6BBE] font-black hover:underline">
               {t('auth.signUp')}
             </Link>
           </div>
         </div>
 
         {/* Highlights */}
-        <div className="mt-6 space-y-2">
+        <div className="mt-6 space-y-2 px-2">
           {highlights.map((point, idx) => (
-            <div key={idx} className="flex items-center gap-2 text-xs text-ink-muted">
-              <CheckCircle2 className="h-3.5 w-3.5 text-teal-deep shrink-0" />
+            <div key={idx} className="flex items-center gap-2 text-xs text-[#6B5E7C] dark:text-[#C9BED5] font-medium">
+              <CheckCircle2 className="h-3.5 w-3.5 text-[#8A6BBE] shrink-0" />
               <span>{point}</span>
             </div>
           ))}
         </div>
+
       </div>
     </div>
   );
