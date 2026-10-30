@@ -30,8 +30,8 @@ function ErrorFallback({ error, onReset }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-surface-muted p-4">
       <div className="card max-w-md w-full p-8 text-center space-y-6">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50 dark:bg-red-950/30">
-          <AlertTriangle className="h-8 w-8 text-red-500" />
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-danger-soft">
+          <AlertTriangle className="h-8 w-8 text-danger" />
         </div>
         <div className="space-y-2">
           <h2 className="text-xl font-extrabold text-ink">
@@ -42,7 +42,7 @@ function ErrorFallback({ error, onReset }) {
           </p>
         </div>
         {error && (
-          <p className="text-xs text-red-500 bg-red-50 dark:bg-red-950/30 rounded-lg p-3 font-mono break-all">
+          <p className="break-all rounded-lg bg-danger-soft p-3 font-mono text-xs text-danger">
             {error.message || String(error)}
           </p>
         )}

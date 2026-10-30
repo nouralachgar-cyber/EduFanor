@@ -1,170 +1,164 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Settings as SettingsIcon, Globe, Moon, Sun, Bell, ShieldCheck, Info, Check } from 'lucide-react';
+import {
+  Settings as SettingsIcon,
+  Globe,
+  Moon,
+  Sun,
+  ShieldCheck,
+  Info,
+  Check,
+  Sparkles,
+  MonitorSmartphone,
+  Languages,
+} from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Settings() {
   const { t, i18n } = useTranslation();
+  const { isDark, toggleTheme } = useTheme();
   const isAr = i18n.language === 'ar';
-  const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
-  const [notificationsEnabled, setNotificationsEnabled] = useState(() => localStorage.getItem('notifications') !== 'off');
-
-  const toggleLanguage = () => {
-    i18n.changeLanguage(isAr ? 'en' : 'ar');
-  };
-
-  const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    if (newMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
-
-  const toggleNotifications = () => {
-    const newState = !notificationsEnabled;
-    setNotificationsEnabled(newState);
-    localStorage.setItem('notifications', newState ? 'on' : 'off');
-  };
-
-  const settingSections = [
-    {
-      title: t('settingsPage.languageTitle'),
-      desc: t('settingsPage.languageDesc'),
-      icon: Globe,
-      color: 'bg-brand-soft text-brand-ink',
-      action: (
-        <button onClick={toggleLanguage} className="btn-primary px-4 py-2 text-xs">
-          {isAr ? 'English' : 'العربية'}
-        </button>
-      ),
-    },
-    {
-      title: t('settingsPage.verifiedTitle'),
-      desc: t('settingsPage.verifiedDesc'),
-      icon: ShieldCheck,
-      color: 'bg-success-soft text-success-ink',
-      action: (
-        <span className="chip bg-success-soft text-success-ink">
-          <Check className="h-3 w-3" />
-          {t('settingsPage.active')}
-        </span>
-      ),
-    },
-  ];
 
   return (
     <div className="page-container">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-        {/* Header */}
-        <div className="text-center space-y-3">
+      <div className="page-content mx-auto max-w-3xl space-y-8">
+        <header>
           <span className="chip bg-brand-soft text-brand-ink">
             <SettingsIcon className="h-3.5 w-3.5" />
-            <span>{t('nav.settings')}</span>
+            {t('nav.settings')}
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-ink">
+          <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
             {t('settingsPage.title')}
           </h1>
-          <p className="text-xs text-ink-muted">
-            {t('settingsPage.subtitle')}
-          </p>
-        </div>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-muted">{t('settingsPage.subtitle')}</p>
+        </header>
 
-        {/* Settings Card */}
-        <div className="card p-6 sm:p-8 space-y-4">
-          {settingSections.map((section, idx) => {
-            const Icon = section.icon;
-            return (
-              <div key={idx} className="flex items-center justify-between p-4 rounded-xl bg-surface-muted border border-line">
-                <div className="flex items-center gap-3">
-                  <div className={`icon-box h-10 w-10 ${section.color}`}>
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-extrabold text-xs text-ink">{section.title}</h4>
-                    <p className="text-[11px] text-ink-muted mt-0.5">{section.desc}</p>
-                  </div>
-                </div>
-                {section.action}
-              </div>
-            );
-          })}
-
-          {/* Theme Toggle */}
-          <div className="flex items-center justify-between p-4 rounded-xl bg-surface-muted border border-line">
-            <div className="flex items-center gap-3">
-              <div className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
-                {isDarkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-              </div>
+        <section className="card divide-y divide-line overflow-hidden">
+          <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+            <div className="flex items-start gap-3">
+              <span className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
+                <Languages className="h-5 w-5" />
+              </span>
               <div>
-                <h4 className="font-extrabold text-xs text-ink">
-                  {isAr ? 'الوضع الليلي' : 'Dark Mode'}
-                </h4>
-                <p className="text-[11px] text-ink-muted mt-0.5">
-                  {isAr ? 'تفعيل المظهر الداكن للواجهة' : 'Enable dark appearance'}
+                <h2 className="text-sm font-extrabold text-ink">{t('settingsPage.languageTitle')}</h2>
+                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-muted">
+                  {t('settingsPage.languageDesc')}
                 </p>
               </div>
             </div>
-            <button
-              onClick={toggleDarkMode}
-              className={`relative h-6 w-11 rounded-full transition-colors duration-200 ${
-                isDarkMode ? 'bg-primary' : 'bg-line-strong'
-              }`}
-              role="switch"
-              aria-checked={isDarkMode}
+
+            <div
+              className="flex shrink-0 items-center rounded-xl border border-line bg-surface-muted p-1"
+              role="group"
+              aria-label={t('settingsPage.languageTitle')}
             >
-              <span
-                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200 ${
-                  isDarkMode ? (isAr ? '-translate-x-5' : 'translate-x-5') : 'translate-x-0.5'
+              <button
+                type="button"
+                onClick={() => i18n.changeLanguage('ar')}
+                className={`rounded-lg px-4 py-1.5 text-xs font-extrabold transition-colors ${
+                  isAr ? 'bg-primary text-white' : 'text-ink-muted hover:text-ink'
                 }`}
-              />
-            </button>
+              >
+                العربية
+              </button>
+              <button
+                type="button"
+                onClick={() => i18n.changeLanguage('en')}
+                className={`rounded-lg px-4 py-1.5 text-xs font-extrabold transition-colors ${
+                  !isAr ? 'bg-primary text-white' : 'text-ink-muted hover:text-ink'
+                }`}
+              >
+                English
+              </button>
+            </div>
           </div>
 
-          {/* Notifications */}
-          <div className="flex items-center justify-between p-4 rounded-xl bg-surface-muted border border-line">
-            <div className="flex items-center gap-3">
-              <div className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
-                <Bell className="h-5 w-5" />
-              </div>
+          <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+            <div className="flex items-start gap-3">
+              <span className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
+                {isDark ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+              </span>
               <div>
-                <h4 className="font-extrabold text-xs text-ink">
-                  {isAr ? 'الإشعارات' : 'Notifications'}
-                </h4>
-                <p className="text-[11px] text-ink-muted mt-0.5">
-                  {isAr ? 'تذكير يومي بالتعلم والتحديات' : 'Daily learning reminders and challenges'}
+                <h2 className="text-sm font-extrabold text-ink">
+                  {isAr ? 'المظهر' : 'Appearance'}
+                </h2>
+                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-muted">
+                  {isAr
+                    ? 'اختر بين الوضع الفاتح والداكن. يُحفظ اختيارك في هذا المتصفح.'
+                    : 'Choose between light and dark appearance. Your choice is saved in this browser.'}
                 </p>
               </div>
             </div>
+
             <button
-              onClick={toggleNotifications}
-              className={`relative h-6 w-11 rounded-full transition-colors duration-200 ${
-                notificationsEnabled ? 'bg-primary' : 'bg-line-strong'
-              }`}
+              type="button"
+              onClick={toggleTheme}
               role="switch"
-              aria-checked={notificationsEnabled}
+              aria-checked={isDark}
+              aria-label={isAr ? 'الوضع الداكن' : 'Dark mode'}
+              className={`flex h-7 w-12 shrink-0 items-center rounded-full p-0.5 transition-colors duration-200 ${
+                isDark ? 'justify-end bg-primary' : 'justify-start bg-line-strong'
+              }`}
             >
-              <span
-                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200 ${
-                  notificationsEnabled ? (isAr ? '-translate-x-5' : 'translate-x-5') : 'translate-x-0.5'
-                }`}
-              />
+              <span className="h-6 w-6 rounded-full bg-white shadow-sm" />
             </button>
           </div>
-        </div>
 
-        {/* About */}
-        <div className="card p-6 space-y-3 text-center">
-          <div className="mx-auto icon-box h-10 w-10 bg-brand-soft text-brand-ink">
-            <Info className="h-5 w-5" />
+          <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+            <div className="flex items-start gap-3">
+              <span className="icon-box h-10 w-10 bg-success-soft text-success-ink">
+                <ShieldCheck className="h-5 w-5" />
+              </span>
+              <div>
+                <h2 className="text-sm font-extrabold text-ink">{t('settingsPage.verifiedTitle')}</h2>
+                <p className="mt-0.5 max-w-md text-[11px] leading-relaxed text-ink-muted">
+                  {t('settingsPage.verifiedDesc')}
+                </p>
+              </div>
+            </div>
+            <span className="chip shrink-0 bg-success-soft text-success-ink">
+              <Check className="h-3 w-3" />
+              {t('settingsPage.active')}
+            </span>
           </div>
-          <h3 className="text-sm font-extrabold text-ink">{t('settingsPage.aboutTitle')}</h3>
-          <p className="text-xs text-ink-muted">{t('settingsPage.aboutDesc')}</p>
-          <p className="text-[10px] text-ink-muted font-mono">{t('settingsPage.version')}</p>
-        </div>
+
+          <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+            <div className="flex items-start gap-3">
+              <span className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
+                <MonitorSmartphone className="h-5 w-5" />
+              </span>
+              <div>
+                <h2 className="text-sm font-extrabold text-ink">
+                  {isAr ? 'الحركة والوصول' : 'Motion and accessibility'}
+                </h2>
+                <p className="mt-0.5 max-w-md text-[11px] leading-relaxed text-ink-muted">
+                  {isAr
+                    ? 'تحترم الواجهة إعداد تقليل الحركة في نظامك، وتدعم التنقل بلوحة المفاتيح.'
+                    : 'The interface respects your system’s reduced-motion setting and supports keyboard navigation.'}
+                </p>
+              </div>
+            </div>
+            <Sparkles className="h-5 w-5 shrink-0 text-accent" />
+          </div>
+        </section>
+
+        <section className="card p-6">
+          <div className="flex items-start gap-3">
+            <span className="icon-box h-10 w-10 bg-surface-muted text-ink-muted">
+              <Info className="h-5 w-5" />
+            </span>
+            <div>
+              <h2 className="text-sm font-extrabold text-ink">{t('settingsPage.aboutTitle')}</h2>
+              <p className="mt-1 text-xs leading-relaxed text-ink-muted">{t('settingsPage.aboutDesc')}</p>
+              <p className="mt-2 font-mono text-[10px] text-ink-muted">{t('settingsPage.version')}</p>
+            </div>
+          </div>
+        </section>
+
+        <p className="flex items-start gap-2 rounded-2xl border border-line bg-surface-muted px-4 py-3 text-[11px] leading-relaxed text-ink-muted">
+          <Globe className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+          {t('footer.disclaimer')}
+        </p>
       </div>
     </div>
   );

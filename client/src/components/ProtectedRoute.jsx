@@ -7,8 +7,12 @@ export default function ProtectedRoute({ children, requireAdmin }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FCFAFF] dark:bg-[#17121D]">
-        <div className="w-8 h-8 border-4 border-[#8A6BBE] border-t-transparent rounded-full animate-spin"></div>
+      <div className="flex min-h-screen items-center justify-center bg-surface">
+        <div
+          className="h-8 w-8 animate-spin rounded-full border-4 border-line border-t-primary"
+          role="status"
+          aria-label="Loading"
+        />
       </div>
     );
   }
@@ -18,9 +22,9 @@ export default function ProtectedRoute({ children, requireAdmin }) {
     return <Navigate to="/login" replace />;
   }
 
-  // إذا كانت الصفحة كتحتاج أدمن والمستخدم ماشي أدمن، يديه لـ dashboard الطالب
-  if (requireAdmin && user.role !== 'admin') {
-    return <Navigate to="/dashboard" replace />;
+  // Admin pages also require a server-issued session. The backend re-checks every admin API call.
+  if (requireAdmin && (user.role !== 'admin' || user.legacy || !localStorage.getItem('edu_token'))) {
+    return <Navigate to={user.role === 'admin' ? '/login' : '/dashboard'} replace />;
   }
 
   return children;

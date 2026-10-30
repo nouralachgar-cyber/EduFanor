@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="CPR course artwork">
+  <rect width="640" height="360" fill="#173D35"/>
+  <circle cx="520" cy="70" r="150" fill="#24483F"/>
+  <circle cx="110" cy="310" r="120" fill="#2E5B4E"/>
+  <path d="M0 246c94-42 161-13 246 7s170 23 250-7 111-37 144-28v142H0Z" fill="#789B83" opacity=".35"/>
+  <path d="M278 188h46l18-44 25 88 20-44h47" fill="none" stroke="#F59E42" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="56" y="52" width="126" height="34" rx="17" fill="#FFD09A" opacity=".18"/>
+  <text x="80" y="75" fill="#FFD09A" font-family="Arial, sans-serif" font-size="15" font-weight="700">CPR</text>
+  <text x="56" y="132" fill="#FCFAF6" font-family="Georgia, serif" font-size="34" font-weight="700">Restart a heart</text>
+  <text x="56" y="160" fill="#FCFAF6" opacity=".68" font-family="Arial, sans-serif" font-size="13">EduFanor first aid academy</text>
+</svg>

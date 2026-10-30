@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Choking response course artwork">
+  <rect width="640" height="360" fill="#24483F"/>
+  <circle cx="120" cy="70" r="150" fill="#173D35"/>
+  <circle cx="540" cy="300" r="150" fill="#2E5B4E"/>
+  <path d="M0 252c96-39 172-14 260 7s176 20 252-10 97-26 128-20v131H0Z" fill="#789B83" opacity=".33"/>
+  <path d="M252 196c28-48 63-72 105-72s77 24 105 72" fill="none" stroke="#F59E42" stroke-width="10" stroke-linecap="round"/>
+  <path d="M305 196h104M357 144v104" stroke="#FFD09A" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+  <rect x="56" y="52" width="138" height="34" rx="17" fill="#FFD09A" opacity=".18"/>
+  <text x="80" y="75" fill="#FFD09A" font-family="Arial, sans-serif" font-size="15" font-weight="700">CHOKING</text>
+  <text x="56" y="132" fill="#FCFAF6" font-family="Georgia, serif" font-size="34" font-weight="700">Clear the airway</text>
+  <text x="56" y="160" fill="#FCFAF6" opacity=".68" font-family="Arial, sans-serif" font-size="13">EduFanor first aid academy</text>
+</svg>

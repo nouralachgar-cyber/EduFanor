@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { useCatalog } from '../context/CatalogContext';
 import {
   BookCheck,
   TrendingUp,
@@ -14,25 +15,25 @@ import {
   Zap,
   X,
   HeartPulse,
-  Flame as BurnIcon,
   CheckCircle2,
   XCircle,
   Clock,
-  Search,
   Wind,
   Target,
+  BookOpen,
+  Sparkles,
 } from 'lucide-react';
+import {
+  getLearningStreak,
+  getQuizBest,
+  getStudentId,
+  isCourseCompleted,
+} from '../lib/progress';
 
 const categoryIcons = {
   cpr: HeartPulse,
   choking: Wind,
   burns: Flame,
-};
-
-const categoryColors = {
-  cpr: 'bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400',
-  choking: 'bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400',
-  burns: 'bg-orange-50 text-orange-600 dark:bg-orange-950/30 dark:text-orange-400',
 };
 
 export default function Dashboard() {
@@ -42,30 +43,29 @@ export default function Dashboard() {
 
   const [guideModalOpen, setGuideModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const avatarUrl = localStorage.getItem('user_avatar') || 'https://api.dicebear.com/7.x/bottts/svg?seed=Noura1';
-  const allCourses = t('coursesData', { returnObjects: true }) || [];
+  const { courses } = useCatalog();
+  const courseList = Array.isArray(courses) ? courses : [];
 
-  const cprDone = localStorage.getItem('completed_cpr') === 'true' ? 1 : 0;
-  const chokingDone = localStorage.getItem('completed_choking') === 'true' ? 1 : 0;
-  const burnsDone = localStorage.getItem('completed_burns') === 'true' ? 1 : 0;
-  const totalCompleted = cprDone + chokingDone + burnsDone;
-  const progressPercent = Math.round((totalCompleted / 3) * 100);
+  const completedCourses = courseList.filter((course) => isCourseCompleted(course.id));
+  const totalCompleted = completedCourses.length;
+  const progressPercent = courseList.length
+    ? Math.round((totalCompleted / courseList.length) * 100)
+    : 0;
 
-  const filteredCourses = allCourses.filter((course) => {
-    const matchesCategory = selectedCategory === 'all' || course.category === selectedCategory;
-    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          course.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const quizBest = getQuizBest();
+  const streak = getLearningStreak();
+  const studentId = getStudentId(user?.email);
+  const firstName = user?.name ? user.name.split(' ')[0] : t('dashboard.studentName');
+
+  const nextCourse =
+    courseList.find((course) => !isCourseCompleted(course.id)) || courseList[0];
 
   const stats = [
     {
       icon: BookCheck,
-      label: t('dashboard.stats.completedLessons'),
-      value: `${totalCompleted} / ${allCourses.length}`,
+      label: isAr ? 'المساقات المكتملة' : 'Courses completed',
+      value: `${totalCompleted} / ${courseList.length}`,
       color: 'bg-brand-soft text-brand-ink',
     },
     {
@@ -76,309 +76,311 @@ export default function Dashboard() {
     },
     {
       icon: Award,
-      label: t('dashboard.stats.quizAverage'),
-      value: progressPercent > 0 ? '100%' : '—',
+      label: isAr ? 'أفضل نتيجة اختبار' : 'Best quiz score',
+      value: quizBest ? `${quizBest.percent}%` : '—',
       color: 'bg-brand-soft text-brand-ink',
     },
     {
       icon: Flame,
       label: t('dashboard.stats.learningStreak'),
-      value: `1 ${t('dashboard.stats.days')}`,
-      color: 'bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400',
+      value: `${streak} ${t('dashboard.stats.days')}`,
+      color: 'bg-amber/15 text-accent',
     },
   ];
 
   return (
     <div className="page-container">
-      {/* Hero Section */}
-      <section className="border-b border-line bg-surface">
-        <div className="page-content py-10 sm:py-14">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="space-y-5 max-w-2xl text-center lg:text-start">
+      <div className="page-content space-y-8">
+        <section className="relative overflow-hidden rounded-3xl border border-line bg-card p-6 shadow-pop sm:p-8 lg:p-10">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-70"
+            style={{
+              background:
+                'radial-gradient(circle at 88% 12%, rgba(245,158,66,0.14), transparent 46%), radial-gradient(circle at 6% 96%, rgba(120,155,131,0.18), transparent 52%)',
+            }}
+            aria-hidden="true"
+          />
+          <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
               <span className="chip bg-brand-soft text-brand-ink">
                 <ShieldCheck className="h-3.5 w-3.5" />
-                <span>{t('dashboard.badge')}</span>
+                {t('dashboard.badge')}
               </span>
-
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-ink tracking-tight leading-tight text-balance">
+              <h1 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
                 {t('dashboard.welcomeBack')}{' '}
-                <span className="text-primary">{user?.name || t('dashboard.studentName')}</span>
+                <span className="italic text-accent">{firstName}</span>
               </h1>
-
-              <p className="text-ink-muted text-base leading-relaxed max-w-xl">
+              <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
                 {t('dashboard.welcomeSubtitle')}
               </p>
-
-              <div className="flex flex-wrap gap-3 justify-center lg:justify-start pt-1">
-                <Link to="/courses" className="btn-primary px-6 py-3 text-sm">
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  to={nextCourse ? `/lesson?id=${nextCourse.id}` : '/courses'}
+                  className="btn-primary px-6"
+                >
                   <span>{t('dashboard.continueBtn')}</span>
                   {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
                 </Link>
                 <button
+                  type="button"
                   onClick={() => setGuideModalOpen(true)}
-                  className="btn-secondary px-5 py-3 text-sm"
+                  className="btn-secondary px-5"
                 >
-                  <Zap className="h-4 w-4 text-brand-ink" />
+                  <Zap className="h-4 w-4 text-accent" />
                   <span>{t('quickGuide.btnText')}</span>
                 </button>
               </div>
             </div>
 
-            <Link
-              to="/ai-tutor"
-              className="card w-full lg:w-80 p-6 flex flex-col gap-4 transition-all hover:shadow-lift hover:-translate-y-0.5 group"
-            >
-              <div className="flex items-center gap-3">
-                <div className="icon-box h-12 w-12 bg-primary text-white">
-                  <Bot className="h-6 w-6 text-teal" />
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-ink text-sm">EduFanor AI</h4>
-                  <p className="text-xs text-ink-muted">Emergency First Aid Tutor</p>
-                </div>
-              </div>
-              <p className="text-xs text-ink-muted leading-relaxed">
-                {isAr
-                  ? 'متاح 24/7 للإجابة عن التساؤلات الطبية وتوضيح خطوات الإسعافات الأولية.'
-                  : 'Available 24/7 to answer medical questions and explain first aid steps.'}
+            <div className="w-full max-w-xs rounded-2xl border border-line bg-surface/80 p-5 backdrop-blur-sm">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+                {isAr ? 'خطوتك التالية' : 'Your next step'}
               </p>
-              <div className="flex items-center gap-2 text-xs font-bold text-primary group-hover:gap-3 transition-all">
-                <span>{t('dashboard.aiSection.askBtn')}</span>
-                {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
-              </div>
-            </Link>
+              {nextCourse ? (
+                <>
+                  <p className="mt-2 text-sm font-extrabold leading-snug text-ink">
+                    {nextCourse.title}
+                  </p>
+                  <p className="mt-1 text-[11px] text-ink-muted">
+                    {nextCourse.duration} · {nextCourse.lessons} {t('coursesPage.lessonsCount')}
+                  </p>
+                  <Link
+                    to={`/lesson?id=${nextCourse.id}`}
+                    className="mt-3 inline-flex items-center gap-2 text-[11px] font-extrabold text-brand-ink hover:text-accent"
+                  >
+                    {isAr ? 'افتح الدرس' : 'Open lesson'}
+                    {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+                  </Link>
+                </>
+              ) : (
+                <p className="mt-2 text-sm font-bold text-ink">
+                  {t('dashboard.stats.allDone')}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <div className="page-content space-y-10">
-        {/* Stats Row */}
-        <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          {stats.map((stat, idx) => {
+        <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          {stats.map((stat) => {
             const Icon = stat.icon;
             return (
-              <div key={idx} className="stat-card">
+              <div key={stat.label} className="stat-card">
                 <div className={`icon-box h-10 w-10 ${stat.color}`}>
                   <Icon className="h-5 w-5" />
                 </div>
                 <p className="text-[11px] font-bold text-ink-muted">{stat.label}</p>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-ink">{stat.value}</h3>
+                <h3 className="font-display text-2xl font-semibold text-ink sm:text-3xl">{stat.value}</h3>
               </div>
             );
           })}
         </section>
 
-        {/* Student Academic ID Badge */}
-        <section className="card p-5 sm:p-6 flex flex-col sm:flex-row items-center gap-5">
-          <div className="h-18 w-18 rounded-2xl bg-surface-muted p-1.5 border-2 border-primary shrink-0">
-            <img src={avatarUrl} alt="Student Avatar" className="h-full w-full object-cover rounded-xl" />
+        <section className="card flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-line bg-surface-muted text-lg font-extrabold text-ink">
+            {user?.name ? user.name.charAt(0).toUpperCase() : 'E'}
           </div>
-          <div className="space-y-1 text-center sm:text-start flex-1">
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-              <h3 className="font-extrabold text-base text-ink">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-base font-extrabold text-ink">
                 {user?.name || t('dashboard.studentName')}
-              </h3>
-              <span className="chip bg-success-soft text-success-ink">
-                {t('studentCard.active')}
-              </span>
+              </h2>
+              <span className="chip bg-success-soft text-success-ink">{t('studentCard.active')}</span>
             </div>
-            <p className="text-xs text-ink-muted">{t('studentCard.subtitle')}</p>
-            <p className="text-[11px] font-mono font-bold text-primary">
-              {t('studentCard.idLabel')} EDU-2026-8942
+            <p className="mt-1 text-xs text-ink-muted">{t('studentCard.subtitle')}</p>
+            <p className="mt-1.5 font-mono text-[11px] font-bold text-brand-ink">
+              {t('studentCard.idLabel')} {studentId}
             </p>
           </div>
-          <Link to="/profile" className="btn-secondary px-4 py-2 text-xs shrink-0">
+          <Link to="/profile" className="btn-secondary shrink-0 px-4 text-xs">
             {t('nav.profile')}
           </Link>
         </section>
 
-        {/* Daily Challenge */}
-        <section className="card p-6 sm:p-8 space-y-5">
-          <div className="flex items-start gap-3">
-            <div className="icon-box h-10 w-10 bg-primary text-white shrink-0">
-              <Target className="h-5 w-5 text-teal" />
+        <section className="space-y-5">
+          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+            <div>
+              <h2 className="section-title">{t('dashboard.continueLearningSection.title')}</h2>
+              <p className="section-subtitle">{t('dashboard.learningPath.subtitle')}</p>
             </div>
-            <div className="space-y-1">
-              <span className="chip bg-brand-soft text-brand-ink">
-                {t('challenge.title')}
-              </span>
-              <h2 className="text-lg font-extrabold text-ink">
-                {t('challenge.question')}
-              </h2>
-            </div>
+            <Link to="/courses" className="btn-secondary px-4 text-xs">
+              {t('dashboard.exploreSection.viewAll')}
+            </Link>
           </div>
 
-          <div className="space-y-2.5">
-            {[1, 2, 3].map((num) => {
-              const isSelected = selectedOption === num;
-              const isCorrect = num === 1;
-              const isWrong = num !== 1;
+          <div className="grid gap-4 md:grid-cols-3">
+            {courseList.map((course) => {
+              const Icon = categoryIcons[course.category] || BookOpen;
+              const completed = isCourseCompleted(course.id);
               return (
-                <button
-                  key={num}
-                  onClick={() => setSelectedOption(num)}
-                  className={`w-full p-4 rounded-xl text-xs font-bold text-start transition-all border ${
-                    isSelected && isCorrect
-                      ? 'bg-success-soft border-emerald-500 text-emerald-900 dark:text-emerald-100'
-                      : isSelected && isWrong
-                      ? 'bg-red-50 border-red-400 text-red-900 dark:bg-red-950/30 dark:text-red-100'
-                      : 'bg-surface-muted border-line hover:border-primary/40'
-                  }`}
-                >
-                  {num}. {t(`challenge.opt${num}`)}
-                </button>
+                <article key={course.id} className="course-card">
+                  <div className="flex items-start justify-between gap-3">
+                    <span
+                      className={`icon-box h-11 w-11 ${
+                        completed ? 'bg-success-soft text-success-ink' : 'bg-brand-soft text-brand-ink'
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink-muted">
+                      <Clock className="h-3.5 w-3.5" />
+                      {course.duration}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="chip bg-surface-muted text-ink-muted">{course.level}</span>
+                      {completed && (
+                        <span className="chip bg-success-soft text-success-ink">
+                          <CheckCircle2 className="h-3 w-3" />
+                          {t('coursesPage.completed')}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-base font-extrabold leading-snug text-ink">{course.title}</h3>
+                    <p className="line-clamp-2 text-xs leading-relaxed text-ink-muted">
+                      {course.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-auto flex items-center justify-between border-t border-line pt-4">
+                    <span className="text-[11px] font-bold text-ink-muted">
+                      {course.lessons} {t('coursesPage.lessonsCount')}
+                    </span>
+                    <Link
+                      to={`/lesson?id=${course.id}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-extrabold text-brand-ink transition-colors hover:text-accent"
+                    >
+                      {completed
+                        ? t('coursesPage.continueCourse')
+                        : t('dashboard.learningPath.start')}
+                      {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+                    </Link>
+                  </div>
+                </article>
               );
             })}
           </div>
-
-          {selectedOption === 1 && (
-            <div className="p-4 rounded-xl bg-success-soft text-success-ink text-xs font-bold flex items-center gap-2 animate-fade-in">
-              <CheckCircle2 className="h-5 w-5 shrink-0" />
-              <span>{t('challenge.correctMsg')}</span>
-            </div>
-          )}
-
-          {(selectedOption === 2 || selectedOption === 3) && (
-            <div className="p-4 rounded-xl bg-red-50 text-red-900 dark:bg-red-950/30 dark:text-red-100 text-xs font-bold flex items-center gap-2 animate-fade-in">
-              <XCircle className="h-5 w-5 shrink-0" />
-              <span>{t('challenge.wrongMsg')}</span>
-            </div>
-          )}
         </section>
 
-        {/* Course Search & Filter */}
-        <section className="space-y-5">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
-            <div>
-              <h2 className="section-title">{t('dashboard.exploreSection.title')}</h2>
-              <p className="section-subtitle">{t('dashboard.exploreSection.subtitle')}</p>
+        <section className="grid gap-4 lg:grid-cols-12">
+          <div className="card space-y-4 p-6 lg:col-span-7">
+            <div className="flex items-start gap-3">
+              <div className="icon-box h-10 w-10 bg-primary text-white">
+                <Target className="h-5 w-5 text-amber-soft" />
+              </div>
+              <div>
+                <span className="chip bg-brand-soft text-brand-ink">{t('challenge.title')}</span>
+                <h2 className="mt-2 text-base font-extrabold leading-snug text-ink">
+                  {t('challenge.question')}
+                </h2>
+              </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              {['all', 'cpr', 'choking', 'burns'].map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    selectedCategory === cat
-                      ? 'bg-primary text-white shadow-sm'
-                      : 'card text-ink-muted hover:text-ink'
-                  }`}
-                >
-                  {t(`filter.${cat}`)}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative">
-            <Search className={`h-4 w-4 absolute top-1/2 -translate-y-1/2 text-ink-muted ${isAr ? 'right-4' : 'left-4'}`} />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={t('filter.searchPlaceholder')}
-              className={`input ${isAr ? 'pr-11 pl-4' : 'pl-11 pr-4'}`}
-            />
-          </div>
-
-          {filteredCourses.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-              {filteredCourses.map((course) => {
-                const isCourseCompleted = localStorage.getItem(`completed_${course.id}`) === 'true';
-                const CategoryIcon = categoryIcons[course.category] || HeartPulse;
-                const colorClass = categoryColors[course.category] || 'bg-brand-soft text-brand-ink';
-
+            <div className="space-y-2.5">
+              {[1, 2, 3].map((num) => {
+                const isSelected = selectedOption === num;
+                const isCorrect = num === 1;
                 return (
-                  <div key={course.id} className="course-card">
-                    <div className="flex items-start justify-between">
-                      <div className={`icon-box h-11 w-11 ${colorClass}`}>
-                        <CategoryIcon className="h-5 w-5" />
-                      </div>
-                      <div className="flex items-center gap-1.5 text-xs text-ink-muted">
-                        <Clock className="h-3.5 w-3.5" />
-                        <span>{course.duration}</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <span className="chip bg-brand-soft text-brand-ink">{course.level}</span>
-                        {isCourseCompleted && (
-                          <span className="chip bg-success-soft text-success-ink">
-                            <CheckCircle2 className="h-3 w-3" />
-                            {t('coursesPage.completed')}
-                          </span>
-                        )}
-                      </div>
-                      <h3 className="text-base font-extrabold text-ink">{course.title}</h3>
-                      <p className="text-xs text-ink-muted leading-relaxed line-clamp-2">
-                        {course.description}
-                      </p>
-                    </div>
-
-                    <div className="pt-4 border-t border-line flex items-center justify-between">
-                      <span className="text-xs font-bold text-ink-muted">
-                        {course.lessons} {t('coursesPage.lessonsCount')}
-                      </span>
-                      <Link
-                        to={`/lesson?id=${course.id}`}
-                        className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-                          isCourseCompleted
-                            ? 'bg-success-soft text-success-ink'
-                            : 'bg-primary text-white hover:bg-primary-hover'
-                        }`}
-                      >
-                        <span>
-                          {isCourseCompleted
-                            ? t('coursesPage.continueCourse')
-                            : t('dashboard.exploreSection.viewCourse')}
-                        </span>
-                        {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
-                      </Link>
-                    </div>
-                  </div>
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setSelectedOption(num)}
+                    className={`w-full rounded-xl border p-4 text-start text-xs font-bold transition-all ${
+                      isSelected && isCorrect
+                        ? 'border-success-ink/40 bg-success-soft text-success-ink'
+                        : isSelected
+                        ? 'border-danger/40 bg-danger-soft text-danger'
+                        : 'border-line bg-surface-muted text-ink hover:border-primary/40'
+                    }`}
+                  >
+                    {num}. {t(`challenge.opt${num}`)}
+                  </button>
                 );
               })}
             </div>
-          ) : (
-            <div className="empty-state card">
-              <div className="icon-box h-14 w-14 bg-surface-muted text-ink-muted">
-                <Search className="h-7 w-7" />
+
+            {selectedOption === 1 && (
+              <div className="animate-fade-in flex items-center gap-2 rounded-xl bg-success-soft p-4 text-xs font-bold text-success-ink">
+                <CheckCircle2 className="h-5 w-5 shrink-0" />
+                <span>{t('challenge.correctMsg')}</span>
               </div>
-              <h3 className="text-base font-extrabold text-ink">
-                {t('dashboard.exploreSection.emptyTitle')}
-              </h3>
-              <p className="text-xs text-ink-muted max-w-xs">
-                {t('dashboard.exploreSection.emptyDesc')}
-              </p>
-              <button
-                onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
-                className="btn-secondary px-4 py-2 text-xs mt-2"
-              >
-                {t('dashboard.exploreSection.resetBtn')}
-              </button>
-            </div>
-          )}
+            )}
+            {(selectedOption === 2 || selectedOption === 3) && (
+              <div className="animate-fade-in flex items-center gap-2 rounded-xl bg-danger-soft p-4 text-xs font-bold text-danger">
+                <XCircle className="h-5 w-5 shrink-0" />
+                <span>{t('challenge.wrongMsg')}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="grid gap-4 lg:col-span-5">
+            <Link to="/quizzes" className="card-hover card flex flex-col gap-3 p-6">
+              <div className="flex items-center justify-between">
+                <span className="icon-box h-10 w-10 bg-amber/15 text-accent">
+                  <Award className="h-5 w-5" />
+                </span>
+                <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">
+                  {isAr ? 'اختبار قصير' : 'Quick quiz'}
+                </span>
+              </div>
+              <h3 className="text-base font-extrabold text-ink">{t('dashboard.quizSection.title')}</h3>
+              <p className="text-xs leading-relaxed text-ink-muted">{t('dashboard.quizSection.desc')}</p>
+              <span className="mt-auto inline-flex items-center gap-2 text-xs font-extrabold text-brand-ink">
+                {t('dashboard.quizSection.startBtn')}
+                {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+              </span>
+            </Link>
+
+            <Link to="/ai-tutor" className="card-hover card flex flex-col gap-3 p-6">
+              <div className="flex items-center justify-between">
+                <span className="icon-box h-10 w-10 bg-primary text-white">
+                  <Bot className="h-5 w-5 text-amber-soft" />
+                </span>
+                <span className="chip bg-amber/15 text-accent">{t('aiTutorPage.statusChip')}</span>
+              </div>
+              <h3 className="text-base font-extrabold text-ink">{t('dashboard.aiSection.title')}</h3>
+              <p className="text-xs leading-relaxed text-ink-muted">{t('dashboard.aiSection.desc')}</p>
+              <span className="mt-auto inline-flex items-center gap-2 text-xs font-extrabold text-brand-ink">
+                {isAr ? 'معاينة المساعد' : 'Preview the tutor'}
+                {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+              </span>
+            </Link>
+          </div>
         </section>
+
+        <p className="flex items-start gap-2 rounded-2xl border border-line bg-surface-muted px-4 py-3 text-[11px] leading-relaxed text-ink-muted">
+          <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+          {t('footer.disclaimer')}
+        </p>
       </div>
 
-      {/* Emergency Pocket Guide Modal */}
       {guideModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setGuideModalOpen(false)}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+          onClick={() => setGuideModalOpen(false)}
+          role="presentation"
+        >
           <div
-            className="card w-full max-w-lg p-6 space-y-5 animate-rise"
-            onClick={(e) => e.stopPropagation()}
+            className="card animate-rise w-full max-w-lg space-y-5 p-6"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="quick-guide-title"
           >
-            <div className="flex justify-between items-center border-b border-line pb-4">
+            <div className="flex items-center justify-between border-b border-line pb-4">
               <div className="flex items-center gap-2">
-                <Zap className="h-5 w-5 text-primary" />
-                <h3 className="font-extrabold text-lg text-ink">{t('quickGuide.title')}</h3>
+                <Zap className="h-5 w-5 text-accent" />
+                <h3 id="quick-guide-title" className="text-lg font-extrabold text-ink">
+                  {t('quickGuide.title')}
+                </h3>
               </div>
               <button
+                type="button"
                 onClick={() => setGuideModalOpen(false)}
-                className="p-2 rounded-lg bg-surface-muted hover:bg-line text-ink-muted transition-colors"
-                aria-label="Close"
+                className="rounded-lg bg-surface-muted p-2 text-ink-muted transition-colors hover:bg-line hover:text-ink"
+                aria-label={isAr ? 'إغلاق' : 'Close'}
               >
                 <X className="h-5 w-5" />
               </button>
@@ -386,44 +388,27 @@ export default function Dashboard() {
 
             <div className="space-y-3">
               {[
-                { icon: HeartPulse, title: t('quickGuide.chokingTitle'), desc: t('quickGuide.chokingDesc') },
+                { icon: Wind, title: t('quickGuide.chokingTitle'), desc: t('quickGuide.chokingDesc') },
                 { icon: HeartPulse, title: t('quickGuide.cprTitle'), desc: t('quickGuide.cprDesc') },
-                { icon: BurnIcon, title: t('quickGuide.burnsTitle'), desc: t('quickGuide.burnsDesc') },
-              ].map((item, idx) => {
+                { icon: Flame, title: t('quickGuide.burnsTitle'), desc: t('quickGuide.burnsDesc') },
+              ].map((item) => {
                 const Icon = item.icon;
                 return (
-                  <div key={idx} className="p-4 rounded-xl bg-surface-muted border border-line space-y-1.5">
-                    <h4 className="font-extrabold text-xs text-primary flex items-center gap-2">
+                  <div key={item.title} className="space-y-1.5 rounded-xl border border-line bg-surface-muted p-4">
+                    <h4 className="flex items-center gap-2 text-xs font-extrabold text-brand-ink">
                       <Icon className="h-4 w-4" />
                       <span>{item.title}</span>
                     </h4>
-                    <p className="text-xs text-ink-muted leading-relaxed">{item.desc}</p>
+                    <p className="text-xs leading-relaxed text-ink-muted">{item.desc}</p>
                   </div>
                 );
               })}
             </div>
+
+            <p className="text-[10px] leading-relaxed text-ink-muted">{t('footer.disclaimer')}</p>
           </div>
         </div>
       )}
-
-      {/* Footer */}
-      <footer className="mt-14 border-t border-line bg-surface">
-        <div className="page-content py-8 space-y-5">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-start">
-            <div>
-              <h3 className="text-base font-extrabold text-ink">{t('nav.brand')}</h3>
-              <p className="text-xs text-ink-muted mt-1">{t('footer.desc')}</p>
-            </div>
-            <div className="flex items-center gap-5 text-xs font-bold text-ink-muted">
-              <Link to="/courses" className="hover:text-primary transition-colors">{t('footer.courses')}</Link>
-              <Link to="/ai-tutor" className="hover:text-primary transition-colors">{t('footer.aiTutor')}</Link>
-            </div>
-          </div>
-          <div className="border-t border-line pt-5 text-center text-xs text-ink-muted">
-            {t('footer.copyright')}
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

@@ -12,12 +12,13 @@ export function Globe3D({
   const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
+    if (!container) return undefined;
 
     // 1. إنشاء المشهد والكاميرا
     const scene = new THREE.Scene();
-    const width = containerRef.current.clientWidth || 400;
-    const height = containerRef.current.clientHeight || 400;
+    const width = container.clientWidth || 400;
+    const height = container.clientHeight || 400;
 
     const camera = new THREE.PerspectiveCamera(45, width / height, 1, 2000);
     camera.position.z = 320;
@@ -27,8 +28,8 @@ export function Globe3D({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     // مسح المكونات القديمة إن وجدت
-    containerRef.current.innerHTML = "";
-    containerRef.current.appendChild(renderer.domElement);
+    container.innerHTML = "";
+    container.appendChild(renderer.domElement);
 
     // 2. إضاءة المشهد
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
@@ -48,16 +49,20 @@ export function Globe3D({
         el.className = "group relative cursor-pointer flex items-center justify-center";
         el.style.transform = "translate(-50%, -50%)";
 
-        const img = document.createElement("img");
-        img.src = d.src || "https://assets.aceternity.com/avatars/1.webp";
-        img.alt = d.label || "";
-        img.className = "w-6 h-6 rounded-full border-2 border-white shadow-lg transition-transform group-hover:scale-125";
+        const marker = d.src ? document.createElement("img") : document.createElement("span");
+        if (d.src) {
+          marker.src = d.src;
+          marker.alt = d.label || "";
+        }
+        marker.className = d.src
+          ? "w-6 h-6 rounded-full border-2 border-white shadow-lg transition-transform group-hover:scale-125"
+          : "block h-2.5 w-2.5 rounded-full border-2 border-white bg-[#F59E42] shadow-lg transition-transform group-hover:scale-125";
 
         const label = document.createElement("span");
         label.innerText = d.label || "";
         label.className = "absolute bottom-full mb-1 hidden group-hover:block text-[10px] bg-black/80 text-white font-bold px-2 py-0.5 rounded shadow whitespace-nowrap";
 
-        el.appendChild(img);
+        el.appendChild(marker);
         el.appendChild(label);
 
         if (onMarkerClick) {
@@ -73,7 +78,7 @@ export function Globe3D({
 
     // إعدادات الغلاف الجوي
     globe.showAtmosphere(true);
-    globe.atmosphereColor(config.atmosphereColor || "#8A6BBE");
+    globe.atmosphereColor(config.atmosphereColor || "#F59E42");
     globe.atmosphereAltitude(0.15);
 
     scene.add(globe);
@@ -89,9 +94,8 @@ export function Globe3D({
 
     // التعامل مع تغيير حجم الشاشة
     const handleResize = () => {
-      if (!containerRef.current) return;
-      const w = containerRef.current.clientWidth;
-      const h = containerRef.current.clientHeight;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
@@ -102,7 +106,7 @@ export function Globe3D({
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", handleResize);
       renderer.dispose();
-      if (containerRef.current) containerRef.current.innerHTML = "";
+      container.innerHTML = "";
     };
   }, [markers, config]);
 

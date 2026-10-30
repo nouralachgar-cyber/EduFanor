@@ -18,7 +18,7 @@ export default function Toast({ message, type = 'success', onClose }) {
     >
       <span
         className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-          isSuccess ? 'bg-success-soft text-success-ink' : 'bg-red-50 text-red-600 dark:bg-red-950/30'
+          isSuccess ? 'bg-success-soft text-success-ink' : 'bg-danger-soft text-danger'
         }`}
       >
         {isSuccess ? <CheckCircle2 className="h-4.5 w-4.5" /> : <AlertCircle className="h-4.5 w-4.5" />}

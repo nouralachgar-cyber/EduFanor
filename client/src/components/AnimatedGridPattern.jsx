@@ -1,4 +1,4 @@
-import React, { useId, useEffect, useState } from "react";
+import React, { useId, useState } from "react";
 
 export function AnimatedGridPattern({
   width = 40,
@@ -9,25 +9,19 @@ export function AnimatedGridPattern({
   className = "",
 }) {
   const id = useId();
-  const [squares, setSquares] = useState([]);
-
-  useEffect(() => {
-    // توليد مربعات عشوائية تظهر وتختفي بتأثير متناسق
-    const generateSquares = () => {
-      return Array.from({ length: numSquares }, (_, i) => ({
-        id: i,
-        x: Math.floor(Math.random() * 20) - 10,
-        y: Math.floor(Math.random() * 20) - 10,
-        delay: Math.random() * duration,
-      }));
-    };
-    setSquares(generateSquares());
-  }, [numSquares, duration]);
+  const [squares] = useState(() =>
+    Array.from({ length: numSquares }, (_, i) => ({
+      id: i,
+      x: Math.floor(Math.random() * 20) - 10,
+      y: Math.floor(Math.random() * 20) - 10,
+      delay: Math.random() * duration,
+    }))
+  );
 
   return (
     <svg
       aria-hidden="true"
-      className={`pointer-events-none absolute inset-0 h-full w-full fill-[#8A6BBE]/20 stroke-[#8A6BBE]/15 ${className}`}
+      className={`pointer-events-none absolute inset-0 h-full w-full fill-brand/15 stroke-brand/10 ${className}`}
     >
       <defs>
         <pattern

@@ -1,123 +1,136 @@
 import React, { useContext } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { 
-  LayoutDashboard, 
-  BookOpen, 
-  Award, 
-  HelpCircle, 
-  Bot, 
-  Settings, 
+import {
+  LayoutDashboard,
+  BookOpen,
+  Award,
+  HelpCircle,
+  Bot,
+  Settings,
   LogOut,
-  ShieldCheck 
+  ShieldCheck,
+  Sparkles,
 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
+import { useCatalog } from '../context/CatalogContext';
+import { isCourseCompleted } from '../lib/progress';
 
 export default function Sidebar() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { logout, user } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout, user } = useContext(AuthContext);
-
   const isAr = i18n.language === 'ar';
 
+  const { courses } = useCatalog();
+  const courseList = Array.isArray(courses) ? courses : [];
+  const completed = courseList.filter((course) => isCourseCompleted(course.id)).length;
+  const percent = courseList.length ? Math.round((completed / courseList.length) * 100) : 0;
+
   const handleLogout = () => {
-    if (logout) {
-      logout(); // مسح الـ State والـ LocalStorage بالكامل
-    } else {
-      localStorage.clear();
-    }
-    navigate('/', { replace: true }); // التوجيه المباشر إلى الصفحة الرئيسية Landing Page
+    if (logout) logout();
+    navigate('/', { replace: true });
   };
 
   const navLinks = [
-    { 
-      name: isAr ? 'لوحة التحكم' : 'Dashboard', 
-      path: '/dashboard', 
-      icon: LayoutDashboard 
-    },
-    { 
-      name: isAr ? 'مساقاتي' : 'My Courses', 
-      path: '/courses', 
-      icon: BookOpen 
-    },
-    { 
-      name: isAr ? 'تقدمي' : 'My Progress', 
-      path: '/progress', 
-      icon: Award 
-    },
-    { 
-      name: isAr ? 'الاختبارات' : 'Quizzes', 
-      path: '/quizzes', 
-      icon: HelpCircle 
-    },
-    { 
-      name: isAr ? 'المساعد الذكي' : 'AI Tutor', 
-      path: '/ai-tutor', 
-      icon: Bot 
-    },
+    { name: t('nav.dashboard'), path: '/dashboard', icon: LayoutDashboard },
+    { name: t('nav.myCourses'), path: '/courses', icon: BookOpen },
+    { name: t('nav.progress', 'Progress'), path: '/progress', icon: Award },
+    { name: t('nav.quizzes', 'Quizzes'), path: '/quizzes', icon: HelpCircle },
+    { name: t('nav.aiTutor'), path: '/ai-tutor', icon: Bot },
   ];
 
   return (
-    <aside className="w-64 bg-white dark:bg-[#2B1832] border-e border-[#ECE1F2] dark:border-[#493B58] min-h-[calc(100vh-4rem)] p-4 hidden md:flex flex-col justify-between transition-colors duration-300">
-      
-      {/* Upper Navigation Links */}
-      <div className="space-y-2">
-        {navLinks.map((link) => {
-          const Icon = link.icon;
-          const isActive = location.pathname === link.path;
-          return (
+    <aside className="hidden w-64 shrink-0 border-e border-line bg-card/70 p-4 md:flex md:flex-col md:justify-between">
+      <div className="space-y-6">
+        <div className="px-3 pt-2">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-ink-muted">
+            {isAr ? 'مساحة التعلّم' : 'Learning space'}
+          </p>
+          <p className="mt-1 font-display text-lg font-semibold leading-tight text-ink">
+            {isAr ? 'رحلتك الإسعافية' : 'Your first-aid path'}
+          </p>
+        </div>
+
+        <nav aria-label={t('nav.studentNavigation', 'Student navigation')} className="space-y-1">
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                className={({ isActive }) =>
+                  `group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-all ${
+                    isActive
+                      ? 'bg-primary text-white shadow-sm'
+                      : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    <Icon className={`h-4 w-4 ${isActive ? 'text-amber-soft' : 'text-teal-deep'}`} />
+                    <span>{link.name}</span>
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
+
+          {user?.role === 'admin' && (
             <Link
-              key={link.path}
-              to={link.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-extrabold transition-all ${
-                isActive
-                  ? 'bg-[#49305D] text-white shadow-sm'
-                  : 'text-[#796882] dark:text-[#C4B8CC] hover:bg-[#F6F0FA] dark:hover:bg-[#35213D] hover:text-[#49305D] dark:hover:text-white'
+              to="/admin"
+              className={`mt-2 flex items-center gap-3 rounded-xl border border-amber/30 px-3.5 py-2.5 text-xs font-bold transition-all ${
+                location.pathname === '/admin'
+                  ? 'bg-amber text-primary'
+                  : 'bg-amber/10 text-ink hover:bg-amber/20'
               }`}
             >
-              <Icon className="w-4 h-4" />
-              <span>{link.name}</span>
+              <ShieldCheck className="h-4 w-4" />
+              <span>{isAr ? 'لوحة الإدارة' : 'Admin panel'}</span>
             </Link>
-          );
-        })}
+          )}
+        </nav>
 
-        {/* زر لوحة الأدمن يظهر فقط إذا كان المستخدم هو المدير (Noura) */}
-        {user && user.role === 'admin' && (
-          <Link
-            to="/admin"
-            className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-extrabold transition-all ${
-              location.pathname === '/admin'
-                ? 'bg-[#8A6BBE] text-white shadow-sm'
-                : 'text-[#8A6BBE] bg-[#8A6BBE]/10 hover:bg-[#8A6BBE]/20'
-            }`}
-          >
-            <ShieldCheck className="w-4 h-4" />
-            <span>{isAr ? 'لوحة الأدمن' : 'Admin Panel'}</span>
-          </Link>
-        )}
+        <div className="rounded-2xl border border-line bg-surface-muted p-4">
+          <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-ink-muted">
+            <span>{isAr ? 'الإنجاز الكلي' : 'Overall progress'}</span>
+            <Sparkles className="h-3.5 w-3.5 text-amber" />
+          </div>
+          <p className="mt-2 font-display text-2xl font-semibold text-ink">{percent}%</p>
+          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-line">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-primary to-sage transition-all duration-700"
+              style={{ width: `${percent}%` }}
+            />
+          </div>
+          <p className="mt-2 text-[10px] font-semibold text-ink-muted">
+            {isAr
+              ? `${completed} من ${courseList.length} مساقات مكتملة`
+              : `${completed} of ${courseList.length} courses completed`}
+          </p>
+        </div>
       </div>
 
-      {/* Bottom Settings & Logout */}
-      <div className="pt-4 border-t border-[#ECE1F2] dark:border-[#493B58] space-y-2">
-        <Link
+      <div className="space-y-1 border-t border-line pt-4">
+        <NavLink
           to="/profile"
-          className="flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-extrabold text-[#796882] dark:text-[#C4B8CC] hover:bg-[#F6F0FA] dark:hover:bg-[#35213D] hover:text-[#49305D] dark:hover:text-white transition-all"
+          className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink"
         >
-          <Settings className="w-4 h-4" />
-          <span>{isAr ? 'الإعدادات' : 'Settings'}</span>
-        </Link>
+          <Settings className="h-4 w-4 text-teal-deep" />
+          <span>{t('nav.settings')}</span>
+        </NavLink>
 
         <button
           onClick={handleLogout}
           type="button"
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-extrabold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all cursor-pointer"
+          className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold text-danger transition-colors hover:bg-danger-soft"
         >
-          <LogOut className="w-4 h-4" />
-          <span>{isAr ? 'تسجيل الخروج' : 'Logout'}</span>
+          <LogOut className="h-4 w-4" />
+          <span>{t('nav.logout')}</span>
         </button>
       </div>
-
     </aside>
   );
 }

@@ -1,234 +1,300 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { 
-  ShieldAlert, HeartPulse, BookOpen, Bot, CheckCircle2, 
-  ArrowRight, ArrowLeft, Award, HelpCircle, Users, Globe, Sun, Moon 
+import {
+  ShieldCheck,
+  HeartPulse,
+  BookOpen,
+  Award,
+  CheckCircle2,
+  ArrowRight,
+  ArrowLeft,
+  Globe,
+  Sun,
+  Moon,
+  ShieldAlert,
+  Compass,
+  Users,
 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 export default function About() {
   const { t, i18n } = useTranslation();
+  const { isDark, toggleTheme } = useTheme();
   const isAr = i18n.language === 'ar';
-  
-  const [isDark, setIsDark] = useState(() => localStorage.getItem('theme') === 'dark');
 
-  useEffect(() => {
-    const root = document.documentElement;
-    if (isDark) {
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDark]);
+  const pillars = [
+    {
+      icon: BookOpen,
+      title: isAr ? 'تعلّم منظم' : 'Structured learning',
+      text: isAr
+        ? 'دروس مقسمة إلى خطوات قصيرة وواضحة تسهل المتابعة والمراجعة.'
+        : 'Lessons broken into short, clear steps that are easy to follow and revisit.',
+    },
+    {
+      icon: CheckCircle2,
+      title: isAr ? 'تدرّب على الفهم' : 'Practice understanding',
+      text: isAr
+        ? 'اختبارات قصيرة وتغذية راجعة فورية تساعد على تثبيت المعرفة.'
+        : 'Short quizzes and instant feedback help knowledge stick.',
+    },
+    {
+      icon: ShieldAlert,
+      title: isAr ? 'حدود واضحة' : 'Clear boundaries',
+      text: isAr
+        ? 'محتوى تعليمي لا يغني عن التدريب المعتمد أو خدمات الطوارئ.'
+        : 'Educational content that never replaces certified training or emergency services.',
+    },
+    {
+      icon: Compass,
+      title: isAr ? 'تعلّم بلغتك' : 'Learn in your language',
+      text: isAr
+        ? 'واجهة عربية أصلية واتجاه صحيح، مع إنجليزية طبيعية وتبديل فوري.'
+        : 'A native Arabic interface with correct direction, natural English, and instant switching.',
+    },
+  ];
 
-  useEffect(() => {
-    document.documentElement.dir = isAr ? 'rtl' : 'ltr';
-    document.documentElement.lang = i18n.language;
-  }, [isAr, i18n.language]);
-
-  const toggleLanguage = () => i18n.changeLanguage(isAr ? 'en' : 'ar');
-  const toggleTheme = () => setIsDark(prev => !prev);
+  const values = [
+    {
+      icon: HeartPulse,
+      title: isAr ? 'رسالتنا' : 'Our mission',
+      text: isAr
+        ? 'جعل المعرفة الأساسية بالإسعافات الأولية أكثر سهولة، لمساعدة الناس على تقديم مساعدة أولية مناسبة وآمنة إلى حين وصول الفرق المتخصصة.'
+        : 'To make essential first-aid knowledge more accessible, helping people offer appropriate and safe initial assistance while professional help is on the way.',
+    },
+    {
+      icon: Award,
+      title: isAr ? 'رؤيتنا' : 'Our vision',
+      text: isAr
+        ? 'مجتمع أكثر وعياً واستعداداً، يفهم فيه المزيد من الناس أهمية الإسعافات الأولية ومتى يجب طلب المساعدة المتخصصة.'
+        : 'A more informed and prepared community where more people understand the importance of first aid and when to seek professional help.',
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-[#FCFAFF] dark:bg-[#17121D] text-[#1F142E] dark:text-[#F8F4FC] font-sans transition-colors duration-300">
-      
-      {/* Top Navbar */}
-      <header className="sticky top-0 z-50 bg-[#FCFAFF]/90 dark:bg-[#17121D]/90 backdrop-blur-md border-b border-[#EDE6F5] dark:border-[#2B2037] px-6 lg:px-16 h-20 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-[#49305D] flex items-center justify-center text-white shadow-md">
-            <ShieldAlert className="w-6 h-6 text-[#E9B9C8]" />
+    <div className="min-h-screen bg-surface text-ink">
+      <header className="sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur-xl">
+        <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-12">
+          <Link to="/" className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+              <ShieldCheck className="h-5 w-5 text-amber-soft" />
+            </span>
+            <span>
+              <span className="block font-display text-lg font-semibold leading-none tracking-tight text-ink">
+                EduFanor
+              </span>
+              <span className="mt-1 hidden text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted sm:block">
+                {isAr ? 'عن المنصة' : 'About the platform'}
+              </span>
+            </span>
+          </Link>
+
+          <nav className="hidden items-center gap-1 md:flex" aria-label={isAr ? 'التنقل' : 'Navigation'}>
+            <Link
+              to="/"
+              className="rounded-full px-3.5 py-2 text-xs font-bold text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink"
+            >
+              {isAr ? 'الرئيسية' : 'Home'}
+            </Link>
+            <Link
+              to="/#courses"
+              className="rounded-full px-3.5 py-2 text-xs font-bold text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink"
+            >
+              {isAr ? 'المساقات' : 'Courses'}
+            </Link>
+            <span className="rounded-full bg-brand-soft px-3.5 py-2 text-xs font-extrabold text-brand-ink">
+              {isAr ? 'عن المنصة' : 'About'}
+            </span>
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
+              className="flex h-9 items-center gap-1.5 rounded-lg border border-line bg-surface px-2.5 text-[10px] font-extrabold text-ink transition-colors hover:bg-surface-muted"
+              aria-label={t('nav.toggleLanguage')}
+            >
+              <Globe className="h-3.5 w-3.5 text-brand-ink" />
+              {isAr ? 'EN' : 'ع'}
+            </button>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface text-ink transition-colors hover:bg-surface-muted"
+              aria-label={t('nav.toggleTheme')}
+            >
+              {isDark ? <Sun className="h-4 w-4 text-accent" /> : <Moon className="h-4 w-4 text-brand-ink" />}
+            </button>
+            <Link to="/login" className="hidden px-3 py-2 text-xs font-bold text-ink-muted hover:text-ink sm:inline-flex">
+              {t('nav.login')}
+            </Link>
+            <Link to="/register" className="btn-primary px-4 text-xs">
+              {isAr ? 'ابدأ مجاناً' : 'Start free'}
+            </Link>
           </div>
-          <div className="flex flex-col">
-            <span className="font-black text-2xl text-[#49305D] dark:text-white tracking-wide">EduFanor</span>
-            <span className="text-[10px] text-[#8A6BBE] font-bold">Learn • Practice • Save Lives</span>
-          </div>
-        </div>
-
-        <nav className="hidden md:flex items-center gap-10 text-xs font-extrabold text-[#6B5E7C] dark:text-[#C9BED5]">
-          <Link to="/" className="hover:text-[#49305D] dark:hover:text-white transition-colors">{isAr ? 'الرئيسية' : 'Home'}</Link>
-          <Link to="/courses" className="hover:text-[#49305D] dark:hover:text-white transition-colors">{isAr ? 'المساقات' : 'Courses'}</Link>
-          <a href="#about" className="text-[#49305D] dark:text-white border-b-2 border-[#8A6BBE] pb-1">{isAr ? 'عن المنصة' : 'About'}</a>
-          <Link to="/login" className="hover:text-[#49305D] dark:hover:text-white transition-colors">{isAr ? 'تسجيل الدخول' : 'Login'}</Link>
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <button onClick={toggleLanguage} className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#F4EFFB] dark:bg-[#21192B] text-xs font-extrabold text-[#49305D] dark:text-[#F8F4FC] cursor-pointer">
-            <Globe className="w-4 h-4 text-[#8A6BBE]" />
-            <span>{isAr ? 'English' : 'عربي'}</span>
-          </button>
-
-          <button onClick={toggleTheme} className="p-2.5 rounded-full bg-[#F4EFFB] dark:bg-[#21192B] text-[#49305D] dark:text-[#F8F4FC] cursor-pointer">
-            {isDark ? <Sun className="w-4 h-4 text-amber-300" /> : <Moon className="w-4 h-4 text-[#8A6BBE]" />}
-          </button>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="max-w-6xl mx-auto px-6 py-16 lg:py-24 text-center space-y-6">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E9E0F5] dark:bg-[#2B2037] border border-[#8A6BBE]/30 text-xs font-bold text-[#49305D] dark:text-[#E9E0F5]">
-          <ShieldAlert className="w-4 h-4 text-[#8A6BBE]" />
-          <span>{isAr ? 'مشروع التخرج الأكاديمي • إنساني وتوعوي' : 'Academic Graduation Project • Awareness & Humanity'}</span>
-        </div>
+      <main>
+        <section className="relative overflow-hidden border-b border-line bg-beige py-20 dark:bg-[#101A15] md:py-28">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-70"
+            style={{
+              background:
+                'radial-gradient(circle at 90% 8%, rgba(245,158,66,0.16), transparent 46%), radial-gradient(circle at 4% 100%, rgba(120,155,131,0.2), transparent 52%)',
+            }}
+            aria-hidden="true"
+          />
+          <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-12 lg:gap-16 lg:px-12">
+            <div className="lg:col-span-7">
+              <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+                <Users className="h-3.5 w-3.5 text-accent" />
+                {isAr ? 'مشروع تعليمي توعوي' : 'An educational awareness project'}
+              </span>
+              <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl">
+                {isAr ? (
+                  <>
+                    «قليل من المعرفة
+                    <br />
+                    <span className="italic text-accent">يمكن أن يصنع فارقاً.»</span>
+                  </>
+                ) : (
+                  <>
+                    “A little knowledge
+                    <br />
+                    <span className="italic text-accent">can make a difference.”</span>
+                  </>
+                )}
+              </h1>
+              <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ink-muted md:text-base">
+                {isAr
+                  ? 'قد تحدث الطوارئ في أي مكان، وقد يستغرق وصول المساعدة وقتاً. تهدف EduFanor إلى جعل المعرفة الأساسية بالإسعافات الأولية أكثر سهولة، لمساعدة الأفراد على التعلم والاستجابة بهدوء ومسؤولية إلى حين وصول فرق الإنقاذ المختصة.'
+                  : 'Emergencies can happen anywhere, and help may take time to arrive. EduFanor aims to make essential first-aid knowledge more accessible, helping people learn to respond calmly and responsibly while professional help is on the way.'}
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link to="/register" className="btn-primary px-6">
+                  {isAr ? 'ابدأ التعلّم' : 'Start learning'}
+                  {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+                </Link>
+                <Link to="/#courses" className="btn-secondary px-6">
+                  {isAr ? 'استعرض المساقات' : 'Browse courses'}
+                </Link>
+              </div>
+            </div>
 
-        <h1 className="text-4xl sm:text-6xl font-black text-[#49305D] dark:text-white tracking-tight leading-tight">
-          {isAr ? '“قليل من المعرفة يمكن أن يصنع فارقاً كبيراً.”' : '“A Little Knowledge Can Make a Difference.”'}
-        </h1>
+            <aside className="lg:col-span-5">
+              <div className="rounded-3xl border border-line bg-card p-7 shadow-pop">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+                  {isAr ? 'لماذا وُجدت EduFanor' : 'Why EduFanor exists'}
+                </p>
+                <p className="mt-4 font-display text-2xl font-semibold leading-snug text-ink">
+                  {isAr
+                    ? 'لأن المعرفة الأساسية يجب أن تكون أسهل في الوصول والفهم.'
+                    : 'Because essential knowledge should be easier to access and understand.'}
+                </p>
+                <p className="mt-4 text-sm leading-relaxed text-ink-muted">
+                  {isAr
+                    ? 'في اللحظات الأولى، قد يشعر كثيرون بالتردد أو لا يعرفون من أين يبدأون. تسعى المنصة إلى سد هذه الفجوة التعليمية عبر دروس منظمة واختبارات قصيرة.'
+                    : 'In the first moments, many people may feel unsure or not know where to begin. The platform aims to help bridge that learning gap through structured lessons and short quizzes.'}
+                </p>
+                <div className="mt-6 flex items-center gap-3 border-t border-line pt-5">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-soft text-brand-ink">
+                    <ShieldCheck className="h-5 w-5" />
+                  </span>
+                  <p className="text-xs font-bold leading-relaxed text-ink-muted">
+                    {isAr ? 'تعلّم لتساعد. واعرف حدودك.' : 'Learn to help. Know your limits.'}
+                  </p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
 
-        <p className="text-lg font-bold text-[#8A6BBE]">
-          {isAr ? 'تعلم اليوم. كن مستعداً للمساعدة غداً.' : 'Learn Today. Be Ready to Help Tomorrow.'}
-        </p>
+        <section className="bg-surface py-20 md:py-24">
+          <div className="mx-auto grid max-w-7xl gap-5 px-6 md:grid-cols-2 lg:px-12">
+            {values.map((value) => {
+              const Icon = value.icon;
+              return (
+                <article key={value.title} className="card p-7">
+                  <span className="icon-box h-11 w-11 bg-brand-soft text-brand-ink">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <h2 className="mt-4 text-lg font-extrabold text-ink">{value.title}</h2>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">{value.text}</p>
+                </article>
+              );
+            })}
+          </div>
+        </section>
 
-        <p className="max-w-3xl mx-auto text-sm lg:text-base text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed">
-          {isAr 
-            ? 'الطوارئ يمكن أن تحدث في أي مكان، وقد تستغرق المساعدة وقتاً للوصول. تهدف منصة EduFanor إلى جعل المعرفة الأساسية للإسعافات الأولية أكثر سهولة، مما يساعد الأفراد على تعلم كيفية الاستجابة بهدوء، وأمان، وبشكل مناسب ريثما تصل فرق الإغاثة المتخصصة كالسيارة الإسعاف أو الشرطة.'
-            : 'Emergencies can happen anywhere, and help may take time to arrive. EduFanor aims to make first-aid knowledge more accessible, helping people learn how to respond calmly, safely, and appropriately while waiting for professional emergency services.'}
-        </p>
+        <section className="border-y border-line bg-beige py-20 dark:bg-[#101A15] md:py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-12">
+            <div className="max-w-2xl">
+              <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+                {isAr ? 'ركائز المحتوى' : 'Content pillars'}
+              </span>
+              <h2 className="mt-3 section-title">
+                {isAr ? 'لماذا الوعي بالإسعافات الأولية مهم؟' : 'Why first-aid awareness matters'}
+              </h2>
+              <p className="section-subtitle">
+                {isAr
+                  ? 'أربع ركائز نبني عليها تجربة التعلّم، دون ادعاءات طبية أو وعود لا يمكن التحقق منها.'
+                  : 'Four pillars shape the learning experience, without medical claims or unverifiable promises.'}
+              </p>
+            </div>
 
-        <div className="flex justify-center gap-4 pt-4">
-          <Link to="/courses" className="px-8 py-4 rounded-full bg-[#49305D] hover:bg-[#39244A] text-white font-extrabold text-xs shadow-xl flex items-center gap-3 transition-all">
-            <span>{isAr ? 'استكشف المساقات' : 'Explore Our Courses'}</span>
-            {isAr ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
-          </Link>
-          <Link to="/register" className="px-8 py-4 rounded-full border border-[#8A6BBE] text-[#49305D] dark:text-white font-extrabold text-xs hover:bg-[#8A6BBE]/15 transition-all">
-            <span>{isAr ? 'ابدأ التعلم الآن' : 'Start Learning'}</span>
-          </Link>
-        </div>
-      </section>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {pillars.map((pillar) => {
+                const Icon = pillar.icon;
+                return (
+                  <article key={pillar.title} className="rounded-2xl border border-line bg-surface p-5">
+                    <span className="icon-box h-10 w-10 bg-surface-muted text-brand-ink">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <h3 className="mt-3 text-sm font-extrabold text-ink">{pillar.title}</h3>
+                    <p className="mt-1.5 text-xs leading-relaxed text-ink-muted">{pillar.text}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
-      {/* Our Story Section */}
-      <section className="bg-[#F4EFFB] dark:bg-[#21192B] py-16 px-6 lg:px-16 border-t border-b border-[#EDE6F5] dark:border-[#2B2037]">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-6 space-y-6">
-            <h2 className="text-2xl lg:text-3xl font-black text-[#49305D] dark:text-white">
-              {isAr ? 'قصتنا — لماذا تأسست EduFanor؟' : 'Our Story — Why EduFanor Exists'}
+        <section className="bg-surface py-20 md:py-24">
+          <div className="mx-auto max-w-4xl px-6 text-center lg:px-12">
+            <span className="icon-box mx-auto h-12 w-12 bg-amber/15 text-accent">
+              <ShieldAlert className="h-6 w-6" />
+            </span>
+            <h2 className="mt-5 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+              {isAr ? 'تعلّم لتساعد. واعرف حدودك.' : 'Learn to help. Know your limits.'}
             </h2>
-            <p className="text-sm lg:text-base text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed">
-              {isAr 
-                ? 'تأسست منصة EduFanor حول فكرة بسيطة ولكنها بالغة الأهمية: يجب أن تكون معرفة الإسعافات الأولية الأساسية أسهل في الوصول والفهم.'
-                : 'EduFanor was created around a simple but important idea: basic first-aid knowledge should be easier to access and understand.'}
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-ink-muted">
+              {isAr
+                ? 'EduFanor بيئة تعليمية لتعزيز الوعي بالإسعافات الأولية، وليست بديلاً عن التدريب الميداني المعتمد أو الكادر الطبي المتخصص. في أي طارئ، الأولوية لسلامة المكان والاتصال بخدمات الطوارئ المحلية.'
+                : 'EduFanor is an educational environment for first-aid awareness. It does not replace certified practical training or medical professionals. In any emergency, prioritize scene safety and contact local emergency services.'}
             </p>
-            <p className="text-sm lg:text-base text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed">
-              {isAr 
-                ? 'في حالات الطوارئ، تكون الإجراءات المتخذة في اللحظات الأولى حاسمة. ومع ذلك، قد يشعر الكثير من الناس بالتردد أو عدم معرفة من أاين يبدؤون. تهدف EduFanor إلى سد هذه الفجوة التعليمية عبر دروس منظمة واختبارات تفاعلية.'
-                : 'In an emergency, the actions taken in the first moments can matter. However, many people may feel unsure about what to do or may not know where to begin. EduFanor aims to help bridge this knowledge gap.'}
-            </p>
-          </div>
-          <div className="lg:col-span-6 bg-white dark:bg-[#2B2037] p-8 rounded-3xl border border-[#EDE6F5] dark:border-[#493B58] shadow-lg space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#8A6BBE]/20 text-[#8A6BBE] flex items-center justify-center font-black">★</div>
-              <h3 className="font-extrabold text-base text-[#49305D] dark:text-white">
-                {isAr ? 'هدفنا الإنساني' : 'Our Humanitarian Goal'}
-              </h3>
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
+              <Link to="/register" className="btn-primary px-6">
+                {isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
+              </Link>
+              <Link to="/" className="btn-secondary px-6">
+                {isAr ? 'العودة للرئيسية' : 'Back to home'}
+              </Link>
             </div>
-            <p className="text-xs lg:text-sm text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed">
-              {isAr 
-                ? 'هدفنا ليس تحويل كل فرد إلى خبير طبي، بل تمكين المواطنين العاديين من إدراك أهمية الإسعافات الأولية والتعامل بمسؤولية.'
-                : 'Our goal is not to turn everyone into a medical professional, but to empower ordinary people to understand importance of first aid and respond responsibly.'}
-            </p>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* Mission and Vision Cards */}
-      <section className="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="p-8 rounded-3xl bg-white dark:bg-[#2B2037] border border-[#EDE6F5] dark:border-[#493B58] shadow-sm space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-[#49305D]/10 text-[#49305D] dark:text-[#E9E0F5] flex items-center justify-center">
-            <HeartPulse className="w-6 h-6 text-[#8A6BBE]" />
-          </div>
-          <h3 className="text-xl font-black text-[#49305D] dark:text-white">
-            {isAr ? 'مهمتنا (Our Mission)' : 'Our Mission'}
-          </h3>
-          <p className="text-xs lg:text-sm text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed">
-            {isAr 
-              ? 'رفع الوعي بالإسعافات الأولية وجعل المعرفة الأساسية أكثر سهولة، لمساعدة الأشخاص على تعلم كيفية تقديم المساعدة الأولية الآمنة والمناسبة ريثما تصل الفرق المتخصصة.'
-              : 'To raise awareness about first aid and make essential first-aid knowledge more accessible, helping people learn how to offer safe, appropriate initial assistance while waiting for professionals.'}
+      <footer className="border-t border-line bg-surface">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-center text-[11px] text-ink-muted sm:flex-row sm:text-start lg:px-12">
+          <p>
+            © {CURRENT_YEAR} EduFanor. {isAr ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
           </p>
+          <p>{t('footer.disclaimer')}</p>
         </div>
-
-        <div className="p-8 rounded-3xl bg-white dark:bg-[#2B2037] border border-[#EDE6F5] dark:border-[#493B58] shadow-sm space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-[#49305D]/10 text-[#49305D] dark:text-[#E9E0F5] flex items-center justify-center">
-            <Award className="w-6 h-6 text-[#8A6BBE]" />
-          </div>
-          <h3 className="text-xl font-black text-[#49305D] dark:text-white">
-            {isAr ? 'رؤيتنا (Our Vision)' : 'Our Vision'}
-          </h3>
-          <p className="text-xs lg:text-sm text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed">
-            {isAr 
-              ? 'المساهمة في بناء مجتمع أكثر وعياً واستعداداً، يفهم أفرادُه أهمية الإسعافات الأولية ويعرفون متى وكيف يطلبون المساعدة باحترافية.'
-              : 'To contribute to a more informed and prepared community in which more people understand the importance of first aid, know when to seek professional help, and feel better equipped.'}
-          </p>
-        </div>
-      </section>
-
-      {/* Why First-Aid Awareness Matters */}
-      <section className="bg-[#F4EFFB] dark:bg-[#21192B] py-16 px-6">
-        <div className="max-w-6xl mx-auto space-y-12">
-          <div className="text-center space-y-3">
-            <h2 className="text-2xl lg:text-3xl font-black text-[#49305D] dark:text-white">
-              {isAr ? 'لماذا يعد الوعي بالإسعافات الأولية مهمأ؟' : 'Why First-Aid Awareness Matters'}
-            </h2>
-            <p className="text-xs lg:text-sm text-[#6B5E7C] dark:text-[#C9BED5]">
-              {isAr ? 'الركائز الأساسية التي نبني عليها محتوانا التعليمي' : 'The core pillars of our educational content'}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 bg-white dark:bg-[#2B2037] rounded-3xl border border-[#EDE6F5] dark:border-[#493B58] space-y-3 shadow-sm">
-              <CheckCircle2 className="w-6 h-6 text-[#8A6BBE]" />
-              <h4 className="font-extrabold text-sm text-[#49305D] dark:text-white">{isAr ? 'كن أكثر استعداداً' : 'Be More Prepared'}</h4>
-              <p className="text-xs text-[#6B5E7C] dark:text-[#C9BED5]">{isAr ? 'فهم مبادئ الاستجابة للطوارئ وتعلم كيفية التعامل مع المواقف بأمان.' : 'Understand basic emergency-response principles and approach safely.'}</p>
-            </div>
-            <div className="p-6 bg-white dark:bg-[#2B2037] rounded-3xl border border-[#EDE6F5] dark:border-[#493B58] space-y-3 shadow-sm">
-              <CheckCircle2 className="w-6 h-6 text-[#8A6BBE]" />
-              <h4 className="font-extrabold text-sm text-[#49305D] dark:text-white">{isAr ? 'معرفة طلب المساعدة' : 'Know How to Seek Help'}</h4>
-              <p className="text-xs text-[#6B5E7C] dark:text-[#C9BED5]">{isAr ? 'أهمية التواصل مع الخدمات المختصة وتوصيل معلومات دقيقة.' : 'Understand the importance of contacting emergency services.'}</p>
-            </div>
-            <div className="p-6 bg-white dark:bg-[#2B2037] rounded-3xl border border-[#EDE6F5] dark:border-[#493B58] space-y-3 shadow-sm">
-              <CheckCircle2 className="w-6 h-6 text-[#8A6BBE]" />
-              <h4 className="font-extrabold text-sm text-[#49305D] dark:text-white">{isAr ? 'دعم الآخرين بمسؤولية' : 'Support Others Responsibly'}</h4>
-              <p className="text-xs text-[#6B5E7C] dark:text-[#C9BED5]">{isAr ? 'مفاهيم إسعافية أولية تسهم في مساعدة المحتاجين بانتظار الإسعاف.' : 'Learn appropriate concepts to help while assistance is on the way.'}</p>
-            </div>
-            <div className="p-6 bg-white dark:bg-[#2B2037] rounded-3xl border border-[#EDE6F5] dark:border-[#493B58] space-y-3 shadow-sm">
-              <CheckCircle2 className="w-6 h-6 text-[#8A6BBE]" />
-              <h4 className="font-extrabold text-sm text-[#49305D] dark:text-white">{isAr ? 'بناء الثقة بالتعلم' : 'Build Confidence'}</h4>
-              <p className="text-xs text-[#6B5E7C] dark:text-[#C9BED5]">{isAr ? 'دروس واختبارات منظمة لتعزيز الفهم وتطوير المهارات الشخصية.' : 'Use structured lessons and quizzes to strengthen understanding.'}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Responsible Education Notice */}
-      <section className="max-w-4xl mx-auto px-6 py-16">
-        <div className="p-8 rounded-3xl bg-[#49305D] text-white shadow-xl space-y-4 text-center">
-          <h3 className="text-lg font-black text-[#E9B9C8]">
-            {isAr ? 'تعلم المساعدة واحترام الحدود (Learn to Help. Know Your Limits.)' : 'Learn to Help. Know Your Limits.'}
-          </h3>
-          <p className="text-xs lg:text-sm text-[#E9E0F5] leading-relaxed">
-            {isAr 
-              ? 'منصة EduFanor هي بيئة تعليمية تهدف لتعزيز الوعي بالإسعافات الأولية وليست بديلاً عن التدريب الميداني المعتمد أو الكوادر الطبية المتخصصة. في حالات الطوارئ، الأولوية دائماً لسلامة المكان والاتصال بخدمات الطوارئ المحلية.'
-              : 'EduFanor is an educational platform designed to improve first-aid awareness. Its content does not replace certified practical training or medical professionals. In an emergency, prioritize safety and contact emergency services.'}
-          </p>
-        </div>
-      </section>
-
-      {/* Footer CTA */}
-      <footer className="bg-[#49305D] text-white py-12 px-6 text-center space-y-4 border-t border-[#8A6BBE]/30">
-        <h3 className="text-xl font-black">{isAr ? 'تعلمك يمكن أن يحدث فارقاً' : 'Your Learning Could Make a Difference'}</h3>
-        <p className="text-xs text-[#E9E0F5]">{isAr ? 'خذ الخطوة الأولى نحو وعي أفضل بالإسعافات الأولية.' : 'Take the first step toward better first-aid awareness.'}</p>
-        <div className="flex justify-center gap-4 pt-2">
-          <Link to="/courses" className="px-6 py-3 rounded-full bg-white text-[#49305D] font-extrabold text-xs hover:bg-[#E9E0F5] transition-all">
-            {isAr ? 'استكشف المساقات' : 'Explore Courses'}
-          </Link>
-          <Link to="/register" className="px-6 py-3 rounded-full bg-[#8A6BBE] text-white font-extrabold text-xs hover:bg-[#785AAB] transition-all">
-            {isAr ? 'انشئ حسابك' : 'Create Account'}
-          </Link>
-        </div>
-        <p className="text-[10px] text-[#C4B8CC] pt-6">© {new Date().getFullYear()} EduFanor Platform. All rights reserved.</p>
       </footer>
-
     </div>
   );
-  
 }

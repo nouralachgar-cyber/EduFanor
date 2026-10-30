@@ -23,6 +23,14 @@ const lessonSchema = new mongoose.Schema({
     en: { type: String }
   },
   images: [String],
+  videoUrl: { type: String, trim: true },
+  sourceRefs: [{ type: String, trim: true }],
+  reviewStatus: {
+    type: String,
+    enum: ['unreviewed', 'in_review', 'reviewed'],
+    default: 'unreviewed'
+  },
+  published: { type: Boolean, default: false },
   order: { type: Number, required: true }
 }, { timestamps: true });
 

@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import adminResources from './adminResources';
 
 const resources = {
   ar: {
@@ -14,13 +15,22 @@ const resources = {
         getStarted: "ابدأ الآن",
         profile: "الملف الشخصي",
         settings: "الإعدادات",
-        logout: "تسجيل الخروج"
+        logout: "تسجيل الخروج",
+        progress: "التقدّم",
+        quizzes: "الاختبارات",
+        home: "الرئيسية",
+        admin: "لوحة الإدارة",
+        studentNavigation: "تنقل الطالب",
+        toggleTheme: "تبديل المظهر",
+        toggleLanguage: "تبديل اللغة",
+        toggleMenu: "فتح أو إغلاق القائمة"
       },
       common: {
         lessons: "دروس",
         minutes: "دقائق",
         level: "المستوى",
-        comingSoon: "قريباً"
+        comingSoon: "قريباً",
+        skipToContent: "انتقل إلى المحتوى الرئيسي"
       },
       error: {
         title: "حدث خطأ غير متوقع",
@@ -65,11 +75,11 @@ const resources = {
         btn: "انضم إلينا وابدأ التعلم"
       },
       studentCard: {
-        title: "بطاقة طالب أكاديمي",
-        subtitle: "بطاقتك الرسمية المسجلة في منصة EduFanor للإسعافات الأولية",
+        title: "بطاقة التعلّم",
+        subtitle: "بطاقة تعريفك داخل مساحة تعلّم EduFanor",
         idLabel: "معرف الطالب:",
         statusLabel: "الحالة:",
-        active: "نشط ومعتمد",
+        active: "نشط",
         guest: "زائر (غير مسجل)"
       },
       filter: {
@@ -132,9 +142,9 @@ const resources = {
         subtitle: "خصص تجربتك التعليمية في منصة EduFanor",
         languageTitle: "لغة الواجهة",
         languageDesc: "اختر اللغة المفضلة للواجهة (العربية / English)",
-        verifiedTitle: "الاعتماد الأكاديمي",
-        verifiedDesc: "جميع الدروس معتمدة طبقاً لمعايير الإسعافات الأولية الدولية 2026",
-        active: "مُفعل",
+        verifiedTitle: "محتوى تعليمي",
+        verifiedDesc: "محتوى المنصة مخصص للتعلّم والتوعية، ولا يُعد بديلاً عن التدريب المعتمد أو الاستشارة الطبية.",
+        active: "للتعلم",
         aboutTitle: "عن المنصة",
         aboutDesc: "EduFanor — تعلّم اليوم، واستعد للغد.",
         version: "الإصدار 1.0"
@@ -230,7 +240,12 @@ const resources = {
         aiTutor: "المساعد الذكي",
         terms: "الشروط والأحكام",
         privacy: "سياسة الخصوصية",
-        copyright: "جميع الحقوق محفوظة © EduFanor 2026"
+        copyright: "جميع الحقوق محفوظة © EduFanor 2026",
+        learn: "تعلّم",
+        platform: "المنصة",
+        about: "عن المنصة",
+        notes: "ملاحظات",
+        disclaimer: "المحتوى تعليمي فقط. في الطوارئ، اتصل بخدمات الإسعاف المحلية أولاً."
       },
       coursesPage: {
         badge: "مكتبة الإسعافات الأولية",
@@ -355,13 +370,22 @@ const resources = {
         getStarted: "Get Started",
         profile: "Profile",
         settings: "Settings",
-        logout: "Logout"
+        logout: "Logout",
+        progress: "Progress",
+        quizzes: "Quizzes",
+        home: "Home",
+        admin: "Admin panel",
+        studentNavigation: "Student navigation",
+        toggleTheme: "Toggle theme",
+        toggleLanguage: "Switch language",
+        toggleMenu: "Toggle menu"
       },
       common: {
         lessons: "Lessons",
         minutes: "mins",
         level: "Level",
-        comingSoon: "Coming soon"
+        comingSoon: "Coming soon",
+        skipToContent: "Skip to main content"
       },
       error: {
         title: "Something went wrong",
@@ -406,11 +430,11 @@ const resources = {
         btn: "Join Us & Start Learning"
       },
       studentCard: {
-        title: "Academic Student Badge",
-        subtitle: "Official registered badge on EduFanor First Aid Platform",
+        title: "Learning Badge",
+        subtitle: "Your identity within the EduFanor learning space",
         idLabel: "Student ID:",
         statusLabel: "Status:",
-        active: "Active & Verified",
+        active: "Active",
         guest: "Guest (not signed in)"
       },
       filter: {
@@ -473,9 +497,9 @@ const resources = {
         subtitle: "Customize your EduFanor learning experience",
         languageTitle: "Interface Language",
         languageDesc: "Choose your preferred interface language (العربية / English)",
-        verifiedTitle: "Academic Verification",
-        verifiedDesc: "All lessons follow international first aid guidelines 2026",
-        active: "Active",
+        verifiedTitle: "Educational content",
+        verifiedDesc: "Platform content is for learning and awareness and does not replace certified training or medical advice.",
+        active: "Learning",
         aboutTitle: "About",
         aboutDesc: "EduFanor — Learn today. Be ready tomorrow.",
         version: "Version 1.0"
@@ -571,7 +595,12 @@ const resources = {
         aiTutor: "AI Tutor",
         terms: "Terms & Conditions",
         privacy: "Privacy Policy",
-        copyright: "All rights reserved © EduFanor 2026"
+        copyright: "All rights reserved © EduFanor 2026",
+        learn: "Learn",
+        platform: "Platform",
+        about: "About",
+        notes: "Notes",
+        disclaimer: "Educational content only. In an emergency, contact local emergency services first."
       },
       coursesPage: {
         badge: "First Aid Library",
@@ -685,6 +714,9 @@ const resources = {
     }
   }
 };
+
+resources.ar.translation.admin = adminResources.ar.admin;
+resources.en.translation.admin = adminResources.en.admin;
 
 i18n
   .use(initReactI18next)

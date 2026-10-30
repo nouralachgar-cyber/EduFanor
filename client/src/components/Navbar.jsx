@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
-  ShieldAlert,
+  ShieldCheck,
   Globe,
   Menu,
   X,
@@ -11,16 +11,21 @@ import {
   LayoutDashboard,
   BookOpen,
   Bot,
+  Award,
+  HelpCircle,
   Sun,
   Moon,
   Settings,
   ChevronDown,
+  Home,
 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
   const { user, logout } = useContext(AuthContext);
+  const { isDark, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -29,23 +34,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(
     () => typeof window !== 'undefined' && window.scrollY > 8
   );
-  const [isDarkMode, setIsDarkMode] = useState(
-    () => localStorage.getItem('theme') === 'dark'
-  );
 
   const dropdownRef = useRef(null);
-
   const isAr = i18n.language === 'ar';
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDarkMode]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -59,7 +50,7 @@ export default function Navbar() {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (!profileDropdownOpen) return;
+    if (!profileDropdownOpen) return undefined;
     const handleClick = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setProfileDropdownOpen(false);
@@ -76,12 +67,6 @@ export default function Navbar() {
     };
   }, [profileDropdownOpen]);
 
-  const toggleDarkMode = () => setIsDarkMode((prev) => !prev);
-
-  const toggleLanguage = () => {
-    i18n.changeLanguage(isAr ? 'en' : 'ar');
-  };
-
   const handleLogout = () => {
     setProfileDropdownOpen(false);
     setMobileMenuOpen(false);
@@ -92,6 +77,8 @@ export default function Navbar() {
   const navLinks = [
     { name: t('nav.dashboard'), path: '/dashboard', icon: LayoutDashboard },
     { name: t('nav.myCourses'), path: '/courses', icon: BookOpen },
+    { name: t('nav.progress', 'Progress'), path: '/progress', icon: Award },
+    { name: t('nav.quizzes', 'Quizzes'), path: '/quizzes', icon: HelpCircle },
     { name: t('nav.aiTutor'), path: '/ai-tutor', icon: Bot },
   ];
 
@@ -99,55 +86,52 @@ export default function Navbar() {
 
   const themeButton = (
     <button
-      onClick={toggleDarkMode}
+      onClick={toggleTheme}
       aria-label={t('nav.toggleTheme', 'Toggle theme')}
       title={t('nav.toggleTheme', 'Toggle theme')}
       className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-surface text-ink transition-all hover:border-line-strong hover:bg-surface-muted"
     >
-      {isDarkMode ? (
-        <Sun className="h-4 w-4 text-amber-400" />
-      ) : (
-        <Moon className="h-4 w-4 text-brand-ink" />
-      )}
+      {isDark ? <Sun className="h-4 w-4 text-amber" /> : <Moon className="h-4 w-4 text-primary" />}
     </button>
   );
 
   const languageButton = (
     <button
-      onClick={toggleLanguage}
+      onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
+      aria-label={t('nav.toggleLanguage', 'Switch language')}
       className="flex h-10 items-center gap-2 rounded-xl border border-line bg-surface px-3 text-xs font-bold text-ink transition-all hover:border-line-strong hover:bg-surface-muted"
     >
-      <Globe className="h-4 w-4 text-brand-ink" />
+      <Globe className="h-4 w-4 text-primary dark:text-brand-ink" />
       <span>{isAr ? 'EN' : 'ع'}</span>
     </button>
   );
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur-sm transition-shadow duration-300 ${
+      className={`sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur-xl transition-shadow duration-300 ${
         scrolled ? 'shadow-pop' : ''
       }`}
     >
       <div
-        className={`mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 transition-all duration-300 sm:px-6 lg:px-8 ${
-          scrolled ? 'h-16' : 'h-18'
+        className={`mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 transition-all duration-300 sm:px-6 lg:px-8 ${
+          scrolled ? 'h-16' : 'h-[4.5rem]'
         }`}
       >
-        <Link to="/dashboard" className="group flex items-center gap-3 shrink-0">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-            <ShieldAlert className="h-5 w-5 text-teal" />
-          </div>
-          <div className="leading-tight hidden sm:block">
-            <span className="block text-lg font-extrabold tracking-tight text-ink">
+        <Link to="/dashboard" className="group flex shrink-0 items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+            <ShieldCheck className="h-5 w-5 text-amber-soft" />
+          </span>
+          <span className="hidden leading-tight sm:block">
+            <span className="block font-display text-lg font-semibold tracking-tight text-ink">
               {t('nav.brand')}
             </span>
-            <span className="block text-[10px] font-bold text-ink-muted">
+            <span className="block text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted">
               {t('nav.tagline')}
             </span>
-          </div>
+          </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 rounded-2xl border border-line bg-surface-muted p-1 md:flex">
+        <nav className="hidden items-center gap-1 rounded-2xl border border-line bg-surface-muted p-1 lg:flex">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const active = isActive(link.path);
@@ -155,13 +139,13 @@ export default function Navbar() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all duration-200 ${
+                className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all duration-200 ${
                   active
                     ? 'bg-primary text-white shadow-sm'
                     : 'text-ink-muted hover:bg-surface hover:text-ink'
                 }`}
               >
-                <Icon className={`h-4 w-4 ${active ? 'text-teal' : ''}`} />
+                <Icon className={`h-4 w-4 ${active ? 'text-amber-soft' : ''}`} />
                 <span>{link.name}</span>
               </Link>
             );
@@ -172,13 +156,14 @@ export default function Navbar() {
           {themeButton}
           {languageButton}
 
-          <div className="mx-1 h-6 w-px bg-line" aria-hidden="true" />
+          <span className="mx-1 h-6 w-px bg-line" aria-hidden="true" />
 
           {user ? (
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setProfileDropdownOpen((open) => !open)}
                 aria-expanded={profileDropdownOpen}
+                aria-haspopup="menu"
                 className="flex items-center gap-2.5 rounded-2xl border border-line bg-surface py-1.5 pe-2.5 ps-1.5 transition-all hover:border-line-strong hover:bg-surface-muted"
               >
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-sm font-bold text-white">
@@ -195,12 +180,17 @@ export default function Navbar() {
               </button>
 
               {profileDropdownOpen && (
-                <div className="animate-rise absolute end-0 top-full z-50 mt-2 w-52 rounded-2xl border border-line bg-surface p-2 shadow-pop">
-                  <div className="border-b border-line px-3 pb-2 pt-1.5">
+                <div
+                  role="menu"
+                  className="animate-rise absolute end-0 top-full z-50 mt-2 w-56 rounded-2xl border border-line bg-card p-2 shadow-pop"
+                >
+                  <div className="border-b border-line px-3 pb-2.5 pt-1.5">
                     <p className="truncate text-xs font-extrabold text-ink">
                       {user?.name || t('dashboard.studentName')}
                     </p>
-                    <p className="mt-0.5 truncate text-[11px] text-ink-muted">{user?.email}</p>
+                    <p className="mt-0.5 truncate text-[11px] text-ink-muted" dir="ltr">
+                      {user?.email}
+                    </p>
                   </div>
 
                   <div className="mt-1 space-y-0.5">
@@ -208,19 +198,36 @@ export default function Navbar() {
                       to="/profile"
                       className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-ink transition-colors hover:bg-surface-muted"
                     >
-                      <User className="h-4 w-4 text-brand-ink" />
+                      <User className="h-4 w-4 text-primary dark:text-brand-ink" />
                       <span>{t('nav.profile')}</span>
                     </Link>
                     <Link
                       to="/settings"
                       className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-ink transition-colors hover:bg-surface-muted"
                     >
-                      <Settings className="h-4 w-4 text-brand-ink" />
+                      <Settings className="h-4 w-4 text-primary dark:text-brand-ink" />
                       <span>{t('nav.settings')}</span>
                     </Link>
+                    <Link
+                      to="/"
+                      className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-ink transition-colors hover:bg-surface-muted"
+                    >
+                      <Home className="h-4 w-4 text-primary dark:text-brand-ink" />
+                      <span>{t('nav.home', 'Home')}</span>
+                    </Link>
+                    {user?.role === 'admin' && (
+                      <Link
+                        to="/admin"
+                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-ink transition-colors hover:bg-surface-muted"
+                      >
+                        <ShieldCheck className="h-4 w-4 text-amber" />
+                        <span>{t('nav.admin', 'Admin panel')}</span>
+                      </Link>
+                    )}
                     <button
                       onClick={handleLogout}
-                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-950/30"
+                      role="menuitem"
+                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-danger transition-colors hover:bg-danger-soft"
                     >
                       <LogOut className="h-4 w-4" />
                       <span>{t('nav.logout')}</span>
@@ -239,7 +246,8 @@ export default function Navbar() {
         <div className="flex items-center gap-2 md:hidden">
           {themeButton}
           <button
-            onClick={toggleLanguage}
+            onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
+            aria-label={t('nav.toggleLanguage', 'Switch language')}
             className="flex h-10 items-center rounded-xl border border-line bg-surface px-3 text-xs font-bold text-ink transition-colors hover:bg-surface-muted"
           >
             {isAr ? 'EN' : 'ع'}
@@ -280,12 +288,10 @@ export default function Navbar() {
                   key={link.path}
                   to={link.path}
                   className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-colors ${
-                    active
-                      ? 'bg-primary text-white'
-                      : 'text-ink hover:bg-surface-muted'
+                    active ? 'bg-primary text-white' : 'text-ink hover:bg-surface-muted'
                   }`}
                 >
-                  <Icon className={`h-5 w-5 ${active ? 'text-teal' : 'text-brand-ink'}`} />
+                  <Icon className={`h-5 w-5 ${active ? 'text-amber-soft' : 'text-primary dark:text-brand-ink'}`} />
                   <span>{link.name}</span>
                 </Link>
               );
@@ -299,19 +305,26 @@ export default function Navbar() {
                   to="/profile"
                   className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
                 >
-                  <User className="h-5 w-5 text-brand-ink" />
+                  <User className="h-5 w-5 text-primary dark:text-brand-ink" />
                   <span>{t('nav.profile')}</span>
                 </Link>
                 <Link
                   to="/settings"
                   className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
                 >
-                  <Settings className="h-5 w-5 text-brand-ink" />
+                  <Settings className="h-5 w-5 text-primary dark:text-brand-ink" />
                   <span>{t('nav.settings')}</span>
+                </Link>
+                <Link
+                  to="/"
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
+                >
+                  <Home className="h-5 w-5 text-primary dark:text-brand-ink" />
+                  <span>{t('nav.home', 'Home')}</span>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-950/30"
+                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-danger transition-colors hover:bg-danger-soft"
                 >
                   <LogOut className="h-5 w-5" />
                   <span>{t('nav.logout')}</span>

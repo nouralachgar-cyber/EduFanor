@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Search, Clock, BookOpen, ArrowRight, ArrowLeft, ShieldCheck, SearchX } from 'lucide-react';
+import { Search, Clock, BookOpen, ArrowRight, ArrowLeft, ShieldCheck, SearchX, CheckCircle2 } from 'lucide-react';
+import CourseArt from '../components/CourseArt';
+import { isCourseCompleted } from '../lib/progress';
+import { useCatalog } from '../context/CatalogContext';
 
 export default function Courses() {
   const { t, i18n } = useTranslation();
@@ -9,130 +12,171 @@ export default function Courses() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // جلب المساقات من الترجمة
-  const courses = t('coursesData', { returnObjects: true }) || [];
+  const { courses } = useCatalog();
+  const courseList = Array.isArray(courses) ? courses : [];
+  const completedCount = courseList.filter((course) => isCourseCompleted(course.id)).length;
 
-  const filteredCourses = courses.filter(course => {
-    const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          course.description.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredCourses = courseList.filter((course) => {
+    const matchesSearch =
+      course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      course.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || course.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   return (
-    <div className="min-h-screen bg-[#FCFAFF] dark:bg-[#17121D] text-[#1F142E] dark:text-[#F8F4FC] p-6 lg:p-12 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto space-y-10">
-        
-        {/* Header Section */}
-        <div className="text-center space-y-4 max-w-2xl mx-auto">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#E9E0F5] text-[#49305D] dark:bg-[#2B2037] dark:text-[#E9E0F5]">
-            <ShieldCheck className="w-4 h-4 text-[#8A6BBE]" />
-            {t('coursesPage.badge')}
-          </span>
-          <h1 className="text-3xl lg:text-5xl font-black text-[#49305D] dark:text-white tracking-tight">
-            {t('coursesPage.title')}
-          </h1>
-          <p className="text-xs lg:text-sm text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed">
-            {t('coursesPage.subtitle')}
-          </p>
-        </div>
+    <div className="page-container">
+      <div className="page-content space-y-8">
+        <header className="relative overflow-hidden rounded-3xl border border-line bg-card p-6 shadow-pop sm:p-8 lg:p-10">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-70"
+            style={{
+              background:
+                'radial-gradient(circle at 90% 8%, rgba(245,158,66,0.13), transparent 44%), radial-gradient(circle at 4% 100%, rgba(120,155,131,0.18), transparent 52%)',
+            }}
+            aria-hidden="true"
+          />
+          <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <span className="chip bg-brand-soft text-brand-ink">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                {t('coursesPage.badge')}
+              </span>
+              <h1 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
+                {t('coursesPage.title')}
+              </h1>
+              <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
+                {t('coursesPage.subtitle')}
+              </p>
+            </div>
 
-        {/* Search & Filter Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-[#21192B] p-4 rounded-3xl border border-[#EDE6F5] dark:border-[#3B2B4C] shadow-sm">
-          <div className="relative w-full md:w-96">
-            <Search className={`absolute top-3.5 ${isAr ? 'right-4' : 'left-4'} w-4 h-4 text-[#6B5E7C] dark:text-[#C9BED5]`} />
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="rounded-2xl border border-line bg-surface/80 px-5 py-4 text-center backdrop-blur-sm">
+                <p className="font-display text-2xl font-semibold text-ink">{courseList.length}</p>
+                <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
+                  {t('coursesPage.statsCourses')}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-line bg-surface/80 px-5 py-4 text-center backdrop-blur-sm">
+                <p className="font-display text-2xl font-semibold text-accent">{completedCount}</p>
+                <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
+                  {t('coursesPage.completed')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div className="flex flex-col gap-4 rounded-2xl border border-line bg-card p-4 md:flex-row md:items-center md:justify-between">
+          <div className="relative w-full md:max-w-md">
+            <Search
+              className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted ${
+                isAr ? 'right-4' : 'left-4'
+              }`}
+            />
             <input
-              type="text"
+              type="search"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(event) => setSearchQuery(event.target.value)}
               placeholder={t('coursesPage.searchPlaceholder')}
-              className={`w-full py-3 ${isAr ? 'pr-11 pl-4' : 'pl-11 pr-4'} rounded-2xl border border-[#EDE6F5] dark:border-[#3B2B4C] bg-[#FCFAFF] dark:bg-[#17121D] text-xs font-bold text-[#1F142E] dark:text-[#F8F4FC] outline-none focus:border-[#8A6BBE] transition-colors`}
+              className={`input ${isAr ? 'pr-11' : 'pl-11'}`}
             />
           </div>
 
-          {/* Category Filters */}
-          <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
-            {['all', 'cpr', 'choking', 'burns'].map((cat) => (
+          <div className="no-scrollbar flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
+            {['all', 'cpr', 'choking', 'burns'].map((category) => (
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-                  selectedCategory === cat
-                    ? 'bg-[#49305D] text-white shadow-md'
-                    : 'bg-[#F4EFFB] dark:bg-[#2B2037] text-[#6B5E7C] dark:text-[#C9BED5] hover:bg-[#E9E0F5]'
+                key={category}
+                type="button"
+                onClick={() => setSelectedCategory(category)}
+                className={`whitespace-nowrap rounded-full px-4 py-2 text-xs font-bold transition-all ${
+                  selectedCategory === category
+                    ? 'bg-primary text-white shadow-sm'
+                    : 'bg-surface-muted text-ink-muted hover:text-ink'
                 }`}
               >
-                {t(`filter.${cat}`)}
+                {t(`filter.${category}`)}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Courses Grid */}
         {filteredCourses.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredCourses.map((course) => (
-              <div 
-                key={course.id}
-                className="rounded-3xl bg-white dark:bg-[#21192B] border border-[#EDE6F5] dark:border-[#3B2B4C] p-6 space-y-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-[#E9E0F5] text-[#49305D] dark:bg-[#2B2037] dark:text-[#E9E0F5]">
-                      {course.level}
-                    </span>
-                    <div className="flex items-center gap-1 text-xs text-[#6B5E7C] dark:text-[#C9BED5] font-semibold">
-                      <Clock className="w-3.5 h-3.5 text-[#8A6BBE]" />
-                      <span>{course.duration}</span>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {filteredCourses.map((course) => {
+              const completed = isCourseCompleted(course.id);
+              return (
+                <article
+                  key={course.id}
+                  className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-line-strong hover:shadow-pop"
+                >
+                  <CourseArt category={course.category} completed={completed} />
+
+                  <div className="flex flex-1 flex-col gap-4 p-5">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="chip bg-brand-soft text-brand-ink">{course.level}</span>
+                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink-muted">
+                        <Clock className="h-3.5 w-3.5 text-accent" />
+                        <span>{course.duration}</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h2 className="text-base font-extrabold leading-snug text-ink transition-colors group-hover:text-brand-ink">
+                        {course.title}
+                      </h2>
+                      <p className="line-clamp-2 text-xs leading-relaxed text-ink-muted">
+                        {course.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-auto flex items-center justify-between gap-3 border-t border-line pt-4">
+                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink-muted">
+                        <BookOpen className="h-4 w-4 text-teal-deep" />
+                        <span>
+                          {course.lessons} {t('coursesPage.lessonsCount')}
+                        </span>
+                      </div>
+
+                      <Link
+                        to={`/lesson?id=${course.id}`}
+                        className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-extrabold transition-all ${
+                          completed
+                            ? 'bg-success-soft text-success-ink hover:opacity-90'
+                            : 'bg-primary text-white hover:bg-primary-hover'
+                        }`}
+                      >
+                        {completed && <CheckCircle2 className="h-3.5 w-3.5" />}
+                        <span>
+                          {completed ? t('coursesPage.continueCourse') : t('coursesPage.startCourse')}
+                        </span>
+                        {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+                      </Link>
                     </div>
                   </div>
-
-                  <h3 className="text-lg font-black text-[#49305D] dark:text-white leading-snug">
-                    {course.title}
-                  </h3>
-
-                  <p className="text-xs text-[#6B5E7C] dark:text-[#C9BED5] leading-relaxed line-clamp-2">
-                    {course.description}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-[#EDE6F5] dark:border-[#3B2B4C] flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#8A6BBE]">
-                    <BookOpen className="w-4 h-4" />
-                    <span>{course.lessons} {t('coursesPage.lessonsCount')}</span>
-                  </div>
-
-                  <Link
-                    to={`/lesson?id=${course.id}`}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#49305D] hover:bg-[#39244A] text-white text-xs font-bold transition-all shadow-sm cursor-pointer"
-                  >
-                    <span>{t('coursesPage.startCourse')}</span>
-                    {isAr ? <ArrowLeft className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
-                  </Link>
-                </div>
-              </div>
-            ))}
+                </article>
+              );
+            })}
           </div>
         ) : (
-          <div className="text-center py-16 space-y-4">
-            <div className="mx-auto w-16 h-16 rounded-full bg-[#F4EFFB] dark:bg-[#2B2037] flex items-center justify-center text-[#8A6BBE]">
-              <SearchX className="w-8 h-8" />
+          <div className="empty-state card">
+            <div className="icon-box h-14 w-14 bg-surface-muted text-ink-muted">
+              <SearchX className="h-7 w-7" />
             </div>
-            <h3 className="text-lg font-black text-[#49305D] dark:text-white">
-              {t('coursesPage.emptyTitle')}
-            </h3>
-            <p className="text-xs text-[#6B5E7C] dark:text-[#C9BED5] max-w-sm mx-auto">
-              {t('coursesPage.emptyDesc')}
-            </p>
+            <h2 className="text-base font-extrabold text-ink">{t('coursesPage.emptyTitle')}</h2>
+            <p className="max-w-sm text-xs leading-relaxed text-ink-muted">{t('coursesPage.emptyDesc')}</p>
             <button
-              onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
-              className="px-6 py-2.5 rounded-full bg-[#49305D] text-white text-xs font-bold transition-all cursor-pointer"
+              type="button"
+              onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('all');
+              }}
+              className="btn-secondary mt-2 px-4 text-xs"
             >
               {t('coursesPage.resetSearch')}
             </button>
           </div>
         )}
-
       </div>
     </div>
   );

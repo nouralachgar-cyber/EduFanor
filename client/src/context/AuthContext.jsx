@@ -1,89 +1,199 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
+import { apiRequest, getStoredToken, setStoredToken } from '../lib/api';
 
 export const AuthContext = createContext();
 
+const readStoredUser = () => {
+  try {
+    const stored = localStorage.getItem('edu_user');
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    localStorage.removeItem('edu_user');
+    return null;
+  }
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(() => getStoredToken());
   const [loading, setLoading] = useState(true);
 
-  // تحميل بيانات المستخدم من localStorage عند فتح التطبيق
-  useEffect(() => {
+  const persistSession = useCallback((nextUser, nextToken) => {
+    setUser(nextUser);
+    setToken(nextToken || '');
+    setStoredToken(nextToken);
     try {
-      const storedUser = localStorage.getItem('edu_user');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
-    } catch (e) {
-      console.error('Error parsing stored user data:', e);
-      localStorage.removeItem('edu_user');
-    } finally {
-      setLoading(false);
+      localStorage.setItem('edu_user', JSON.stringify(nextUser));
+    } catch {
+      /* Storage can be unavailable. */
     }
   }, []);
 
-  // دالة تسجيل الدخول المحسنة مع حماية تامة للـ email
-  const login = async (email, password) => {
-    try {
-      // التأكد أن الإيميل عبارة عن نص عاد نقدر نطبقو ليه trim
-      const emailStr = typeof email === 'string' ? email : String(email || '');
-      const cleanEmail = emailStr.trim().toLowerCase();
-      
-      const isAdmin = cleanEmail === 'noura@edufanor.com' || cleanEmail.includes('admin');
-
-      const currentUser = {
-        name: isAdmin ? 'Noura (Admin)' : (cleanEmail ? cleanEmail.split('@')[0] : 'المستخدم'),
-        email: cleanEmail || 'student@edufanor.com',
-        role: isAdmin ? 'admin' : 'user',
-      };
-
-      setUser(currentUser);
-      localStorage.setItem('edu_user', JSON.stringify(currentUser));
-      
-      return { success: true, user: currentUser };
-    } catch (error) {
-      console.error('Login error:', error);
-      return {
-        success: false,
-        message: 'حدث خطأ أثناء تسجيل الدخول',
-      };
-    }
-  };
-
-  // دالة إنشاء حساب جديد مع حماية تامة للـ email
-  const register = async (name, email, password) => {
-    try {
-      const emailStr = typeof email === 'string' ? email : String(email || '');
-      const cleanEmail = emailStr.trim().toLowerCase();
-      
-      const isAdmin = cleanEmail === 'noura@edufanor.com' || cleanEmail.includes('admin');
-
-      const newUser = {
-        name: name || (isAdmin ? 'Noura (Admin)' : 'مستخدم جديد'),
-        email: cleanEmail || 'student@edufanor.com',
-        role: isAdmin ? 'admin' : 'user',
-      };
-
-      setUser(newUser);
-      localStorage.setItem('edu_user', JSON.stringify(newUser));
-      
-      return { success: true, user: newUser };
-    } catch (error) {
-      console.error('Register error:', error);
-      return {
-        success: false,
-        message: 'حدث خطأ أثناء إنشاء الحساب',
-      };
-    }
-  };
-
-  // دالة تسجيل الخروج
-  const logout = () => {
+  const clearSession = useCallback(() => {
     setUser(null);
-    localStorage.removeItem('edu_user');
+    setToken('');
+    setStoredToken('');
+    try {
+      localStorage.removeItem('edu_user');
+    } catch {
+      /* Storage can be unavailable. */
+    }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const storedUser = readStoredUser();
+    const storedToken = getStoredToken();
+
+    if (storedUser) setUser(storedUser);
+    if (!storedToken) {
+      setLoading(false);
+      return undefined;
+    }
+
+    apiRequest('/auth/me', { auth: true })
+      .then((data) => {
+        if (!cancelled && data?.user) {
+          setUser(data.user);
+          try {
+            localStorage.setItem('edu_user', JSON.stringify(data.user));
+          } catch {
+            /* Storage can be unavailable. */
+          }
+        }
+      })
+      .catch((error) => {
+        if (!cancelled && error.status === 401) {
+          clearSession();
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [clearSession]);
+
+  useEffect(() => {
+    const handleUnauthorized = () => clearSession();
+    window.addEventListener('edu:unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('edu:unauthorized', handleUnauthorized);
+  }, [clearSession]);
+
+  const legacyLogin = (cleanEmail) => {
+    const legacyUser = {
+      name: cleanEmail ? cleanEmail.split('@')[0] : 'Student',
+      email: cleanEmail || 'student@edufanor.com',
+      role: 'student',
+      legacy: true,
+    };
+    persistSession(legacyUser, '');
+    return { success: true, user: legacyUser };
   };
+
+  const login = async (email, password) => {
+    const cleanEmail = String(email || '').trim().toLowerCase();
+
+    try {
+      const data = await apiRequest('/auth/login', {
+        method: 'POST',
+        body: { email: cleanEmail, password },
+      });
+      persistSession(data, data.token);
+      return { success: true, user: data };
+    } catch (loginError) {
+      if (loginError.status === 403 && loginError.code === 'ACCOUNT_SUSPENDED') {
+        return { success: false, message: loginError.message };
+      }
+
+      if (loginError.status === 401) {
+        try {
+          const adminData = await apiRequest('/auth/admin-login', {
+            method: 'POST',
+            body: { email: cleanEmail, password },
+          });
+          persistSession(adminData, adminData.token);
+          return { success: true, user: adminData };
+        } catch (adminError) {
+          if (adminError.code === 'NO_ACCOUNT' || adminError.status === 0) {
+            return legacyLogin(cleanEmail);
+          }
+          return { success: false, message: adminError.message };
+        }
+      }
+
+      if (loginError.status === 0) {
+        return legacyLogin(cleanEmail);
+      }
+
+      return { success: false, message: loginError.message };
+    }
+  };
+
+  const register = async (name, email, password) => {
+    const cleanEmail = String(email || '').trim().toLowerCase();
+
+    try {
+      const data = await apiRequest('/auth/register', {
+        method: 'POST',
+        body: { name, email: cleanEmail, password },
+      });
+      persistSession(data, data.token);
+      return { success: true, user: data };
+    } catch (error) {
+      if (error.status === 0) {
+        const localUser = {
+          name: name || 'New student',
+          email: cleanEmail || 'student@edufanor.com',
+          role: 'student',
+          legacy: true,
+        };
+        persistSession(localUser, '');
+        return { success: true, user: localUser };
+      }
+      return { success: false, message: error.message };
+    }
+  };
+
+  const updateUser = (updates) => {
+    setUser((previous) => {
+      if (!previous) return previous;
+      const nextUser = { ...previous, ...updates };
+      try {
+        localStorage.setItem('edu_user', JSON.stringify(nextUser));
+      } catch {
+        /* Storage can be unavailable. */
+      }
+      return nextUser;
+    });
+  };
+
+  const refreshUser = async () => {
+    if (!getStoredToken()) return null;
+    try {
+      const data = await apiRequest('/auth/me', { auth: true });
+      if (data?.user) {
+        setUser(data.user);
+        try {
+          localStorage.setItem('edu_user', JSON.stringify(data.user));
+        } catch {
+          /* Storage can be unavailable. */
+        }
+      }
+      return data?.user || null;
+    } catch {
+      return null;
+    }
+  };
+
+  const logout = () => clearSession();
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider
+      value={{ user, token, login, register, logout, updateUser, refreshUser, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

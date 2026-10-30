@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const quizSchema = new mongoose.Schema({
+  title: {
+    ar: { type: String, required: true },
+    en: { type: String, required: true }
+  },
   lesson: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Lesson',
@@ -20,7 +24,9 @@ const quizSchema = new mongoose.Schema({
       ar: { type: String },
       en: { type: String }
     }
-  }]
+  }],
+  passingScore: { type: Number, default: 70, min: 0, max: 100 },
+  published: { type: Boolean, default: false }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Quiz', quizSchema);

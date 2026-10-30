@@ -1,0 +1,199 @@
+[
+  {
+    "slug": "cpr",
+    "category": "cpr",
+    "difficulty": "beginner",
+    "estimatedMinutes": 25,
+    "order": 1,
+    "image": "/courses/cpr.svg",
+    "published": true,
+    "title": {
+      "ar": "أساسيات الإنعاش القلبي الرئوي (CPR)",
+      "en": "Cardiopulmonary Resuscitation (CPR) Basics"
+    },
+    "description": {
+      "ar": "تعلم خطوات الإنعاش القلبي الرئوي والتعامل مع حالات التوقف القلبي المفاجئ بثقة.",
+      "en": "Learn CPR steps and handle sudden cardiac arrest with confidence and speed."
+    },
+    "steps": [
+      {
+        "title": {
+          "ar": "تأكد من أمان المكان",
+          "en": "Make sure the scene is safe"
+        },
+        "content": {
+          "ar": "تأكد من أن المكان آمن لك وللمصاب قبل الاقتراب، ثم افحص استجابته بصوت عالٍ وهزّ كتفيه بلطف للتحقق من الوعي.",
+          "en": "Check that the area is safe for you and the casualty, then check responsiveness by speaking loudly and gently tapping their shoulders."
+        },
+        "warning": {
+          "ar": "",
+          "en": ""
+        }
+      },
+      {
+        "title": {
+          "ar": "اطلب المساعدة فوراً",
+          "en": "Call for help immediately"
+        },
+        "content": {
+          "ar": "اتصل برقم الإسعاف أو اطلب من شخص قريب الاتصال، واطلب جهاز الصدمات الكهربائية إن كان متوفراً بالقرب منك.",
+          "en": "Call the emergency number or ask someone nearby to call, and request an AED if one is available close by."
+        },
+        "warning": {
+          "ar": "لا تتجاهل الاتصال بالإسعاف حتى لو بدا المصاب متحسناً.",
+          "en": "Never skip calling emergency services, even if the casualty seems to be improving."
+        }
+      },
+      {
+        "title": {
+          "ar": "ابدأ الضغطات الصدرية",
+          "en": "Begin chest compressions"
+        },
+        "content": {
+          "ar": "ضع يديك في منتصف الصدر وابدأ 30 ضغطة بعمق 5-6 سم وبمعدل 100-120 ضغطة في الدقيقة، مع السماح للصدر بالارتفاع بين الضغطات.",
+          "en": "Place your hands at the center of the chest and give 30 compressions 5-6 cm deep at a rate of 100-120 per minute, allowing full chest recoil between compressions."
+        },
+        "warning": {
+          "ar": "",
+          "en": ""
+        }
+      },
+      {
+        "title": {
+          "ar": "استمر حتى وصول المساعدة",
+          "en": "Continue until help arrives"
+        },
+        "content": {
+          "ar": "واصل دورات 30 ضغطة و2 نفس إن كنت مدرباً، ولا تتوقف إلا عند وصول الإسعاف أو استعادة المصاب للوعي.",
+          "en": "Keep cycles of 30 compressions and 2 rescue breaths if trained, and do not stop unless the casualty recovers or emergency services take over."
+        },
+        "warning": {
+          "ar": "لا توقف الإنعاش إلا لضرورة قصوى أو عند وصول فريق الإسعاف.",
+          "en": "Only pause CPR when absolutely necessary or when the ambulance team arrives."
+        }
+      }
+    ]
+  },
+  {
+    "slug": "choking",
+    "category": "choking",
+    "difficulty": "beginner",
+    "estimatedMinutes": 15,
+    "order": 2,
+    "image": "/courses/choking.svg",
+    "published": true,
+    "title": {
+      "ar": "الاستجابة لحالات الاختناق",
+      "en": "Emergency Response to Choking"
+    },
+    "description": {
+      "ar": "تطبيق مناورة هيمليخ وإزالة انسداد مجرى الهواء لدى الكبار والأطفال.",
+      "en": "Apply the Heimlich maneuver to clear severe airway obstructions in adults and children."
+    },
+    "steps": [
+      {
+        "title": {
+          "ar": "شجعه على السعال",
+          "en": "Encourage forceful coughing"
+        },
+        "content": {
+          "ar": "إذا كان المصاب قادراً على السعال أو الكلام، شجعه على السعال بقوة ولا تتدخل؛ فالسعال القوي قد يطرد الجسم العالق وحده.",
+          "en": "If the casualty can cough or speak, encourage strong coughing and do not intervene; a forceful cough may clear the blockage on its own."
+        },
+        "warning": {
+          "ar": "",
+          "en": ""
+        }
+      },
+      {
+        "title": {
+          "ar": "وجّه 5 ضربات على الظهر",
+          "en": "Give 5 back blows"
+        },
+        "content": {
+          "ar": "قف بجانب المصاب وأمِل جسمه للأمام، ثم وجّه 5 ضربات قوية بكعب يدك بين لوحي الكتف.",
+          "en": "Stand beside the casualty, lean them forward, and deliver 5 firm blows with the heel of your hand between the shoulder blades."
+        },
+        "warning": {
+          "ar": "",
+          "en": ""
+        }
+      },
+      {
+        "title": {
+          "ar": "نفّذ مناورة هيمليخ",
+          "en": "Perform the Heimlich maneuver"
+        },
+        "content": {
+          "ar": "طبّق 5 ضغطات بطنية فوق السرة وتحت القص باتجاه الأعلى حتى خروج الجسم، وتناوب بين 5 ضربات ظهر و5 ضغطات بطنية.",
+          "en": "Give 5 abdominal thrusts above the navel and below the ribcage, alternating between 5 back blows and 5 abdominal thrusts until the object is expelled."
+        },
+        "warning": {
+          "ar": "إذا فقد المصاب الوعي، ابدأ فوراً بالإنعاش القلبي الرئوي واطلب الإسعاف.",
+          "en": "If the casualty becomes unconscious, start CPR immediately and call emergency services."
+        }
+      }
+    ]
+  },
+  {
+    "slug": "burns",
+    "category": "burns",
+    "difficulty": "advanced",
+    "estimatedMinutes": 20,
+    "order": 3,
+    "image": "/courses/burns.svg",
+    "published": true,
+    "title": {
+      "ar": "العناية بالحروق والإصابات",
+      "en": "Wound Care and Burn Management"
+    },
+    "description": {
+      "ar": "الإسعافات الأولية للحروق من الدرجة الأولى والثانية والتضميد المعقم الصحيح.",
+      "en": "First aid procedures for first and second-degree burns and sterile bandaging techniques."
+    },
+    "steps": [
+      {
+        "title": {
+          "ar": "أبعده عن مصدر الحرق",
+          "en": "Remove from the heat source"
+        },
+        "content": {
+          "ar": "أوقف التعرض لمصدر الحرارة فوراً، واخلع الملابس والمجوهرات غير الملتصقة بالحرق بحذر شديد.",
+          "en": "Stop exposure to the heat source immediately, and carefully remove clothing and jewelry that are not stuck to the burn."
+        },
+        "warning": {
+          "ar": "",
+          "en": ""
+        }
+      },
+      {
+        "title": {
+          "ar": "برّد المنطقة المصابة",
+          "en": "Cool the affected area"
+        },
+        "content": {
+          "ar": "ضع المنطقة المصابة تحت ماء جاري فاتر لمدة 10 إلى 15 دقيقة لتقليل الألم والضرر.",
+          "en": "Hold the area under cool running water for 10 to 15 minutes to reduce pain and damage."
+        },
+        "warning": {
+          "ar": "لا تستخدم الثلج أو المعجون أو الزيت على الحرق إطلاقاً.",
+          "en": "Never apply ice, toothpaste, or oil to a burn."
+        }
+      },
+      {
+        "title": {
+          "ar": "غطِّ الحرق بضمادة معقمة",
+          "en": "Cover the burn with a sterile dressing"
+        },
+        "content": {
+          "ar": "غطِّ الحرق بضمادة معقمة غير لاصقة وتجنب لمس الفقاعات أو فقئها.",
+          "en": "Cover the burn with a sterile, non-stick dressing and avoid touching or popping any blisters."
+        },
+        "warning": {
+          "ar": "راجع الطبيب فوراً للحروق الكبيرة أو حروق الوجه واليدين والمفاصل.",
+          "en": "Seek medical care for large burns or burns on the face, hands, or joints."
+        }
+      }
+    ]
+  }
+]

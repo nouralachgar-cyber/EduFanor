@@ -1,8 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ShieldAlert, Lock, Mail, User, AlertCircle, Eye, EyeOff, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Lock, Mail, User, AlertCircle, Eye, EyeOff, ArrowRight, ArrowLeft, ShieldCheck, Info } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
+import AuthLayout from '../components/AuthLayout';
 
 export default function Register() {
   const { t, i18n } = useTranslation();
@@ -16,148 +17,135 @@ export default function Register() {
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+  const handleRegister = async (event) => {
+    event.preventDefault();
     setErrorMsg('');
     setLoading(true);
-
     const result = await register(name, email, password);
     setLoading(false);
-
     if (result.success) {
-      navigate('/courses');
+      navigate('/dashboard');
     } else {
       setErrorMsg(result.message);
     }
   };
 
-  const highlights = [
-    t('auth.point1'),
-    t('auth.point2'),
-    t('auth.point3'),
-  ];
-
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md">
-        <div className="card p-6 sm:p-8 space-y-6">
-          {/* Header */}
-          <div className="text-center space-y-3">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white shadow-lift">
-              <ShieldAlert className="h-7 w-7 text-teal" />
-            </div>
-            <div className="space-y-1">
-              <h2 className="text-2xl font-extrabold text-ink">
-                {t('auth.registerTitle')}
-              </h2>
-              <p className="text-xs text-ink-muted">
-                {t('auth.registerSubtitle')}
-              </p>
-            </div>
-          </div>
-
-          {errorMsg && (
-            <div className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 text-xs flex items-center gap-2 font-bold">
-              <AlertCircle className="h-4 w-4 shrink-0" />
-              <span>{errorMsg}</span>
-            </div>
-          )}
-
-          {/* Form */}
-          <form className="space-y-4" onSubmit={handleRegister}>
-            <div className="space-y-1.5">
-              <label className="label">
-                <User className="h-3.5 w-3.5 text-primary" />
-                <span>{t('auth.name')}</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={t('auth.namePlaceholder')}
-                className="input"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="label">
-                <Mail className="h-3.5 w-3.5 text-primary" />
-                <span>{t('auth.email')}</span>
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t('auth.emailPlaceholder')}
-                className="input"
-                dir="ltr"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="label">
-                <Lock className="h-3.5 w-3.5 text-primary" />
-                <span>{t('auth.password')}</span>
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder={t('auth.passwordPlaceholder')}
-                  className={`input ${isAr ? 'pe-11' : 'ps-11'}`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className={`absolute top-1/2 -translate-y-1/2 p-1 text-ink-muted hover:text-ink transition-colors ${isAr ? 'left-3' : 'right-3'}`}
-                  aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-primary w-full py-3.5 text-sm"
-            >
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  {t('auth.registering')}
-                </span>
-              ) : (
-                <span className="flex items-center gap-2">
-                  {t('auth.registerBtn')}
-                  {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-                </span>
-              )}
-            </button>
-          </form>
-
-          <div className="text-center text-xs text-ink-muted">
-            {t('auth.hasAccount')}{' '}
-            <Link to="/login" className="text-primary font-bold hover:underline">
-              {t('auth.signIn')}
-            </Link>
-          </div>
+    <AuthLayout>
+      <div className="card p-6 shadow-pop sm:p-8">
+        <div className="mb-6">
+          <span className="chip bg-brand-soft text-brand-ink">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            {isAr ? 'ابدأ مسارك' : 'Start your path'}
+          </span>
+          <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink">
+            {t('auth.registerTitle')}
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed text-ink-muted">{t('auth.registerSubtitle')}</p>
         </div>
 
-        {/* Highlights */}
-        <div className="mt-6 space-y-2">
-          {highlights.map((point, idx) => (
-            <div key={idx} className="flex items-center gap-2 text-xs text-ink-muted">
-              <CheckCircle2 className="h-3.5 w-3.5 text-teal-deep shrink-0" />
-              <span>{point}</span>
+        {errorMsg && (
+          <div className="mb-5 flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft p-3.5 text-xs font-bold text-danger">
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            <span>{errorMsg}</span>
+          </div>
+        )}
+
+        <form className="space-y-4" onSubmit={handleRegister}>
+          <div className="space-y-1.5">
+            <label htmlFor="register-name" className="label">
+              <User className="h-3.5 w-3.5 text-brand-ink" />
+              <span>{t('auth.name')}</span>
+            </label>
+            <input
+              id="register-name"
+              type="text"
+              required
+              autoComplete="name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              placeholder={t('auth.namePlaceholder')}
+              className="input"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="register-email" className="label">
+              <Mail className="h-3.5 w-3.5 text-brand-ink" />
+              <span>{t('auth.email')}</span>
+            </label>
+            <input
+              id="register-email"
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder={t('auth.emailPlaceholder')}
+              className="input"
+              dir="ltr"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="register-password" className="label">
+              <Lock className="h-3.5 w-3.5 text-brand-ink" />
+              <span>{t('auth.password')}</span>
+            </label>
+            <div className="relative">
+              <input
+                id="register-password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                minLength={6}
+                autoComplete="new-password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder={t('auth.passwordPlaceholder')}
+                className={`input ${isAr ? 'pe-11' : 'ps-11'}`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((value) => !value)}
+                className={`absolute top-1/2 -translate-y-1/2 p-1.5 text-ink-muted transition-colors hover:text-ink ${
+                  isAr ? 'left-2.5' : 'right-2.5'
+                }`}
+                aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
             </div>
-          ))}
+          </div>
+
+          <button type="submit" disabled={loading} className="btn-primary w-full">
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                {t('auth.registering')}
+              </span>
+            ) : (
+              <span className="flex items-center gap-2">
+                {t('auth.registerBtn')}
+                {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+              </span>
+            )}
+          </button>
+        </form>
+
+        <div className="mt-6 border-t border-line pt-4 text-center text-xs text-ink-muted">
+          {t('auth.hasAccount')}{' '}
+          <Link to="/login" className="font-extrabold text-brand-ink hover:text-accent">
+            {t('auth.signIn')}
+          </Link>
         </div>
       </div>
-    </div>
+
+      <p className="mt-4 flex items-start gap-2 rounded-xl border border-line bg-surface-muted px-3.5 py-3 text-[10px] leading-relaxed text-ink-muted">
+        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+        {isAr
+          ? 'نسخة تجريبية: يُحفظ الحساب محلياً في هذا المتصفح ولا تُرسل البيانات إلى خادم.'
+          : 'Demo build: your account is stored locally in this browser and is not sent to a server.'}
+      </p>
+    </AuthLayout>
   );
 }
