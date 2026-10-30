@@ -1,5 +1,12 @@
+
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from 'react-router-dom';
+
 import PublicLandingPage from './pages/PublicLandingPage';
 import Login from './pages/Login';
 import About from './pages/About';
@@ -13,8 +20,10 @@ import Profile from './pages/Profile';
 import Progress from './pages/Progress';
 import Quizzes from './pages/Quizzes';
 import NotFound from './pages/NotFound';
+
 import ProtectedRoute from './components/ProtectedRoute';
 import StudentLayout from './components/StudentLayout';
+
 import AdminLayout from './components/admin/AdminLayout';
 import AdminOverview from './pages/admin/AdminOverview';
 import AdminStudents from './pages/admin/AdminStudents';
@@ -26,6 +35,7 @@ import AdminActivity from './pages/admin/AdminActivity';
 import AdminAudit from './pages/admin/AdminAudit';
 import AdminSettings from './pages/admin/AdminSettings';
 
+// Scroll to top when navigating between pages
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
 
@@ -33,12 +43,17 @@ function ScrollToTop() {
     if (hash) {
       const timer = window.setTimeout(() => {
         const target = document.querySelector(hash);
+
         if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          return;
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        } else {
+          window.scrollTo(0, 0);
         }
-        window.scrollTo(0, 0);
       }, 60);
+
       return () => window.clearTimeout(timer);
     }
 
@@ -53,12 +68,15 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
+
       <Routes>
+        {/* Public Pages */}
         <Route path="/" element={<PublicLandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
 
+        {/* Admin Routes */}
         <Route
           path="/admin"
           element={
@@ -78,6 +96,7 @@ export default function App() {
           <Route path="settings" element={<AdminSettings />} />
         </Route>
 
+        {/* Protected Student Routes */}
         <Route
           element={
             <ProtectedRoute>
@@ -95,6 +114,7 @@ export default function App() {
           <Route path="/quizzes" element={<Quizzes />} />
         </Route>
 
+        {/* 404 Page */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
