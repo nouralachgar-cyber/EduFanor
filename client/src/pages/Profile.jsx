@@ -10,7 +10,7 @@ import {
   Sparkles,
   Camera,
   ShieldCheck,
-} from 'lucide-react';
+} from '../components/icons';
 
 const AVATARS = [
   'https://api.dicebear.com/7.x/bottts/svg?seed=Noura1',
@@ -73,8 +73,8 @@ export default function Profile() {
                     loading="lazy"
                   />
                 </div>
-                <span className="absolute -bottom-1 -end-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white shadow-md">
-                  <Camera className="h-4 w-4 text-amber-soft" />
+                <span className="absolute -bottom-1 -end-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-on-primary shadow-md">
+                  <Camera className="h-4 w-4 text-[#91C8E4] dark:text-[#F5FAFF]" />
                 </span>
               </div>
 
@@ -95,7 +95,7 @@ export default function Profile() {
 
             <div className="mt-6 space-y-2.5 border-t border-line pt-5">
               <label className="label">
-                <Sparkles className="h-4 w-4 text-accent" />
+                <Sparkles className="h-4 w-4 text-[#4682A9] dark:text-[#F5FAFF]" />
                 <span>{t('profilePage.chooseAvatar')}</span>
               </label>
               <div className="grid grid-cols-6 gap-2">

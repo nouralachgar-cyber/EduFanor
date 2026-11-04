@@ -14,7 +14,7 @@ import {
   ShieldCheck,
   Target,
   Trophy,
-} from 'lucide-react';
+} from '../../components/icons';
 import { adminApi, formatDate, formatDateTime, formatNumber, formatPercent, initials, localize, relativeTime } from '../../lib/admin';
 import { Badge, ConfirmDialog, EmptyState, ErrorState, LoadingState, Panel, StatCard } from '../../components/admin/ui';
 import Toast from '../../components/Toast';

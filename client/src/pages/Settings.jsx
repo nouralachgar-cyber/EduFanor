@@ -11,7 +11,7 @@ import {
   Sparkles,
   MonitorSmartphone,
   Languages,
-} from 'lucide-react';
+} from '../components/icons';
 import { useTheme } from '../context/ThemeContext';
 
 export default function Settings() {
@@ -56,7 +56,7 @@ export default function Settings() {
                 type="button"
                 onClick={() => i18n.changeLanguage('ar')}
                 className={`rounded-lg px-4 py-1.5 text-xs font-extrabold transition-colors ${
-                  isAr ? 'bg-primary text-white' : 'text-ink-muted hover:text-ink'
+                  isAr ? 'bg-primary text-on-primary' : 'text-ink-muted hover:text-ink'
                 }`}
               >
                 العربية
@@ -65,7 +65,7 @@ export default function Settings() {
                 type="button"
                 onClick={() => i18n.changeLanguage('en')}
                 className={`rounded-lg px-4 py-1.5 text-xs font-extrabold transition-colors ${
-                  !isAr ? 'bg-primary text-white' : 'text-ink-muted hover:text-ink'
+                  !isAr ? 'bg-primary text-on-primary' : 'text-ink-muted hover:text-ink'
                 }`}
               >
                 English
@@ -138,7 +138,7 @@ export default function Settings() {
                 </p>
               </div>
             </div>
-            <Sparkles className="h-5 w-5 shrink-0 text-accent" />
+            <Sparkles className="h-5 w-5 shrink-0 text-[#4682A9] dark:text-[#F5FAFF]" />
           </div>
         </section>
 
@@ -156,7 +156,7 @@ export default function Settings() {
         </section>
 
         <p className="flex items-start gap-2 rounded-2xl border border-line bg-surface-muted px-4 py-3 text-[11px] leading-relaxed text-ink-muted">
-          <Globe className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+          <Globe className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#4682A9] dark:text-[#F5FAFF]" />
           {t('footer.disclaimer')}
         </p>
       </div>

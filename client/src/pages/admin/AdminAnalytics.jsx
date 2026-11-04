@@ -10,7 +10,7 @@ import {
   TrendingUp,
   UserPlus,
   Users,
-} from 'lucide-react';
+} from '../../components/icons';
 import { adminApi, formatNumber, formatPercent, localize } from '../../lib/admin';
 import { ErrorState, LoadingState, PageHeader, Panel, StatCard, EmptyState } from '../../components/admin/ui';
 import { DistributionBars, LineChart } from '../../components/admin/charts';
@@ -74,7 +74,7 @@ export default function AdminAnalytics() {
                   type="button"
                   onClick={() => setRange(option)}
                   className={`rounded-lg px-2.5 py-1.5 text-[10px] font-extrabold transition-colors ${
-                    range === option ? 'bg-primary text-white' : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
+                    range === option ? 'bg-primary text-on-primary' : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
                   }`}
                 >
                   {t('admin.overview.days', { count: option })}
@@ -119,9 +119,9 @@ export default function AdminAnalytics() {
           <LineChart
             data={activity}
             series={[
-              { key: 'courseStarts', label: t('admin.analytics.starts'), color: '#24483f' },
-              { key: 'courseCompletions', label: t('admin.analytics.completionsShort'), color: '#e88736' },
-              { key: 'quizAttempts', label: t('admin.analytics.quizAttemptsShort'), color: '#789b83' },
+              { key: 'courseStarts', label: t('admin.analytics.starts'), color: '#4682A9' },
+              { key: 'courseCompletions', label: t('admin.analytics.completionsShort'), color: '#4682A9' },
+              { key: 'quizAttempts', label: t('admin.analytics.quizAttemptsShort'), color: '#4682A9' },
             ]}
             language={i18n.language}
             height={230}
@@ -131,7 +131,7 @@ export default function AdminAnalytics() {
         <Panel title={t('admin.analytics.registrationTrend')}>
           <LineChart
             data={registrations}
-            series={[{ key: 'count', label: t('admin.analytics.registrations'), color: '#9c4a3c' }]}
+            series={[{ key: 'count', label: t('admin.analytics.registrations'), color: '#4682A9' }]}
             language={i18n.language}
             height={230}
           />

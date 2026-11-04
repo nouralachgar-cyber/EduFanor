@@ -14,8 +14,8 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     if (!container) return;
 
     // === Color scheme ===
-    const ambientColor = isDark ? '#24483F' : '#24483F';
-    const keyLightColor = isDark ? '#E69A55' : '#E69A55';
+    const ambientColor = isDark ? '#4682A9' : '#4682A9';
+    const keyLightColor = isDark ? '#4682A9' : '#4682A9';
 
     // === Three.js setup ===
     const renderer = new THREE.WebGLRenderer({
@@ -39,7 +39,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     const ambientLight = new THREE.AmbientLight(ambientColor, 0.5);
     scene.add(ambientLight);
 
-    // Key light (warm orange)
+    // Key light (soft pink)
     const keyLight = new THREE.DirectionalLight(keyLightColor, 1);
     keyLight.position.set(3, 5, 4);
     keyLight.castShadow = true;
@@ -57,7 +57,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     const kitBody = new THREE.Mesh(
       new THREE.BoxGeometry(1.9, 1.1, 0.7),
       new THREE.MeshStandardMaterial({
-        color: isDark ? '#17231F' : '#24483F',
+        color: isDark ? '#4682A9' : '#4682A9',
         roughness: 0.35,
         metalness: 0.02,
       })
@@ -71,7 +71,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     const lid = new THREE.Mesh(
       new THREE.BoxGeometry(1.9, 0.08, 0.7),
       new THREE.MeshStandardMaterial({
-        color: '#24483F',
+        color: '#4682A9',
         roughness: 0.5,
         metalness: 0.02,
       })

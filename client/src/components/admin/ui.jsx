@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { AlertTriangle, ChevronLeft, ChevronRight, Inbox, Loader2, X } from 'lucide-react';
+import { AlertTriangle, ChevronLeft, ChevronRight, Inbox, Loader2, X } from '../icons';
 import { formatNumber } from '../../lib/admin';
 
 const tones = {

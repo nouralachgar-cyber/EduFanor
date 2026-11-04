@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Lock, Mail, AlertCircle, Eye, EyeOff, ArrowRight, ArrowLeft, ShieldCheck, Info } from 'lucide-react';
+import { Lock, Mail, AlertCircle, Eye, EyeOff, ArrowRight, ArrowLeft, ShieldCheck, Info } from '../components/icons';
 import { AuthContext } from '../context/AuthContext';
 import AuthLayout from '../components/AuthLayout';
 
@@ -115,14 +115,14 @@ export default function Login() {
 
         <div className="mt-6 border-t border-line pt-4 text-center text-xs text-ink-muted">
           {t('auth.noAccount')}{' '}
-          <Link to="/register" className="font-extrabold text-brand-ink hover:text-accent">
+          <Link to="/register" className="font-extrabold text-brand-ink hover:text-[#4682A9] dark:hover:text-[#4682A9]">
             {t('auth.signUp')}
           </Link>
         </div>
       </div>
 
       <p className="mt-4 flex items-start gap-2 rounded-xl border border-line bg-surface-muted px-3.5 py-3 text-[10px] leading-relaxed text-ink-muted">
-        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#4682A9] dark:text-[#F5FAFF]" />
         {isAr
           ? 'نسخة تجريبية: تُحفظ الجلسة محلياً في هذا المتصفح ولا تُرسل بيانات الدخول إلى خادم.'
           : 'Demo build: your session is stored locally in this browser and credentials are not sent to a server.'}

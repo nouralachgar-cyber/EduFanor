@@ -29,7 +29,7 @@ import {
   Upload,
   Video,
   MonitorPlay,
-} from 'lucide-react';
+} from '../icons';
 import { adminApi } from '../../lib/admin';
 import { extractYouTubeId } from '../LessonBlocks';
 

@@ -11,7 +11,7 @@ import {
   ShieldCheck,
   UserRound,
   Users,
-} from 'lucide-react';
+} from '../../components/icons';
 import { adminApi, formatDate, formatNumber, formatPercent, initials, relativeTime } from '../../lib/admin';
 import {
   Badge,

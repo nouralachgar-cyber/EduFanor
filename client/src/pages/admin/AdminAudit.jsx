@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RefreshCw, ScrollText, ShieldCheck } from 'lucide-react';
+import { RefreshCw, ScrollText, ShieldCheck } from '../../components/icons';
 import { adminApi, formatNumber, initials, relativeTime } from '../../lib/admin';
 import { Badge, EmptyState, ErrorState, LoadingState, PageHeader, Pagination, Panel } from '../../components/admin/ui';
 

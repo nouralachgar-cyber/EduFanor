@@ -12,7 +12,7 @@ import {
   Sparkles,
   Lock,
   PlayCircle
-} from 'lucide-react';
+} from '../components/icons';
 import Toast from '../components/Toast';
 import LessonBlocks from '../components/LessonBlocks';
 import { useCatalog } from '../context/CatalogContext';
@@ -118,7 +118,7 @@ export default function Lesson() {
         <div className="flex flex-col justify-between gap-3 border-b border-line pb-4 sm:flex-row sm:items-center">
           <Link
             to="/courses"
-            className="inline-flex items-center gap-2 text-sm font-bold text-brand-ink transition-colors hover:text-accent"
+            className="inline-flex items-center gap-2 text-sm font-bold text-brand-ink transition-colors hover:text-[#4682A9] dark:hover:text-[#4682A9]"
           >
             {isAr ? <ArrowRight className="h-4 w-4" /> : <ArrowLeft className="h-4 w-4" />}
             <span>{t('lessonPage.backToCourses')}</span>
@@ -140,7 +140,7 @@ export default function Lesson() {
         <header className="grid gap-6 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-8">
             <span className="chip bg-surface-muted text-ink-muted">
-              <Sparkles className="h-3.5 w-3.5 text-accent" />
+              <Sparkles className="h-3.5 w-3.5 text-[#4682A9] dark:text-[#F5FAFF]" />
               {isAr ? 'درس تفاعلي متقدم' : 'Interactive advanced lesson'}
             </span>
             <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
@@ -150,11 +150,11 @@ export default function Lesson() {
           </div>
           <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
             <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-card px-3.5 py-2 text-[11px] font-bold text-ink-muted">
-              <Clock className="h-3.5 w-3.5 text-accent" />
+              <Clock className="h-3.5 w-3.5 text-[#4682A9] dark:text-[#F5FAFF]" />
               {course.duration}
             </span>
             <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-card px-3.5 py-2 text-[11px] font-bold text-ink-muted">
-              <Layers className="h-3.5 w-3.5 text-accent" />
+              <Layers className="h-3.5 w-3.5 text-[#4682A9] dark:text-[#F5FAFF]" />
               {steps.length} {isAr ? 'خطوات' : 'steps'}
             </span>
           </div>
@@ -196,7 +196,7 @@ export default function Lesson() {
             {activeStep && (
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
-                  <div className="icon-box h-12 w-12 shrink-0 bg-primary text-white">
+                  <div className="icon-box h-12 w-12 shrink-0 bg-primary text-on-primary">
                     <span className="text-lg font-extrabold">{currentStep + 1}</span>
                   </div>
                   <div>
@@ -245,7 +245,7 @@ export default function Lesson() {
             {activeStep?.quiz && (
               <div className="mt-6 rounded-2xl border border-line bg-surface-muted/60 p-5 space-y-4">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-accent" />
+                  <Sparkles className="h-4 w-4 text-[#4682A9] dark:text-[#F5FAFF]" />
                   <h3 className="text-xs font-extrabold uppercase tracking-wider text-ink">
                     {isAr ? 'اختبار استيعاب الخطوة' : 'Step Comprehension Quiz'}
                   </h3>
@@ -297,7 +297,7 @@ export default function Lesson() {
                       <div className="flex items-center gap-2.5">
                         <span
                           className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[9px] ${
-                            index === currentStep ? 'bg-primary text-white' : 'bg-surface-muted'
+                            index === currentStep ? 'bg-primary text-on-primary' : 'bg-surface-muted'
                           }`}
                         >
                           {index + 1}

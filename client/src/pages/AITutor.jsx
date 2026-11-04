@@ -14,7 +14,7 @@ import {
   ArrowRight,
   ArrowLeft,
   Clock,
-} from 'lucide-react';
+} from '../components/icons';
 import Toast from '../components/Toast';
 
 export default function AITutor() {
@@ -40,7 +40,7 @@ export default function AITutor() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 88% 10%, rgba(230,154,85,0.14), transparent 46%), radial-gradient(circle at 4% 100%, rgba(120,155,131,0.18), transparent 52%)',
+                'radial-gradient(circle at 88% 10%, rgba(70, 130, 169,0.14), transparent 46%), radial-gradient(circle at 4% 100%, rgba(70, 130, 169,0.18), transparent 52%)',
             }}
             aria-hidden="true"
           />
@@ -50,7 +50,7 @@ export default function AITutor() {
                 <Sparkles className="h-3.5 w-3.5" />
                 {t('aiTutorPage.badge')}
               </span>
-              <span className="chip bg-amber/15 text-accent">
+              <span className="chip bg-amber/15 text-[#4682A9] dark:text-[#F5FAFF]">
                 <Clock className="h-3 w-3" />
                 {t('aiTutorPage.statusChip')}
               </span>
@@ -66,13 +66,13 @@ export default function AITutor() {
 
         <section className="card space-y-6 p-6 sm:p-8">
           <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">
-            <BookOpen className="h-4 w-4 text-accent" />
+            <BookOpen className="h-4 w-4 text-[#4682A9] dark:text-[#F5FAFF]" />
             <span>{t('aiTutorPage.previewLabel')}</span>
           </div>
 
           <div className="flex items-start gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-white">
-              <Bot className="h-4 w-4 text-amber-soft" />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <Bot className="h-4 w-4 text-[#91C8E4] dark:text-[#F5FAFF]" />
             </span>
             <div className="max-w-[85%] rounded-2xl rounded-ts-sm border border-line bg-surface-muted px-4 py-3">
               <p className="text-xs leading-relaxed text-ink">{t('aiTutorPage.botGreeting')}</p>
@@ -136,7 +136,7 @@ export default function AITutor() {
 
         <section className="card space-y-4 p-6">
           <div className="flex items-center gap-3">
-            <span className="icon-box h-10 w-10 bg-amber/15 text-accent">
+            <span className="icon-box h-10 w-10 bg-amber/15 text-[#4682A9] dark:text-[#F5FAFF]">
               <Zap className="h-5 w-5" />
             </span>
             <div>

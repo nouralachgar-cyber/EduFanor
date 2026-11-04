@@ -9,7 +9,7 @@ import {
   Lightbulb,
   ShieldCheck,
   Play,
-} from 'lucide-react';
+} from './icons';
 
 export function extractYouTubeId(url) {
   if (!url) return null;
@@ -108,7 +108,7 @@ function YouTubeEmbed({ src, title, fallbackMessage }) {
         href={`https://www.youtube.com/watch?v=${videoId}`}
         target="_blank"
         rel="noreferrer"
-        className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-ink transition-colors hover:text-accent"
+        className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-ink transition-colors hover:text-[#4682A9] dark:hover:text-[#4682A9]"
       >
         <ExternalLink className="h-3.5 w-3.5" />
         Watch on YouTube
@@ -204,9 +204,9 @@ export function LessonBlockRenderer({ block, isAr }) {
     if (!text) return null;
     return (
       <div className="my-6 flex items-start gap-3 rounded-2xl border border-accent/30 bg-amber-soft/20 p-4">
-        <Info className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+        <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#4682A9] dark:text-[#F5FAFF]" />
         <div>
-          <p className="mb-1 text-xs font-extrabold text-accent">{isAr ? 'معلومات مهمة' : 'Important'}</p>
+          <p className="mb-1 text-xs font-extrabold text-[#4682A9] dark:text-[#F5FAFF]">{isAr ? 'معلومات مهمة' : 'Important'}</p>
           <p className="text-sm leading-relaxed text-ink">{text}</p>
         </div>
       </div>
@@ -229,7 +229,7 @@ export function LessonBlockRenderer({ block, isAr }) {
     const text = textOf(content, isAr);
     if (!text) return null;
     return (
-      <div className="my-6 flex items-start gap-3 rounded-2xl border border-freshGreen/40 bg-brand-soft p-4">
+      <div className="my-6 flex items-start gap-3 rounded-2xl border border-elegantPink/40 bg-brand-soft p-4">
         <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary dark:text-brand-ink" />
         <div>
           <p className="mb-1 text-xs font-extrabold text-ink">{isAr ? 'معلومات السلامة' : 'Safety information'}</p>
@@ -242,10 +242,10 @@ export function LessonBlockRenderer({ block, isAr }) {
     const text = textOf(content, isAr);
     if (!text) return null;
     return (
-      <div className="my-6 flex items-start gap-3 rounded-2xl border border-freshGreen/30 bg-brand-soft/70 p-4">
-        <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-freshGreen" />
+      <div className="my-6 flex items-start gap-3 rounded-2xl border border-elegantPink/30 bg-brand-soft/70 p-4">
+        <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-elegantPink" />
         <div>
-          <p className="mb-1 text-xs font-extrabold text-freshGreen">{isAr ? 'نصيحة' : 'Tip'}</p>
+          <p className="mb-1 text-xs font-extrabold text-elegantPink">{isAr ? 'نصيحة' : 'Tip'}</p>
           <p className="text-sm leading-relaxed text-ink">{text}</p>
         </div>
       </div>
@@ -286,7 +286,7 @@ export function LessonBlockRenderer({ block, isAr }) {
           return (
             <div key={index} className="relative flex gap-4 rounded-2xl border border-line bg-card p-4">
               <div className="flex flex-col items-center gap-2">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary font-extrabold text-white">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary font-extrabold text-on-primary">
                   {index + 1}
                 </div>
                 {index < steps.length - 1 && <div className="hidden w-px flex-1 bg-line sm:block" />}

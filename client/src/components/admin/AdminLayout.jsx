@@ -18,7 +18,7 @@ import {
   Sun,
   Users,
   X,
-} from 'lucide-react';
+} from '../icons';
 import { AuthContext } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { initials } from '../../lib/admin';
@@ -61,7 +61,7 @@ function SidebarContent({ onNavigate }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-3 px-5 pt-6 pb-5">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber text-primary shadow-sm">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#4682A9] text-[#4682A9] shadow-[0_10px_25px_-12px_rgba(70, 130, 169,0.9)]">
           <ShieldCheck className="h-5 w-5" />
         </span>
         <div className="min-w-0">
@@ -77,8 +77,8 @@ function SidebarContent({ onNavigate }) {
       <div className="mx-3 mb-4 rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2">
         <span className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/60">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-60" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-300" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4682A9] opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4682A9]" />
           </span>
           {t('admin.shell.secureArea')}
         </span>
@@ -113,7 +113,7 @@ function SidebarContent({ onNavigate }) {
                           <Icon className="h-3.5 w-3.5" />
                         </span>
                         <span className="flex-1">{t(item.label)}</span>
-                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-amber" />}
+                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#4682A9] dark:bg-[#4682A9]" />}
                       </>
                     )}
                   </NavLink>
@@ -126,7 +126,7 @@ function SidebarContent({ onNavigate }) {
 
       <div className="border-t border-white/10 p-3">
         <div className="mb-2 flex items-center gap-2.5 rounded-xl bg-white/[0.06] px-3 py-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber text-xs font-extrabold text-primary">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#4682A9] text-xs font-extrabold text-[#4682A9]">
             {initials(user?.name)}
           </span>
           <div className="min-w-0 flex-1">
@@ -211,7 +211,7 @@ export default function AdminLayout() {
         <div className="fixed inset-0 z-[70] lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-[#0f1712]/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#4682A9]/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
             aria-label={t('admin.shell.closeMenu')}
           />

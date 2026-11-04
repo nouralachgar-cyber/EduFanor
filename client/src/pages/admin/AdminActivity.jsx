@@ -8,7 +8,7 @@ import {
   GraduationCap,
   RefreshCw,
   UserRound,
-} from 'lucide-react';
+} from '../../components/icons';
 import { adminApi, formatDate, formatNumber, formatPercent, localize, relativeTime } from '../../lib/admin';
 import { Badge, EmptyState, ErrorState, LoadingState, PageHeader, Pagination, Panel } from '../../components/admin/ui';
 
@@ -91,7 +91,7 @@ export default function AdminActivity() {
         <button
           type="button"
           onClick={() => setType('')}
-          className={`chip border ${type === '' ? 'border-primary bg-primary text-white' : 'border-line bg-card text-ink-muted hover:bg-surface-muted'}`}
+          className={`chip border ${type === '' ? 'border-primary bg-primary text-on-primary' : 'border-line bg-card text-ink-muted hover:bg-surface-muted'}`}
         >
           {t('admin.activity.allTypes')}
         </button>
@@ -102,7 +102,7 @@ export default function AdminActivity() {
               key={item}
               type="button"
               onClick={() => setType(item)}
-              className={`chip border ${type === item ? 'border-primary bg-primary text-white' : 'border-line bg-card text-ink-muted hover:bg-surface-muted'}`}
+              className={`chip border ${type === item ? 'border-primary bg-primary text-on-primary' : 'border-line bg-card text-ink-muted hover:bg-surface-muted'}`}
             >
               <Icon className="h-3 w-3" /> {t(labels[item])}
             </button>

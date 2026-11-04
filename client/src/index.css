@@ -7,87 +7,107 @@
   --font-display: "Fraunces", "Tajawal", ui-serif, Georgia, "Times New Roman", serif;
   --font-arabic: "Tajawal", "Plus Jakarta Sans", ui-sans-serif, sans-serif;
 
-  /* New EduFanor Color Identity */
-  --color-forest-green: #24483F;
-  --color-fresh-green: #789B83;
-  --color-warm-orange: #E69A55;
-  --color-soft-orange: #F2C49B;
-  --color-warm-white: #FAF8F2;
-  --color-light-beige: #E8EFE7;
-  --color-deep-charcoal: #26332F;
+  /* EduFanor Grey & Blue identity */
+  --color-navy: #4B164C;
+  --color-navy-deep: #4B164C;
+  --color-navy-ink: #4B164C;
+  --color-slate-blue: #DD88CF;
+  --color-medical-teal: #4B164C;
+  --color-teal-strong: #4B164C;
+  --color-teal-light: #DD88CF;
+  --color-light-blue-grey: #F5F5F5;
+  --color-alert-red: #D94343;
+  --color-soft-blue-grey: #DD88CF;
+  --color-sage: #DD88CF;
+  --color-panel-soft: #DD88CF;
+  --color-panel-strong: #DD88CF;
 
-  --color-primary: #24483F;
-  --color-primary-hover: #1b3a32;
-  --color-brand: #24483F;
-  --color-brand-ink: #24483F;
-  --color-brand-soft: #E9F0EA;
-  --color-teal: #789B83;
-  --color-teal-deep: #24483F;
-  --color-accent: #E69A55;
-  --color-amber: #E69A55;
-  --color-amber-soft: #F2C49B;
+  --color-primary: #4B164C;
+  --color-primary-hover: #DD88CF;
+  --color-on-primary: #FFFFFF;
+  --color-brand: #4B164C;
+  --color-brand-ink: #4B164C;
+  --color-brand-soft: #DD88CF;
+  --color-teal: #4B164C;
+  --color-teal-deep: #4B164C;
+  --color-accent: #DD88CF;
+  --color-amber: #4B164C;
+  --color-amber-soft: #DD88CF;
 
-  --color-cream: #FAF8F2;
-  --color-sand: #E8EFE7;
-  --color-beige: #FAF8F2;
-  --color-sage: #789B83;
-  --color-navy: #24483F;
-  --color-burgundy: #d97757;
+  --color-cream: #F5F5F5;
+  --color-sand: #DD88CF;
+  --color-beige: #F5F5F5;
+  --color-sage-green: #DD88CF;
+  --color-navy-pure: #4B164C;
+  --color-burgundy: #4B164C;
 
-  --color-ink: #26332F;
-  --color-ink-muted: #5f6e68;
-  --color-surface: #FFFFFF;
-  --color-card: #ffffff;
-  --color-surface-muted: #F2F5F1;
-  --color-line: #DCE5DD;
-  --color-line-strong: #C3D2C7;
+  --color-ink: #4B164C;
+  --color-ink-muted: #DD88CF;
+  --color-surface: #F5F5F5;
+  --color-card: #FFFFFF;
+  --color-surface-muted: #DD88CF;
+  --color-line: #DD88CF;
+  --color-line-strong: #DD88CF;
 
-  --color-success-soft: #EAF2EC;
-  --color-success-ink: #24483F;
-  --color-danger: #b42318;
-  --color-danger-soft: #fbeae6;
+  --color-success-soft: #EAF3EE;
+  --color-success-ink: #4F7A63;
+  --color-danger: #D94343;
+  --color-danger-soft: #FAE7E7;
 
-  --shadow-pop: 0 18px 50px -28px rgba(36, 72, 63, 0.35);
-  --shadow-lift: 0 30px 70px -34px rgba(36, 72, 63, 0.42);
+  --shadow-pop: 0 18px 50px -28px rgba(75, 22, 76, 0.35);
+  --shadow-lift: 0 30px 70px -34px rgba(75, 22, 76, 0.42);
 }
 
 .dark {
-  --color-primary: #789B83;
-  --color-primary-hover: #8fb09a;
-  --color-brand: #789B83;
-  --color-brand-ink: #c1d0c5;
-  --color-brand-soft: #2C4036;
-  --color-teal: #8fb09a;
-  --color-teal-deep: #c1d0c5;
-  --color-accent: #E69A55;
-  --color-amber: #E69A55;
-  --color-amber-soft: #5A4028;
+  --color-navy: #DD88CF;
+  --color-navy-deep: #4B164C;
+  --color-navy-ink: #F8E7F6;
+  --color-slate-blue: #F8E7F6;
+  --color-medical-teal: #DD88CF;
+  --color-teal-strong: #DD88CF;
+  --color-teal-light: #F8E7F6;
+  --color-light-blue-grey: #4B164C;
+  --color-alert-red: #E57A7A;
+  --color-soft-blue-grey: #47304B;
+  --color-sage: #DD88CF;
+  --color-panel-soft: #36213A;
+  --color-panel-strong: #47304B;
 
-  --color-cream: #17231F;
-  --color-sand: #1D2B25;
-  --color-beige: #1D2B25;
-  --color-sage: #8fb09a;
-  --color-navy: #111A16;
-  --color-burgundy: #d98875;
+  --color-primary: #DD88CF;
+  --color-primary-hover: #F8E7F6;
+  --color-on-primary: #4B164C;
+  --color-brand: #DD88CF;
+  --color-brand-ink: #DD88CF;
+  --color-brand-soft: #36213A;
+  --color-teal: #DD88CF;
+  --color-teal-deep: #FFFFFF;
+  --color-accent: #DD88CF;
+  --color-amber: #DD88CF;
+  --color-amber-soft: #36213A;
 
-  --color-ink: #FFFFFF;
-  --color-ink-muted: #C1D0C5;
-  --color-surface: #17231F;
-  --color-card: #24352E;
-  --color-surface-muted: #1D2B25;
-  --color-line: #35483F;
-  --color-line-strong: #4a6154;
+  --color-cream: #4B164C;
+  --color-sand: #36213A;
+  --color-beige: #4B164C;
+  --color-sage-green: #DD88CF;
+  --color-navy-pure: #4B164C;
+  --color-burgundy: #DD88CF;
 
-  --color-success-soft: #23382D;
-  --color-success-ink: #b7d8c0;
-  --color-danger: #f0a79a;
-  --color-danger-soft: #3a211d;
+  --color-ink: #F8E7F6;
+  --color-ink-muted: #F8E7F6;
+  --color-surface: #4B164C;
+  --color-card: #36213A;
+  --color-surface-muted: #4B164C;
+  --color-line: #47304B;
+  --color-line-strong: #DD88CF;
 
-  --shadow-pop: 0 20px 55px -28px rgba(0, 0, 0, 0.65);
-  --shadow-lift: 0 32px 80px -34px rgba(0, 0, 0, 0.75);
-}
+  --color-success-soft: #1F3F2E;
+  --color-success-ink: #B7D8C0;
+  --color-danger: #E57A7A;
+  --color-danger-soft: #3D2424;
 
-@layer base {
+  --shadow-pop: 0 20px 55px -28px rgba(0, 0, 0, 0.7);
+  --shadow-lift: 0 32px 80px -34px rgba(0, 0, 0, 0.78);
+}@layer base {
   *,
   *::before,
   *::after {
@@ -130,12 +150,12 @@
   }
 
   ::selection {
-    background: rgba(230, 154, 85, 0.28);
+    background: rgba(75, 22, 76, 0.3);
     color: inherit;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-amber);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
     border-radius: 6px;
   }
@@ -180,7 +200,7 @@
     border-radius: 1.5rem;
     border: 1px solid var(--color-line);
     background-color: var(--color-card);
-    box-shadow: 0 1px 0 rgba(23, 61, 53, 0.03);
+    box-shadow: 0 1px 0 rgba(75, 22, 76, 0.05);
   }
 
   .card-hover {
@@ -216,8 +236,8 @@
 
   .btn-primary {
     background-color: var(--color-primary);
-    color: #fcfaf6;
-    box-shadow: 0 10px 24px -16px rgba(23, 61, 53, 0.8);
+    color: var(--color-on-primary);
+    box-shadow: 0 12px 26px -14px rgba(75, 22, 76, 0.5);
   }
 
   .btn-primary:hover {
@@ -305,7 +325,7 @@
 
   .input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(120, 155, 131, 0.18);
+    box-shadow: 0 0 0 4px rgba(75, 22, 76, 0.22);
   }
 
   .input:disabled {
@@ -380,8 +400,8 @@
   .app-shell {
     min-height: 100vh;
     background:
-      radial-gradient(circle at 100% 0%, rgba(120, 155, 131, 0.12), transparent 38%),
-      radial-gradient(circle at 0% 100%, rgba(230, 154, 85, 0.08), transparent 42%),
+      radial-gradient(circle at 100% 0%, rgba(75, 22, 76, 0.16), transparent 38%),
+      radial-gradient(circle at 0% 100%, rgba(75, 22, 76, 0.08), transparent 42%),
       var(--color-surface);
   }
 }
@@ -448,7 +468,7 @@
       to bottom,
       transparent 0,
       transparent 31px,
-      rgba(120, 155, 131, 0.12) 32px
+      rgba(75, 22, 76, 0.18) 32px
     );
     background-size: 100% 32px;
   }

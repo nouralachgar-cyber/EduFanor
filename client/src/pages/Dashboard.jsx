@@ -22,7 +22,7 @@ import {
   Target,
   BookOpen,
   Sparkles,
-} from 'lucide-react';
+} from '../components/icons';
 import {
   getActivityDates,
   getLearningStreak,
@@ -185,7 +185,7 @@ export default function Dashboard() {
       icon: Flame,
       label: t('dashboard.stats.learningStreak'),
       value: `${streak} ${t('dashboard.stats.days')}`,
-      color: 'bg-amber/15 text-accent',
+      color: 'bg-amber/15 text-[#4682A9] dark:text-[#F5FAFF]',
     },
   ];
 
@@ -197,7 +197,7 @@ export default function Dashboard() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 88% 12%, rgba(230,154,85,0.14), transparent 46%), radial-gradient(circle at 6% 96%, rgba(120,155,131,0.18), transparent 52%)',
+                'radial-gradient(circle at 88% 12%, rgba(70, 130, 169,0.14), transparent 46%), radial-gradient(circle at 6% 96%, rgba(70, 130, 169,0.18), transparent 52%)',
             }}
             aria-hidden="true"
           />
@@ -209,7 +209,7 @@ export default function Dashboard() {
               </span>
               <h1 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
                 {t('dashboard.welcomeBack')}{' '}
-                <span className="italic text-accent">{firstName}</span>
+                <span className="italic text-[#4682A9] dark:text-[#F5FAFF]">{firstName}</span>
               </h1>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
                 {t('dashboard.welcomeSubtitle')}
@@ -227,7 +227,7 @@ export default function Dashboard() {
                   onClick={() => setGuideModalOpen(true)}
                   className="btn-secondary px-5"
                 >
-                  <Zap className="h-4 w-4 text-accent" />
+                  <Zap className="h-4 w-4 text-[#4682A9] dark:text-[#F5FAFF]" />
                   <span>{t('quickGuide.btnText')}</span>
                 </button>
               </div>
@@ -247,7 +247,7 @@ export default function Dashboard() {
                   </p>
                   <Link
                     to={`/lesson?id=${nextCourse.id}`}
-                    className="mt-3 inline-flex items-center gap-2 text-[11px] font-extrabold text-brand-ink hover:text-accent"
+                    className="mt-3 inline-flex items-center gap-2 text-[11px] font-extrabold text-brand-ink hover:text-[#4682A9] dark:hover:text-[#4682A9]"
                   >
                     {isAr ? 'افتح الدرس' : 'Open lesson'}
                     {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
@@ -370,7 +370,7 @@ export default function Dashboard() {
                     </span>
                     <Link
                       to={`/lesson?id=${course.id}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-extrabold text-brand-ink transition-colors hover:text-accent"
+                      className="inline-flex items-center gap-1.5 text-xs font-extrabold text-brand-ink transition-colors hover:text-[#4682A9] dark:hover:text-[#4682A9]"
                     >
                       {completed
                         ? t('coursesPage.continueCourse')
@@ -387,8 +387,8 @@ export default function Dashboard() {
         <section className="grid gap-4 lg:grid-cols-12">
           <div className="card space-y-4 p-6 lg:col-span-7">
             <div className="flex items-start gap-3">
-              <div className="icon-box h-10 w-10 bg-primary text-white">
-                <Target className="h-5 w-5 text-amber-soft" />
+              <div className="icon-box h-10 w-10 bg-primary text-on-primary">
+                <Target className="h-5 w-5 text-[#91C8E4] dark:text-[#F5FAFF]" />
               </div>
               <div>
                 <span className="chip bg-brand-soft text-brand-ink">{t('challenge.title')}</span>
@@ -438,7 +438,7 @@ export default function Dashboard() {
           <div className="grid gap-4 lg:col-span-5">
             <Link to="/quizzes" className="card-hover card flex flex-col gap-3 p-6">
               <div className="flex items-center justify-between">
-                <span className="icon-box h-10 w-10 bg-amber/15 text-accent">
+                <span className="icon-box h-10 w-10 bg-amber/15 text-[#4682A9] dark:text-[#F5FAFF]">
                   <Award className="h-5 w-5" />
                 </span>
                 <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">
@@ -455,10 +455,10 @@ export default function Dashboard() {
 
             <Link to="/ai-tutor" className="card-hover card flex flex-col gap-3 p-6">
               <div className="flex items-center justify-between">
-                <span className="icon-box h-10 w-10 bg-primary text-white">
-                  <Bot className="h-5 w-5 text-amber-soft" />
+                <span className="icon-box h-10 w-10 bg-primary text-on-primary">
+                  <Bot className="h-5 w-5 text-[#91C8E4] dark:text-[#F5FAFF]" />
                 </span>
-                <span className="chip bg-amber/15 text-accent">{t('aiTutorPage.statusChip')}</span>
+                <span className="chip bg-amber/15 text-[#4682A9] dark:text-[#F5FAFF]">{t('aiTutorPage.statusChip')}</span>
               </div>
               <h3 className="text-base font-extrabold text-ink">{t('dashboard.aiSection.title')}</h3>
               <p className="text-xs leading-relaxed text-ink-muted">{t('dashboard.aiSection.desc')}</p>
@@ -471,7 +471,7 @@ export default function Dashboard() {
         </section>
 
         <p className="flex items-start gap-2 rounded-2xl border border-line bg-surface-muted px-4 py-3 text-[11px] leading-relaxed text-ink-muted">
-          <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+          <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#4682A9] dark:text-[#F5FAFF]" />
           {t('footer.disclaimer')}
         </p>
       </div>
@@ -491,7 +491,7 @@ export default function Dashboard() {
           >
             <div className="flex items-center justify-between border-b border-line pb-4">
               <div className="flex items-center gap-2">
-                <Zap className="h-5 w-5 text-accent" />
+                <Zap className="h-5 w-5 text-[#4682A9] dark:text-[#F5FAFF]" />
                 <h3 id="quick-guide-title" className="text-lg font-extrabold text-ink">
                   {t('quickGuide.title')}
                 </h3>

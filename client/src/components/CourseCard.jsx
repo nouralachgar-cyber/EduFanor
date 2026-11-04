@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight, Clock, BookOpen, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Clock, BookOpen, CheckCircle2 } from './icons';
 import CourseArt from './CourseArt';
 
 export default function CourseCard({ course, completed = false }) {

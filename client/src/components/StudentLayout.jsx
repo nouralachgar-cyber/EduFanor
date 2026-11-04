@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LayoutDashboard, BookOpen, Award, HelpCircle, Bot } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Award, HelpCircle, Bot } from './icons';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
 import Footer from './Footer';

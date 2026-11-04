@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
 } from 'react-router-dom';
+
+import Preloader from './components/Preloader';
 
 import PublicLandingPage from './pages/PublicLandingPage';
 import Login from './pages/Login';
@@ -65,8 +67,11 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const [introDone, setIntroDone] = useState(false);
+
   return (
     <Router>
+      {!introDone && <Preloader onDone={() => setIntroDone(true)} />}
       <ScrollToTop />
 
       <Routes>

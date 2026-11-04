@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { 
   ShieldCheck, ArrowLeft, Image as ImageIcon, Video, 
   Plus, Trash2, Save, FileText, CheckCircle2, Lock 
-} from 'lucide-react';
+} from '../../components/icons';
 
 export default function AdminLessonEditor() {
   const { i18n } = useTranslation();
@@ -89,23 +89,23 @@ export default function AdminLessonEditor() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FCFAF6] dark:bg-[#191F1B] text-[#24483F] dark:text-[#E7DFD1] p-6 md:p-12 font-sans">
+    <div className="min-h-screen bg-[#F5F5F5] dark:bg-[#1A3A52] text-[#2D5A7B] dark:text-[#F5FAFF] p-6 md:p-12 font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Header */}
-        <div className="flex items-center justify-between pb-5 border-b border-[#E7DFD1] dark:border-[#343C33]">
+        <div className="flex items-center justify-between pb-5 border-b border-[#749BC2] dark:border-[#749BC2]">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F59E42] text-white shadow-lg">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#4682A9] text-[#4682A9] shadow-[0_14px_34px_-14px_rgba(70, 130, 169,0.9)]">
               <ShieldCheck className="h-7 w-7" />
             </div>
             <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#F59E42]">EduFanor Studio</span>
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#4682A9]">EduFanor Studio</span>
               <h1 className="text-2xl font-black tracking-tight">استوديو كتابة الدروس (Bilingual Lesson Studio)</h1>
             </div>
           </div>
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-full border text-xs font-bold transition-all hover:bg-[#F5F0E7] dark:hover:bg-[#242D26] border-[#24483F] dark:border-[#789B83]"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full border text-xs font-bold transition-all hover:bg-[#91C8E4] dark:hover:bg-[#749BC2] border-[#4682A9]/40 dark:border-[#4682A9]/50 text-[#4682A9] dark:text-[#91C8E4]"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>رجوع</span>
@@ -115,8 +115,8 @@ export default function AdminLessonEditor() {
         <form onSubmit={handleSave} className="space-y-8">
           
           {/* 1. Ma3lomat Asasiya (Arabic & English Titles) */}
-          <div className="bg-white dark:bg-[#242D26] p-6 md:p-8 rounded-3xl border border-[#E7DFD1] dark:border-[#343C33] shadow-sm space-y-5">
-            <div className="flex items-center gap-2 text-[#F59E42] font-bold text-sm">
+          <div className="bg-white dark:bg-[#234968] p-6 md:p-8 rounded-3xl border border-[#749BC2] dark:border-[#749BC2] shadow-sm space-y-5">
+            <div className="flex items-center gap-2 text-[#4682A9] dark:text-[#91C8E4] font-bold text-sm">
               <FileText className="w-5 h-5" />
               <span>1. المعلومات العامة بالعربية والإنجليزية</span>
             </div>
@@ -130,7 +130,7 @@ export default function AdminLessonEditor() {
                   value={courseData.title.ar}
                   onChange={(e) => setCourseData({ ...courseData, title: { ...courseData.title, ar: e.target.value } })}
                   placeholder="مثال: الإسعافات الأولية للحروق"
-                  className="w-full px-4 py-3.5 rounded-2xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                  className="w-full px-4 py-3.5 rounded-2xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                   dir="rtl"
                 />
               </div>
@@ -142,7 +142,7 @@ export default function AdminLessonEditor() {
                   value={courseData.title.en}
                   onChange={(e) => setCourseData({ ...courseData, title: { ...courseData.title, en: e.target.value } })}
                   placeholder="e.g. First Aid for Burns"
-                  className="w-full px-4 py-3.5 rounded-2xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                  className="w-full px-4 py-3.5 rounded-2xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                   dir="ltr"
                 />
               </div>
@@ -152,7 +152,7 @@ export default function AdminLessonEditor() {
                 <select
                   value={courseData.difficulty}
                   onChange={(e) => setCourseData({ ...courseData, difficulty: e.target.value })}
-                  className="w-full px-4 py-3.5 rounded-2xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                  className="w-full px-4 py-3.5 rounded-2xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                 >
                   <option value="beginner">مبتدئ (Beginner)</option>
                   <option value="intermediate">متوسط (Intermediate)</option>
@@ -167,15 +167,15 @@ export default function AdminLessonEditor() {
                   min="1"
                   value={courseData.estimatedMinutes}
                   onChange={(e) => setCourseData({ ...courseData, estimatedMinutes: e.target.value })}
-                  className="w-full px-4 py-3.5 rounded-2xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                  className="w-full px-4 py-3.5 rounded-2xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                 />
               </div>
             </div>
 
             {/* YouTube Link */}
-            <div className="pt-3 border-t border-[#E7DFD1] dark:border-[#343C33]">
+            <div className="pt-3 border-t border-[#749BC2] dark:border-[#749BC2]">
               <label className="block text-xs font-bold uppercase tracking-wider mb-2 flex items-center gap-2">
-                <Video className="w-4 h-4 text-[#F59E42]" />
+                <Video className="w-4 h-4 text-[#4682A9]" />
                 <span>رابط فيديو اليوتيوب (YouTube Video URL)</span>
               </label>
               <input
@@ -183,7 +183,7 @@ export default function AdminLessonEditor() {
                 value={courseData.youtubeUrl}
                 onChange={(e) => setCourseData({ ...courseData, youtubeUrl: e.target.value })}
                 placeholder="https://www.youtube.com/watch?v=xxxxx"
-                className="w-full px-4 py-3.5 rounded-2xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                className="w-full px-4 py-3.5 rounded-2xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                 dir="ltr"
               />
               {getEmbedYouTubeUrl(courseData.youtubeUrl) && (
@@ -195,24 +195,24 @@ export default function AdminLessonEditor() {
           </div>
 
           {/* 2. Content Blocks (Paragraphs & Images inside the lesson) */}
-          <div className="bg-white dark:bg-[#242D26] p-6 md:p-8 rounded-3xl border border-[#E7DFD1] dark:border-[#343C33] shadow-sm space-y-6">
+          <div className="bg-white dark:bg-[#234968] p-6 md:p-8 rounded-3xl border border-[#749BC2] dark:border-[#749BC2] shadow-sm space-y-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-lg font-bold text-[#F59E42]">2. محتوى الدرس المرن (فقرات بالعربية والإنجليزية + صور)</h2>
-                <p className="text-xs text-gray-400">أضف النصوص بالعربية والإنجليزية والصور في أي مكان داخل الدرس.</p>
+                <h2 className="text-lg font-bold text-[#4682A9] dark:text-[#91C8E4]">2. محتوى الدرس المرن (فقرات بالعربية والإنجليزية + صور)</h2>
+                <p className="text-xs text-[#749BC2] dark:text-[#91C8E4]">أضف النصوص بالعربية والإنجليزية والصور في أي مكان داخل الدرس.</p>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => addBlock('paragraph')}
-                  className="px-3.5 py-2 rounded-xl bg-[#24483F] text-white text-xs font-bold flex items-center gap-1.5"
+                  className="px-3.5 py-2 rounded-xl bg-[#4682A9] text-[#4682A9] dark:bg-[#4682A9] dark:text-[#F5FAFF] text-xs font-bold flex items-center gap-1.5"
                 >
                   <Plus className="w-3.5 h-3.5" /> إضافة فقرة نصية
                 </button>
                 <button
                   type="button"
                   onClick={() => addBlock('image')}
-                  className="px-3.5 py-2 rounded-xl bg-[#789B83] text-white text-xs font-bold flex items-center gap-1.5"
+                  className="px-3.5 py-2 rounded-xl bg-[#4682A9] text-[#4682A9] text-xs font-bold flex items-center gap-1.5"
                 >
                   <ImageIcon className="w-3.5 h-3.5" /> إضافة صورة
                 </button>
@@ -221,9 +221,9 @@ export default function AdminLessonEditor() {
 
             <div className="space-y-4">
               {contentBlocks.map((block, index) => (
-                <div key={block.id} className="relative p-5 rounded-2xl border border-[#E7DFD1] dark:border-[#343C33] bg-[#FCFAF6] dark:bg-[#191F1B] space-y-3">
+                <div key={block.id} className="relative p-5 rounded-2xl border border-[#749BC2] dark:border-[#749BC2] bg-[#91C8E4]/45 dark:bg-[#234968] space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold uppercase bg-[#F59E42] text-white px-2.5 py-0.5 rounded-full">
+                    <span className="text-[10px] font-bold uppercase bg-[#91C8E4] text-[#4682A9] ring-1 ring-[#4682A9]/40 px-2.5 py-0.5 rounded-full">
                       عنصر رقم {index + 1} ({block.type === 'paragraph' ? 'فقرة نصية (عربي/إنجليزي)' : 'رابط صورة'})
                     </span>
                     <button type="button" onClick={() => removeBlock(block.id)} className="text-red-400 hover:text-red-600">
@@ -238,7 +238,7 @@ export default function AdminLessonEditor() {
                         value={block.value.ar}
                         onChange={(e) => updateBlockValue(block.id, 'ar', e.target.value)}
                         placeholder="اكتب الشرح هنا بالعربية..."
-                        className="w-full px-4 py-3 rounded-xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                        className="w-full px-4 py-3 rounded-xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                         dir="rtl"
                       />
                       <textarea
@@ -246,7 +246,7 @@ export default function AdminLessonEditor() {
                         value={block.value.en}
                         onChange={(e) => updateBlockValue(block.id, 'en', e.target.value)}
                         placeholder="Write explanation here in English..."
-                        className="w-full px-4 py-3 rounded-xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                        className="w-full px-4 py-3 rounded-xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                         dir="ltr"
                       />
                     </div>
@@ -257,7 +257,7 @@ export default function AdminLessonEditor() {
                         value={block.value}
                         onChange={(e) => updateBlockValue(block.id, null, e.target.value)}
                         placeholder="أدخل رابط الصورة (Image URL) هنا..."
-                        className="w-full px-4 py-3 rounded-xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                        className="w-full px-4 py-3 rounded-xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                         dir="ltr"
                       />
                       {block.value && (
@@ -273,8 +273,8 @@ export default function AdminLessonEditor() {
           </div>
 
           {/* 3. Quiz & Sequential Lock */}
-          <div className="bg-white dark:bg-[#242D26] p-6 md:p-8 rounded-3xl border border-[#E7DFD1] dark:border-[#343C33] shadow-sm space-y-5">
-            <div className="flex items-center gap-2 text-[#F59E42] font-bold text-sm">
+          <div className="bg-white dark:bg-[#234968] p-6 md:p-8 rounded-3xl border border-[#749BC2] dark:border-[#749BC2] shadow-sm space-y-5">
+            <div className="flex items-center gap-2 text-[#4682A9] dark:text-[#91C8E4] font-bold text-sm">
               <CheckCircle2 className="w-5 h-5" />
               <span>3. اختبار التقييم (Quiz - Arabic & English)</span>
             </div>
@@ -287,7 +287,7 @@ export default function AdminLessonEditor() {
                   value={quizData.question.ar}
                   onChange={(e) => setQuizData({ ...quizData, question: { ...quizData.question, ar: e.target.value } })}
                   placeholder="سؤال الاختبار بالعربية..."
-                  className="w-full px-4 py-3.5 rounded-2xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                  className="w-full px-4 py-3.5 rounded-2xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                   dir="rtl"
                 />
               </div>
@@ -298,7 +298,7 @@ export default function AdminLessonEditor() {
                   value={quizData.question.en}
                   onChange={(e) => setQuizData({ ...quizData, question: { ...quizData.question, en: e.target.value } })}
                   placeholder="Quiz question in English..."
-                  className="w-full px-4 py-3.5 rounded-2xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                  className="w-full px-4 py-3.5 rounded-2xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                   dir="ltr"
                 />
               </div>
@@ -314,7 +314,7 @@ export default function AdminLessonEditor() {
                       name="correct"
                       checked={quizData.correctIndex === optIdx}
                       onChange={() => setQuizData({ ...quizData, correctIndex: optIdx })}
-                      className="w-4 h-4 accent-[#F59E42]"
+                      className="w-4 h-4 accent-[#4682A9]"
                     />
                     <span className="text-xs font-bold">صحيح {optIdx + 1}</span>
                   </div>
@@ -327,7 +327,7 @@ export default function AdminLessonEditor() {
                       setQuizData({ ...quizData, options: newOpts });
                     }}
                     placeholder={`الاختيار ${optIdx + 1} بالعربية`}
-                    className="px-4 py-2.5 rounded-xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                    className="px-4 py-2.5 rounded-xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                     dir="rtl"
                   />
                   <input
@@ -339,23 +339,23 @@ export default function AdminLessonEditor() {
                       setQuizData({ ...quizData, options: newOpts });
                     }}
                     placeholder={`Option ${optIdx + 1} in English`}
-                    className="px-4 py-2.5 rounded-xl border bg-transparent text-sm focus:outline-none border-[#E7DFD1] dark:border-[#343C33]"
+                    className="px-4 py-2.5 rounded-xl border bg-[#FFFFFF] dark:bg-[#234968] text-sm text-[#4682A9] dark:text-[#F5FAFF] placeholder-[#749BC2]/70 dark:placeholder-[#91C8E4]/50 focus:outline-none focus:border-[#4682A9] focus:ring-2 focus:ring-[#4682A9]/25 border-[#749BC2] dark:border-[#749BC2] transition"
                     dir="ltr"
                   />
                 </div>
               ))}
             </div>
 
-            <div className="pt-3 border-t border-[#E7DFD1] dark:border-[#343C33] flex items-center justify-between">
+            <div className="pt-3 border-t border-[#749BC2] dark:border-[#749BC2] flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-[#F59E42]" />
+                <Lock className="w-4 h-4 text-[#4682A9]" />
                 <span className="text-xs font-bold">قفل الدرس الموالي (Sequential Lock)</span>
               </div>
               <input
                 type="checkbox"
                 checked={courseData.isLockedByDefault}
                 onChange={(e) => setCourseData({ ...courseData, isLockedByDefault: e.target.checked })}
-                className="w-5 h-5 accent-[#F59E42]"
+                className="w-5 h-5 accent-[#4682A9]"
               />
             </div>
           </div>
@@ -365,7 +365,7 @@ export default function AdminLessonEditor() {
             <button
               type="submit"
               disabled={loading}
-              className="flex items-center gap-3 px-10 py-4 rounded-full bg-[#F59E42] text-[#191F1B] font-extrabold text-xs uppercase tracking-wider shadow-2xl transition-all hover:scale-105"
+              className="flex items-center gap-3 px-10 py-4 rounded-full bg-[#4682A9] text-[#4682A9] font-extrabold text-xs uppercase tracking-wider shadow-[0_18px_45px_-15px_rgba(70, 130, 169,0.8)] transition-all hover:-translate-y-0.5 hover:bg-[#91C8E4]"
             >
               <Save className="w-4 h-4" />
               <span>{loading ? 'جاري النشر...' : 'حفظ ونشر الدرس (Publish Lesson)'}</span>

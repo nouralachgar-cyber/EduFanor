@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Home, Search } from 'lucide-react';
+import { Home, Search } from '../components/icons';
 
 export default function NotFound() {
   const { t } = useTranslation();

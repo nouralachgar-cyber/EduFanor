@@ -1,14 +1,14 @@
 import React, { useId } from 'react';
-import { HeartPulse, Wind, Droplets, CheckCircle2 } from 'lucide-react';
+import { HeartPulse, Wind, Droplets, CheckCircle2 } from './icons';
 
 const VARIANTS = {
   cpr: {
     icon: HeartPulse,
-    tile: 'bg-burgundy text-white',
+    tile: 'bg-[#4682A9] text-[#91C8E4]',
     motif: (
       <svg
         viewBox="0 0 220 60"
-        className="absolute bottom-3 start-0 w-full text-burgundy/30"
+        className="absolute bottom-3 start-0 w-full text-[#4682A9]/10"
         fill="none"
         aria-hidden="true"
       >
@@ -24,11 +24,11 @@ const VARIANTS = {
   },
   choking: {
     icon: Wind,
-    tile: 'bg-navy text-teal',
+    tile: 'bg-[#91C8E4] text-[#4682A9] ring-1 ring-[#4682A9]/45',
     motif: (
       <svg
         viewBox="0 0 120 120"
-        className="absolute -end-4 -top-4 h-32 w-32 text-navy/15"
+        className="absolute -end-4 -top-4 h-32 w-32 text-[#4682A9]/10"
         fill="none"
         aria-hidden="true"
       >
@@ -39,11 +39,11 @@ const VARIANTS = {
   },
   burns: {
     icon: Droplets,
-    tile: 'bg-teal text-navy',
+    tile: 'bg-[#4682A9] text-[#4682A9]',
     motif: (
       <svg
         viewBox="0 0 120 120"
-        className="absolute -end-2 -top-3 h-28 w-28 text-teal-deep/25"
+        className="absolute -end-2 -top-3 h-28 w-28 text-[#4682A9]/30"
         fill="currentColor"
         aria-hidden="true"
       >
@@ -61,7 +61,7 @@ export default function CourseArt({ category, completed = false }) {
 
   return (
     <div className="relative h-36 overflow-hidden rounded-t-2xl border-b border-line bg-cream">
-      <svg className="absolute inset-0 h-full w-full text-navy/8" aria-hidden="true">
+      <svg className="absolute inset-0 h-full w-full text-[#4682A9]/[0.07]" aria-hidden="true">
         <defs>
           <pattern id={patternId} width="26" height="26" patternUnits="userSpaceOnUse">
             <path

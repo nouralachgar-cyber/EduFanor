@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { HeartPulse, ShieldAlert, ArrowLeft, ArrowRight } from 'lucide-react';
+import { HeartPulse, ShieldAlert, ArrowLeft, ArrowRight } from './icons';
 import { Globe3D } from './ui/3d-globe';
 
 const markers = [
@@ -19,10 +19,10 @@ export default function GlobalEmergencySection() {
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-12">
-      <div className="relative grid min-h-[460px] grid-cols-1 items-center gap-8 overflow-hidden rounded-3xl border border-line bg-beige p-6 shadow-pop dark:bg-[#101A15] md:p-12 lg:grid-cols-12">
+      <div className="relative grid min-h-[460px] grid-cols-1 items-center gap-8 overflow-hidden rounded-3xl border border-line bg-beige p-6 shadow-pop dark:bg-[#749BC2] md:p-12 lg:grid-cols-12">
         <div className="z-10 space-y-6 lg:col-span-7">
           <div className="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-amber/15 px-3.5 py-1.5 text-xs font-bold text-ink">
-            <ShieldAlert className="h-4 w-4 text-accent" />
+            <ShieldAlert className="h-4 w-4 text-[#4682A9] dark:text-[#F5FAFF]" />
             <span>
               {isAr
                 ? 'الوعي بالإسعافات الأولية مسؤولية مشتركة'
@@ -35,13 +35,13 @@ export default function GlobalEmergencySection() {
               <>
                 الحوادث تقع في أي مكان..
                 <br />
-                <span className="italic text-accent">واستعدادك يصنع فارقاً.</span>
+                <span className="italic text-[#4682A9] dark:text-[#F5FAFF]">واستعدادك يصنع فارقاً.</span>
               </>
             ) : (
               <>
                 Emergencies happen anywhere..
                 <br />
-                <span className="italic text-accent">Your preparation matters.</span>
+                <span className="italic text-[#4682A9] dark:text-[#F5FAFF]">Your preparation matters.</span>
               </>
             )}
           </h2>
@@ -69,7 +69,7 @@ export default function GlobalEmergencySection() {
           <Globe3D
             markers={markers}
             config={{
-              atmosphereColor: '#E69A55',
+              atmosphereColor: '#4682A9',
               autoRotateSpeed: 0.4,
             }}
           />

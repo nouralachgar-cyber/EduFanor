@@ -13,7 +13,7 @@ import {
   Plus,
   RefreshCw,
   Trash2,
-} from 'lucide-react';
+} from '../../components/icons';
 import { adminApi, formatNumber, localize } from '../../lib/admin';
 import {
   Badge,
@@ -449,7 +449,7 @@ export default function AdminCourseDetail() {
                       <button
                         type="button"
                         onClick={() => updateQuestion(questionIndex, (previous) => ({ ...previous, correctAnswer: optionIndex }))}
-                        className={`mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${question.correctAnswer === optionIndex ? 'border-primary bg-primary text-white' : 'border-line-strong text-transparent hover:border-primary'}`}
+                        className={`mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${question.correctAnswer === optionIndex ? 'border-primary bg-primary text-on-primary' : 'border-line-strong text-transparent hover:border-primary'}`}
                         aria-label={t('admin.courses.correctAnswer')}
                         title={t('admin.courses.correctAnswer')}
                       >

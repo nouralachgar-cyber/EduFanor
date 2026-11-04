@@ -18,7 +18,7 @@ import {
   Settings,
   ChevronDown,
   Home,
-} from 'lucide-react';
+} from './icons';
 import { AuthContext } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -118,8 +118,8 @@ export default function Navbar() {
         }`}
       >
         <Link to="/dashboard" className="group flex shrink-0 items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-            <ShieldCheck className="h-5 w-5 text-amber-soft" />
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary shadow-sm transition-transform duration-300 group-hover:scale-105">
+            <ShieldCheck className="h-5 w-5 text-[#91C8E4] dark:text-[#F5FAFF]" />
           </span>
           <span className="hidden leading-tight sm:block">
             <span className="block font-display text-lg font-semibold tracking-tight text-ink">
@@ -141,11 +141,11 @@ export default function Navbar() {
                 to={link.path}
                 className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all duration-200 ${
                   active
-                    ? 'bg-primary text-white shadow-sm'
+                    ? 'bg-primary text-on-primary shadow-sm'
                     : 'text-ink-muted hover:bg-surface hover:text-ink'
                 }`}
               >
-                <Icon className={`h-4 w-4 ${active ? 'text-amber-soft' : ''}`} />
+                <Icon className={`h-4 w-4 ${active ? 'text-[#91C8E4] dark:text-[#F5FAFF]' : ''}`} />
                 <span>{link.name}</span>
               </Link>
             );
@@ -256,7 +256,7 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen((open) => !open)}
             aria-label={t('nav.toggleMenu', 'Toggle menu')}
             aria-expanded={mobileMenuOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white transition-colors hover:bg-primary-hover"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary transition-colors hover:bg-primary-hover"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -288,10 +288,10 @@ export default function Navbar() {
                   key={link.path}
                   to={link.path}
                   className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-colors ${
-                    active ? 'bg-primary text-white' : 'text-ink hover:bg-surface-muted'
+                    active ? 'bg-primary text-on-primary' : 'text-ink hover:bg-surface-muted'
                   }`}
                 >
-                  <Icon className={`h-5 w-5 ${active ? 'text-amber-soft' : 'text-primary dark:text-brand-ink'}`} />
+                  <Icon className={`h-5 w-5 ${active ? 'text-[#91C8E4] dark:text-[#F5FAFF]' : 'text-primary dark:text-brand-ink'}`} />
                   <span>{link.name}</span>
                 </Link>
               );

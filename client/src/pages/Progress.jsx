@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Award, CheckCircle2, Circle, Flame, TrendingUp, ArrowRight, ArrowLeft, HelpCircle, Sparkles } from 'lucide-react';
+import { Award, CheckCircle2, Circle, Flame, TrendingUp, ArrowRight, ArrowLeft, HelpCircle, Sparkles } from '../components/icons';
 import { getLearningStreak, getQuizBest, isCourseCompleted } from '../lib/progress';
 import { useCatalog } from '../context/CatalogContext';
 
@@ -43,7 +43,7 @@ export default function Progress() {
               </p>
               <p className="mt-3 font-display text-6xl font-semibold tracking-tight text-ink">
                 {percent}
-                <span className="text-2xl text-accent">%</span>
+                <span className="text-2xl text-[#4682A9] dark:text-[#F5FAFF]">%</span>
               </p>
               <p className="mt-2 text-xs font-bold text-ink-muted">
                 {isAr
@@ -139,7 +139,7 @@ export default function Progress() {
                     </span>
                     <Link
                       to={`/lesson?id=${course.id}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-extrabold text-brand-ink transition-colors hover:text-accent"
+                      className="inline-flex items-center gap-1.5 text-xs font-extrabold text-brand-ink transition-colors hover:text-[#4682A9] dark:hover:text-[#4682A9]"
                     >
                       {done ? t('coursesPage.continueCourse') : t('dashboard.learningPath.start')}
                       {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
@@ -154,7 +154,7 @@ export default function Progress() {
         <section className="grid gap-4 lg:grid-cols-12">
           <div className="card p-6 lg:col-span-7">
             <div className="flex items-center gap-3">
-              <span className="icon-box h-10 w-10 bg-amber/15 text-accent">
+              <span className="icon-box h-10 w-10 bg-amber/15 text-[#4682A9] dark:text-[#F5FAFF]">
                 <Award className="h-5 w-5" />
               </span>
               <div>
@@ -230,7 +230,7 @@ export default function Progress() {
               <>
                 <p className="font-display text-5xl font-semibold text-ink">
                   {quizBest.percent}
-                  <span className="text-xl text-accent">%</span>
+                  <span className="text-xl text-[#4682A9] dark:text-[#F5FAFF]">%</span>
                 </p>
                 <p className="text-xs text-ink-muted">
                   {isAr

@@ -11,7 +11,7 @@ import {
   LogOut,
   ShieldCheck,
   Sparkles,
-} from 'lucide-react';
+} from './icons';
 import { AuthContext } from '../context/AuthContext';
 import { useCatalog } from '../context/CatalogContext';
 import { isCourseCompleted } from '../lib/progress';
@@ -63,14 +63,14 @@ export default function Sidebar() {
                 className={({ isActive }) =>
                   `group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-all ${
                     isActive
-                      ? 'bg-primary text-white shadow-sm'
+                      ? 'bg-primary text-on-primary shadow-sm'
                       : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <Icon className={`h-4 w-4 ${isActive ? 'text-amber-soft' : 'text-teal-deep'}`} />
+                    <Icon className={`h-4 w-4 ${isActive ? 'text-[#91C8E4] dark:text-[#F5FAFF]' : 'text-teal-deep'}`} />
                     <span>{link.name}</span>
                   </>
                 )}
@@ -83,7 +83,7 @@ export default function Sidebar() {
               to="/admin"
               className={`mt-2 flex items-center gap-3 rounded-xl border border-amber/30 px-3.5 py-2.5 text-xs font-bold transition-all ${
                 location.pathname === '/admin'
-                  ? 'bg-amber text-primary'
+                  ? 'bg-amber text-[#4682A9]'
                   : 'bg-amber/10 text-ink hover:bg-amber/20'
               }`}
             >

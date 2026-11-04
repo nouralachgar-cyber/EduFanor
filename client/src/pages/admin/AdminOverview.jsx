@@ -18,7 +18,7 @@ import {
   Trophy,
   UserPlus,
   Users,
-} from 'lucide-react';
+} from '../../components/icons';
 import { AuthContext } from '../../context/AuthContext';
 import { adminApi, formatDateTime, formatNumber, formatPercent, initials, localize, relativeTime } from '../../lib/admin';
 import { PageHeader, Panel, StatCard, Badge, LoadingState, ErrorState, EmptyState } from '../../components/admin/ui';
@@ -100,7 +100,7 @@ export default function AdminOverview() {
                   onClick={() => setRange(option)}
                   className={`rounded-lg px-2.5 py-1.5 text-[10px] font-extrabold transition-colors ${
                     range === option
-                      ? 'bg-primary text-white'
+                      ? 'bg-primary text-on-primary'
                       : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
                   }`}
                 >
@@ -124,7 +124,7 @@ export default function AdminOverview() {
       <section className="admin-hero admin-rise flex flex-col gap-5 p-5 sm:p-6 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/80">
-            <Sparkles className="h-3 w-3 text-amber-soft" />
+            <Sparkles className="h-3 w-3 text-[#91C8E4]" />
             {t('admin.shell.systemOnline')}
           </span>
           <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">{greeting}</h2>
@@ -177,15 +177,15 @@ export default function AdminOverview() {
         >
           <ActivityBars data={activity} language={i18n.language} height={170} />
           <div className="mt-4 flex flex-wrap items-center gap-4">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-ink-muted"><span className="h-2 w-2 rounded-full bg-[#24483f]" />{t('admin.overview.courseStarts')}</span>
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-ink-muted"><span className="h-2 w-2 rounded-full bg-[#E69A55]" />{t('admin.overview.completions')}</span>
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-ink-muted"><span className="h-2 w-2 rounded-full bg-[#789b83]" />{t('admin.overview.quizAttempts')}</span>
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-ink-muted"><span className="h-2 w-2 rounded-full bg-[#4682A9] dark:bg-[#91C8E4]" />{t('admin.overview.courseStarts')}</span>
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-ink-muted"><span className="h-2 w-2 rounded-full bg-[#4682A9]" />{t('admin.overview.completions')}</span>
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-ink-muted"><span className="h-2 w-2 rounded-full bg-[#4682A9]" />{t('admin.overview.quizAttempts')}</span>
           </div>
         </Panel>
 
         <Panel title={t('admin.overview.platformHealth')}>
           <div className="flex items-center justify-between gap-3">
-            <Donut value={metrics.completionRate || 0} label={formatPercent(metrics.completionRate, i18n.language)} sublabel={t('admin.overview.completionRate')} tone="#e88736" />
+            <Donut value={metrics.completionRate || 0} label={formatPercent(metrics.completionRate, i18n.language)} sublabel={t('admin.overview.completionRate')} tone="#4682A9" />
             <div className="min-w-0 flex-1 space-y-2.5">
               {healthItems.map((item) => (
                 <Link key={item.key} to={item.to} className="flex items-center justify-between gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-surface-muted">
@@ -206,7 +206,7 @@ export default function AdminOverview() {
         >
           <LineChart
             data={registrationSeries}
-            series={[{ key: 'count', label: t('admin.overview.registrations'), color: '#24483f' }]}
+            series={[{ key: 'count', label: t('admin.overview.registrations'), color: '#4682A9' }]}
             language={i18n.language}
             height={200}
           />

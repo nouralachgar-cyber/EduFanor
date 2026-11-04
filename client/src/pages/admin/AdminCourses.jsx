@@ -11,7 +11,7 @@ import {
   RefreshCw,
   Search,
   Trash2,
-} from 'lucide-react';
+} from '../../components/icons';
 import { adminApi, formatNumber, localize } from '../../lib/admin';
 import {
   Badge,
@@ -145,7 +145,7 @@ export default function AdminCourses() {
                   ) : (
                     <div className="flex h-full items-center justify-center text-ink-muted"><ImageIcon className="h-8 w-8" /></div>
                   )}
-                  <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0f1712]/70 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#4682A9]/70 to-transparent" />
                   <div className="absolute start-2.5 top-2.5 flex gap-1.5">
                     <Badge tone={course.published ? 'green' : 'amber'}>
                       {course.published ? t('admin.common.published') : t('admin.common.draft')}
