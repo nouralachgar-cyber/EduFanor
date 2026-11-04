@@ -8,7 +8,6 @@ import {
   ClipboardCheck,
   Edit3,
   Eye,
-  EyeOff,
   FileQuestion,
   Layers,
   Plus,
@@ -37,20 +36,6 @@ const newQuestion = () => ({
   explanation: { ar: '', en: '' },
 });
 
-const emptyLesson = (courseId, order) => ({
-  course: courseId,
-  title: { ar: '', en: '' },
-  content: { ar: '', en: '' },
-  objectives: { ar: [], en: [] },
-  safetyNotes: { ar: '', en: '' },
-  images: [],
-  videoUrl: '',
-  sourceRefs: [],
-  reviewStatus: 'unreviewed',
-  published: true,
-  order,
-});
-
 const emptyQuiz = (lessonId) => ({
   title: { ar: '', en: '' },
   lesson: lessonId || '',
@@ -67,9 +52,6 @@ export default function AdminCourseDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [tab, setTab] = useState('lessons');
-  const [lessonModal, setLessonModal] = useState(false);
-  const [editingLesson, setEditingLesson] = useState(null);
-  const [lessonForm, setLessonForm] = useState(emptyLesson(id, 1));
   const [quizModal, setQuizModal] = useState(false);
   const [editingQuiz, setEditingQuiz] = useState(null);
   const [quizForm, setQuizForm] = useState(emptyQuiz());
@@ -101,29 +83,8 @@ export default function AdminCourseDetail() {
     [quizzes]
   );
 
-  const openCreateLesson = () => {
-    setEditingLesson(null);
-    setLessonForm(emptyLesson(id, lessons.length + 1));
-    setLessonModal(true);
-  };
-
-  const openEditLesson = (lesson) => {
-    setEditingLesson(lesson);
-    setLessonForm({
-      course: lesson.course?._id || lesson.course || id,
-      title: { ar: lesson.title?.ar || '', en: lesson.title?.en || '' },
-      content: { ar: lesson.content?.ar || '', en: lesson.content?.en || '' },
-      objectives: { ar: lesson.objectives?.ar || [], en: lesson.objectives?.en || [] },
-      safetyNotes: { ar: lesson.safetyNotes?.ar || '', en: lesson.safetyNotes?.en || '' },
-      images: lesson.images || [],
-      videoUrl: lesson.videoUrl || '',
-      sourceRefs: lesson.sourceRefs || [],
-      reviewStatus: lesson.reviewStatus || 'unreviewed',
-      published: Boolean(lesson.published),
-      order: lesson.order || 1,
-    });
-    setLessonModal(true);
-  };
+  const openCreateLesson = () => navigate(`/admin/courses/${id}/lessons/new`);
+  const openEditLesson = (lesson) => navigate(`/admin/courses/${id}/lessons/${lesson._id}`);
 
   const openCreateQuiz = () => {
     setEditingQuiz(null);
@@ -149,38 +110,6 @@ export default function AdminCourseDetail() {
       })),
     });
     setQuizModal(true);
-  };
-
-  const updateLessonField = (field, value) => setLessonForm((previous) => ({ ...previous, [field]: value }));
-  const updateLessonBilingual = (field, lang, value) =>
-    setLessonForm((previous) => ({ ...previous, [field]: { ...previous[field], [lang]: value } }));
-
-  const saveLesson = async (event) => {
-    event.preventDefault();
-    if (!lessonForm.title.ar.trim() || !lessonForm.title.en.trim() || !lessonForm.content.ar.trim() || !lessonForm.content.en.trim()) {
-      setToast({ type: 'error', message: t('admin.courses.fieldsRequired') });
-      return;
-    }
-    setSaving(true);
-    try {
-      const payload = {
-        ...lessonForm,
-        course: id,
-        order: Number(lessonForm.order) || 1,
-      };
-      if (editingLesson) {
-        await adminApi.updateLesson(editingLesson._id, payload);
-      } else {
-        await adminApi.createLesson(payload);
-      }
-      setToast({ type: 'success', message: t('admin.courses.lessonSaved') });
-      setLessonModal(false);
-      load();
-    } catch (err) {
-      setToast({ type: 'error', message: err.message });
-    } finally {
-      setSaving(false);
-    }
   };
 
   const updateQuestion = (index, updater) =>
@@ -368,7 +297,9 @@ export default function AdminCourseDetail() {
             />
           ) : (
             <div className="divide-y divide-line">
-              {lessons.map((lesson, index) => (
+              {lessons.map((lesson, index) => {
+                const blockCount = (lesson.blocks?.ar || lesson.blocks?.en || lesson.blocks || []).length;
+                return (
                 <div key={lesson._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex min-w-0 items-start gap-3">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface-muted text-[11px] font-extrabold text-ink-muted">
@@ -381,8 +312,13 @@ export default function AdminCourseDetail() {
                         <Badge tone={lesson.reviewStatus === 'reviewed' ? 'green' : lesson.reviewStatus === 'in_review' ? 'amber' : 'outline'}>
                           {t(`admin.courses.${lesson.reviewStatus || 'unreviewed'}`)}
                         </Badge>
+                        <Badge tone="outline">
+                          {formatNumber(blockCount, i18n.language)} {t('admin.courses.blocksCount')}
+                        </Badge>
                       </div>
-                      <p className="mt-1 line-clamp-2 max-w-2xl text-[11px] leading-relaxed text-ink-muted">{localize(lesson.content, i18n.language)}</p>
+                      <p className="mt-1 line-clamp-2 max-w-2xl text-[11px] leading-relaxed text-ink-muted">
+                        {localize(lesson.content, i18n.language) || '—'}
+                      </p>
                     </div>
                   </div>
                   <div className="flex shrink-0 items-center gap-1 self-end sm:self-start">
@@ -394,7 +330,8 @@ export default function AdminCourseDetail() {
                     </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )
         ) : quizzes.length === 0 ? (
@@ -436,79 +373,6 @@ export default function AdminCourseDetail() {
           </div>
         )}
       </Panel>
-
-      <Modal
-        open={lessonModal}
-        onClose={() => setLessonModal(false)}
-        title={editingLesson ? t('admin.courses.editLesson') : t('admin.courses.createLesson')}
-        subtitle={t('admin.courses.bilingualHint')}
-        size="lg"
-        footer={
-          <>
-            <button type="button" onClick={() => setLessonModal(false)} className="btn-secondary h-9 px-4 text-xs">{t('admin.common.cancel')}</button>
-            <button type="submit" form="lesson-form" disabled={saving} className="btn-primary h-9 px-4 text-xs">{saving ? t('admin.common.saving') : t('admin.common.save')}</button>
-          </>
-        }
-      >
-        <form id="lesson-form" onSubmit={saveLesson} className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field label={`${t('admin.courses.lessonTitle')} (${t('admin.common.ar')})`} required>
-              <input value={lessonForm.title.ar} onChange={(event) => updateLessonBilingual('title', 'ar', event.target.value)} className="input" dir="rtl" />
-            </Field>
-            <Field label={`${t('admin.courses.lessonTitle')} (${t('admin.common.en')})`} required>
-              <input value={lessonForm.title.en} onChange={(event) => updateLessonBilingual('title', 'en', event.target.value)} className="input" dir="ltr" />
-            </Field>
-            <Field label={`${t('admin.courses.lessonContent')} (${t('admin.common.ar')})`} required>
-              <textarea value={lessonForm.content.ar} onChange={(event) => updateLessonBilingual('content', 'ar', event.target.value)} className="input h-28 resize-y py-2" dir="rtl" />
-            </Field>
-            <Field label={`${t('admin.courses.lessonContent')} (${t('admin.common.en')})`} required>
-              <textarea value={lessonForm.content.en} onChange={(event) => updateLessonBilingual('content', 'en', event.target.value)} className="input h-28 resize-y py-2" dir="ltr" />
-            </Field>
-            <Field label={`${t('admin.courses.objectives')} (${t('admin.common.ar')})`} hint="سطر لكل هدف">
-              <textarea value={(lessonForm.objectives.ar || []).join('\n')} onChange={(event) => updateLessonBilingual('objectives', 'ar', event.target.value.split('\n').map((item) => item.trim()).filter(Boolean))} className="input h-20 resize-y py-2" dir="rtl" />
-            </Field>
-            <Field label={`${t('admin.courses.objectives')} (${t('admin.common.en')})`} hint="One objective per line">
-              <textarea value={(lessonForm.objectives.en || []).join('\n')} onChange={(event) => updateLessonBilingual('objectives', 'en', event.target.value.split('\n').map((item) => item.trim()).filter(Boolean))} className="input h-20 resize-y py-2" dir="ltr" />
-            </Field>
-            <Field label={`${t('admin.courses.safetyNotes')} (${t('admin.common.ar')})`}>
-              <textarea value={lessonForm.safetyNotes.ar} onChange={(event) => updateLessonBilingual('safetyNotes', 'ar', event.target.value)} className="input h-20 resize-y py-2" dir="rtl" />
-            </Field>
-            <Field label={`${t('admin.courses.safetyNotes')} (${t('admin.common.en')})`}>
-              <textarea value={lessonForm.safetyNotes.en} onChange={(event) => updateLessonBilingual('safetyNotes', 'en', event.target.value)} className="input h-20 resize-y py-2" dir="ltr" />
-            </Field>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Field label={t('admin.common.status')}>
-              <select value={lessonForm.reviewStatus} onChange={(event) => updateLessonField('reviewStatus', event.target.value)} className="input">
-                <option value="unreviewed">{t('admin.courses.unreviewed')}</option>
-                <option value="in_review">{t('admin.courses.in_review')}</option>
-                <option value="reviewed">{t('admin.courses.reviewed')}</option>
-              </select>
-            </Field>
-            <Field label={t('admin.courses.order')}>
-              <input type="number" min="1" value={lessonForm.order} onChange={(event) => updateLessonField('order', event.target.value)} className="input" />
-            </Field>
-            <Field label={t('admin.courses.videoUrl')} className="sm:col-span-2">
-              <input value={lessonForm.videoUrl} onChange={(event) => updateLessonField('videoUrl', event.target.value)} className="input" dir="ltr" placeholder="https://..." />
-            </Field>
-          </div>
-
-          <Field label={t('admin.courses.sourceRefs')} hint="One source per line">
-            <textarea value={(lessonForm.sourceRefs || []).join('\n')} onChange={(event) => updateLessonField('sourceRefs', event.target.value.split('\n').map((item) => item.trim()).filter(Boolean))} className="input h-16 resize-y py-2" dir="ltr" />
-          </Field>
-
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface-muted px-3.5 py-3">
-            <span className="flex items-center gap-2 text-xs font-extrabold text-ink">
-              {lessonForm.published ? <Eye className="h-3.5 w-3.5 text-success-ink" /> : <EyeOff className="h-3.5 w-3.5 text-ink-muted" />}
-              {lessonForm.published ? t('admin.common.published') : t('admin.common.draft')}
-            </span>
-            <button type="button" onClick={() => updateLessonField('published', !lessonForm.published)} className={`relative h-7 w-12 rounded-full transition-colors ${lessonForm.published ? 'bg-primary' : 'bg-line-strong'}`} role="switch" aria-checked={lessonForm.published}>
-              <span className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-all ${lessonForm.published ? 'start-6' : 'start-1'}`} />
-            </button>
-          </div>
-        </form>
-      </Modal>
 
       <Modal
         open={quizModal}

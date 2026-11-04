@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
 const User = require('../models/User');
 const Course = require('../models/Course');
 const Lesson = require('../models/Lesson');
@@ -9,6 +12,40 @@ const AdminAuditLog = require('../models/AdminAuditLog');
 
 const PROGRESS_COLLECTION = Progress.collection.name;
 const ACTIVITY_COLLECTION = ActivityEvent.collection.name;
+const UPLOAD_DIR = path.join(__dirname, '..', 'uploads');
+const UPLOAD_FILE_TYPES = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/webp': 'webp',
+  'image/gif': 'gif',
+  'video/mp4': 'mp4',
+  'video/webm': 'webm',
+  'video/ogg': 'ogv',
+  'application/pdf': 'pdf',
+};
+const LESSON_BLOCK_TYPES = new Set([
+  'text',
+  'heading',
+  'subheading',
+  'paragraph',
+  'rich-text',
+  'image',
+  'figure',
+  'gallery',
+  'video',
+  'youtube',
+  'important',
+  'warning',
+  'safety',
+  'tip',
+  'steps',
+  'list',
+  'numbered-list',
+  'table',
+  'attachment',
+  'callout',
+]);
 
 const dayKey = (date) => new Date(date).toISOString().slice(0, 10);
 const monthKey = (date) => new Date(date).toISOString().slice(0, 7);
@@ -620,10 +657,31 @@ const listLessons = async (req, res) => {
   }
 };
 
+const sanitizeBlocks = (blocks) => {
+  if (!Array.isArray(blocks)) return [];
+  return blocks
+    .map((block, index) => {
+      if (!block || typeof block !== 'object') return null;
+      const type = String(block.type || '').trim();
+      if (!LESSON_BLOCK_TYPES.has(type)) return null;
+      return {
+        type,
+        content: block.content === undefined ? '' : block.content,
+        data: block.data && typeof block.data === 'object' ? block.data : {},
+        order: index,
+      };
+    })
+    .filter(Boolean);
+};
+
 const lessonPayload = (body) => ({
   course: body.course,
   title: { ar: String(body.title?.ar || '').trim(), en: String(body.title?.en || '').trim() },
   content: { ar: String(body.content?.ar || '').trim(), en: String(body.content?.en || '').trim() },
+  blocks: {
+    ar: sanitizeBlocks(body.blocks?.ar),
+    en: sanitizeBlocks(body.blocks?.en),
+  },
   objectives: {
     ar: Array.isArray(body.objectives?.ar) ? body.objectives.ar.map(String).filter(Boolean) : [],
     en: Array.isArray(body.objectives?.en) ? body.objectives.en.map(String).filter(Boolean) : [],
@@ -634,6 +692,9 @@ const lessonPayload = (body) => ({
   },
   images: Array.isArray(body.images) ? body.images.map(String).filter(Boolean) : [],
   videoUrl: String(body.videoUrl || '').trim(),
+  coverImage: String(body.coverImage || '').trim(),
+  estimatedMinutes: body.estimatedMinutes !== undefined && body.estimatedMinutes !== null ? Number(body.estimatedMinutes) : undefined,
+  difficulty: ['beginner', 'intermediate', 'advanced'].includes(body.difficulty) ? body.difficulty : undefined,
   sourceRefs: Array.isArray(body.sourceRefs) ? body.sourceRefs.map(String).filter(Boolean) : [],
   reviewStatus: ['unreviewed', 'in_review', 'reviewed'].includes(body.reviewStatus) ? body.reviewStatus : 'unreviewed',
   published: Boolean(body.published),
@@ -644,8 +705,12 @@ const createLesson = async (req, res) => {
   try {
     const payload = lessonPayload(req.body);
     if (!mongoose.isValidObjectId(payload.course)) return res.status(400).json({ message: 'A valid course is required' });
-    if (!bilingualRequired(payload.title) || !bilingualRequired(payload.content)) {
-      return res.status(400).json({ message: 'Arabic/English lesson titles and content are required' });
+    if (!bilingualRequired(payload.title)) {
+      return res.status(400).json({ message: 'Arabic/English lesson titles are required' });
+    }
+    const hasContent = (payload.content?.ar && payload.content?.en) || (Array.isArray(payload.blocks?.ar) && payload.blocks.ar.length > 0) || (Array.isArray(payload.blocks?.en) && payload.blocks.en.length > 0);
+    if (!hasContent) {
+      return res.status(400).json({ message: 'Arabic/English lesson content is required' });
     }
     const course = await Course.findById(payload.course);
     if (!course) return res.status(404).json({ message: 'Course not found' });
@@ -676,8 +741,12 @@ const updateLesson = async (req, res) => {
 
     const payload = lessonPayload(req.body);
     if (!mongoose.isValidObjectId(payload.course)) return res.status(400).json({ message: 'A valid course is required' });
-    if (!bilingualRequired(payload.title) || !bilingualRequired(payload.content)) {
-      return res.status(400).json({ message: 'Arabic/English lesson titles and content are required' });
+    if (!bilingualRequired(payload.title)) {
+      return res.status(400).json({ message: 'Arabic/English lesson titles are required' });
+    }
+    const hasContent = (payload.content?.ar && payload.content?.en) || (Array.isArray(payload.blocks?.ar) && payload.blocks.ar.length > 0) || (Array.isArray(payload.blocks?.en) && payload.blocks.en.length > 0);
+    if (!hasContent) {
+      return res.status(400).json({ message: 'Arabic/English lesson content is required' });
     }
     const course = await Course.findById(payload.course);
     if (!course) return res.status(404).json({ message: 'Course not found' });
@@ -1076,6 +1145,39 @@ const updatePassword = async (req, res) => {
   }
 };
 
+const uploadLessonAsset = async (req, res) => {
+  try {
+    const dataUrl = String(req.body?.dataUrl || '');
+    const match = /^data:([a-z]+\/[a-z0-9.+-]+);base64,([A-Za-z0-9+/=\s]+)$/i.exec(dataUrl);
+    if (!match) {
+      return res.status(400).json({ message: 'Upload a PNG, JPG, WEBP, GIF, MP4, WEBM or PDF file.' });
+    }
+    const mime = match[1].toLowerCase();
+    const extension = UPLOAD_FILE_TYPES[mime];
+    if (!extension) {
+      return res.status(400).json({ message: 'This file type is not supported.' });
+    }
+    const buffer = Buffer.from(match[2].replace(/\s/g, ''), 'base64');
+    if (!buffer.length) return res.status(400).json({ message: 'The uploaded file is empty.' });
+    if (buffer.length > 8 * 1024 * 1024) {
+      return res.status(400).json({ message: 'Files must be 8 MB or smaller.' });
+    }
+
+    await fs.promises.mkdir(UPLOAD_DIR, { recursive: true });
+    const filename = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}.${extension}`;
+    await fs.promises.writeFile(path.join(UPLOAD_DIR, filename), buffer);
+
+    return res.status(201).json({
+      url: `/uploads/${filename}`,
+      name: String(req.body?.name || filename).slice(0, 180),
+      size: buffer.length,
+      mime,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: 'Unable to upload file: ' + error.message });
+  }
+};
+
 module.exports = {
   overview,
   listStudents,
@@ -1102,4 +1204,5 @@ module.exports = {
   getProfile,
   updateProfile,
   updatePassword,
+  uploadLessonAsset,
 };

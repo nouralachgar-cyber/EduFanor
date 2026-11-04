@@ -36,6 +36,7 @@ export const adminApi = {
   profile: () => apiRequest('/admin/profile', { auth: true }),
   updateProfile: (body) => apiRequest('/admin/profile', { method: 'PATCH', body, auth: true }),
   updatePassword: (body) => apiRequest('/admin/password', { method: 'PATCH', body, auth: true }),
+  uploadAsset: (body) => apiRequest('/admin/uploads', { method: 'POST', body, auth: true }),
 };
 
 export const localize = (value, language) => {

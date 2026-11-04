@@ -38,10 +38,16 @@ function mapCourse(course, isAr) {
         id: lesson._id,
         title: lesson.title?.[lang] || lesson.title?.en || '',
         content: lesson.content?.[lang] || lesson.content?.en || '',
+        blocks: lesson.blocks?.[lang] || lesson.blocks?.en || [],
         warning: lesson.safetyNotes?.[lang] || lesson.safetyNotes?.en || '',
+        safetyNotes: lesson.safetyNotes?.[lang] || lesson.safetyNotes?.en || '',
         objectives: lesson.objectives?.[lang] || [],
         sourceRefs: lesson.sourceRefs || [],
         reviewStatus: lesson.reviewStatus,
+        videoUrl: lesson.videoUrl,
+        images: lesson.images || [],
+        coverImage: lesson.coverImage,
+        estimatedMinutes: lesson.estimatedMinutes,
       })),
   };
 }

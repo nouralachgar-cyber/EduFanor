@@ -178,7 +178,7 @@ export default function AdminOverview() {
           <ActivityBars data={activity} language={i18n.language} height={170} />
           <div className="mt-4 flex flex-wrap items-center gap-4">
             <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-ink-muted"><span className="h-2 w-2 rounded-full bg-[#24483f]" />{t('admin.overview.courseStarts')}</span>
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-ink-muted"><span className="h-2 w-2 rounded-full bg-[#e88736]" />{t('admin.overview.completions')}</span>
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-ink-muted"><span className="h-2 w-2 rounded-full bg-[#E69A55]" />{t('admin.overview.completions')}</span>
             <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-ink-muted"><span className="h-2 w-2 rounded-full bg-[#789b83]" />{t('admin.overview.quizAttempts')}</span>
           </div>
         </Panel>

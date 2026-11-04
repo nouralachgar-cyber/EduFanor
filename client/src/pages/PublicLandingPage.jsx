@@ -1,110 +1,112 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import Globe from 'react-globe.gl';
 import {
-  ArrowRight,
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
+import Globe from 'react-globe.gl';
+import * as THREE from 'three';
+import {
   ArrowLeft,
+  ArrowRight,
   BookOpen,
   Brain,
   CheckCircle2,
   ChevronDown,
-  Compass,
-  Droplets,
-  Globe as GlobeIcon,
   HeartPulse,
+  Languages,
+  Mail,
   Menu,
   Moon,
   ShieldAlert,
   ShieldCheck,
   Sparkles,
   Sun,
-  Wind,
   X,
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
-const CATEGORY_ICONS = {
-  cpr: HeartPulse,
-  choking: Wind,
-  burns: Droplets,
-};
+const GLOBE_POINTS = [
+  { lat: 33.5731, lng: -7.5898, size: 0.36, label: 'Casablanca' },
+  { lat: 40.7128, lng: -74.006, size: 0.3, label: 'New York' },
+  { lat: 51.5074, lng: -0.1278, size: 0.28, label: 'London' },
+  { lat: 25.2048, lng: 55.2708, size: 0.3, label: 'Dubai' },
+  { lat: 35.6762, lng: 139.6503, size: 0.28, label: 'Tokyo' },
+];
 
-function EmergencyNetworkDiagram({ isDark }) {
-  const mainColor = isDark ? '#A4C2AE' : '#24483F';
-  const accentColor = '#F59E42';
-  const borderColor = isDark ? '#3C4C41' : '#E7DFD1';
+const GLOBE_ARCS = [
+  {
+    startLat: 33.5731,
+    startLng: -7.5898,
+    endLat: 40.7128,
+    endLng: -74.006,
+    color: '#8FB09A',
+  },
+  {
+    startLat: 33.5731,
+    startLng: -7.5898,
+    endLat: 51.5074,
+    endLng: -0.1278,
+    color: '#CFEFD8',
+  },
+  {
+    startLat: 33.5731,
+    startLng: -7.5898,
+    endLat: 25.2048,
+    endLng: 55.2708,
+    color: '#8FB09A',
+  },
+  {
+    startLat: 33.5731,
+    startLng: -7.5898,
+    endLat: 35.6762,
+    endLng: 139.6503,
+    color: '#9FE9C2',
+  },
+];
+
+function SectionLabel({ index, children, tone = 'light' }) {
+  const textTone =
+    tone === 'dark'
+      ? 'text-[#FAF8F2]/45'
+      : 'text-[#5F6E68] dark:text-[#A8B6AB]';
+  const numberTone =
+    tone === 'dark'
+      ? 'text-[#F59E42]'
+      : 'text-[#B45309] dark:text-[#F59E42]';
 
   return (
-    <svg viewBox="0 0 200 120" className="h-auto w-full" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      <circle cx="100" cy="60" r="50" fill="none" stroke={borderColor} strokeWidth="1" />
-      <circle cx="100" cy="60" r="38" fill="none" stroke={borderColor} strokeWidth="1" strokeDasharray="3 3" />
-      <circle cx="100" cy="60" r="24" fill="none" stroke={borderColor} strokeWidth="1" />
-      <circle cx="100" cy="60" r="6" fill={accentColor} />
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => {
-        const x1 = 100 + 12 * Math.cos((angle * Math.PI) / 180);
-        const y1 = 60 + 12 * Math.sin((angle * Math.PI) / 180);
-        const x2 = 100 + 46 * Math.cos((angle * Math.PI) / 180);
-        const y2 = 60 + 46 * Math.sin((angle * Math.PI) / 180);
-        return <line key={angle} x1={x1} y1={y1} x2={x2} y2={y2} stroke={borderColor} strokeWidth="0.8" />;
-      })}
-      {[
-        { x: 70, y: 35 },
-        { x: 130, y: 40 },
-        { x: 80, y: 80 },
-        { x: 120, y: 78 },
-      ].map((pos) => (
-        <circle key={`${pos.x}-${pos.y}`} cx={pos.x} cy={pos.y} r="3.5" fill={mainColor} />
-      ))}
-    </svg>
+    <div
+      className={`flex items-center gap-3 text-[10px] font-extrabold uppercase tracking-[0.26em] ${textTone}`}
+    >
+      <span className={`font-display text-[13px] font-semibold tracking-normal ${numberTone}`}>
+        {index}
+      </span>
+      <span className="h-px w-8 bg-current opacity-40" aria-hidden="true" />
+      <span>{children}</span>
+    </div>
   );
 }
 
-function SecurityDiagram({ isDark }) {
-  const strokeColor = isDark ? '#FCFAF6' : '#24483F';
-  const checkColor = '#F59E42';
-  const circleColor = isDark ? '#3C4C41' : '#E7DFD1';
-
-  return (
-    <svg viewBox="0 0 200 150" className="h-auto w-full" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      <circle cx="100" cy="75" r="58" fill="none" stroke={circleColor} strokeWidth="1" strokeDasharray="4 4" />
-      <circle cx="100" cy="75" r="42" fill="none" stroke={circleColor} strokeWidth="1" />
-      <g transform="translate(82, 55)">
-        <path
-          d="M18,2 L2,8 V18 C2,28 18,38 18,38 C18,38 34,28 34,18 V8 L18,2 Z"
-          fill="none"
-          stroke={strokeColor}
-          strokeWidth="2"
-        />
-        <path
-          d="M12,20 L16,24 L24,16"
-          fill="none"
-          stroke={checkColor}
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </g>
-      <g transform="translate(136, 96)">
-        <rect x="0" y="0" width="47" height="26" rx="6" fill={isDark ? '#1F2A23' : '#FCFAF6'} stroke={circleColor} strokeWidth="1" />
-        <text x="23.5" y="11" textAnchor="middle" fontSize="6" fontWeight="bold" fill={checkColor}>
-          EDUFANOR
-        </text>
-        <text x="23.5" y="20" textAnchor="middle" fontSize="5.5" fill={strokeColor}>
-          GUIDED LEARNING
-        </text>
-      </g>
-    </svg>
-  );
-}
-
-function RealInteractiveGlobe() {
+function InteractiveGlobe({ isAr, reduceMotion }) {
   const globeEl = useRef();
   const wrapRef = useRef();
-  const [size, setSize] = useState(480);
+  const [size, setSize] = useState(520);
+
+  const lights = useMemo(() => {
+    const ambient = new THREE.AmbientLight('#dcffe9', 2.5);
+    const key = new THREE.DirectionalLight('#ffffff', 1.7);
+    key.position.set(1, 0.9, 1.1);
+    const fill = new THREE.DirectionalLight('#9fe9c2', 1.0);
+    fill.position.set(-1, 0.4, -0.4);
+    return [ambient, key, fill];
+  }, []);
 
   useEffect(() => {
     const element = wrapRef.current;
@@ -112,102 +114,140 @@ function RealInteractiveGlobe() {
 
     const observer = new ResizeObserver(([entry]) => {
       const width = entry.contentRect.width;
-      setSize(Math.max(260, Math.min(Math.round(width), 560)));
+      setSize(Math.max(260, Math.min(Math.round(width), 600)));
     });
     observer.observe(element);
     return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
-    if (!globeEl.current) return;
-    const controls = globeEl.current.controls();
+    const globe = globeEl.current;
+    if (!globe) return;
+    if (typeof globe.lights === 'function') globe.lights(lights);
+    const controls = globe.controls();
     if (controls) {
-      controls.autoRotate = true;
-      controls.autoRotateSpeed = 1.1;
+      controls.autoRotate = !reduceMotion;
+      controls.autoRotateSpeed = 0.55;
       controls.enableZoom = false;
       controls.enablePan = false;
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.08;
     }
-    globeEl.current.pointOfView({ alt: 1.85 }, 0);
-  }, [size]);
+    globe.pointOfView({ lat: 18, lng: 6, altitude: 2.15 }, 0);
+  }, [size, lights, reduceMotion]);
 
-  const pointsData = [
-    { lat: 33.5731, lng: -7.5898, size: 0.35, color: '#F59E42' },
-    { lat: 40.7128, lng: -74.006, size: 0.24, color: '#F59E42' },
-    { lat: 48.8566, lng: 2.3522, size: 0.24, color: '#F59E42' },
-    { lat: 25.2048, lng: 55.2708, size: 0.24, color: '#F59E42' },
-  ];
+  const ringsData = useMemo(
+    () =>
+      GLOBE_POINTS.map((point) => ({
+        ...point,
+        maxR: 3.6,
+        propagationSpeed: 2.1,
+        repeatPeriod: 2100,
+      })),
+    []
+  );
 
   return (
-    <div ref={wrapRef} className="relative mx-auto aspect-square w-full max-w-[560px]">
-      <div className="pointer-events-none absolute inset-[4%] rounded-full bg-[radial-gradient(circle_at_38%_32%,rgba(245,158,66,0.34),rgba(23,61,53,0.5)_45%,transparent_72%)] blur-2xl" />
-      <div className="pointer-events-none absolute inset-[10%] rounded-full border border-amber/20" />
-      <div className="pointer-events-none absolute inset-[2%] rounded-full border border-white/5" />
-      <div className="relative z-10 flex h-full w-full items-center justify-center">
+    <div ref={wrapRef} className="relative mx-auto aspect-square w-full max-w-[600px]">
+      <div
+        className="pointer-events-none absolute inset-[2%] rounded-full bg-[radial-gradient(circle_at_50%_42%,rgba(120,155,131,0.24),rgba(10,36,27,0.72)_55%,rgba(5,19,14,0.96)_78%)] blur-2xl"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-[7%] rounded-full border border-[#8FB09A]/15"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-[1%] rounded-full border border-white/[0.06]"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-[13%] animate-spin rounded-full border border-dashed border-[#8FB09A]/15 motion-reduce:animate-none [animation-duration:70s]"
+        aria-hidden="true"
+      />
+
+      <div className="absolute inset-0 z-10 flex items-center justify-center">
         <Globe
           ref={globeEl}
           width={size}
           height={size}
           backgroundColor="rgba(0,0,0,0)"
-          globeImageUrl="//unpkg.com/three-globe/example/img/earth-night.jpg"
-          bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
+          globeImageUrl="https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+          bumpImageUrl="https://unpkg.com/three-globe/example/img/earth-topology.png"
           showAtmosphere
-          atmosphereColor="#F59E42"
-          atmosphereAltitude={0.18}
-          pointsData={pointsData}
-          pointColor="color"
-          pointAltitude={0.06}
+          atmosphereColor="#9FE9C2"
+          atmosphereAltitude={0.22}
+          pointsData={GLOBE_POINTS}
+          pointColor={() => '#A9C6B0'}
+          pointAltitude={0.045}
           pointRadius="size"
+          pointResolution={12}
           pointsMerge={false}
+          labelsData={GLOBE_POINTS}
+          labelText="label"
+          labelSize={0.42}
+          labelDotRadius={0.14}
+          labelColor={() => '#E4F9EA'}
+          labelAltitude={0.012}
+          labelResolution={2}
+          ringsData={ringsData}
+          ringColor={() => (t) => `rgba(120,155,131,${(1 - t) * 0.62})`}
+          ringMaxRadius="maxR"
+          ringPropagationSpeed="propagationSpeed"
+          ringRepeatPeriod="repeatPeriod"
+          arcsData={GLOBE_ARCS}
+          arcColor="color"
+          arcStroke={0.32}
+          arcDashLength={0.34}
+          arcDashGap={0.66}
+          arcDashAnimateTime={4200}
+          arcsTransitionDuration={0}
         />
       </div>
-      <span className="absolute bottom-2 start-1/2 z-10 -translate-x-1/2 rounded-full border border-white/10 bg-[#0B1A15]/70 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#FCFAF6]/70 backdrop-blur-md rtl:translate-x-1/2">
-        learn · practice · respond
+
+      <span className="absolute bottom-0 start-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#8FB09A]/25 bg-[#17231F]/75 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] text-[#E8EFE7]/80 backdrop-blur-md rtl:translate-x-1/2">
+        {/* Caption tied to the learning cycle, not invented data. */}
+        {isAr ? 'تعلّم · تدرّب · استجب' : 'Learn · Practice · Respond'}
       </span>
     </div>
   );
 }
 
-function CinematicOrbit({ isDark }) {
-  const reduceMotion = useReducedMotion();
-
+function OrbitVisual({ isAr }) {
   return (
-    <motion.div
-      initial={reduceMotion ? false : { opacity: 0, scale: 0.88 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-      viewport={{ once: true }}
-      className="relative flex h-[300px] w-[300px] items-center justify-center md:h-[430px] md:w-[430px]"
-      aria-hidden="true"
-    >
-      <div
-        className="pointer-events-none absolute inset-0 rounded-full opacity-50 blur-3xl"
-        style={{ background: 'radial-gradient(circle, rgba(245,158,66,0.4) 0%, transparent 72%)' }}
-      />
-      <motion.div
-        animate={reduceMotion ? undefined : { rotateZ: [0, 360], rotateX: [56, 68, 56] }}
-        transition={
-          reduceMotion
-            ? undefined
-            : {
-                rotateZ: { duration: 38, repeat: Infinity, ease: 'linear' },
-                rotateX: { duration: 10, repeat: Infinity, ease: 'easeInOut' },
-              }
-        }
-        className="absolute inset-5 rounded-full"
-        style={{
-          background: isDark
-            ? 'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 26%, #F59E42 34%, #FFD09A 41%, #24483F 63%, transparent 71%)'
-            : 'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 26%, #E88736 34%, #FFD09A 42%, #173D35 64%, transparent 72%)',
-          boxShadow: '0 45px 95px rgba(245, 158, 66, 0.25)',
-        }}
-      />
-      <div className="relative flex h-32 w-32 items-center justify-center rounded-full border border-amber/30 bg-[#0B1A15]/60 text-center backdrop-blur-md md:h-40 md:w-40">
-        <div>
-          <ShieldCheck className="mx-auto h-7 w-7 text-amber" />
-          <p className="mt-2 text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#FCFAF6]/70">one action</p>
+    <div className="relative mx-auto aspect-square w-full max-w-[440px]" aria-hidden="true">
+      <div className="absolute inset-[6%] rounded-full bg-[radial-gradient(circle,rgba(120,155,131,0.2),transparent_66%)] blur-2xl" />
+      <div className="absolute inset-[2%] rounded-full border border-white/[0.06]" />
+      <div className="absolute inset-[11%] rounded-full border border-[#8FB09A]/15" />
+      <div className="absolute inset-[20%] animate-spin rounded-full border border-dashed border-white/15 motion-reduce:animate-none [animation-duration:58s]">
+        <span className="absolute start-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F59E42] shadow-[0_0_22px_7px_rgba(245,158,66,0.45)] rtl:translate-x-1/2" />
+      </div>
+      <div className="absolute inset-[31%] rounded-full border border-[#8FB09A]/25" />
+      <div className="absolute inset-[14%] animate-spin rounded-full border border-transparent motion-reduce:animate-none [animation-direction:reverse] [animation-duration:44s]">
+        <span className="absolute bottom-0 start-1/2 h-1.5 w-1.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-[#C2541E] shadow-[0_0_18px_5px_rgba(194,84,30,0.4)] rtl:translate-x-1/2" />
+      </div>
+
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="flex h-32 w-32 flex-col items-center justify-center rounded-full border border-[#8FB09A]/30 bg-[#1D2B25]/80 text-center shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)] backdrop-blur-md sm:h-36 sm:w-36">
+          <HeartPulse className="h-7 w-7 text-[#F59E42] drop-shadow-[0_0_10px_rgba(245,158,66,0.55)]" />
+          <p className="mt-2 max-w-[7rem] text-[9px] font-extrabold uppercase leading-relaxed tracking-[0.2em] text-[#FAF8F2]/65">
+            {isAr ? 'درس واحد' : 'One lesson'}
+            <br />
+            {isAr ? 'استجابة أهدأ' : 'A calmer response'}
+          </p>
         </div>
       </div>
-    </motion.div>
+
+      <span className="absolute left-1/2 top-[6%] -translate-x-1/2 text-[9px] font-bold uppercase tracking-[0.28em] text-[#F59E42]/55">
+        {isAr ? 'تعلّم' : 'Learn'}
+      </span>
+      <span className="absolute bottom-[13%] start-[6%] text-[9px] font-bold uppercase tracking-[0.28em] text-[#FAF8F2]/35">
+        {isAr ? 'استعد' : 'Prepare'}
+      </span>
+      <span className="absolute bottom-[13%] end-[6%] text-[9px] font-bold uppercase tracking-[0.28em] text-[#FAF8F2]/35">
+        {isAr ? 'استجب' : 'Respond'}
+      </span>
+    </div>
   );
 }
 
@@ -216,83 +256,105 @@ function LandingFooter() {
   const isAr = i18n.language === 'ar';
 
   return (
-    <footer className="border-t border-line bg-surface">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-12 lg:px-12">
+    <footer className="relative overflow-hidden border-t border-white/10 bg-[#17231F] text-[#FAF8F2]">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(120,155,131,0.12),transparent_45%),radial-gradient(circle_at_88%_100%,rgba(230,154,85,0.08),transparent_45%)]"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-12">
         <div className="lg:col-span-5">
-          <Link to="/" className="inline-flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-white">
-              <ShieldCheck className="h-5 w-5 text-amber-soft" />
+          <Link to="/" className="group inline-flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-[0.9rem] border border-white/15 bg-white/[0.06] shadow-[0_0_30px_-10px_rgba(245,158,66,0.6)] transition-transform duration-500 group-hover:-translate-y-0.5">
+              <ShieldCheck className="h-5 w-5 text-[#F59E42]" strokeWidth={2.1} />
             </span>
-            <span className="font-display text-xl font-semibold text-ink">EduFanor</span>
+            <span className="flex flex-col leading-none">
+              <span className="font-display text-xl font-semibold tracking-tight text-[#FAF8F2]">
+                EduFanor
+              </span>
+              <span className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.3em] text-[#FAF8F2]/40">
+                {isAr ? 'تعلّم · استعد · استجب' : 'Learn · Prepare · Respond'}
+              </span>
+            </span>
           </Link>
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-ink-muted">
-            {isAr
-              ? 'منصة تعليمية تجعل المعرفة الأساسية بالإسعافات الأولية واضحة، عملية، ومتاحة للجميع.'
-              : 'A learning platform that makes essential first-aid knowledge clear, practical, and accessible to everyone.'}
+
+          <p className="mt-6 max-w-sm text-[13.5px] leading-relaxed text-[#FAF8F2]/55">
+            {t('footer.desc')}
           </p>
-          <p className="mt-5 inline-flex items-center gap-2 rounded-full border border-line bg-surface-muted px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted">
-            <Sparkles className="h-3 w-3 text-amber" />
-            {isAr ? 'عربي · English' : 'Arabic · English'}
-          </p>
+
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[9.5px] font-bold uppercase tracking-[0.18em] text-[#FAF8F2]/55">
+              <span className="text-[#F59E42]">عربي</span>
+              <span className="text-[#FAF8F2]/20">/</span>
+              <span>English</span>
+            </span>
+            <a
+              href="mailto:support@edufanor.com"
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[11px] font-semibold text-[#FAF8F2]/70 transition-colors hover:border-[#F59E42]/40 hover:text-[#F59E42]"
+              dir="ltr"
+            >
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#F59E42]/10 text-[#FDBA74] ring-1 ring-[#F59E42]/35">
+                <Mail className="h-3 w-3" />
+              </span>
+              support@edufanor.com
+            </a>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7">
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#FAF8F2]/35">
               {isAr ? 'اكتشف' : 'Explore'}
             </p>
-            <nav className="mt-3 flex flex-col gap-2.5 text-sm font-semibold text-ink">
-              <a href="#our-impact" className="transition-colors hover:text-brand-ink">
+            <nav className="mt-4 flex flex-col gap-2.5 text-[13px] font-semibold text-[#FAF8F2]/75">
+              <a href="#our-impact" className="transition-colors hover:text-[#F59E42]">
                 {isAr ? 'أثرنا' : 'Our impact'}
               </a>
-              <a href="#why-choose-us" className="transition-colors hover:text-brand-ink">
+              <a href="#why-choose-us" className="transition-colors hover:text-[#F59E42]">
                 {isAr ? 'لماذا إدوفانور' : 'Why EduFanor'}
               </a>
-              <a href="#courses" className="transition-colors hover:text-brand-ink">
-                {isAr ? 'المساقات' : 'Courses'}
+              <a href="#courses" className="transition-colors hover:text-[#F59E42]">
+                {isAr ? 'المسارات' : 'Learning path'}
               </a>
             </nav>
           </div>
 
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#FAF8F2]/35">
               {isAr ? 'المنصة' : 'Platform'}
             </p>
-            <nav className="mt-3 flex flex-col gap-2.5 text-sm font-semibold text-ink">
-              <Link to="/about" className="transition-colors hover:text-brand-ink">
+            <nav className="mt-4 flex flex-col gap-2.5 text-[13px] font-semibold text-[#FAF8F2]/75">
+              <Link to="/about" className="transition-colors hover:text-[#F59E42]">
                 {isAr ? 'عن المنصة' : 'About'}
               </Link>
-              <Link to="/login" className="transition-colors hover:text-brand-ink">
+              <Link to="/login" className="transition-colors hover:text-[#F59E42]">
                 {isAr ? 'تسجيل الدخول' : 'Sign in'}
               </Link>
-              <Link to="/register" className="transition-colors hover:text-brand-ink">
+              <Link to="/register" className="transition-colors hover:text-[#F59E42]">
                 {isAr ? 'حساب جديد' : 'Create account'}
               </Link>
             </nav>
           </div>
 
           <div className="col-span-2 sm:col-span-1">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
-              {isAr ? 'تواصل' : 'Contact'}
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#FAF8F2]/35">
+              {isAr ? 'ملاحظة مسؤولة' : 'A responsible note'}
+            </p>
+            <p className="mt-4 text-[11.5px] leading-relaxed text-[#FAF8F2]/45">
+              {t('footer.disclaimer')}
             </p>
             <a
-              href="mailto:support@edufanor.com"
-              className="mt-3 block text-sm font-semibold text-ink transition-colors hover:text-brand-ink"
-              dir="ltr"
+              href="#home"
+              className="mt-4 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#F59E42]/80 transition-colors hover:text-[#F59E42]"
             >
-              support@edufanor.com
+              {isAr ? 'إلى الأعلى' : 'Back to top'}
+              <ArrowRight className="h-3.5 w-3.5 -rotate-90 rtl:rotate-90" />
             </a>
-            <p className="mt-4 text-[11px] leading-relaxed text-ink-muted">
-              {isAr
-                ? 'المحتوى تعليمي فقط. في الطوارئ، اتصل بخدمات الإسعاف المحلية أولاً.'
-                : 'Educational content only. In an emergency, contact local emergency services first.'}
-            </p>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-line">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-center text-[11px] text-ink-muted sm:flex-row sm:text-start lg:px-12">
+      <div className="relative border-t border-white/10">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-6 text-center text-[11px] text-[#FAF8F2]/35 sm:flex-row sm:text-start sm:px-8 lg:px-12">
           <p>
             © {CURRENT_YEAR} EduFanor. {isAr ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
           </p>
@@ -311,11 +373,20 @@ export default function PublicLandingPage() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.14]);
+  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '7%']);
+  const copyY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.82], [1, 0.12]);
 
   const courses = t('coursesData', { returnObjects: true });
   const courseList = Array.isArray(courses) ? courses : [];
-
-  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const sectionIds = ['home', 'our-impact', 'why-choose-us', 'our-mission', 'courses', 'about'];
@@ -347,57 +418,102 @@ export default function PublicLandingPage() {
     { label: isAr ? 'أثرنا' : 'Impact', href: '#our-impact' },
     { label: isAr ? 'لماذا إدوفانور' : 'Why EduFanor', href: '#why-choose-us' },
     { label: isAr ? 'رسالتنا' : 'Mission', href: '#our-mission' },
-    { label: isAr ? 'المساقات' : 'Courses', href: '#courses' },
+    { label: isAr ? 'المسارات' : 'Learning path', href: '#courses' },
     { label: isAr ? 'عن المنصة' : 'About', href: '#about' },
   ];
 
-  const reveal = (delay = 0) =>
+  const reveal = (delay = 0, amount = 0.2) =>
     reduceMotion
       ? {}
       : {
-          initial: { opacity: 0, y: 26 },
+          initial: { opacity: 0, y: 24 },
           whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true, amount: 0.25 },
+          viewport: { once: true, amount },
           transition: { duration: 0.72, delay, ease: [0.16, 1, 0.3, 1] },
         };
 
-  const heroReveal = (delay = 0) =>
+  const heroLine = (delay = 0) =>
     reduceMotion
       ? {}
       : {
-          initial: { opacity: 0, y: 22 },
+          initial: { opacity: 0, y: 28 },
           animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] },
+          transition: { duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] },
         };
 
+  const onHero = !scrolled || mobileMenuOpen;
+
+  const wordmarkTone = onHero ? 'text-[#FAF8F2]' : 'text-[#26332F] dark:text-[#FAF8F2]';
+  const subwordTone = onHero ? 'text-[#FAF8F2]/45' : 'text-[#5F6E68] dark:text-[#A8B6AB]';
+  const navIdle = onHero
+    ? 'text-[#FAF8F2]/70 hover:bg-white/[0.08] hover:text-[#FAF8F2]'
+    : 'text-[#5F6E68] hover:bg-[#26332F]/[0.05] hover:text-[#26332F] dark:text-[#C3D1C6] dark:hover:bg-white/[0.06] dark:hover:text-[#FAF8F2]';
+  const navActive = onHero
+    ? 'bg-white/[0.09] text-[#F59E42]'
+    : 'bg-[#26332F]/[0.06] text-[#26332F] dark:bg-white/[0.07] dark:text-[#F59E42]';
+  const controlTone = onHero
+    ? 'border-white/15 bg-white/[0.06] text-[#FAF8F2] hover:border-white/30 hover:bg-white/[0.12]'
+    : 'border-[#26332F]/15 bg-white/60 text-[#26332F] hover:border-[#26332F]/30 hover:bg-white dark:border-white/15 dark:bg-white/[0.05] dark:text-[#FAF8F2] dark:hover:bg-white/[0.1]';
+  const loginTone = onHero
+    ? 'text-[#FAF8F2]/85 hover:bg-white/[0.07] hover:text-[#FAF8F2]'
+    : 'text-[#5F6E68] hover:bg-[#26332F]/[0.05] hover:text-[#26332F] dark:text-[#C3D1C6] dark:hover:bg-white/[0.06] dark:hover:text-white';
+  const ctaTone = onHero
+    ? 'bg-[#F59E42] text-[#17231F] hover:bg-[#F2C49B]'
+    : 'bg-[#F59E42] text-[#17231F] hover:bg-[#F2C49B]';
+  const segWrapTone = onHero
+    ? 'border-white/15 bg-white/[0.06]'
+    : 'border-[#26332F]/15 bg-[#26332F]/[0.04] dark:border-white/15 dark:bg-white/[0.05]';
+  const segActiveTone = onHero
+    ? 'bg-[#F59E42] text-[#17231F]'
+    : 'bg-[#B45309] text-[#FAF8F2] dark:bg-[#F59E42] dark:text-[#17231F]';
+  const segIdleTone = onHero
+    ? 'text-white/60 hover:text-white'
+    : 'text-[#5F6E68] hover:text-[#26332F] dark:text-[#A8B6AB] dark:hover:text-white';
+
+  const headerTone = mobileMenuOpen
+    ? 'border-b border-white/10 bg-[#17231F]/95 backdrop-blur-xl'
+    : scrolled
+      ? 'border-b border-[#26332F]/10 bg-[#FAF8F2]/85 shadow-[0_24px_60px_-44px_rgba(10,30,22,0.8)] backdrop-blur-xl dark:border-white/10 dark:bg-[#17231F]/88'
+      : 'border-b border-transparent bg-[linear-gradient(180deg,rgba(4,13,9,0.62)_0%,rgba(4,13,9,0.18)_62%,rgba(4,13,9,0)_100%)]';
+
   return (
-    <div className="min-h-screen overflow-x-hidden bg-surface text-ink">
-      <header
-        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow] duration-500 ${
-          scrolled
-            ? 'border-b border-white/10 bg-[#08140F]/90 shadow-[0_24px_60px_-40px_rgba(0,0,0,0.95)] backdrop-blur-xl'
-            : 'border-b border-transparent bg-[linear-gradient(180deg,rgba(5,14,11,0.55)_0%,rgba(5,14,11,0)_100%)]'
-        }`}
+    <div className="min-h-screen overflow-x-hidden bg-white text-[#26332F] transition-colors duration-500 dark:bg-[#17231F] dark:text-white">
+      <a
+        href="#home"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-[#F59E42] focus:px-4 focus:py-2 focus:text-xs focus:font-bold focus:text-[#17231F]"
       >
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
+        {isAr ? 'انتقل إلى المحتوى' : 'Skip to content'}
+      </a>
+
+      <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${headerTone}`}>
+        <div
+          className={`mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-5 transition-all duration-500 sm:px-8 lg:px-12 ${
+            scrolled && !mobileMenuOpen ? 'h-[4.25rem]' : 'h-[5rem]'
+          }`}
+        >
           <Link to="/" className="group flex shrink-0 items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-[0.85rem] bg-[#F59E42] text-[#08140F] shadow-[0_14px_34px_-16px_rgba(245,158,66,0.95)] transition-transform duration-500 group-hover:-translate-y-0.5">
-              <ShieldCheck className="h-5 w-5" strokeWidth={2.2} />
+            <span
+              className={`flex h-10 w-10 items-center justify-center rounded-[0.85rem] border shadow-[0_0_30px_-10px_rgba(245,158,66,0.6)] transition-[transform,background-color,border-color] duration-500 group-hover:-translate-y-0.5 ${
+                onHero
+                  ? 'border-white/15 bg-white/[0.06]'
+                  : 'border-[#26332F]/10 bg-[#24483F] dark:border-white/15 dark:bg-[#24483F]'
+              }`}
+            >
+              <ShieldCheck className="h-5 w-5 text-[#F59E42]" strokeWidth={2.1} />
             </span>
             <span className="flex flex-col leading-none">
-              <span className="font-display text-[1.3rem] font-semibold tracking-tight text-[#FCFAF6]">
+              <span className={`font-display text-[1.28rem] font-semibold tracking-tight ${wordmarkTone}`}>
                 EduFanor
               </span>
-              <span className="mt-1.5 hidden text-[9px] font-bold uppercase leading-tight tracking-[0.3em] text-[#FCFAF6]/40 sm:block">
-                {isAr ? 'تعلّم · استعد · أنقذ' : 'Learn · Prepare · Respond'}
+              <span
+                className={`mt-1.5 hidden text-[9px] font-bold uppercase leading-tight tracking-[0.3em] sm:block ${subwordTone}`}
+              >
+                {isAr ? 'تعلّم · استعد · استجب' : 'Learn · Prepare · Respond'}
               </span>
             </span>
           </Link>
 
-          <nav
-            className="hidden items-center gap-0.5 lg:flex"
-            aria-label={isAr ? 'التنقل الرئيسي' : 'Main navigation'}
-          >
+          <nav className="hidden items-center gap-0.5 lg:flex" aria-label={isAr ? 'التنقل الرئيسي' : 'Main navigation'}>
             {navItems.map((item) => {
               const active = activeSection === item.href.replace('#', '');
               return (
@@ -405,10 +521,8 @@ export default function PublicLandingPage() {
                   key={item.href}
                   href={item.href}
                   aria-current={active ? 'true' : undefined}
-                  className={`rounded-full px-3.5 py-2 text-[13px] font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD09A]/50 ${
-                    active
-                      ? 'bg-white/10 text-[#FFD09A]'
-                      : 'text-[#FCFAF6]/70 hover:bg-white/[0.07] hover:text-[#FCFAF6]'
+                  className={`rounded-full px-3 py-2 text-[12.5px] font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E42]/50 ${
+                    active ? navActive : navIdle
                   }`}
                 >
                   {item.label}
@@ -417,9 +531,9 @@ export default function PublicLandingPage() {
             })}
           </nav>
 
-          <div className="flex items-center gap-2 sm:gap-2.5">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
             <div
-              className="hidden items-center gap-0.5 rounded-full border border-white/15 bg-white/[0.06] p-[3px] md:flex"
+              className={`hidden items-center gap-0.5 rounded-full border p-1 md:flex ${segWrapTone}`}
               role="group"
               aria-label={isAr ? 'اختيار اللغة' : 'Language selector'}
             >
@@ -427,8 +541,8 @@ export default function PublicLandingPage() {
                 type="button"
                 onClick={() => i18n.changeLanguage('ar')}
                 aria-pressed={isAr}
-                className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold tracking-wide transition-colors ${
-                  isAr ? 'bg-[#FFD09A] text-[#08140F]' : 'text-[#FCFAF6]/60 hover:text-[#FCFAF6]'
+                className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold tracking-[0.08em] transition-colors ${
+                  isAr ? segActiveTone : segIdleTone
                 }`}
               >
                 ع
@@ -437,8 +551,8 @@ export default function PublicLandingPage() {
                 type="button"
                 onClick={() => i18n.changeLanguage('en')}
                 aria-pressed={!isAr}
-                className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold tracking-wide transition-colors ${
-                  !isAr ? 'bg-[#FFD09A] text-[#08140F]' : 'text-[#FCFAF6]/60 hover:text-[#FCFAF6]'
+                className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold tracking-[0.08em] transition-colors ${
+                  !isAr ? segActiveTone : segIdleTone
                 }`}
               >
                 EN
@@ -450,7 +564,7 @@ export default function PublicLandingPage() {
               onClick={toggleTheme}
               aria-label={isAr ? 'تبديل المظهر' : 'Toggle theme'}
               title={isAr ? 'تبديل المظهر' : 'Toggle theme'}
-              className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-[#FCFAF6] backdrop-blur-md transition-all duration-300 hover:border-[#FFD09A]/45 hover:bg-white/[0.12] hover:text-[#FFD09A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD09A]/50"
+              className={`group flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E42]/50 ${controlTone}`}
             >
               {isDark ? (
                 <Sun className="h-4 w-4 transition-transform duration-500 group-hover:rotate-45" />
@@ -459,18 +573,16 @@ export default function PublicLandingPage() {
               )}
             </button>
 
-            <span className="mx-0.5 hidden h-6 w-px bg-white/15 lg:block" aria-hidden="true" />
-
             <Link
               to="/login"
-              className="hidden rounded-full border border-transparent px-4 py-2 text-[13px] font-semibold text-[#FCFAF6]/85 transition-all duration-300 hover:border-white/20 hover:bg-white/[0.07] hover:text-[#FCFAF6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD09A]/40 lg:inline-flex"
+              className={`hidden rounded-full px-4 py-2 text-[12.5px] font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E42]/50 lg:inline-flex ${loginTone}`}
             >
               {isAr ? 'تسجيل الدخول' : 'Log in'}
             </Link>
 
             <Link
               to="/register"
-              className="group hidden items-center gap-2 rounded-full bg-[#F59E42] px-5 py-2.5 text-[13px] font-extrabold text-[#08140F] shadow-[0_16px_40px_-20px_rgba(245,158,66,0.95)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFD09A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD09A]/60 lg:inline-flex"
+              className={`group hidden items-center gap-2 rounded-full px-5 py-2.5 text-[12.5px] font-extrabold tracking-[0.02em] shadow-[0_16px_40px_-22px_rgba(245,158,66,0.65)] transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E42]/50 lg:inline-flex ${ctaTone}`}
             >
               {isAr ? 'إنشاء حساب' : 'Sign up'}
               {isAr ? (
@@ -485,7 +597,7 @@ export default function PublicLandingPage() {
               onClick={() => setMobileMenuOpen((open) => !open)}
               aria-label={isAr ? 'القائمة' : 'Menu'}
               aria-expanded={mobileMenuOpen}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-[#FCFAF6] backdrop-blur-md transition-colors hover:bg-white/[0.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD09A]/50 lg:hidden"
+              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E42]/50 lg:hidden ${controlTone}`}
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -499,10 +611,10 @@ export default function PublicLandingPage() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="overflow-hidden border-t border-white/10 bg-[#07120E]/95 backdrop-blur-2xl lg:hidden"
+              className="overflow-hidden border-t border-white/10 bg-[#17231F]/95 backdrop-blur-xl lg:hidden"
             >
               <nav
-                className="mx-auto flex max-w-7xl flex-col gap-0.5 px-5 py-5 sm:px-8"
+                className="mx-auto flex max-w-[1440px] flex-col gap-0.5 px-5 py-5 sm:px-8"
                 aria-label={isAr ? 'قائمة الجوال' : 'Mobile navigation'}
               >
                 {navItems.map((item) => {
@@ -515,8 +627,8 @@ export default function PublicLandingPage() {
                       aria-current={active ? 'true' : undefined}
                       className={`flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-colors ${
                         active
-                          ? 'bg-white/[0.08] text-[#FFD09A]'
-                          : 'text-[#FCFAF6]/75 hover:bg-white/[0.05] hover:text-[#FCFAF6]'
+                          ? 'bg-white/[0.08] text-[#F59E42]'
+                          : 'text-[#FAF8F2]/75 hover:bg-white/[0.05] hover:text-[#FAF8F2]'
                       }`}
                     >
                       <span>{item.label}</span>
@@ -530,7 +642,7 @@ export default function PublicLandingPage() {
                 })}
 
                 <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5">
-                  <span className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#FCFAF6]/50">
+                  <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#FAF8F2]/50">
                     {isAr ? 'اللغة' : 'Language'}
                   </span>
                   <div
@@ -543,17 +655,17 @@ export default function PublicLandingPage() {
                       onClick={() => i18n.changeLanguage('ar')}
                       aria-pressed={isAr}
                       className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold transition-colors ${
-                        isAr ? 'bg-[#FFD09A] text-[#08140F]' : 'text-[#FCFAF6]/60'
+                        isAr ? 'bg-[#F59E42] text-[#17231F]' : 'text-[#FAF8F2]/60'
                       }`}
                     >
-                      ع
+                      عربي
                     </button>
                     <button
                       type="button"
                       onClick={() => i18n.changeLanguage('en')}
                       aria-pressed={!isAr}
                       className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold transition-colors ${
-                        !isAr ? 'bg-[#FFD09A] text-[#08140F]' : 'text-[#FCFAF6]/60'
+                        !isAr ? 'bg-[#F59E42] text-[#17231F]' : 'text-[#FAF8F2]/60'
                       }`}
                     >
                       EN
@@ -565,14 +677,14 @@ export default function PublicLandingPage() {
                   <Link
                     to="/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-full border border-white/20 py-3 text-center text-[13px] font-semibold text-[#FCFAF6] transition-colors hover:bg-white/[0.08]"
+                    className="rounded-full border border-white/20 py-3 text-center text-[13px] font-semibold text-[#FAF8F2] transition-colors hover:bg-white/[0.08]"
                   >
                     {isAr ? 'تسجيل الدخول' : 'Log in'}
                   </Link>
                   <Link
                     to="/register"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-full bg-[#F59E42] py-3 text-center text-[13px] font-extrabold text-[#08140F] transition-colors hover:bg-[#FFD09A]"
+                    className="rounded-full bg-[#F59E42] py-3 text-center text-[13px] font-extrabold text-[#17231F] transition-colors hover:bg-[#F2C49B]"
                   >
                     {isAr ? 'إنشاء حساب' : 'Sign up'}
                   </Link>
@@ -583,574 +695,965 @@ export default function PublicLandingPage() {
         </AnimatePresence>
       </header>
 
-      {/* Hero — one cinematic full-bleed image; all text sits directly over it. */}
-      <section
-        id="home"
-        className="relative isolate flex min-h-[100svh] w-full flex-col justify-end overflow-hidden bg-[#06110C] px-5 pb-14 pt-32 sm:px-8 sm:pb-16 lg:px-12 lg:pb-20"
-      >
-        <div
-          className="absolute inset-0 -z-30 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/heroa.png')" }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,rgba(6,17,12,0.88)_0%,rgba(6,17,12,0.45)_32%,rgba(6,17,12,0.74)_70%,rgba(6,17,12,0.95)_100%)]"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_78%_18%,rgba(245,158,66,0.18),transparent_58%)]"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-x-0 bottom-0 -z-10 h-52 bg-gradient-to-t from-[#06110C] via-[#06110C]/70 to-transparent"
-          aria-hidden="true"
-        />
-
-        <div className="relative mx-auto w-full max-w-7xl">
-          <motion.div {...heroReveal(0)} className="flex">
-            <span className="inline-flex items-center gap-2.5 rounded-full border border-[#FFD09A]/25 bg-[#08140F]/50 px-4 py-2 text-[9px] font-extrabold uppercase tracking-[0.16em] text-[#FFD09A] backdrop-blur-md sm:text-[10px] sm:tracking-[0.22em]">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F59E42] opacity-70" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#F59E42]" />
-              </span>
-              {isAr ? 'إدوفانور · منصة الإسعافات الأولية الرقمية' : 'EduFanor · A digital first-aid academy'}
-            </span>
-          </motion.div>
-
-          <motion.h1
-            {...heroReveal(0.08)}
-            className={`mt-7 max-w-4xl font-display font-semibold tracking-[-0.03em] text-[#FCFAF6] [text-shadow:0_24px_60px_rgba(0,0,0,0.55)] ${
-              isAr
-                ? 'text-[clamp(2.4rem,6vw,4.4rem)] leading-[1.22]'
-                : 'text-[clamp(2.7rem,6.8vw,5.2rem)] leading-[0.96]'
-            }`}
-          >
-            {isAr ? (
-              <>
-                <span className="block">معرفة صغيرة.</span>
-                <span className="block text-[#FFD09A]">وثقة تُحدث فرقاً.</span>
-              </>
-            ) : (
-              <>
-                <span className="block">A little knowledge.</span>
-                <span className="block italic text-[#FFD09A]">The confidence to act.</span>
-              </>
-            )}
-          </motion.h1>
-
-          <motion.p
-            {...heroReveal(0.16)}
-            className={`mt-6 max-w-xl text-[#FCFAF6]/75 text-[13.5px] sm:text-[15px] ${
-              isAr ? 'leading-[1.95]' : 'leading-[1.8]'
-            }`}
-          >
-            {isAr
-              ? 'تعلّم الخطوات الإسعافية الأساسية عبر دروس واضحة وتجارب تفاعلية، واكتسب الاستعداد للتصرف بثقة عند وقوع الطوارئ.'
-              : 'Learn essential first-aid steps through clear lessons and interactive practice, and build the readiness to respond calmly when it matters.'}
-          </motion.p>
-
+      <main>
+        {/* Hero — cinematic full-bleed image; the copy parallaxes over the scene. */}
+        <section
+          id="home"
+          ref={heroRef}
+          className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#0B2A21] px-5 pb-24 pt-36 text-[#FAF8F2] sm:px-8 lg:px-12"
+        >
+          {/* Parallaxed photographic plate */}
           <motion.div
-            {...heroReveal(0.24)}
-            className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
+            className="absolute inset-0 -z-30"
+            style={{ scale: heroScale, y: heroY }}
+            aria-hidden="true"
           >
-            <Link
-              to="/register"
-              className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#F59E42] px-7 py-3.5 text-[13px] font-extrabold tracking-wide text-[#08140F] shadow-[0_22px_60px_-24px_rgba(245,158,66,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#FFD09A] hover:shadow-[0_26px_70px_-22px_rgba(255,208,154,0.7)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD09A]/60 sm:w-auto"
-            >
-              <span>{isAr ? 'ابدأ الآن مجاناً' : 'Get started free'}</span>
-              {isAr ? (
-                <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
-              ) : (
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              )}
-            </Link>
-            <a
-              href="#our-impact"
-              className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-[#FCFAF6]/25 bg-white/[0.06] px-7 py-3.5 text-[13px] font-bold text-[#FCFAF6] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#FFD09A]/60 hover:bg-white/[0.12] hover:text-[#FFD09A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFD09A]/40 sm:w-auto"
-            >
-              <span>{isAr ? 'اكتشف أثرنا' : 'Explore our impact'}</span>
-              <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
-            </a>
+            <div className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-[url('/heroa.png')]" />
           </motion.div>
 
-          <motion.ul
-            {...heroReveal(0.34)}
-            className="mt-10 flex max-w-2xl flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/10 pt-5"
-          >
-            {[
-              {
-                icon: BookOpen,
-                title: isAr ? 'دروس واضحة' : 'Clear lessons',
-                text: isAr ? 'خطوات عملية مبسطة' : 'Practical, structured steps',
-              },
-              {
-                icon: GlobeIcon,
-                title: isAr ? 'عربي وإنجليزي' : 'Arabic & English',
-                text: isAr ? 'تعلم بلغتك بسلاسة' : 'Learn in your language',
-              },
-              {
-                icon: Compass,
-                title: isAr ? 'تقدمك محفوظ' : 'Tracked progress',
-                text: isAr ? 'تابع كل خطوة تنجزها' : 'Follow every milestone',
-              },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <li key={item.title} className="flex items-center gap-2.5">
-                  <Icon className="h-4 w-4 shrink-0 text-[#FFD09A]" />
-                  <span className="text-[11px] font-semibold tracking-wide text-[#FCFAF6]/70">
-                    {item.title}
-                    <span className="hidden text-[#FCFAF6]/30 sm:inline"> · </span>
-                    <span className="hidden text-[#FCFAF6]/45 sm:inline">{item.text}</span>
+          {/* Cinematic gradient overlays */}
+          <div
+            className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,rgba(6,17,12,0.88)_0%,rgba(6,17,12,0.52)_30%,rgba(6,17,12,0.4)_52%,rgba(6,17,12,0.86)_80%,rgba(7,23,17,0.97)_100%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0 -z-20 bg-[linear-gradient(100deg,rgba(6,17,12,0.82)_0%,rgba(6,17,12,0.38)_46%,rgba(6,17,12,0)_72%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_16%_18%,rgba(245,158,66,0.16),transparent_55%),radial-gradient(ellipse_at_86%_88%,rgba(230,154,85,0.12),transparent_52%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 -z-10 h-44 bg-gradient-to-t from-[#0B2A21] via-[#0B2A21]/60 to-transparent"
+            aria-hidden="true"
+          />
+
+          <div className="relative mx-auto w-full max-w-7xl">
+            <motion.div style={{ y: copyY, opacity: copyOpacity }} className="max-w-4xl">
+              <motion.div {...heroLine(0)} className="flex">
+                <span className="inline-flex items-center gap-3 rounded-full border border-[#F59E42]/25 bg-[#17231F]/55 py-2 pe-5 ps-2.5 text-[9px] font-extrabold uppercase tracking-[0.22em] text-[#FDBA74] shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-md sm:text-[10px]">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F59E42]/15 ring-1 ring-[#F59E42]/40">
+                    <Sparkles className="h-3 w-3" />
                   </span>
-                </li>
-              );
-            })}
-          </motion.ul>
-        </div>
-      </section>
-
-      {/* Impact — real rotating 3D globe preserved and refined. */}
-      <section id="our-impact" className="relative overflow-hidden bg-beige py-20 transition-colors duration-500 dark:bg-[#101A15] md:py-28">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-60"
-          style={{
-            background:
-              'radial-gradient(circle at 82% 38%, rgba(245,158,66,0.16) 0%, transparent 55%), radial-gradient(circle at 8% 85%, rgba(36,72,63,0.22) 0%, transparent 62%)',
-          }}
-          aria-hidden="true"
-        />
-        <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-12 lg:gap-16 lg:px-12">
-          <div className="lg:col-span-6">
-            <motion.div {...reveal(0)} className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
-              <span className="text-amber">01</span>
-              <span className="h-3 w-px bg-line" aria-hidden="true" />
-              {isAr ? 'أثرنا الإنساني' : 'Our human impact'}
-            </motion.div>
-
-            <motion.h2 {...reveal(0.06)} className="section-title max-w-2xl !text-[clamp(2rem,4.4vw,3.5rem)]">
-              {isAr ? (
-                <>
-                  الطوارئ قد تحدث في كل مكان،
-                  <br />
-                  <span className="text-accent">ومعرفتك قد تُحدث فرقاً.</span>
-                </>
-              ) : (
-                <>
-                  Emergencies happen everywhere.
-                  <br />
-                  <span className="text-accent">Your knowledge can make a difference.</span>
-                </>
-              )}
-            </motion.h2>
-
-            <motion.p {...reveal(0.12)} className="mt-6 max-w-xl text-sm leading-relaxed text-ink-muted md:text-base">
-              {isAr
-                ? 'قد تساعد المعرفة بالإسعافات الأولية على التصرف بثقة أكبر في حالات الطوارئ. تجعل EduFanor التعلم الأساسي متاحاً عبر دروس واضحة وتجارب تعليمية تفاعلية، لمساعدة الناس على فهم كيفية تقديم المساعدة الأولية المناسبة إلى حين وصول فرق الإنقاذ المختصة.'
-                : 'First-aid knowledge can help people respond more confidently in an emergency. EduFanor makes essential learning accessible through clear lessons and interactive educational experiences, helping people understand appropriate initial assistance while waiting for emergency responders.'}
-            </motion.p>
-
-            <motion.div {...reveal(0.18)} className="mt-8 space-y-4">
-              {[
-                {
-                  icon: BookOpen,
-                  title: isAr ? 'تعلّم بخطوات واضحة' : 'Learn in clear steps',
-                  text: isAr
-                    ? 'دروس منظمة تقودك من الأساسيات إلى الاستجابة الواعية.'
-                    : 'Structured lessons guide you from the basics to considered response.',
-                },
-                {
-                  icon: Brain,
-                  title: isAr ? 'اختبر فهمك' : 'Practice what you learn',
-                  text: isAr
-                    ? 'اختبارات قصيرة وتغذية راجعة فورية لتثبيت المعرفة.'
-                    : 'Short quizzes and instant feedback help knowledge stick.',
-                },
-                {
-                  icon: CheckCircle2,
-                  title: isAr ? 'تابع تقدمك' : 'See your progress',
-                  text: isAr
-                    ? 'لوحة تعلّم تعرض الدروس المكتملة والخطوة التالية.'
-                    : 'Your dashboard surfaces completed lessons and your next step.',
-                },
-              ].map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div key={item.title} className="flex gap-4 border-t border-line pt-4">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand-ink">
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <div>
-                      <h3 className="text-sm font-extrabold text-ink">{item.title}</h3>
-                      <p className="mt-1 max-w-md text-xs leading-relaxed text-ink-muted">{item.text}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </motion.div>
-          </div>
-
-          <motion.div {...reveal(0.1)} className="lg:col-span-6">
-            <RealInteractiveGlobe />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Why EduFanor — editorial rows instead of a repetitive card grid. */}
-      <section id="why-choose-us" className="relative border-y border-line bg-surface py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-12">
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-4">
-              <motion.div {...reveal(0)} className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-muted px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
-                <span className="text-amber">02</span>
-                <span className="h-3 w-px bg-line" aria-hidden="true" />
-                {isAr ? 'لماذا إدوفانور' : 'Why EduFanor'}
+                  {isAr
+                    ? 'إدوفانور · أكاديمية الإسعافات الأولية الرقمية'
+                    : 'EduFanor · A digital first-aid academy'}
+                </span>
               </motion.div>
 
-              <motion.h2 {...reveal(0.06)} className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink md:text-5xl">
+              <motion.h1
+                {...heroLine(0.08)}
+                className={`mt-8 font-display font-semibold tracking-[-0.035em] [text-shadow:0_28px_70px_rgba(4,16,11,0.8)] ${
+                  isAr
+                    ? 'text-[clamp(2.5rem,6.4vw,4.8rem)] leading-[1.18]'
+                    : 'text-[clamp(2.9rem,7vw,5.6rem)] leading-[0.98]'
+                }`}
+              >
                 {isAr ? (
                   <>
-                    تعلّم هادئ.
-                    <br />
-                    <span className="italic text-accent">تطبيق واعٍ.</span>
+                    <span className="block text-[#FAF8F2]">معرفة صغيرة.</span>
+                    <span className="mt-1 block bg-[linear-gradient(96deg,#FDBA74_0%,#F59E42_48%,#F2C49B_100%)] bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_6px_28px_rgba(245,158,66,0.35)]">
+                      وثقة تُحدث فرقًا.
+                    </span>
                   </>
                 ) : (
                   <>
-                    Calm learning.
+                    <span className="block text-[#FAF8F2]">A little knowledge.</span>
+                    <span className="mt-1 block bg-[linear-gradient(96deg,#FDBA74_0%,#F59E42_48%,#F2C49B_100%)] bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_6px_28px_rgba(245,158,66,0.35)]">
+                      The confidence to act.
+                    </span>
+                  </>
+                )}
+              </motion.h1>
+
+              <motion.p
+                {...heroLine(0.16)}
+                className={`mt-7 max-w-[36rem] text-balance text-[15px] text-[#FAF8F2]/80 sm:text-[17px] ${
+                  isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
+                }`}
+              >
+                {isAr
+                  ? 'تعلّم الخطوات الإسعافية الأساسية عبر دروس واضحة وتجارب تفاعلية، واكتسب الاستعداد للتصرف بثقة عند وقوع الطوارئ.'
+                  : 'Learn essential first-aid steps through clear lessons and interactive practice, and build the readiness to respond calmly when it matters.'}
+              </motion.p>
+
+              <motion.div
+                {...heroLine(0.24)}
+                className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center"
+              >
+                <Link
+                  to="/register"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#F59E42] px-7 py-3.5 text-[13px] font-extrabold text-[#17231F] shadow-[0_22px_60px_-24px_rgba(245,158,66,0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F2C49B] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E42]/60 sm:w-auto"
+                >
+                  {isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
+                  {isAr ? (
+                    <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
+                  ) : (
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  )}
+                </Link>
+                <a
+                  href="#our-impact"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-[#FAF8F2]/25 bg-[#FAF8F2]/[0.06] px-7 py-3.5 text-[13px] font-bold text-[#FAF8F2] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#F59E42]/60 hover:text-[#FDBA74] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E42]/40 sm:w-auto"
+                >
+                  {isAr ? 'اكتشف أثرنا' : 'Explore our impact'}
+                  <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+                </a>
+              </motion.div>
+
+              <motion.ul
+                {...heroLine(0.34)}
+                className="mt-12 flex max-w-3xl flex-wrap items-center gap-x-8 gap-y-4 border-t border-white/10 pt-6"
+              >
+                {[
+                  {
+                    icon: BookOpen,
+                    title: isAr ? 'دروس واضحة' : 'Clear lessons',
+                    text: isAr ? 'خطوات عملية مبسطة' : 'Practical, structured steps',
+                  },
+                  {
+                    icon: Languages,
+                    title: isAr ? 'عربي وإنجليزي' : 'Arabic & English',
+                    text: isAr ? 'تعلّم بلغتك بسلاسة' : 'Learn in your language',
+                  },
+                  {
+                    icon: Brain,
+                    title: isAr ? 'تقدّمك محفوظ' : 'Tracked progress',
+                    text: isAr ? 'تابع كل خطوة تنجزها' : 'Follow every milestone',
+                  },
+                ].map((item) => (
+                  <li key={item.title} className="flex items-center gap-3">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[0.9rem] bg-[#F59E42]/10 ring-1 ring-[#F59E42]/30 shadow-[0_0_28px_-8px_rgba(245,158,66,0.65)] backdrop-blur-sm">
+                      <item.icon className="h-5 w-5 text-[#FDBA74]" />
+                    </span>
+                    <span className="text-[11.5px] leading-tight sm:text-[12.5px]">
+                      <span className="block font-bold text-[#FAF8F2]">{item.title}</span>
+                      <span className="block text-[#FAF8F2]/55">{item.text}</span>
+                    </span>
+                  </li>
+                ))}
+              </motion.ul>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Impact — the real rotating 3D globe, tied to honest outcomes. */}
+        <section
+          id="our-impact"
+          className="relative overflow-hidden bg-white py-20 transition-colors duration-500 dark:bg-[#131D19] md:py-28"
+        >
+          <div
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_86%_18%,rgba(245,158,66,0.08),transparent_52%)]"
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-12">
+            <div className="lg:col-span-6">
+              <motion.div {...reveal(0)}>
+                <SectionLabel index="01">{isAr ? 'أثرنا' : 'Our impact'}</SectionLabel>
+              </motion.div>
+              <motion.h2
+                {...reveal(0.06)}
+                className={`mt-6 max-w-2xl font-display font-semibold tracking-[-0.02em] text-[#26332F] dark:text-[#FAF8F2] ${
+                  isAr
+                    ? 'text-[clamp(1.95rem,4.2vw,3.4rem)] leading-[1.3]'
+                    : 'text-[clamp(1.9rem,4.4vw,3.6rem)] leading-[1.04]'
+                }`}
+              >
+                {isAr ? (
+                  <>
+                    الطوارئ قد تحدث في كل مكان،
                     <br />
-                    <span className="italic text-accent">Considered action.</span>
+                    <span className="text-[#B45309] dark:text-[#F59E42]">
+                      ومعرفتك قد تُحدث فرقًا.
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Emergencies happen everywhere.
+                    <br />
+                    <span className="italic text-[#B45309] dark:text-[#F59E42]">
+                      Your knowledge can make a difference.
+                    </span>
                   </>
                 )}
               </motion.h2>
-
-              <motion.p {...reveal(0.12)} className="mt-5 max-w-sm text-sm leading-relaxed text-ink-muted">
+              <motion.p
+                {...reveal(0.12)}
+                className={`mt-6 max-w-xl text-[14.5px] text-[#5F6E68] dark:text-[#A8B6AB] ${
+                  isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
+                }`}
+              >
                 {isAr
-                  ? 'صُممت كل تفصيلة لتُبقي التركيز على ما يهم: الفهم الواضح، والاستعداد المسؤول، والثقة خطوة بخطوة.'
-                  : 'Every detail is designed to keep the focus on what matters: clear understanding, responsible readiness, and confidence built step by step.'}
+                  ? 'قد تساعد المعرفة بالإسعافات الأولية على التصرف بثقة أكبر في حالات الطوارئ. تجعل EduFanor التعلّم الأساسي متاحاً عبر دروس واضحة وتجارب تفاعلية، لمساعدة الناس على فهم كيفية تقديم المساعدة الأولية المناسبة إلى حين وصول فرق الإنقاذ المختصة.'
+                  : 'First-aid knowledge can help people respond more confidently in an emergency. EduFanor makes essential learning accessible through clear lessons and interactive experiences, helping people provide appropriate initial assistance while waiting for emergency responders.'}
               </motion.p>
 
-              <div className="mt-8 hidden max-w-xs lg:block">
-                <SecurityDiagram isDark={isDark} />
-              </div>
-            </div>
-
-            <div className="lg:col-span-8">
-              <div className="border-t border-line">
+              <div className="mt-10 border-t border-[#26332F]/10 dark:border-white/10">
                 {[
                   {
-                    number: '01',
                     icon: BookOpen,
-                    title: isAr ? 'دروس عملية ومركزة' : 'Focused, practical lessons',
+                    title: isAr ? 'تعلّم بخطوات واضحة' : 'Learn in clear steps',
                     text: isAr
-                      ? 'محتوى مقسّم إلى خطوات قصيرة يسهل قراءته على الهاتف والحاسوب، دون تشتيت.'
-                      : 'Content broken into short steps that stay readable on phones and desktops, without distraction.',
+                      ? 'دروس منظمة تقودك من الأساسيات إلى الاستجابة الواعية.'
+                      : 'Structured lessons guide you from the basics to considered response.',
                   },
                   {
-                    number: '02',
-                    icon: GlobeIcon,
-                    title: isAr ? 'تجربة ثنائية اللغة بالكامل' : 'A fully bilingual experience',
-                    text: isAr
-                      ? 'عربية بخط واضح واتجاه صحيح، وإنجليزية طبيعية — مع تبديل فوري في كل الصفحات.'
-                      : 'Natural Arabic with correct direction and clean English — switched instantly across every page.',
-                  },
-                  {
-                    number: '03',
                     icon: Brain,
-                    title: isAr ? 'تعلّم يعتمد على التذكر' : 'Learning designed for recall',
+                    title: isAr ? 'اختبر فهمك' : 'Practice what you learn',
                     text: isAr
-                      ? 'اختبارات قصيرة، ملاحظات سلامة، وخطوات قابلة للمراجعة قبل المواقف الحقيقية.'
-                      : 'Short quizzes, safety notes, and reviewable steps that prepare you before real situations.',
+                      ? 'اختبارات قصيرة وتغذية راجعة فورية لتثبيت المعرفة.'
+                      : 'Short quizzes and instant feedback help knowledge stick.',
                   },
                   {
-                    number: '04',
-                    icon: ShieldAlert,
-                    title: isAr ? 'إرشاد مسؤول وواضح' : 'Responsible, honest guidance',
+                    icon: CheckCircle2,
+                    title: isAr ? 'تابع تقدّمك' : 'See your progress',
                     text: isAr
-                      ? 'المحتوى تعليمي ولا يغني عن الاتصال بخدمات الطوارئ أو التدريب المعتمد.'
-                      : 'Educational content that never replaces emergency services or certified training.',
+                      ? 'لوحة تعلّم تعرض الدروس المكتملة والخطوة التالية.'
+                      : 'Your dashboard surfaces completed lessons and your next step.',
                   },
                 ].map((item, index) => {
                   const Icon = item.icon;
                   return (
                     <motion.div
-                      key={item.number}
-                      {...reveal(index * 0.04)}
-                      className="group grid gap-4 border-b border-line py-7 transition-colors hover:bg-surface-muted/60 sm:grid-cols-12 sm:items-start sm:gap-6 sm:px-4"
+                      key={item.title}
+                      {...reveal(index * 0.05)}
+                      className="group flex items-start gap-4 border-b border-[#26332F]/10 py-5 dark:border-white/10"
                     >
-                      <div className="flex items-center gap-3 sm:col-span-2">
-                        <span className="font-display text-sm font-semibold text-ink-muted">{item.number}</span>
-                        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-soft text-brand-ink transition-transform duration-300 group-hover:-rotate-6">
-                          <Icon className="h-5 w-5" />
-                        </span>
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[0.9rem] bg-[#B45309]/[0.07] text-[#B45309] ring-1 ring-[#B45309]/20 shadow-[0_0_24px_-10px_rgba(194,84,30,0.55)] transition-all duration-300 group-hover:ring-[#F59E42]/50 group-hover:shadow-[0_0_30px_-8px_rgba(245,158,66,0.6)] dark:bg-[#F59E42]/[0.1] dark:text-[#FDBA74] dark:ring-[#F59E42]/25 dark:shadow-[0_0_28px_-10px_rgba(245,158,66,0.6)]">
+                        <Icon className="h-5 w-5" />
+                      </span>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-3">
+                          <span className="font-display text-sm font-semibold text-[#B45309] dark:text-[#F59E42]">
+                            0{index + 1}
+                          </span>
+                          <h3
+                            className={`font-display font-semibold text-[#26332F] dark:text-[#FAF8F2] ${
+                              isAr ? 'text-base leading-[1.6]' : 'text-[15px]'
+                            }`}
+                          >
+                            {item.title}
+                          </h3>
+                        </div>
+                        <p
+                          className={`mt-1.5 max-w-md text-[13px] text-[#5F6E68] dark:text-[#A8B6AB] ${
+                            isAr ? 'font-arabic leading-[1.9]' : 'leading-relaxed'
+                          }`}
+                        >
+                          {item.text}
+                        </p>
                       </div>
-                      <h3 className="text-lg font-extrabold text-ink sm:col-span-4">{item.title}</h3>
-                      <p className="text-sm leading-relaxed text-ink-muted sm:col-span-6">{item.text}</p>
                     </motion.div>
                   );
                 })}
               </div>
+            </div>
 
-              <motion.div {...reveal(0.1)} className="mt-8 grid gap-6 rounded-2xl border border-line bg-surface-muted p-6 sm:grid-cols-2">
-                <div>
-                  <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
-                    {isAr ? 'شبكة التعلم' : 'The learning network'}
-                  </p>
-                  <p className="mt-2 text-xs leading-relaxed text-ink-muted">
-                    {isAr
-                      ? 'كل خطوة مرتبطة بالتالية: درس، مراجعة، ثم اختبار قصير.'
-                      : 'Each step connects to the next: lesson, review, then a short quiz.'}
-                  </p>
-                  <div className="mt-3 max-w-[220px]">
-                    <EmergencyNetworkDiagram isDark={isDark} />
+            <motion.div {...reveal(0.1)} className="lg:col-span-6">
+              <InteractiveGlobe isAr={isAr} reduceMotion={reduceMotion} />
+            </motion.div>
+          </div>
+        </section>
+
+          {/* Why Choose Us — editorial grid, warm, lucid, breathing room. */}
+        <section
+          id="why-choose-us"
+          className="relative overflow-hidden bg-white py-20 transition-colors duration-500 dark:bg-[#131D19] md:py-28 lg:py-32"
+        >
+          <div
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_14%,rgba(245,158,66,0.07),transparent_50%)]"
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+            <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
+              <div className="max-w-2xl">
+                <motion.div {...reveal(0)}>
+                  <SectionLabel index="02">{isAr ? 'لماذا إدوفانور' : 'Why EduFanor'}</SectionLabel>
+                </motion.div>
+                <motion.h2
+                  {...reveal(0.06)}
+                  className={`mt-6 font-display font-semibold tracking-[-0.02em] text-[#26332F] dark:text-[#FAF8F2] ${
+                    isAr
+                      ? 'text-[clamp(1.95rem,4.2vw,3.4rem)] leading-[1.3]'
+                      : 'text-[clamp(1.9rem,4.4vw,3.6rem)] leading-[1.04]'
+                  }`}
+                >
+                  {isAr ? (
+                    <>
+                      مصممة خصيصاً
+                      <br />
+                      لكي تفهم، لا لكي تحفظ.
+                    </>
+                  ) : (
+                    <>
+                      Built to make sense,
+                      <br />
+                      <span className="italic text-[#B45309] dark:text-[#F59E42]">
+                        not just to be read.
+                      </span>
+                    </>
+                  )}
+                </motion.h2>
+              </div>
+
+              <motion.p
+                {...reveal(0.12)}
+                className={`max-w-md text-[14.5px] text-[#5F6E68] dark:text-[#A8B6AB] ${
+                  isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
+                }`}
+              >
+                {isAr
+                  ? 'اخترنا أن نقدم المعلومات الطارئة بطريقة هادئة، مرتبة، وثنائية اللغة، لتكون قريبة منك أينما كنت.'
+                  : 'We designed every lesson to be calm, sequential, and bilingual so you can absorb it when it matters most.'}
+              </motion.p>
+            </div>
+
+            <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-12">
+              <motion.div
+                {...reveal(0.16)}
+                className="group relative overflow-hidden rounded-3xl border border-[#26332F]/10 bg-[#FAF8F2] p-8 transition-all duration-300 hover:border-[#F59E42]/40 dark:border-white/10 dark:bg-[#192520] lg:col-span-7 lg:p-12"
+              >
+                <div
+                  className="pointer-events-none absolute -end-16 -top-16 h-64 w-64 rounded-full bg-[#F59E42]/10 blur-3xl transition-transform duration-500 group-hover:scale-125"
+                  aria-hidden="true"
+                />
+                <div className="relative z-10 flex h-full flex-col justify-between">
+                  <div>
+                    <span className="font-display text-xs font-semibold tracking-[0.22em] text-[#B45309] dark:text-[#F59E42]">
+                      01 / 03
+                    </span>
+                    <h3 className="mt-6 font-display text-2xl font-semibold tracking-tight text-[#26332F] dark:text-[#FAF8F2]">
+                      {isAr ? 'ثنائية اللغة بالكامل' : 'Bilingual from the ground up'}
+                    </h3>
+                    <p className="mt-4 max-w-lg text-[14px] leading-relaxed text-[#5F6E68] dark:text-[#A8B6AB]">
+                      {isAr
+                        ? 'تصفح المنصة باللغة العربية أو الإنجليزية بسلاسة تامة، مع مصطلحات دقيقة وموحدة.'
+                        : 'Switch between Arabic and English instantly with consistent, professionally reviewed medical terminology in both languages.'}
+                    </p>
+                  </div>
+
+                  <div className="mt-12 flex items-center gap-3 pt-6 border-t border-[#26332F]/10 dark:border-white/10">
+                    <span className="rounded-full bg-[#B45309]/10 px-3 py-1 text-[11px] font-bold text-[#B45309] dark:bg-[#F59E42]/15 dark:text-[#F59E42]">
+                      عربي
+                    </span>
+                    <span className="text-[#5F6E68]/40 dark:text-white/25">/</span>
+                    <span className="rounded-full bg-[#B45309]/10 px-3 py-1 text-[11px] font-bold text-[#B45309] dark:bg-[#F59E42]/15 dark:text-[#F59E42]">
+                      English
+                    </span>
                   </div>
                 </div>
-                <div className="flex flex-col justify-center gap-3">
-                  {[
-                    isAr ? 'واجهة عربية أصلية (RTL)' : 'Native Arabic interface (RTL)',
-                    isAr ? 'الوضع الفاتح والداكن' : 'Light and dark modes',
-                    isAr ? 'حركة هادئة وتحترم تقليل الحركة' : 'Calm motion that respects reduced motion',
-                  ].map((line) => (
-                    <p key={line} className="flex items-center gap-2 text-xs font-bold text-ink">
-                      <CheckCircle2 className="h-4 w-4 shrink-0 text-teal-deep dark:text-teal" />
-                      {line}
+              </motion.div>
+
+              <motion.div
+                {...reveal(0.22)}
+                className="group relative overflow-hidden rounded-3xl border border-[#26332F]/10 bg-[#FAF8F2] p-8 transition-all duration-300 hover:border-[#F59E42]/40 dark:border-white/10 dark:bg-[#192520] lg:col-span-5 lg:p-10"
+              >
+                <div
+                  className="pointer-events-none absolute -end-16 -top-16 h-64 w-64 rounded-full bg-[#F59E42]/10 blur-3xl transition-transform duration-500 group-hover:scale-125"
+                  aria-hidden="true"
+                />
+                <div className="relative z-10 flex h-full flex-col justify-between">
+                  <div>
+                    <span className="font-display text-xs font-semibold tracking-[0.22em] text-[#B45309]">
+                      02 / 03
+                    </span>
+                    <h3 className="mt-6 font-display text-2xl font-semibold tracking-tight text-[#26332F] dark:text-[#FAF8F2]">
+                      {isAr ? 'مسار تعلم منطقي' : 'Structured progression'}
+                    </h3>
+                    <p className="mt-4 text-[14px] leading-relaxed text-[#5F6E68] dark:text-[#A8B6AB]">
+                      {isAr
+                        ? 'كل درس يبني على ما قبله لضمان تثبيت المعونة الصحيحة دون تشتت.'
+                        : 'Lessons flow logically from safety basics to specific interventions, preventing overwhelm.'}
                     </p>
-                  ))}
+                  </div>
+
+                  <div className="mt-12 pt-6 border-t border-[#26332F]/10 dark:border-white/10">
+                    <OrbitVisual isAr={isAr} />
+                  </div>
                 </div>
               </motion.div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Mission */}
-      <section
-        id="our-mission"
-        className="relative overflow-hidden bg-[#173D35] py-24 text-[#FCFAF6] md:py-32"
-      >
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(245,158,66,0.12),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(120,155,131,0.18),transparent_52%)]" aria-hidden="true" />
-        <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-12 lg:gap-16 lg:px-12">
-          <div className="lg:col-span-7">
-            <motion.div {...reveal(0)} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#FFD09A]">
-              <span className="text-amber">03</span>
-              <span className="h-3 w-px bg-white/15" aria-hidden="true" />
-              {isAr ? 'رسالتنا' : 'Our mission'}
-            </motion.div>
+       {/* Why EduFanor — editorial platform rows. */}
+        <section
+          id="platform"
+          className="relative border-y border-[#26332F]/10 bg-[#EFE7D8] py-20 transition-colors duration-500 dark:border-white/10 dark:bg-[#101C15] md:py-28 lg:py-32"
+        >
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+            <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+              <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
+                <motion.div {...reveal(0)}>
+                  <SectionLabel index="02">{isAr ? 'المنصة' : 'The platform'}</SectionLabel>
+                </motion.div>
 
-            <motion.h2 {...reveal(0.06)} className="mt-6 text-4xl font-bold leading-[1.04] tracking-tight sm:text-5xl md:text-6xl">
-              {isAr ? (
-                <>
-                  لحظة واحدة.
-                  <br />
-                  خطوة واعية.
-                  <br />
-                  <span className="font-display italic text-[#F59E42]">فرق قد ينقذ حياة.</span>
-                </>
-              ) : (
-                <>
-                  One moment.
-                  <br />
-                  One action.
-                  <br />
-                  <span className="font-display italic text-[#F59E42]">A difference that matters.</span>
-                </>
-              )}
-            </motion.h2>
+                <motion.h2
+                  {...reveal(0.06)}
+                  className={`mt-6 font-display font-semibold tracking-[-0.02em] text-[#26332F] dark:text-[#FAF8F2] ${
+                    isAr
+                      ? 'text-[clamp(1.95rem,3.6vw,2.9rem)] leading-[1.32]'
+                      : 'text-[clamp(1.95rem,3.8vw,3.1rem)] leading-[1.04]'
+                  }`}
+                >
+                  {isAr ? (
+                    <>
+                      طريقة أهدأ
+                      <br />
+                      لتعلّم أمر جاد.
+                    </>
+                  ) : (
+                    <>
+                      A calmer way
+                      <br />
+                      <span className="italic text-[#B45309] dark:text-[#F59E42]">
+                        to learn something serious.
+                      </span>
+                    </>
+                  )}
+                </motion.h2>
 
-            <motion.p {...reveal(0.12)} className="mt-7 max-w-2xl text-sm leading-relaxed text-[#FCFAF6]/75 md:text-base">
-              {isAr
-                ? 'نسعى في EduFanor إلى جعل المعرفة الأساسية بالإسعافات الأولية متاحة للجميع. من خلال دروس واضحة وتعلم تفاعلي وإرشادات مسؤولة، نساعد الناس على اكتساب المعرفة والثقة لتقديم المساعدة الأولية المناسبة إلى حين وصول فرق الإنقاذ المختصة.'
-                : 'Our mission is to make first-aid knowledge accessible to everyone. Through clear lessons, interactive learning, and responsible guidance, we help people build the confidence to provide appropriate initial assistance while waiting for emergency responders.'}
-            </motion.p>
+                <motion.p
+                  {...reveal(0.12)}
+                  className={`mt-5 max-w-sm text-[13.5px] text-[#5F6E68] dark:text-[#A8B6AB] ${
+                    isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
+                  }`}
+                >
+                  {isAr
+                    ? 'صُممت كل تفصيلة لتُبقي التركيز على ما يهم: فهم واضح، واستعداد مسؤول، وثقة تُبنى خطوة بخطوة.'
+                    : 'Every detail is designed to keep the focus on what matters: clear understanding, responsible readiness, and confidence built step by step.'}
+                </motion.p>
 
-            <motion.div {...reveal(0.18)} className="mt-8 flex flex-wrap gap-3">
-              <Link
-                to="/about"
-                className="inline-flex items-center gap-2 rounded-full bg-[#F59E42] px-6 py-3 text-xs font-extrabold text-[#0A1712] transition-all hover:-translate-y-0.5 hover:bg-[#FFD09A]"
-              >
-                {isAr ? 'اقرأ عن المنصة' : 'Read our story'}
-                {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-              </Link>
-              <a
-                href="#courses"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-xs font-bold text-[#FCFAF6] transition-colors hover:border-[#FFD09A]/60 hover:text-[#FFD09A]"
-              >
-                {isAr ? 'استعرض المساقات' : 'Browse courses'}
-              </a>
-            </motion.div>
-          </div>
+                <motion.div
+                  {...reveal(0.18)}
+                  className="mt-8 hidden border-t border-[#26332F]/10 pt-6 dark:border-white/10 lg:block"
+                >
+                  <p className="font-display text-lg italic leading-relaxed text-[#B45309] dark:text-[#F59E42]">
+                    {isAr ? '«الوضوح أولًا. الثقة تتبعه.»' : '“Clarity first. Confidence follows.”'}
+                  </p>
+                </motion.div>
+              </div>
 
-          <div className="flex justify-center lg:col-span-5">
-            <CinematicOrbit isDark={isDark} />
-          </div>
-        </div>
-      </section>
+              <div className="lg:col-span-8">
+                <div className="border-t border-[#26332F]/10 dark:border-white/10">
+                  {[
+                    {
+                      number: '01',
+                      title: isAr ? 'دروس تحترم وقتك' : 'Lessons that respect your time',
+                      text: isAr
+                        ? 'محتوى مقسّم إلى خطوات قصيرة يسهل قراءته على الهاتف والحاسوب، دون تشتيت.'
+                        : 'Content broken into short steps that stay readable on phones and desktops, without distraction.',
+                    },
+                    {
+                      number: '02',
+                      title: isAr ? 'مساحة تعلّم خاصة بك' : 'Your own learning space',
+                      text: isAr
+                        ? 'أنشئ حسابك واحتفظ بمساراتك وتقدّمك في مكان واحد، جاهزًا للمتابعة في أي وقت.'
+                        : 'Create your account and keep your courses and progress in one place, ready to continue anytime.',
+                    },
+                    {
+                      number: '03',
+                      title: isAr ? 'تقدّم تراه بوضوح' : 'Progress you can see',
+                      text: isAr
+                        ? 'تعرض لوحة التعلّم الدروس المكتملة والخطوة التالية، لتعرف دائمًا من أين تبدأ.'
+                        : 'Your learning dashboard surfaces completed lessons and your next step, so you always know where to begin.',
+                    },
+                    {
+                      number: '04',
+                      title: isAr ? 'تدرّب قبل أن يهم الأمر' : 'Practice before it matters',
+                      text: isAr
+                        ? 'اختبارات قصيرة وتغذية راجعة فورية لتثبيت الفهم. ومساعد ذكي مخصص قيد التطوير.'
+                        : 'Short quizzes and instant feedback help understanding stick. A dedicated AI tutor is in development.',
+                    },
+                  ].map((item, index) => (
+                    <motion.article
+                      key={item.number}
+                      {...reveal(index * 0.04)}
+                      className="group grid gap-3 border-b border-[#26332F]/10 py-7 transition-colors hover:bg-[#FAF8F2]/60 dark:border-white/10 dark:hover:bg-white/[0.02] sm:grid-cols-12 sm:items-start sm:gap-6 sm:px-3"
+                    >
+                      <div className="flex items-center gap-3 sm:col-span-2">
+                        <span className="font-display text-sm font-semibold text-[#26332F]/45 dark:text-[#FAF8F2]/40">
+                          {item.number}
+                        </span>
+                        <span
+                          className="h-px w-6 bg-[#26332F]/20 transition-all duration-300 group-hover:w-10 group-hover:bg-[#B45309] dark:bg-white/20 dark:group-hover:bg-[#F59E42]"
+                          aria-hidden="true"
+                        />
+                      </div>
+                      <h3
+                        className={`font-display font-semibold leading-snug text-[#26332F] dark:text-[#FAF8F2] sm:col-span-4 ${
+                          isAr ? 'text-lg leading-[1.5]' : 'text-xl'
+                        }`}
+                      >
+                        {item.title}
+                      </h3>
+                      <p
+                        className={`text-[13px] text-[#5F6E68] dark:text-[#A8B6AB] sm:col-span-6 ${
+                          isAr ? 'font-arabic leading-[1.9]' : 'leading-relaxed'
+                        }`}
+                      >
+                        {item.text}
+                      </p>
+                    </motion.article>
+                  ))}
+                </div>
 
-      {/* Course preview — real course data only. */}
-      <section id="courses" className="border-b border-line bg-surface py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-12">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <div>
-              <motion.div {...reveal(0)} className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-muted px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
-                <span className="text-amber">04</span>
-                <span className="h-3 w-px bg-line" aria-hidden="true" />
-                {isAr ? 'المسار التعليمي' : 'The learning path'}
-              </motion.div>
-              <motion.h2 {...reveal(0.06)} className="section-title mt-5 max-w-2xl !text-[clamp(2rem,4vw,3.25rem)]">
-                {isAr ? 'ثلاث مهارات أساسية. بداية واعية.' : 'Three essential skills. One considered start.'}
-              </motion.h2>
+                <motion.div
+                  {...reveal(0.1)}
+                  className="mt-8 flex gap-4 border-s-2 border-[#B45309] bg-[#B45309]/[0.06] px-5 py-4 dark:border-[#F59E42] dark:bg-[#F59E42]/[0.05]"
+                >
+                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#B45309]/10 text-[#B45309] ring-1 ring-[#B45309]/25 shadow-[0_0_22px_-10px_rgba(194,84,30,0.6)] dark:bg-[#F59E42]/[0.12] dark:text-[#FDBA74] dark:ring-[#F59E42]/30">
+                    <ShieldAlert className="h-4 w-4" />
+                  </span>
+                  <p className="text-[12px] leading-relaxed text-[#5F6E68] dark:text-[#A8B6AB]">
+                    {isAr
+                      ? 'المحتوى تعليمي ولا يغني عن الاتصال بخدمات الطوارئ أو التدريب المعتمد. الأولوية دائمًا لسلامة المكان وطلب المساعدة المختصة.'
+                      : 'Educational content never replaces emergency services or certified training. Scene safety and professional help always come first.'}
+                  </p>
+                </motion.div>
+              </div>
             </div>
-            <motion.div {...reveal(0.1)}>
-              <Link to="/register" className="btn-secondary px-5 text-xs">
-                {isAr ? 'ابدأ التعلّم' : 'Start learning'}
-                {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-              </Link>
+          </div>
+        </section>
+
+        {/* Mission — immersive forest-green editorial moment. */}
+        <section
+          id="our-mission"
+          className="relative overflow-hidden bg-[#0B2A21] py-24 text-[#FAF8F2] transition-colors duration-500 dark:bg-[#071711] md:py-32"
+        >
+          <div
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_12%,rgba(245,158,66,0.14),transparent_44%),radial-gradient(circle_at_84%_86%,rgba(230,154,85,0.1),transparent_46%)]"
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-12">
+            <div className="lg:col-span-7">
+              <motion.div {...reveal(0)}>
+                <SectionLabel index="03" tone="dark">
+                  {isAr ? 'رسالتنا' : 'Our mission'}
+                </SectionLabel>
+              </motion.div>
+
+              <motion.h2
+                {...reveal(0.06)}
+                className={`mt-7 max-w-3xl font-display font-semibold tracking-[-0.02em] text-[#FAF8F2] ${
+                  isAr
+                    ? 'font-arabic text-[clamp(2rem,5vw,4.1rem)] leading-[1.32]'
+                    : 'text-[clamp(1.85rem,5.2vw,4.4rem)] leading-[1.04]'
+                }`}
+              >
+                {isAr ? (
+                  <>
+                    الدقائق الأولى
+                    <br />
+                    ليست للأبطال.
+                    <br />
+                    بل لأشخاص
+                    <br />
+                    <span className="text-[#F59E42]">تعلّموا ماذا يفعلون.</span>
+                  </>
+                ) : (
+                  <>
+                    The first minutes
+                    <br />
+                    are not for heroes.
+                    <br />
+                    They are for people
+                    <br />
+                    <span className="italic text-[#F59E42]">who learned what to do.</span>
+                  </>
+                )}
+              </motion.h2>
+
+              <motion.p
+                {...reveal(0.12)}
+                className={`mt-7 max-w-2xl text-[14.5px] text-[#FAF8F2]/70 ${
+                  isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
+                }`}
+              >
+                {isAr
+                  ? 'نسعى في EduFanor إلى جعل المعرفة الأساسية بالإسعافات الأولية متاحة للجميع. من خلال دروس واضحة وتعلّم تفاعلي وإرشاد مسؤول، نساعد الناس على اكتساب المعرفة والثقة لتقديم المساعدة الأولية المناسبة إلى حين وصول فرق الإنقاذ المختصة.'
+                  : 'Our mission is to make first-aid knowledge accessible to everyone. Through clear lessons, interactive learning, and responsible guidance, we help people build the confidence to provide appropriate initial assistance while waiting for emergency responders.'}
+              </motion.p>
+
+              <motion.div {...reveal(0.18)} className="mt-9 flex flex-wrap gap-3">
+                <Link
+                  to="/about"
+                  className="group inline-flex h-11 items-center gap-2.5 rounded-full bg-[#F59E42] px-6 text-[12.5px] font-extrabold text-[#17231F] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F2C49B]"
+                >
+                  {isAr ? 'اقرأ قصتنا' : 'Read our story'}
+                  {isAr ? (
+                    <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+                  ) : (
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  )}
+                </Link>
+                <a
+                  href="#courses"
+                  className="inline-flex h-11 items-center rounded-full border border-white/20 px-6 text-[12.5px] font-bold text-[#FAF8F2] transition-colors hover:border-[#F59E42]/60 hover:text-[#F59E42]"
+                >
+                  {isAr ? 'استعرض المسارات' : 'Browse the learning path'}
+                </a>
+              </motion.div>
+            </div>
+
+            <motion.div
+              {...reveal(0.14)}
+              className="group relative flex justify-center lg:col-span-5"
+            >
+              <div className="relative w-full max-w-[520px] overflow-hidden rounded-[1.75rem] border border-white/15 bg-[#17231F] shadow-[0_40px_90px_-40px_rgba(3,15,10,0.9)]">
+                <div
+                  className="pointer-events-none absolute -end-10 -top-12 z-10 h-40 w-40 rounded-full bg-[#F59E42]/20 blur-3xl"
+                  aria-hidden="true"
+                />
+                <div className="relative aspect-[4/5] w-full overflow-hidden">
+                  <img
+                    src="/cpr.jpg"
+                    alt={
+                      isAr
+                        ? 'شخص يمارس خطوات الإسعافات الأولية اليدوية'
+                        : 'A learner practicing hands-on first aid'
+                    }
+                    loading="lazy"
+                    className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_62%,rgba(7,23,17,0.75)_100%)]"
+                    aria-hidden="true"
+                  />
+                  <span className="absolute bottom-4 start-4 z-10 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-[#0B2A21]/70 py-1.5 pe-4 ps-2 text-[9px] font-extrabold uppercase tracking-[0.22em] text-[#FDBA74] backdrop-blur-md">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F59E42]/15 ring-1 ring-[#F59E42]/45 shadow-[0_0_16px_-4px_rgba(245,158,66,0.7)]">
+                      <HeartPulse className="h-3 w-3" />
+                    </span>
+                    {isAr ? 'وضوح · ثقة · استعداد' : 'Clarity · Confidence · Readiness'}
+                  </span>
+                </div>
+              </div>
             </motion.div>
           </div>
+        </section>
 
-          <div className="mt-10 border-t border-line">
-            {courseList.map((course, index) => {
-              const Icon = CATEGORY_ICONS[course.category] || BookOpen;
-              return (
+        {/* Learning path — real course data only. */}
+        <section
+          id="courses"
+          className="relative bg-[#FAF8F2] py-20 transition-colors duration-500 dark:bg-[#17231F] md:py-28 lg:py-32"
+        >
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+            <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-8">
+                <motion.div {...reveal(0)}>
+                  <SectionLabel index="04">{isAr ? 'المسار التعليمي' : 'The learning path'}</SectionLabel>
+                </motion.div>
+                <motion.h2
+                  {...reveal(0.06)}
+                  className={`mt-6 max-w-3xl font-display font-semibold tracking-[-0.02em] text-[#26332F] dark:text-[#FAF8F2] ${
+                    isAr
+                      ? 'text-[clamp(1.95rem,4.2vw,3.4rem)] leading-[1.3]'
+                      : 'text-[clamp(1.9rem,4.4vw,3.6rem)] leading-[1.04]'
+                  }`}
+                >
+                  {isAr ? (
+                    <>
+                      ثلاث مهارات أساسية.
+                      <br />
+                      <span className="text-[#B45309] dark:text-[#F59E42]">بداية واعية واحدة.</span>
+                    </>
+                  ) : (
+                    <>
+                      Three essential skills.
+                      <br />
+                      <span className="italic text-[#B45309] dark:text-[#F59E42]">
+                        One considered start.
+                      </span>
+                    </>
+                  )}
+                </motion.h2>
+                <motion.p
+                  {...reveal(0.12)}
+                  className={`mt-5 max-w-2xl text-[13.5px] text-[#5F6E68] dark:text-[#A8B6AB] ${
+                    isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
+                  }`}
+                >
+                  {isAr
+                    ? 'كل مسار يقسّم مهارة إلى خطوات قصيرة وسهلة القراءة، ثم ينتهي باختبار معرفي قصير. يُحفظ تقدّمك في حسابك لتعود من حيث توقفت.'
+                    : 'Each course breaks a skill into short, readable steps, then ends with a short knowledge check. Your progress is saved to your account, so you can pick up where you left off.'}
+                </motion.p>
+              </div>
+
+              <motion.div {...reveal(0.14)} className="lg:col-span-4 lg:justify-self-end">
+                <Link
+                  to="/register"
+                  className="group inline-flex h-11 items-center gap-2.5 rounded-full border border-[#26332F]/20 px-5 text-[12.5px] font-bold text-[#26332F] transition-all duration-300 hover:border-[#F59E42] hover:bg-[#F59E42] hover:text-[#17231F] dark:border-white/20 dark:text-[#FAF8F2] dark:hover:border-[#F59E42] dark:hover:bg-[#F59E42] dark:hover:text-[#17231F]"
+                >
+                  {isAr ? 'أنشئ حسابًا مجانيًا' : 'Create a free account'}
+                  {isAr ? (
+                    <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+                  ) : (
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  )}
+                </Link>
+              </motion.div>
+            </div>
+
+            <motion.div
+              {...reveal(0.1)}
+              className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-[#26332F]/10 bg-[#26332F]/10 dark:border-white/10 dark:bg-white/10 sm:grid-cols-3"
+            >
+              {[
+                {
+                  number: '01',
+                  title: isAr ? 'تعلّم' : 'Learn',
+                  text: isAr ? 'دروس قصيرة ومنظمة خطوة بخطوة.' : 'Short, structured lessons, step by step.',
+                },
+                {
+                  number: '02',
+                  title: isAr ? 'تدرّب' : 'Practice',
+                  text: isAr ? 'اختبارات معرفية بتغذية راجعة فورية.' : 'Knowledge checks with instant feedback.',
+                },
+                {
+                  number: '03',
+                  title: isAr ? 'تابع' : 'Track',
+                  text: isAr ? 'تقدّمك محفوظ في حسابك.' : 'Your progress saved to your account.',
+                },
+              ].map((step) => (
+                <div key={step.number} className="bg-[#FAF8F2] p-5 dark:bg-[#17231F] sm:p-6">
+                  <div className="flex items-center gap-3">
+                    <span className="font-display text-sm font-semibold text-[#B45309] dark:text-[#F59E42]">
+                      {step.number}
+                    </span>
+                    <span className="h-px w-5 bg-[#26332F]/15 dark:bg-white/15" aria-hidden="true" />
+                    <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#26332F]/60 dark:text-[#FAF8F2]/50">
+                      {step.title}
+                    </p>
+                  </div>
+                  <p className="mt-3 text-[13px] leading-relaxed text-[#5F6E68] dark:text-[#A8B6AB]">
+                    {step.text}
+                  </p>
+                </div>
+              ))}
+            </motion.div>
+
+            <div className="mt-12 border-t border-[#26332F]/10 dark:border-white/10">
+              {courseList.map((course, index) => (
                 <motion.article
                   key={course.id}
                   {...reveal(index * 0.05)}
-                  className="group grid gap-5 border-b border-line py-7 transition-colors hover:bg-surface-muted/50 md:grid-cols-12 md:items-center md:gap-6 md:px-3"
+                  className="group grid gap-4 border-b border-[#26332F]/10 py-8 transition-colors hover:bg-[#EFE7D8]/60 dark:border-white/10 dark:hover:bg-white/[0.02] md:grid-cols-12 md:items-center md:gap-6 md:px-3"
                 >
-                  <div className="flex items-center gap-4 md:col-span-2">
-                    <span className="font-display text-sm font-semibold text-ink-muted">0{index + 1}</span>
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-surface-muted text-brand-ink transition-all duration-300 group-hover:bg-primary group-hover:text-white">
-                      <Icon className="h-5 w-5" />
+                  <div className="flex items-center gap-3 md:col-span-1">
+                    <span className="font-display text-2xl font-semibold text-[#26332F]/25 transition-colors group-hover:text-[#B45309] dark:text-[#FAF8F2]/25 dark:group-hover:text-[#F59E42]">
+                      0{index + 1}
                     </span>
                   </div>
 
                   <div className="md:col-span-5">
-                    <div className="mb-2 flex flex-wrap items-center gap-2">
-                      <span className="chip bg-brand-soft text-brand-ink">{course.level}</span>
-                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-ink-muted">
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <span className="rounded-full border border-[#26332F]/15 px-2.5 py-1 text-[9.5px] font-bold uppercase tracking-[0.14em] text-[#5F6E68] dark:border-white/15 dark:text-[#C3D1C6]">
+                        {course.level}
+                      </span>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#5F6E68] dark:text-[#A8B6AB]">
                         {course.lessons} {isAr ? 'دروس' : 'lessons'} · {course.duration}
                       </span>
                     </div>
-                    <h3 className="text-lg font-extrabold leading-snug text-ink transition-colors group-hover:text-brand-ink">
+                    <h3
+                      className={`mt-2.5 font-display font-semibold leading-snug text-[#26332F] transition-colors group-hover:text-[#B45309] dark:text-[#FAF8F2] dark:group-hover:text-[#F59E42] ${
+                        isAr ? 'text-xl leading-[1.5]' : 'text-2xl'
+                      }`}
+                    >
                       {course.title}
                     </h3>
                   </div>
 
-                  <p className="text-sm leading-relaxed text-ink-muted md:col-span-4">{course.description}</p>
+                  <p
+                    className={`text-[13px] text-[#5F6E68] dark:text-[#A8B6AB] md:col-span-5 ${
+                      isAr ? 'font-arabic leading-[1.9]' : 'leading-relaxed'
+                    }`}
+                  >
+                    {course.description}
+                  </p>
 
-                  <div className="flex md:col-span-1 md:justify-end">
+                  <div className="md:col-span-1 md:justify-self-end">
                     <Link
                       to="/register"
-                      aria-label={isAr ? `سجّل لفتح ${course.title}` : `Sign up to open ${course.title}`}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-ink transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-white"
+                      aria-label={
+                        isAr ? `سجّل لفتح ${course.title}` : `Sign up to open ${course.title}`
+                      }
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#26332F]/15 text-[#26332F] transition-all duration-300 group-hover:border-[#B45309] group-hover:bg-[#B45309] group-hover:text-[#FAF8F2] dark:border-white/15 dark:text-[#FAF8F2] dark:group-hover:border-[#F59E42] dark:group-hover:bg-[#F59E42] dark:group-hover:text-[#17231F]"
                     >
                       {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
                     </Link>
                   </div>
                 </motion.article>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* About / closing editorial */}
-      <section id="about" className="bg-beige py-20 dark:bg-[#101A15] md:py-28">
-        <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-12 lg:gap-16 lg:px-12">
-          <motion.div {...reveal(0)} className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
-              <span className="text-amber">05</span>
-              <span className="h-3 w-px bg-line" aria-hidden="true" />
-              {isAr ? 'عن المنصة' : 'About EduFanor'}
-            </div>
-            <h2 className="mt-6 font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl md:text-5xl">
-              {isAr ? (
-                <>
-                  «قليل من المعرفة
-                  <br />
-                  <span className="italic text-accent">يمكن أن يصنع فارقاً كبيراً.»</span>
-                </>
-              ) : (
-                <>
-                  “A little knowledge
-                  <br />
-                  <span className="italic text-accent">can make a difference.”</span>
-                </>
-              )}
-            </h2>
-            <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ink-muted md:text-base">
-              {isAr
-                ? 'EduFanor مشروع تعليمي يهدف إلى تقريب المعرفة الأساسية بالإسعافات الأولية من الجميع، بلغة واضحة وتجربة تعليمية منظمة تحترم وقت المتعلم وحدود المسؤولية الصحية.'
-                : 'EduFanor is an educational project that brings essential first-aid knowledge closer to everyone, with clear language and a structured learning experience that respects the learner’s time and the boundaries of responsible care.'}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/about" className="btn-primary px-5 text-xs">
-                {isAr ? 'تعرّف على القصة كاملة' : 'Read the full story'}
-              </Link>
-              <Link to="/register" className="btn-secondary px-5 text-xs">
-                {isAr ? 'أنشئ حسابك' : 'Create your account'}
-              </Link>
-            </div>
-          </motion.div>
-
-          <motion.aside {...reveal(0.1)} className="lg:col-span-5">
-            <div className="rounded-3xl border border-line bg-surface p-7 shadow-pop">
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
-                {isAr ? 'ملاحظة مسؤولة' : 'A responsible note'}
-              </p>
-              <p className="mt-4 font-display text-2xl font-semibold leading-snug text-ink">
-                {isAr ? 'تعلّم لتساعد. واعرف حدودك.' : 'Learn to help. Know your limits.'}
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-ink-muted">
+        {/* About / responsible editorial */}
+        <section
+          id="about"
+          className="bg-[#EFE7D8] py-20 transition-colors duration-500 dark:bg-[#101C15] md:py-28"
+        >
+          <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-12">
+            <motion.div {...reveal(0)} className="lg:col-span-7">
+              <SectionLabel index="05">{isAr ? 'عن المنصة' : 'About EduFanor'}</SectionLabel>
+              <h2
+                className={`mt-6 max-w-2xl font-display font-semibold tracking-[-0.02em] text-[#26332F] dark:text-[#FAF8F2] ${
+                  isAr
+                    ? 'text-[clamp(1.95rem,4vw,3.2rem)] leading-[1.32]'
+                    : 'text-[clamp(1.95rem,4.2vw,3.4rem)] leading-[1.04]'
+                }`}
+              >
+                {isAr ? (
+                  <>
+                    «قليل من المعرفة
+                    <br />
+                    <span className="text-[#B45309] dark:text-[#F59E42]">
+                      يمكن أن يصنع فارقًا كبيرًا.»
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    “A little knowledge
+                    <br />
+                    <span className="italic text-[#B45309] dark:text-[#F59E42]">
+                      can make a difference.”
+                    </span>
+                  </>
+                )}
+              </h2>
+              <p
+                className={`mt-6 max-w-2xl text-[14px] text-[#5F6E68] dark:text-[#A8B6AB] ${
+                  isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
+                }`}
+              >
                 {isAr
-                  ? 'المحتوى تعليمي ولا يُعد بديلاً عن التدريب المعتمد أو الاستشارة الطبية. في أي طارئ، الأولوية لسلامة المكان والاتصال بخدمات الطوارئ المحلية.'
-                  : 'This content is educational and does not replace certified training or medical advice. In any emergency, prioritize scene safety and contact local emergency services.'}
+                  ? 'EduFanor مشروع تعليمي يهدف إلى تقريب المعرفة الأساسية بالإسعافات الأولية من الجميع، بلغة واضحة وتجربة تعليمية منظمة تحترم وقت المتعلم وحدود المسؤولية الصحية.'
+                  : 'EduFanor is an educational project that brings essential first-aid knowledge closer to everyone, with clear language and a structured learning experience that respects the learner’s time and the boundaries of responsible care.'}
               </p>
-              <div className="mt-7 flex items-center gap-3 border-t border-line pt-5">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-soft text-brand-ink">
-                  <ShieldCheck className="h-5 w-5" />
-                </span>
-                <p className="text-xs font-bold leading-relaxed text-ink-muted">
-                  {isAr ? 'وضوح، احترام، واستعداد.' : 'Clarity, respect, readiness.'}
-                </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link
+                  to="/about"
+                  className="group inline-flex h-11 items-center gap-2.5 rounded-full bg-[#F59E42] px-5 text-[12.5px] font-extrabold text-[#17231F] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F2C49B] dark:bg-[#F59E42] dark:text-[#17231F] dark:hover:bg-[#F2C49B]"
+                >
+                  {isAr ? 'تعرّف على القصة كاملة' : 'Read the full story'}
+                  {isAr ? (
+                    <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+                  ) : (
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  )}
+                </Link>
+                <Link
+                  to="/register"
+                  className="inline-flex h-11 items-center rounded-full border border-[#26332F]/20 px-5 text-[12.5px] font-bold text-[#26332F] transition-colors hover:border-[#B45309] hover:text-[#B45309] dark:border-white/20 dark:text-[#FAF8F2] dark:hover:border-[#F59E42] dark:hover:text-[#F59E42]"
+                >
+                  {isAr ? 'أنشئ حسابك' : 'Create your account'}
+                </Link>
               </div>
-            </div>
-          </motion.aside>
-        </div>
-      </section>
+            </motion.div>
 
-      {/* Final CTA */}
-      <section className="relative overflow-hidden bg-[#173D35] px-6 py-20 text-[#FCFAF6] md:py-24">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_30%,rgba(245,158,66,0.22),transparent_52%)]" aria-hidden="true" />
-        <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-          <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#FFD09A]">
-              {isAr ? 'ابدأ بخطوة واحدة' : 'Start with one step'}
-            </p>
-            <h2 className="mt-4 max-w-xl font-display text-3xl font-semibold leading-tight sm:text-4xl md:text-5xl">
-              {isAr ? (
-                <>
-                  درس واحد اليوم
-                  <br />
-                  <span className="italic text-[#F59E42]">قد يغيّر ما تفعله غداً.</span>
-                </>
-              ) : (
-                <>
-                  One lesson today
-                  <br />
-                  <span className="italic text-[#F59E42]">can change what you do tomorrow.</span>
-                </>
-              )}
-            </h2>
+            <motion.aside {...reveal(0.1)} className="lg:col-span-5">
+              <div className="relative overflow-hidden rounded-[1.75rem] border border-[#26332F]/10 bg-[#FAF8F2] p-7 shadow-[0_30px_80px_-50px_rgba(10,35,25,0.55)] dark:border-white/10 dark:bg-[#17231F]">
+                <div
+                  className="pointer-events-none absolute -end-10 -top-12 h-36 w-36 rounded-full bg-[#F59E42]/25 blur-3xl dark:bg-[#F59E42]/15"
+                  aria-hidden="true"
+                />
+                <div className="relative">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#B45309] text-[#FFF7ED] shadow-[0_0_32px_-10px_rgba(245,158,66,0.65)] dark:bg-[#F59E42] dark:text-[#17231F]">
+                    <ShieldAlert className="h-5 w-5" />
+                  </span>
+                  <p className="mt-6 text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#5F6E68] dark:text-[#A8B6AB]">
+                    {isAr ? 'ملاحظة مسؤولة' : 'A responsible note'}
+                  </p>
+                  <p
+                    className={`mt-4 font-display font-semibold leading-snug text-[#26332F] dark:text-[#FAF8F2] ${
+                      isAr ? 'text-2xl leading-[1.5]' : 'text-2xl'
+                    }`}
+                  >
+                    {isAr ? 'تعلّم لتساعد. واعرف حدودك.' : 'Learn to help. Know your limits.'}
+                  </p>
+                  <p
+                    className={`mt-4 text-[13px] text-[#5F6E68] dark:text-[#A8B6AB] ${
+                      isAr ? 'font-arabic leading-[1.9]' : 'leading-relaxed'
+                    }`}
+                  >
+                    {isAr
+                      ? 'المحتوى تعليمي ولا يُعد بديلًا عن التدريب المعتمد أو الاستشارة الطبية. في أي طارئ، الأولوية لسلامة المكان والاتصال بخدمات الطوارئ المحلية.'
+                      : 'This content is educational and does not replace certified training or medical advice. In any emergency, prioritize scene safety and contact local emergency services.'}
+                  </p>
+                  <div className="mt-6 flex items-center gap-3 border-t border-[#26332F]/10 pt-5 dark:border-white/10">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#B45309]/[0.08] text-[#B45309] dark:bg-[#F59E42]/[0.12] dark:text-[#F59E42]">
+                      <ShieldCheck className="h-4 w-4" />
+                    </span>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#5F6E68] dark:text-[#A8B6AB]">
+                      {isAr ? 'وضوح · احترام · استعداد' : 'Clarity · Respect · Readiness'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.aside>
           </div>
-          <Link
-            to="/register"
-            className="inline-flex shrink-0 items-center gap-3 rounded-full bg-[#F59E42] px-7 py-4 text-xs font-extrabold uppercase tracking-wider text-[#0A1712] transition-all hover:-translate-y-0.5 hover:bg-[#FFD09A]"
+        </section>
+
+       {/* Final CTA */}
+        <section className="relative overflow-hidden bg-[#0B2A21] px-5 py-20 text-[#FAF8F2] transition-colors duration-500 dark:bg-[#071711] sm:px-8 md:py-28 lg:px-12">
+          <div
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_76%_22%,rgba(245,158,66,0.15),transparent_52%),radial-gradient(circle_at_10%_90%,rgba(230,154,85,0.08),transparent_46%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute -bottom-12 start-0 select-none font-display text-[26vw] font-semibold leading-none text-white/[0.025]"
+            aria-hidden="true"
           >
-            {isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
-            {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-          </Link>
-        </div>
-      </section>
+            EduFanor
+          </div>
+          <div className="relative mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
+            <div>
+              <motion.p
+                {...reveal(0)}
+                className="text-[10px] font-extrabold uppercase tracking-[0.26em] text-[#F59E42]/80"
+              >
+                {isAr ? 'ابدأ بخطوة واحدة' : 'Start with one step'}
+              </motion.p>
+              <motion.h2
+                {...reveal(0.06)}
+                className={`mt-5 max-w-2xl font-display font-semibold tracking-[-0.02em] ${
+                  isAr
+                    ? 'font-arabic text-[clamp(1.95rem,4.6vw,3.6rem)] leading-[1.32]'
+                    : 'text-[clamp(1.9rem,4.8vw,3.8rem)] leading-[1.04]'
+                }`}
+              >
+                {isAr ? (
+                  <>
+                    درس واحد اليوم.
+                    <br />
+                    <span className="text-[#F59E42]">واستجابة أهدأ غدًا.</span>
+                  </>
+                ) : (
+                  <>
+                    One lesson today.
+                    <br />
+                    <span className="italic text-[#F59E42]">A calmer response tomorrow.</span>
+                  </>
+                )}
+              </motion.h2>
+            </div>
+            <motion.div {...reveal(0.14)} className="shrink-0">
+              <Link
+                to="/register"
+                className="group inline-flex h-12 items-center gap-3 rounded-full bg-[#F59E42] px-7 text-[12.5px] font-extrabold uppercase tracking-[0.12em] text-[#17231F] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#F2C49B]"
+              >
+                {isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
+                {isAr ? (
+                  <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                ) : (
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                )}
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+      </main>
 
       <LandingFooter />
     </div>

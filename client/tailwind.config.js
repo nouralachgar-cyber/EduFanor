@@ -4,19 +4,26 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class', // ضروري باش يخدم Dark Mode بالـ class
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        lightBg: '#FCFAF6',
-        lightSection: '#F5F0E7',
+        forestGreen: '#24483F',
+        freshGreen: '#789B83',
+        warmOrange: '#E69A55',
+        softOrange: '#F2C49B',
+        warmWhite: '#FAF8F2',
+        lightBeige: '#E8EFE7',
+        deepCharcoal: '#26332F',
+        lightBg: '#FFFFFF',
+        lightSection: '#FAF8F2',
         lightMain: '#24483F',
-        lightBorder: '#E7DFD1',
+        lightBorder: '#DCE5DD',
 
-        darkBg: '#191F1B',
-        darkCard: '#242D26',
+        darkBg: '#17231F',
+        darkCard: '#24352E',
         darkAccent: '#789B83',
-        darkBorder: '#343C33',
+        darkBorder: '#35483F',
       },
     },
   },

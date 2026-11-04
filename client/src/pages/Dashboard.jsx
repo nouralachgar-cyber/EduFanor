@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
@@ -24,17 +24,38 @@ import {
   Sparkles,
 } from 'lucide-react';
 import {
+  getActivityDates,
   getLearningStreak,
   getQuizBest,
   getStudentId,
   isCourseCompleted,
 } from '../lib/progress';
+import { apiRequest, getStoredToken } from '../lib/api';
 
 const categoryIcons = {
   cpr: HeartPulse,
   choking: Wind,
   burns: Flame,
 };
+
+const dayKey = (value) => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return `${date.getFullYear()}-${`${date.getMonth() + 1}`.padStart(2, '0')}-${`${date.getDate()}`.padStart(2, '0')}`;
+};
+
+function streakFromDates(dates) {
+  const keys = new Set(dates.filter(Boolean));
+  if (keys.size === 0) return 0;
+  const cursor = new Date();
+  if (!keys.has(dayKey(cursor))) cursor.setDate(cursor.getDate() - 1);
+  let streak = 0;
+  while (keys.has(dayKey(cursor))) {
+    streak += 1;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
+}
 
 export default function Dashboard() {
   const { t, i18n } = useTranslation();
@@ -43,29 +64,109 @@ export default function Dashboard() {
 
   const [guideModalOpen, setGuideModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [remote, setRemote] = useState(null);
 
   const { courses } = useCatalog();
   const courseList = Array.isArray(courses) ? courses : [];
 
-  const completedCourses = courseList.filter((course) => isCourseCompleted(course.id));
-  const totalCompleted = completedCourses.length;
-  const progressPercent = courseList.length
-    ? Math.round((totalCompleted / courseList.length) * 100)
+  useEffect(() => {
+    if (!getStoredToken()) return undefined;
+    let cancelled = false;
+    apiRequest('/progress/me', { auth: true })
+      .then((data) => {
+        if (!cancelled) setRemote(data);
+      })
+      .catch(() => {
+        /* Local progress remains available when the server is offline. */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const remoteCompletedIds = useMemo(
+    () =>
+      new Set(
+        (remote?.progress?.completedLessons || []).map((lesson) =>
+          String(lesson?._id || lesson)
+        )
+      ),
+    [remote]
+  );
+
+  const remoteCourseCounts = useMemo(() => {
+    const counts = new Map();
+    (remote?.progress?.completedLessons || []).forEach((lesson) => {
+      const slug = lesson?.course?.slug;
+      if (!slug) return;
+      counts.set(slug, (counts.get(slug) || 0) + 1);
+    });
+    return counts;
+  }, [remote]);
+
+  const courseStats = useMemo(
+    () =>
+      courseList.map((course) => {
+        const lessonIds = (course.steps || []).map((step) => String(step.id));
+        const total = course.lessons || lessonIds.length || 1;
+        const completedFromIds = lessonIds.filter((id) => remoteCompletedIds.has(id)).length;
+        const completedFromSlug = remoteCourseCounts.get(course.id) || 0;
+        const serverDone = Math.max(completedFromIds, completedFromSlug);
+        const localDone = isCourseCompleted(course.id);
+        const done = localDone ? total : Math.min(total, serverDone);
+        const percent = Math.round((done / total) * 100);
+        return {
+          ...course,
+          completed: percent >= 100,
+          done,
+          total,
+          percent,
+        };
+      }),
+    [courseList, remoteCompletedIds, remoteCourseCounts]
+  );
+
+  const totals = useMemo(
+    () =>
+      courseStats.reduce(
+        (accumulator, course) => ({
+          lessons: accumulator.lessons + course.total,
+          done: accumulator.done + course.done,
+        }),
+        { lessons: 0, done: 0 }
+      ),
+    [courseStats]
+  );
+
+  const totalCompleted = courseStats.filter((course) => course.completed).length;
+  const progressPercent = totals.lessons
+    ? Math.round((totals.done / totals.lessons) * 100)
     : 0;
 
-  const quizBest = getQuizBest();
-  const streak = getLearningStreak();
+  const serverQuizBest = Math.max(
+    0,
+    ...(remote?.progress?.quizAttempts || []).map((attempt) => Number(attempt.score) || 0)
+  );
+  const localQuizBest = getQuizBest();
+  const bestPercent = Math.max(localQuizBest?.percent || 0, serverQuizBest);
+  const quizBest = bestPercent > 0 ? { percent: bestPercent } : null;
+
+  const remoteStreak = streakFromDates([
+    ...(remote?.events || []).map((event) => dayKey(event.occurredAt)),
+    ...getActivityDates(),
+  ]);
+  const streak = Math.max(getLearningStreak(), remoteStreak);
   const studentId = getStudentId(user?.email);
   const firstName = user?.name ? user.name.split(' ')[0] : t('dashboard.studentName');
 
   const nextCourse =
-    courseList.find((course) => !isCourseCompleted(course.id)) || courseList[0];
+    courseStats.find((course) => !course.completed) || courseStats[0];
 
   const stats = [
     {
       icon: BookCheck,
       label: isAr ? 'المساقات المكتملة' : 'Courses completed',
-      value: `${totalCompleted} / ${courseList.length}`,
+      value: `${totalCompleted} / ${courseStats.length}`,
       color: 'bg-brand-soft text-brand-ink',
     },
     {
@@ -96,7 +197,7 @@ export default function Dashboard() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 88% 12%, rgba(245,158,66,0.14), transparent 46%), radial-gradient(circle at 6% 96%, rgba(120,155,131,0.18), transparent 52%)',
+                'radial-gradient(circle at 88% 12%, rgba(230,154,85,0.14), transparent 46%), radial-gradient(circle at 6% 96%, rgba(120,155,131,0.18), transparent 52%)',
             }}
             aria-hidden="true"
           />
@@ -209,9 +310,9 @@ export default function Dashboard() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {courseList.map((course) => {
+            {courseStats.map((course) => {
               const Icon = categoryIcons[course.category] || BookOpen;
-              const completed = isCourseCompleted(course.id);
+              const completed = course.completed;
               return (
                 <article key={course.id} className="course-card">
                   <div className="flex items-start justify-between gap-3">
@@ -231,17 +332,36 @@ export default function Dashboard() {
                   <div className="space-y-2">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="chip bg-surface-muted text-ink-muted">{course.level}</span>
-                      {completed && (
+                      {completed ? (
                         <span className="chip bg-success-soft text-success-ink">
                           <CheckCircle2 className="h-3 w-3" />
                           {t('coursesPage.completed')}
                         </span>
+                      ) : (
+                        <span className="chip bg-brand-soft text-brand-ink">{course.percent}%</span>
                       )}
                     </div>
                     <h3 className="text-base font-extrabold leading-snug text-ink">{course.title}</h3>
                     <p className="line-clamp-2 text-xs leading-relaxed text-ink-muted">
                       {course.description}
                     </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-[10px] font-bold text-ink-muted">
+                      <span>{isAr ? 'تقدمك' : 'Your progress'}</span>
+                      <span className="text-brand-ink">
+                        {course.done} / {course.total}
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-muted">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${
+                          completed ? 'bg-success-ink' : 'bg-primary'
+                        }`}
+                        style={{ width: `${course.percent}%` }}
+                      />
+                    </div>
                   </div>
 
                   <div className="mt-auto flex items-center justify-between border-t border-line pt-4">

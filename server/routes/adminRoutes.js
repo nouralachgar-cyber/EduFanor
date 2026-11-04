@@ -5,6 +5,8 @@ const admin = require('../controllers/adminController');
 
 router.use(protect, adminOnly);
 
+router.post('/uploads', admin.uploadLessonAsset);
+
 router.get('/overview', admin.overview);
 
 router.get('/students', admin.listStudents);

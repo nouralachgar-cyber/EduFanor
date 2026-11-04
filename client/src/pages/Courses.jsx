@@ -32,7 +32,7 @@ export default function Courses() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 90% 8%, rgba(245,158,66,0.13), transparent 44%), radial-gradient(circle at 4% 100%, rgba(120,155,131,0.18), transparent 52%)',
+                'radial-gradient(circle at 90% 8%, rgba(230,154,85,0.13), transparent 44%), radial-gradient(circle at 4% 100%, rgba(120,155,131,0.18), transparent 52%)',
             }}
             aria-hidden="true"
           />

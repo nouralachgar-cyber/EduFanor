@@ -14,8 +14,8 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     if (!container) return;
 
     // === Color scheme ===
-    const ambientColor = isDark ? '#173D35' : '#24483F';
-    const keyLightColor = isDark ? '#E88736' : '#F59E42';
+    const ambientColor = isDark ? '#24483F' : '#24483F';
+    const keyLightColor = isDark ? '#E69A55' : '#E69A55';
 
     // === Three.js setup ===
     const renderer = new THREE.WebGLRenderer({
@@ -57,7 +57,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     const kitBody = new THREE.Mesh(
       new THREE.BoxGeometry(1.9, 1.1, 0.7),
       new THREE.MeshStandardMaterial({
-        color: isDark ? '#0A1712' : '#173D35',
+        color: isDark ? '#17231F' : '#24483F',
         roughness: 0.35,
         metalness: 0.02,
       })

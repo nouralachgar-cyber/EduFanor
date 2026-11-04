@@ -1,7 +1,7 @@
 import React from 'react';
 import { formatNumber } from '../../lib/admin';
 
-const palette = ['#24483f', '#e88736', '#789b83', '#9c4a3c'];
+const palette = ['#24483f', '#E69A55', '#789b83', '#B42318'];
 
 export function LineChart({
   data = [],

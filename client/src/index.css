@@ -7,70 +7,79 @@
   --font-display: "Fraunces", "Tajawal", ui-serif, Georgia, "Times New Roman", serif;
   --font-arabic: "Tajawal", "Plus Jakarta Sans", ui-sans-serif, sans-serif;
 
-  --color-primary: #173d35;
-  --color-primary-hover: #24483f;
-  --color-brand: #24483f;
-  --color-brand-ink: #24483f;
-  --color-brand-soft: #eaf0e8;
-  --color-teal: #789b83;
-  --color-teal-deep: #24483f;
-  --color-accent: #e88736;
-  --color-amber: #f59e42;
-  --color-amber-soft: #ffd09a;
+  /* New EduFanor Color Identity */
+  --color-forest-green: #24483F;
+  --color-fresh-green: #789B83;
+  --color-warm-orange: #E69A55;
+  --color-soft-orange: #F2C49B;
+  --color-warm-white: #FAF8F2;
+  --color-light-beige: #E8EFE7;
+  --color-deep-charcoal: #26332F;
 
-  --color-cream: #fcfaf6;
-  --color-sand: #e7dfd1;
-  --color-beige: #f5f0e7;
-  --color-sage: #789b83;
-  --color-navy: #173d35;
-  --color-burgundy: #9c4a3c;
+  --color-primary: #24483F;
+  --color-primary-hover: #1b3a32;
+  --color-brand: #24483F;
+  --color-brand-ink: #24483F;
+  --color-brand-soft: #E9F0EA;
+  --color-teal: #789B83;
+  --color-teal-deep: #24483F;
+  --color-accent: #E69A55;
+  --color-amber: #E69A55;
+  --color-amber-soft: #F2C49B;
 
-  --color-ink: #173d35;
-  --color-ink-muted: #5f6f65;
-  --color-surface: #fcfaf6;
+  --color-cream: #FAF8F2;
+  --color-sand: #E8EFE7;
+  --color-beige: #FAF8F2;
+  --color-sage: #789B83;
+  --color-navy: #24483F;
+  --color-burgundy: #d97757;
+
+  --color-ink: #26332F;
+  --color-ink-muted: #5f6e68;
+  --color-surface: #FFFFFF;
   --color-card: #ffffff;
-  --color-surface-muted: #f5f0e7;
-  --color-line: #e7dfd1;
-  --color-line-strong: #d6c9b6;
+  --color-surface-muted: #F2F5F1;
+  --color-line: #DCE5DD;
+  --color-line-strong: #C3D2C7;
 
-  --color-success-soft: #e7f0e5;
-  --color-success-ink: #1f5a3a;
+  --color-success-soft: #EAF2EC;
+  --color-success-ink: #24483F;
   --color-danger: #b42318;
   --color-danger-soft: #fbeae6;
 
-  --shadow-pop: 0 18px 50px -28px rgba(23, 61, 53, 0.35);
-  --shadow-lift: 0 30px 70px -34px rgba(23, 61, 53, 0.42);
+  --shadow-pop: 0 18px 50px -28px rgba(36, 72, 63, 0.35);
+  --shadow-lift: 0 30px 70px -34px rgba(36, 72, 63, 0.42);
 }
 
 .dark {
-  --color-primary: #2e5b4e;
-  --color-primary-hover: #386b5c;
-  --color-brand: #789b83;
-  --color-brand-ink: #a9c6b0;
-  --color-brand-soft: #223129;
-  --color-teal: #a4c2ae;
-  --color-teal-deep: #c7dccb;
-  --color-accent: #f59e42;
-  --color-amber: #f5a04a;
-  --color-amber-soft: #6b4a26;
+  --color-primary: #789B83;
+  --color-primary-hover: #8fb09a;
+  --color-brand: #789B83;
+  --color-brand-ink: #c1d0c5;
+  --color-brand-soft: #2C4036;
+  --color-teal: #8fb09a;
+  --color-teal-deep: #c1d0c5;
+  --color-accent: #E69A55;
+  --color-amber: #E69A55;
+  --color-amber-soft: #5A4028;
 
-  --color-cream: #18211b;
-  --color-sand: #2c3a31;
-  --color-beige: #1c2620;
+  --color-cream: #17231F;
+  --color-sand: #1D2B25;
+  --color-beige: #1D2B25;
   --color-sage: #8fb09a;
-  --color-navy: #0f1712;
+  --color-navy: #111A16;
   --color-burgundy: #d98875;
 
-  --color-ink: #fcfaf6;
-  --color-ink-muted: #b8c5ba;
-  --color-surface: #141b17;
-  --color-card: #1b241e;
-  --color-surface-muted: #1f2a23;
-  --color-line: #2c3a31;
-  --color-line-strong: #3c4c41;
+  --color-ink: #FFFFFF;
+  --color-ink-muted: #C1D0C5;
+  --color-surface: #17231F;
+  --color-card: #24352E;
+  --color-surface-muted: #1D2B25;
+  --color-line: #35483F;
+  --color-line-strong: #4a6154;
 
-  --color-success-soft: #1e3628;
-  --color-success-ink: #a7d3b4;
+  --color-success-soft: #23382D;
+  --color-success-ink: #b7d8c0;
   --color-danger: #f0a79a;
   --color-danger-soft: #3a211d;
 
@@ -87,6 +96,7 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
     -webkit-text-size-adjust: 100%;
   }
 
@@ -120,7 +130,7 @@
   }
 
   ::selection {
-    background: rgba(245, 158, 66, 0.28);
+    background: rgba(230, 154, 85, 0.28);
     color: inherit;
   }
 
@@ -371,7 +381,7 @@
     min-height: 100vh;
     background:
       radial-gradient(circle at 100% 0%, rgba(120, 155, 131, 0.12), transparent 38%),
-      radial-gradient(circle at 0% 100%, rgba(245, 158, 66, 0.08), transparent 42%),
+      radial-gradient(circle at 0% 100%, rgba(230, 154, 85, 0.08), transparent 42%),
       var(--color-surface);
   }
 }

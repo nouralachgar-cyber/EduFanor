@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowUpRight,
@@ -18,40 +18,20 @@ import {
   ConfirmDialog,
   EmptyState,
   ErrorState,
-  Field,
   LoadingState,
-  Modal,
   PageHeader,
   Panel,
 } from '../../components/admin/ui';
 import Toast from '../../components/Toast';
 
-const categories = ['cpr', 'bleeding', 'choking', 'burns', 'general'];
-const difficulties = ['beginner', 'intermediate', 'advanced'];
-
-const emptyCourse = {
-  slug: '',
-  title: { ar: '', en: '' },
-  description: { ar: '', en: '' },
-  category: 'cpr',
-  difficulty: 'beginner',
-  image: '/courses/cpr.svg',
-  estimatedMinutes: 15,
-  order: 0,
-  published: false,
-};
-
 export default function AdminCourses() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState(emptyCourse);
-  const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(null);
   const [deleteBusy, setDeleteBusy] = useState(false);
   const [toast, setToast] = useState(null);
@@ -71,54 +51,13 @@ export default function AdminCourses() {
     return () => window.clearTimeout(timer);
   }, [search, status]);
 
+  // توجيه مباشر إلى الاستوديو الجديد عوض الـ Modal القديمة
   const openCreate = () => {
-    setEditing(null);
-    setForm(emptyCourse);
-    setModalOpen(true);
+    navigate('/admin/lessons/new');
   };
 
   const openEdit = (course) => {
-    setEditing(course);
-    setForm({
-      slug: course.slug || '',
-      title: { ar: course.title?.ar || '', en: course.title?.en || '' },
-      description: { ar: course.description?.ar || '', en: course.description?.en || '' },
-      category: course.category || 'cpr',
-      difficulty: course.difficulty || 'beginner',
-      image: course.image || '/courses/cpr.svg',
-      estimatedMinutes: course.estimatedMinutes || 15,
-      order: course.order || 0,
-      published: Boolean(course.published),
-    });
-    setModalOpen(true);
-  };
-
-  const updateField = (field, value) => setForm((previous) => ({ ...previous, [field]: value }));
-  const updateBilingual = (field, language, value) =>
-    setForm((previous) => ({ ...previous, [field]: { ...previous[field], [language]: value } }));
-
-  const save = async (event) => {
-    event.preventDefault();
-    if (!form.slug.trim() || !form.title.ar.trim() || !form.title.en.trim() || !form.description.ar.trim() || !form.description.en.trim()) {
-      setToast({ type: 'error', message: t('admin.courses.fieldsRequired') });
-      return;
-    }
-    setSaving(true);
-    try {
-      if (editing) {
-        await adminApi.updateCourse(editing._id, form);
-        setToast({ type: 'success', message: t('admin.courses.courseSaved') });
-      } else {
-        await adminApi.createCourse(form);
-        setToast({ type: 'success', message: t('admin.courses.courseCreated') });
-      }
-      setModalOpen(false);
-      load();
-    } catch (err) {
-      setToast({ type: 'error', message: err.message });
-    } finally {
-      setSaving(false);
-    }
+    navigate(`/admin/courses/${course._id}/lessons/new`);
   };
 
   const removeCourse = async () => {
@@ -259,90 +198,6 @@ export default function AdminCourses() {
           </div>
         )}
       </Panel>
-
-      <Modal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title={editing ? t('admin.courses.editCourse') : t('admin.courses.newCourse')}
-        subtitle={t('admin.courses.bilingualHint')}
-        size="lg"
-        footer={
-          <>
-            <button type="button" onClick={() => setModalOpen(false)} className="btn-secondary h-9 px-4 text-xs">{t('admin.common.cancel')}</button>
-            <button type="submit" form="course-form" disabled={saving} className="btn-primary h-9 px-4 text-xs">
-              {saving ? t('admin.common.saving') : t('admin.common.save')}
-            </button>
-          </>
-        }
-      >
-        <form id="course-form" onSubmit={save} className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field label={t('admin.courses.titleAr')} required>
-              <input value={form.title.ar} onChange={(event) => updateBilingual('title', 'ar', event.target.value)} className="input" dir="rtl" />
-            </Field>
-            <Field label={t('admin.courses.titleEn')} required>
-              <input value={form.title.en} onChange={(event) => updateBilingual('title', 'en', event.target.value)} className="input" dir="ltr" />
-            </Field>
-            <Field label={t('admin.courses.descriptionAr')} required>
-              <textarea value={form.description.ar} onChange={(event) => updateBilingual('description', 'ar', event.target.value)} className="input h-24 resize-y py-2" dir="rtl" />
-            </Field>
-            <Field label={t('admin.courses.descriptionEn')} required>
-              <textarea value={form.description.en} onChange={(event) => updateBilingual('description', 'en', event.target.value)} className="input h-24 resize-y py-2" dir="ltr" />
-            </Field>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Field label={t('admin.courses.slug')} required>
-              <input value={form.slug} onChange={(event) => updateField('slug', event.target.value)} className="input" dir="ltr" placeholder="first-aid-basics" />
-            </Field>
-            <Field label={t('admin.courses.category')}>
-              <select value={form.category} onChange={(event) => updateField('category', event.target.value)} className="input">
-                {categories.map((category) => (
-                  <option key={category} value={category}>{t(`admin.courses.categories.${category}`)}</option>
-                ))}
-              </select>
-            </Field>
-            <Field label={t('admin.courses.difficulty')}>
-              <select value={form.difficulty} onChange={(event) => updateField('difficulty', event.target.value)} className="input">
-                {difficulties.map((difficulty) => (
-                  <option key={difficulty} value={difficulty}>{t(`admin.courses.difficulties.${difficulty}`)}</option>
-                ))}
-              </select>
-            </Field>
-            <Field label={t('admin.courses.estimatedMinutes')}>
-              <input type="number" min="1" value={form.estimatedMinutes} onChange={(event) => updateField('estimatedMinutes', event.target.value)} className="input" />
-            </Field>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-[1fr_8rem]">
-            <Field label={t('admin.courses.image')}>
-              <input value={form.image} onChange={(event) => updateField('image', event.target.value)} className="input" dir="ltr" placeholder="/courses/cpr.svg" />
-            </Field>
-            <Field label={t('admin.courses.order')}>
-              <input type="number" value={form.order} onChange={(event) => updateField('order', event.target.value)} className="input" />
-            </Field>
-          </div>
-
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface-muted px-3.5 py-3">
-            <div className="flex items-center gap-2.5">
-              {form.image && <img src={form.image} alt="" className="h-10 w-16 rounded-lg object-cover" />}
-              <div>
-                <p className="flex items-center gap-1.5 text-xs font-extrabold text-ink"><CheckCircle2 className="h-3.5 w-3.5 text-success-ink" />{t('admin.courses.published')}</p>
-                <p className="text-[10px] text-ink-muted">{t('admin.common.optional')}</p>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => updateField('published', !form.published)}
-              className={`relative h-7 w-12 rounded-full transition-colors ${form.published ? 'bg-primary' : 'bg-line-strong'}`}
-              role="switch"
-              aria-checked={form.published}
-            >
-              <span className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-all ${form.published ? 'start-6' : 'start-1'}`} />
-            </button>
-          </div>
-        </form>
-      </Modal>
 
       <ConfirmDialog
         open={Boolean(deleting)}

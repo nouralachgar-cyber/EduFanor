@@ -69,7 +69,7 @@ export default function GlobalEmergencySection() {
           <Globe3D
             markers={markers}
             config={{
-              atmosphereColor: '#F59E42',
+              atmosphereColor: '#E69A55',
               autoRotateSpeed: 0.4,
             }}
           />
