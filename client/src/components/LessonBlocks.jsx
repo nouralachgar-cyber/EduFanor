@@ -108,7 +108,7 @@ function YouTubeEmbed({ src, title, fallbackMessage }) {
         href={`https://www.youtube.com/watch?v=${videoId}`}
         target="_blank"
         rel="noreferrer"
-        className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-ink transition-colors hover:text-[#4682A9] dark:hover:text-[#4682A9]"
+        className="inline-flex items-center gap-1.5 text-[11px] font-bold text-brand-ink transition-colors hover:text-accent"
       >
         <ExternalLink className="h-3.5 w-3.5" />
         Watch on YouTube
@@ -204,9 +204,9 @@ export function LessonBlockRenderer({ block, isAr }) {
     if (!text) return null;
     return (
       <div className="my-6 flex items-start gap-3 rounded-2xl border border-accent/30 bg-amber-soft/20 p-4">
-        <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#4682A9] dark:text-[#F5FAFF]" />
+        <Info className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
         <div>
-          <p className="mb-1 text-xs font-extrabold text-[#4682A9] dark:text-[#F5FAFF]">{isAr ? 'معلومات مهمة' : 'Important'}</p>
+          <p className="mb-1 text-xs font-extrabold text-accent">{isAr ? 'معلومات مهمة' : 'Important'}</p>
           <p className="text-sm leading-relaxed text-ink">{text}</p>
         </div>
       </div>

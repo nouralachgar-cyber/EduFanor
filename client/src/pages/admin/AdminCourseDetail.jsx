@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
   BookOpen,
-  CheckCircle2,
   ClipboardCheck,
   Edit3,
   Eye,
@@ -20,29 +19,13 @@ import {
   ConfirmDialog,
   EmptyState,
   ErrorState,
-  Field,
   LoadingState,
-  Modal,
   Panel,
-  SectionLabel,
   StatCard,
 } from '../../components/admin/ui';
+import QuizEditorModal from '../../components/admin/QuizEditorModal';
+import CourseFormModal from '../../components/admin/CourseFormModal';
 import Toast from '../../components/Toast';
-
-const newQuestion = () => ({
-  question: { ar: '', en: '' },
-  options: { ar: ['', ''], en: ['', ''] },
-  correctAnswer: 0,
-  explanation: { ar: '', en: '' },
-});
-
-const emptyQuiz = (lessonId) => ({
-  title: { ar: '', en: '' },
-  lesson: lessonId || '',
-  passingScore: 70,
-  published: true,
-  questions: [newQuestion()],
-});
 
 export default function AdminCourseDetail() {
   const { id } = useParams();
@@ -52,10 +35,9 @@ export default function AdminCourseDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [tab, setTab] = useState('lessons');
-  const [quizModal, setQuizModal] = useState(false);
+  const [quizEditorOpen, setQuizEditorOpen] = useState(false);
   const [editingQuiz, setEditingQuiz] = useState(null);
-  const [quizForm, setQuizForm] = useState(emptyQuiz());
-  const [saving, setSaving] = useState(false);
+  const [courseFormOpen, setCourseFormOpen] = useState(false);
   const [deleting, setDeleting] = useState(null);
   const [deleteBusy, setDeleteBusy] = useState(false);
   const [toast, setToast] = useState(null);
@@ -88,104 +70,12 @@ export default function AdminCourseDetail() {
 
   const openCreateQuiz = () => {
     setEditingQuiz(null);
-    setQuizForm(emptyQuiz(lessons[0]?._id));
-    setQuizModal(true);
+    setQuizEditorOpen(true);
   };
 
   const openEditQuiz = (quiz) => {
     setEditingQuiz(quiz);
-    setQuizForm({
-      title: { ar: quiz.title?.ar || '', en: quiz.title?.en || '' },
-      lesson: quiz.lesson?._id || quiz.lesson || lessons[0]?._id || '',
-      passingScore: quiz.passingScore ?? 70,
-      published: Boolean(quiz.published),
-      questions: (quiz.questions || []).map((question) => ({
-        question: { ar: question.question?.ar || '', en: question.question?.en || '' },
-        options: {
-          ar: question.options?.ar?.length ? [...question.options.ar] : ['', ''],
-          en: question.options?.en?.length ? [...question.options.en] : ['', ''],
-        },
-        correctAnswer: question.correctAnswer || 0,
-        explanation: { ar: question.explanation?.ar || '', en: question.explanation?.en || '' },
-      })),
-    });
-    setQuizModal(true);
-  };
-
-  const updateQuestion = (index, updater) =>
-    setQuizForm((previous) => ({
-      ...previous,
-      questions: previous.questions.map((question, questionIndex) =>
-        questionIndex === index ? updater(question) : question
-      ),
-    }));
-
-  const updateQuestionText = (index, field, lang, value) =>
-    updateQuestion(index, (question) => ({
-      ...question,
-      [field]: { ...question[field], [lang]: value },
-    }));
-
-  const updateOption = (questionIndex, lang, optionIndex, value) =>
-    updateQuestion(questionIndex, (question) => ({
-      ...question,
-      options: {
-        ...question.options,
-        [lang]: question.options[lang].map((option, index) => (index === optionIndex ? value : option)),
-      },
-    }));
-
-  const addOption = (questionIndex) =>
-    updateQuestion(questionIndex, (question) => ({
-      ...question,
-      options: {
-        ar: [...question.options.ar, ''],
-        en: [...question.options.en, ''],
-      },
-    }));
-
-  const removeOption = (questionIndex, optionIndex) =>
-    updateQuestion(questionIndex, (question) => ({
-      ...question,
-      options: {
-        ar: question.options.ar.filter((_, index) => index !== optionIndex),
-        en: question.options.en.filter((_, index) => index !== optionIndex),
-      },
-      correctAnswer:
-        question.correctAnswer >= optionIndex && question.correctAnswer > 0
-          ? question.correctAnswer - 1
-          : question.correctAnswer,
-    }));
-
-  const saveQuiz = async (event) => {
-    event.preventDefault();
-    if (!quizForm.title.ar.trim() || !quizForm.title.en.trim() || !quizForm.lesson) {
-      setToast({ type: 'error', message: t('admin.courses.fieldsRequired') });
-      return;
-    }
-    setSaving(true);
-    try {
-      const payload = {
-        ...quizForm,
-        passingScore: Number(quizForm.passingScore) || 70,
-        questions: quizForm.questions.map((question) => ({
-          ...question,
-          correctAnswer: Number(question.correctAnswer) || 0,
-        })),
-      };
-      if (editingQuiz) {
-        await adminApi.updateQuiz(editingQuiz._id, payload);
-      } else {
-        await adminApi.createQuiz(payload);
-      }
-      setToast({ type: 'success', message: t('admin.courses.quizSaved') });
-      setQuizModal(false);
-      load();
-    } catch (err) {
-      setToast({ type: 'error', message: err.message });
-    } finally {
-      setSaving(false);
-    }
+    setQuizEditorOpen(true);
   };
 
   const removeItem = async () => {
@@ -214,77 +104,87 @@ export default function AdminCourseDetail() {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6 bg-[#F5F5F5] min-h-screen p-6 text-[#4B164C]">
       <div>
         <button
           type="button"
           onClick={() => navigate('/admin/courses')}
-          className="mb-3 inline-flex items-center gap-1.5 text-[11px] font-extrabold text-ink-muted transition-colors hover:text-ink"
+          className="mb-3 inline-flex items-center gap-1.5 text-xs font-extrabold text-[#4B164C]/70 transition-colors hover:text-[#4B164C]"
         >
-          <ArrowLeft className="h-3.5 w-3.5 rtl:rotate-180" /> {t('admin.courses.title')}
+          <ArrowLeft className="h-3.5 w-3.5 rtl:rotate-180 text-[#DD88CF]" /> {t('admin.courses.title')}
         </button>
 
-        <div className="admin-card admin-rise flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-          <div className="flex min-w-0 items-start gap-3.5">
-            {course.image ? (
-              <img src={course.image} alt="" className="h-16 w-24 shrink-0 rounded-xl object-cover" />
+        <div className="rounded-3xl border border-[#DD88CF]/40 bg-white p-5 shadow-sm flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 items-start gap-4">
+            {course?.image ? (
+              <img src={course.image} alt="" className="h-20 w-28 shrink-0 rounded-2xl object-cover border border-[#DD88CF]/50" />
             ) : (
-              <span className="flex h-16 w-24 shrink-0 items-center justify-center rounded-xl bg-surface-muted text-ink-muted"><BookOpen className="h-6 w-6" /></span>
+              <span className="flex h-20 w-28 shrink-0 items-center justify-center rounded-2xl bg-[#F8E7F6] text-[#4B164C] border border-[#DD88CF]/50"><BookOpen className="h-6 w-6 text-[#DD88CF]" /></span>
             )}
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="font-display text-xl font-bold tracking-tight text-ink sm:text-2xl">{localize(course.title, i18n.language)}</h1>
-                <Badge tone={course.published ? 'green' : 'amber'}>{course.published ? t('admin.common.published') : t('admin.common.draft')}</Badge>
+                <h1 className="font-display text-xl font-bold tracking-tight text-[#4B164C] sm:text-2xl">{localize(course?.title, i18n.language)}</h1>
+                <Badge tone={course?.published ? 'green' : 'amber'} className="bg-[#F8E7F6] text-[#4B164C] border border-[#DD88CF]">{course?.published ? t('admin.common.published') : t('admin.common.draft')}</Badge>
               </div>
-              <p className="mt-0.5 text-[11px] font-bold text-ink-muted" dir="ltr">{course.slug}</p>
-              <p className="mt-1 line-clamp-2 max-w-2xl text-[11px] leading-relaxed text-ink-muted">{localize(course.description, i18n.language)}</p>
-              <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                <Badge tone="outline">{t(`admin.courses.categories.${course.category}`, { defaultValue: course.category })}</Badge>
-                <Badge tone="outline">{t(`admin.courses.difficulties.${course.difficulty}`, { defaultValue: course.difficulty })}</Badge>
-                <Badge tone="outline">{formatNumber(course.estimatedMinutes, i18n.language)} {t('admin.common.minutes')}</Badge>
+              <p className="mt-0.5 text-xs font-bold text-[#4B164C]/60" dir="ltr">{course?.slug}</p>
+              <p className="mt-1 line-clamp-2 max-w-2xl text-xs leading-relaxed text-[#4B164C]/80">{localize(course?.description, i18n.language)}</p>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <Badge tone="outline" className="bg-[#F5F5F5] text-[#4B164C] border-[#DD88CF]">{t(`admin.courses.categories.${course?.category}`, { defaultValue: course?.category })}</Badge>
+                <Badge tone="outline" className="bg-[#F5F5F5] text-[#4B164C] border-[#DD88CF]">{t(`admin.courses.difficulties.${course?.difficulty}`, { defaultValue: course?.difficulty })}</Badge>
+                <Badge tone="outline" className="bg-[#F5F5F5] text-[#4B164C] border-[#DD88CF]">{formatNumber(course?.estimatedMinutes, i18n.language)} {t('admin.common.minutes')}</Badge>
               </div>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={load}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-line bg-card text-ink transition-colors hover:bg-surface-muted self-start"
-            aria-label={t('admin.common.refresh')}
-          >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
-          </button>
+          <div className="flex shrink-0 items-center gap-3 self-start">
+            <button
+              type="button"
+              onClick={() => setCourseFormOpen(true)}
+              className="flex items-center gap-1.5 rounded-xl bg-[#F8E7F6] px-4 py-2 text-xs font-extrabold text-[#4B164C] border border-[#DD88CF] hover:bg-[#DD88CF]/30 transition-colors shadow-sm"
+            >
+              <Edit3 className="h-3.5 w-3.5 text-[#DD88CF]" /> {t('admin.common.edit')}
+            </button>
+            <button
+              type="button"
+              onClick={load}
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30 shadow-sm"
+              aria-label={t('admin.common.refresh')}
+              title={t('admin.common.refresh')}
+            >
+              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard icon={Layers} label={t('admin.common.lessons')} value={formatNumber(lessons.length, i18n.language)} tone="sage" />
         <StatCard icon={Eye} label={t('admin.common.published')} value={formatNumber(lessons.filter((lesson) => lesson.published).length, i18n.language)} tone="green" />
         <StatCard icon={ClipboardCheck} label={t('admin.common.quizzes')} value={formatNumber(quizzes.length, i18n.language)} tone="surface" />
         <StatCard icon={FileQuestion} label={t('admin.courses.questions')} value={formatNumber(questionCount, i18n.language)} tone="amber" />
       </div>
 
-      <Panel noPadding>
-        <div className="flex items-center justify-between gap-2 border-b border-line px-3.5 py-3">
-          <div className="flex items-center gap-1 rounded-xl bg-surface-muted p-1">
+      <Panel noPadding className="bg-white border border-[#DD88CF]/40 rounded-2xl shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between gap-2 border-b border-[#DD88CF]/30 px-4 py-3 bg-[#F8E7F6]/50">
+          <div className="flex items-center gap-1.5 rounded-xl bg-[#F5F5F5] p-1 border border-[#DD88CF]/30">
             <button
               type="button"
               onClick={() => setTab('lessons')}
-              className={`rounded-lg px-3 py-1.5 text-[10px] font-extrabold transition-colors ${tab === 'lessons' ? 'bg-card text-ink shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+              className={`rounded-lg px-3.5 py-1.5 text-xs font-extrabold transition-colors ${tab === 'lessons' ? 'bg-[#4B164C] text-[#F8E7F6] shadow-sm' : 'text-[#4B164C]/70 hover:text-[#4B164C]'}`}
             >
               {t('admin.common.lessons')} ({formatNumber(lessons.length, i18n.language)})
             </button>
             <button
               type="button"
               onClick={() => setTab('quizzes')}
-              className={`rounded-lg px-3 py-1.5 text-[10px] font-extrabold transition-colors ${tab === 'quizzes' ? 'bg-card text-ink shadow-sm' : 'text-ink-muted hover:text-ink'}`}
+              className={`rounded-lg px-3.5 py-1.5 text-xs font-extrabold transition-colors ${tab === 'quizzes' ? 'bg-[#4B164C] text-[#F8E7F6] shadow-sm' : 'text-[#4B164C]/70 hover:text-[#4B164C]'}`}
             >
               {t('admin.common.quizzes')} ({formatNumber(quizzes.length, i18n.language)})
             </button>
           </div>
           {tab === 'lessons' ? (
-            <button type="button" onClick={openCreateLesson} className="btn-primary h-8 px-3 text-[10px]"><Plus className="h-3 w-3" />{t('admin.courses.addLesson')}</button>
+            <button type="button" onClick={openCreateLesson} className="flex items-center gap-1.5 rounded-xl bg-[#4B164C] px-3.5 py-2 text-xs font-extrabold text-[#F8E7F6] hover:bg-[#4B164C]/90 shadow-sm"><Plus className="h-3.5 w-3.5 text-[#DD88CF]" />{t('admin.courses.addLesson')}</button>
           ) : (
-            <button type="button" onClick={openCreateQuiz} disabled={lessons.length === 0} className="btn-primary h-8 px-3 text-[10px]"><Plus className="h-3 w-3" />{t('admin.courses.addQuiz')}</button>
+            <button type="button" onClick={openCreateQuiz} disabled={lessons.length === 0} className="flex items-center gap-1.5 rounded-xl bg-[#4B164C] px-3.5 py-2 text-xs font-extrabold text-[#F8E7F6] hover:bg-[#4B164C]/90 shadow-sm disabled:opacity-50"><Plus className="h-3.5 w-3.5 text-[#DD88CF]" />{t('admin.courses.addQuiz')}</button>
           )}
         </div>
 
@@ -293,40 +193,40 @@ export default function AdminCourseDetail() {
             <EmptyState
               title={t('admin.courses.noLessons')}
               icon={Layers}
-              action={<button type="button" onClick={openCreateLesson} className="btn-primary h-9 px-4 text-xs"><Plus className="h-3.5 w-3.5" />{t('admin.courses.addLesson')}</button>}
+              action={<button type="button" onClick={openCreateLesson} className="flex items-center gap-1.5 rounded-xl bg-[#4B164C] px-4 py-2 text-xs font-extrabold text-[#F8E7F6] shadow-sm"><Plus className="h-4 w-4 text-[#DD88CF]" />{t('admin.courses.addLesson')}</button>}
             />
           ) : (
-            <div className="divide-y divide-line">
+            <div className="divide-y divide-[#DD88CF]/20">
               {lessons.map((lesson, index) => {
                 const blockCount = (lesson.blocks?.ar || lesson.blocks?.en || lesson.blocks || []).length;
                 return (
-                <div key={lesson._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="flex min-w-0 items-start gap-3">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface-muted text-[11px] font-extrabold text-ink-muted">
+                <div key={lesson._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between hover:bg-[#F5F5F5]/60 transition-colors">
+                  <div className="flex min-w-0 items-start gap-3.5">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#F8E7F6] text-xs font-extrabold text-[#4B164C] border border-[#DD88CF]/50">
                       {formatNumber(lesson.order || index + 1, i18n.language)}
                     </span>
                     <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <p className="text-xs font-extrabold text-ink">{localize(lesson.title, i18n.language)}</p>
-                        <Badge tone={lesson.published ? 'green' : 'amber'}>{lesson.published ? t('admin.courses.publishedLesson') : t('admin.courses.draftLesson')}</Badge>
-                        <Badge tone={lesson.reviewStatus === 'reviewed' ? 'green' : lesson.reviewStatus === 'in_review' ? 'amber' : 'outline'}>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-xs font-extrabold text-[#4B164C]">{localize(lesson.title, i18n.language)}</p>
+                        <Badge tone={lesson.published ? 'green' : 'amber'} className="bg-[#F8E7F6] text-[#4B164C] border border-[#DD88CF]">{lesson.published ? t('admin.courses.publishedLesson') : t('admin.courses.draftLesson')}</Badge>
+                        <Badge tone={lesson.reviewStatus === 'reviewed' ? 'green' : lesson.reviewStatus === 'in_review' ? 'amber' : 'outline'} className="bg-[#F5F5F5] text-[#4B164C] border border-[#DD88CF]">
                           {t(`admin.courses.${lesson.reviewStatus || 'unreviewed'}`)}
                         </Badge>
-                        <Badge tone="outline">
+                        <Badge tone="outline" className="bg-[#F5F5F5] text-[#4B164C] border border-[#DD88CF]">
                           {formatNumber(blockCount, i18n.language)} {t('admin.courses.blocksCount')}
                         </Badge>
                       </div>
-                      <p className="mt-1 line-clamp-2 max-w-2xl text-[11px] leading-relaxed text-ink-muted">
+                      <p className="mt-1 line-clamp-2 max-w-2xl text-xs leading-relaxed text-[#4B164C]/70">
                         {localize(lesson.content, i18n.language) || '—'}
                       </p>
                     </div>
                   </div>
-                  <div className="flex shrink-0 items-center gap-1 self-end sm:self-start">
-                    <button type="button" onClick={() => openEditLesson(lesson)} className="flex h-7 w-7 items-center justify-center rounded-lg border border-line text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink" aria-label={t('admin.courses.editLesson')} title={t('admin.courses.editLesson')}>
-                      <Edit3 className="h-3.5 w-3.5" />
+                  <div className="flex shrink-0 items-center gap-2 self-end sm:self-start">
+                    <button type="button" onClick={() => openEditLesson(lesson)} className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30" aria-label={t('admin.courses.editLesson')} title={t('admin.courses.editLesson')}>
+                      <Edit3 className="h-4 w-4" />
                     </button>
-                    <button type="button" onClick={() => setDeleting({ type: 'lesson', item: lesson })} className="flex h-7 w-7 items-center justify-center rounded-lg border border-line text-ink-muted transition-colors hover:bg-danger-soft hover:text-danger" aria-label={t('admin.common.delete')} title={t('admin.common.delete')}>
-                      <Trash2 className="h-3.5 w-3.5" />
+                    <button type="button" onClick={() => setDeleting({ type: 'lesson', item: lesson })} className="flex h-8 w-8 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition-colors hover:bg-red-100" aria-label={t('admin.common.delete')} title={t('admin.common.delete')}>
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
                 </div>
@@ -339,33 +239,33 @@ export default function AdminCourseDetail() {
             title={t('admin.courses.noQuizzes')}
             icon={ClipboardCheck}
             action={
-              <button type="button" onClick={openCreateQuiz} disabled={lessons.length === 0} className="btn-primary h-9 px-4 text-xs">
-                <Plus className="h-3.5 w-3.5" />{t('admin.courses.addQuiz')}
+              <button type="button" onClick={openCreateQuiz} disabled={lessons.length === 0} className="flex items-center gap-1.5 rounded-xl bg-[#4B164C] px-4 py-2 text-xs font-extrabold text-[#F8E7F6] shadow-sm disabled:opacity-50">
+                <Plus className="h-4 w-4 text-[#DD88CF]" />{t('admin.courses.addQuiz')}
               </button>
             }
           />
         ) : (
-          <div className="divide-y divide-line">
+          <div className="divide-y divide-[#DD88CF]/20">
             {quizzes.map((quiz) => (
-              <div key={quiz._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex min-w-0 items-start gap-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-soft/40 text-amber"><ClipboardCheck className="h-4 w-4" /></span>
+              <div key={quiz._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between hover:bg-[#F5F5F5]/60 transition-colors">
+                <div className="flex min-w-0 items-start gap-3.5">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#F8E7F6] text-[#4B164C] border border-[#DD88CF]/50"><ClipboardCheck className="h-4 w-4 text-[#DD88CF]" /></span>
                   <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <p className="text-xs font-extrabold text-ink">{localize(quiz.title, i18n.language)}</p>
-                      <Badge tone={quiz.published ? 'green' : 'amber'}>{quiz.published ? t('admin.common.published') : t('admin.common.draft')}</Badge>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-xs font-extrabold text-[#4B164C]">{localize(quiz.title, i18n.language)}</p>
+                      <Badge tone={quiz.published ? 'green' : 'amber'} className="bg-[#F8E7F6] text-[#4B164C] border border-[#DD88CF]">{quiz.published ? t('admin.common.published') : t('admin.common.draft')}</Badge>
                     </div>
-                    <p className="mt-0.5 text-[10px] text-ink-muted">
+                    <p className="mt-1 text-xs text-[#4B164C]/70">
                       {t('admin.courses.lesson')}: {localize(quiz.lesson?.title, i18n.language) || t('admin.common.notAvailable')} · {t('admin.courses.questionsCount')}: {formatNumber(quiz.questions?.length || 0, i18n.language)} · {t('admin.courses.passingScore')}: {formatNumber(quiz.passingScore, i18n.language)}%
                     </p>
                   </div>
                 </div>
-                <div className="flex shrink-0 items-center gap-1 self-end sm:self-auto">
-                  <button type="button" onClick={() => openEditQuiz(quiz)} className="flex h-7 w-7 items-center justify-center rounded-lg border border-line text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink" aria-label={t('admin.courses.editQuiz')} title={t('admin.courses.editQuiz')}>
-                    <Edit3 className="h-3.5 w-3.5" />
+                <div className="flex shrink-0 items-center gap-2 self-end sm:self-auto">
+                  <button type="button" onClick={() => openEditQuiz(quiz)} className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30" aria-label={t('admin.courses.editQuiz')} title={t('admin.courses.editQuiz')}>
+                    <Edit3 className="h-4 w-4" />
                   </button>
-                  <button type="button" onClick={() => setDeleting({ type: 'quiz', item: quiz })} className="flex h-7 w-7 items-center justify-center rounded-lg border border-line text-ink-muted transition-colors hover:bg-danger-soft hover:text-danger" aria-label={t('admin.common.delete')} title={t('admin.common.delete')}>
-                    <Trash2 className="h-3.5 w-3.5" />
+                  <button type="button" onClick={() => setDeleting({ type: 'quiz', item: quiz })} className="flex h-8 w-8 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition-colors hover:bg-red-100" aria-label={t('admin.common.delete')} title={t('admin.common.delete')}>
+                    <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
               </div>
@@ -374,125 +274,32 @@ export default function AdminCourseDetail() {
         )}
       </Panel>
 
-      <Modal
-        open={quizModal}
-        onClose={() => setQuizModal(false)}
-        title={editingQuiz ? t('admin.courses.editQuiz') : t('admin.courses.createQuiz')}
-        subtitle={t('admin.courses.bilingualHint')}
-        size="lg"
-        footer={
-          <>
-            <button type="button" onClick={() => setQuizModal(false)} className="btn-secondary h-9 px-4 text-xs">{t('admin.common.cancel')}</button>
-            <button type="submit" form="quiz-form" disabled={saving} className="btn-primary h-9 px-4 text-xs">{saving ? t('admin.common.saving') : t('admin.common.save')}</button>
-          </>
-        }
-      >
-        <form id="quiz-form" onSubmit={saveQuiz} className="space-y-4">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field label={`${t('admin.courses.quizTitle')} (${t('admin.common.ar')})`} required>
-              <input value={quizForm.title.ar} onChange={(event) => setQuizForm((previous) => ({ ...previous, title: { ...previous.title, ar: event.target.value } }))} className="input" dir="rtl" />
-            </Field>
-            <Field label={`${t('admin.courses.quizTitle')} (${t('admin.common.en')})`} required>
-              <input value={quizForm.title.en} onChange={(event) => setQuizForm((previous) => ({ ...previous, title: { ...previous.title, en: event.target.value } }))} className="input" dir="ltr" />
-            </Field>
-          </div>
+      <QuizEditorModal
+        open={quizEditorOpen}
+        quiz={editingQuiz}
+        lessons={lessons}
+        onClose={() => {
+          setQuizEditorOpen(false);
+          setEditingQuiz(null);
+        }}
+        onSaved={() => {
+          setQuizEditorOpen(false);
+          setEditingQuiz(null);
+          setToast({ type: 'success', message: t('admin.courses.quizSaved') });
+          load();
+        }}
+      />
 
-          <div className="grid gap-3 sm:grid-cols-3">
-            <Field label={t('admin.courses.lesson')} required>
-              <select value={quizForm.lesson} onChange={(event) => setQuizForm((previous) => ({ ...previous, lesson: event.target.value }))} className="input">
-                <option value="">{t('admin.courses.selectLesson')}</option>
-                {lessons.map((lesson) => (
-                  <option key={lesson._id} value={lesson._id}>{localize(lesson.title, i18n.language)}</option>
-                ))}
-              </select>
-            </Field>
-            <Field label={t('admin.courses.passingScore')}>
-              <input type="number" min="0" max="100" value={quizForm.passingScore} onChange={(event) => setQuizForm((previous) => ({ ...previous, passingScore: event.target.value }))} className="input" />
-            </Field>
-            <Field label={t('admin.common.status')}>
-              <select value={quizForm.published ? 'published' : 'draft'} onChange={(event) => setQuizForm((previous) => ({ ...previous, published: event.target.value === 'published' }))} className="input">
-                <option value="published">{t('admin.common.published')}</option>
-                <option value="draft">{t('admin.common.draft')}</option>
-              </select>
-            </Field>
-          </div>
-
-          <SectionLabel>{t('admin.courses.questionsCount')} ({formatNumber(quizForm.questions.length, i18n.language)})</SectionLabel>
-
-          <div className="space-y-4">
-            {quizForm.questions.map((question, questionIndex) => (
-              <div key={questionIndex} className="rounded-xl border border-line bg-surface-muted/50 p-3.5">
-                <div className="mb-2.5 flex items-center justify-between gap-2">
-                  <p className="text-[10px] font-extrabold uppercase tracking-wider text-ink-muted">
-                    {t('admin.courses.question')} {formatNumber(questionIndex + 1, i18n.language)}
-                  </p>
-                  {quizForm.questions.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => setQuizForm((previous) => ({ ...previous, questions: previous.questions.filter((_, index) => index !== questionIndex) }))}
-                      className="inline-flex items-center gap-1 text-[10px] font-bold text-danger hover:underline"
-                    >
-                      <Trash2 className="h-3 w-3" /> {t('admin.courses.removeQuestion')}
-                    </button>
-                  )}
-                </div>
-
-                <div className="grid gap-2.5 sm:grid-cols-2">
-                  <input value={question.question.ar} onChange={(event) => updateQuestionText(questionIndex, 'question', 'ar', event.target.value)} className="input h-10 text-xs" placeholder={`${t('admin.courses.question')} (${t('admin.common.ar')})`} dir="rtl" />
-                  <input value={question.question.en} onChange={(event) => updateQuestionText(questionIndex, 'question', 'en', event.target.value)} className="input h-10 text-xs" placeholder={`${t('admin.courses.question')} (${t('admin.common.en')})`} dir="ltr" />
-                </div>
-
-                <div className="mt-3 space-y-2">
-                  <p className="text-[10px] font-extrabold text-ink-muted">{t('admin.courses.options')}</p>
-                  {question.options.ar.map((option, optionIndex) => (
-                    <div key={optionIndex} className="grid grid-cols-[auto_1fr] gap-2 rounded-lg border border-line bg-card p-2">
-                      <button
-                        type="button"
-                        onClick={() => updateQuestion(questionIndex, (previous) => ({ ...previous, correctAnswer: optionIndex }))}
-                        className={`mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${question.correctAnswer === optionIndex ? 'border-primary bg-primary text-on-primary' : 'border-line-strong text-transparent hover:border-primary'}`}
-                        aria-label={t('admin.courses.correctAnswer')}
-                        title={t('admin.courses.correctAnswer')}
-                      >
-                        <CheckCircle2 className="h-3 w-3" />
-                      </button>
-                      <div className="grid gap-2 sm:grid-cols-2">
-                        <input value={option} onChange={(event) => updateOption(questionIndex, 'ar', optionIndex, event.target.value)} className="input h-8 text-[11px]" placeholder={`${t('admin.courses.option')} ${optionIndex + 1} (${t('admin.common.ar')})`} dir="rtl" />
-                        <input value={question.options.en[optionIndex] || ''} onChange={(event) => updateOption(questionIndex, 'en', optionIndex, event.target.value)} className="input h-8 text-[11px]" placeholder={`${t('admin.courses.option')} ${optionIndex + 1} (${t('admin.common.en')})`} dir="ltr" />
-                      </div>
-                      <div className="col-span-2 flex items-center justify-between gap-2">
-                        <span className="text-[9px] font-semibold text-ink-muted">
-                          {question.correctAnswer === optionIndex ? t('admin.courses.correctAnswer') : ''}
-                        </span>
-                        {question.options.ar.length > 2 && (
-                          <button type="button" onClick={() => removeOption(questionIndex, optionIndex)} className="text-[9px] font-bold text-danger hover:underline">
-                            {t('admin.courses.removeOption')}
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                  <button type="button" onClick={() => addOption(questionIndex)} className="inline-flex items-center gap-1 text-[10px] font-bold text-primary hover:underline dark:text-brand-ink">
-                    <Plus className="h-3 w-3" /> {t('admin.courses.addOption')}
-                  </button>
-                </div>
-
-                <div className="mt-3 grid gap-2.5 sm:grid-cols-2">
-                  <input value={question.explanation.ar} onChange={(event) => updateQuestionText(questionIndex, 'explanation', 'ar', event.target.value)} className="input h-9 text-[11px]" placeholder={`${t('admin.courses.explanation')} (${t('admin.common.ar')})`} dir="rtl" />
-                  <input value={question.explanation.en} onChange={(event) => updateQuestionText(questionIndex, 'explanation', 'en', event.target.value)} className="input h-9 text-[11px]" placeholder={`${t('admin.courses.explanation')} (${t('admin.common.en')})`} dir="ltr" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setQuizForm((previous) => ({ ...previous, questions: [...previous.questions, newQuestion()] }))}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-dashed border-line-strong px-3.5 py-2 text-[11px] font-bold text-ink transition-colors hover:bg-surface-muted"
-          >
-            <Plus className="h-3.5 w-3.5" /> {t('admin.courses.addQuestion')}
-          </button>
-        </form>
-      </Modal>
+      <CourseFormModal
+        open={courseFormOpen}
+        course={{ id }}
+        onClose={() => setCourseFormOpen(false)}
+        onSaved={() => {
+          setCourseFormOpen(false);
+          setToast({ type: 'success', message: t('admin.courseEditor.savedToast') });
+          load();
+        }}
+      />
 
       <ConfirmDialog
         open={Boolean(deleting)}

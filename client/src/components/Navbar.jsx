@@ -119,7 +119,7 @@ export default function Navbar() {
       >
         <Link to="/dashboard" className="group flex shrink-0 items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary shadow-sm transition-transform duration-300 group-hover:scale-105">
-            <ShieldCheck className="h-5 w-5 text-[#91C8E4] dark:text-[#F5FAFF]" />
+            <ShieldCheck className="h-5 w-5 text-on-primary" />
           </span>
           <span className="hidden leading-tight sm:block">
             <span className="block font-display text-lg font-semibold tracking-tight text-ink">
@@ -145,7 +145,7 @@ export default function Navbar() {
                     : 'text-ink-muted hover:bg-surface hover:text-ink'
                 }`}
               >
-                <Icon className={`h-4 w-4 ${active ? 'text-[#91C8E4] dark:text-[#F5FAFF]' : ''}`} />
+                <Icon className={`h-4 w-4 ${active ? 'text-on-primary' : ''}`} />
                 <span>{link.name}</span>
               </Link>
             );
@@ -166,7 +166,7 @@ export default function Navbar() {
                 aria-haspopup="menu"
                 className="flex items-center gap-2.5 rounded-2xl border border-line bg-surface py-1.5 pe-2.5 ps-1.5 transition-all hover:border-line-strong hover:bg-surface-muted"
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-sm font-bold text-white">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-sm font-bold text-on-primary">
                   {user?.name ? user.name.charAt(0).toUpperCase() : 'N'}
                 </span>
                 <span className="max-w-[9rem] truncate text-xs font-bold text-ink">
@@ -267,7 +267,7 @@ export default function Navbar() {
         <div className="animate-fade-in absolute inset-x-0 top-full border-t border-line bg-surface p-4 shadow-pop md:hidden">
           {user && (
             <div className="mb-3 flex items-center gap-3 rounded-2xl border border-line bg-surface-muted p-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-sm font-bold text-white">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-sm font-bold text-on-primary">
                 {user?.name ? user.name.charAt(0).toUpperCase() : 'N'}
               </span>
               <div className="min-w-0">
@@ -291,7 +291,7 @@ export default function Navbar() {
                     active ? 'bg-primary text-on-primary' : 'text-ink hover:bg-surface-muted'
                   }`}
                 >
-                  <Icon className={`h-5 w-5 ${active ? 'text-[#91C8E4] dark:text-[#F5FAFF]' : 'text-primary dark:text-brand-ink'}`} />
+                  <Icon className={`h-5 w-5 ${active ? 'text-on-primary' : 'text-primary dark:text-brand-ink'}`} />
                   <span>{link.name}</span>
                 </Link>
               );

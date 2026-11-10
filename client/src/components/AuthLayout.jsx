@@ -15,15 +15,30 @@ export default function AuthLayout({ children }) {
     <div className="min-h-screen bg-surface text-ink">
       <div className="grid min-h-screen lg:grid-cols-2">
         <aside
-          className="relative hidden overflow-hidden bg-[#1A3A52] bg-cover bg-center px-10 py-10 text-[#F5FAFF] lg:flex lg:flex-col lg:justify-between"
+          className="relative hidden overflow-hidden bg-[#232838] bg-cover bg-center px-10 py-10 text-[#FDF7FA] lg:flex lg:flex-col lg:justify-between"
           style={{ backgroundImage: "url('/heroa.jpg')" }}
         >
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(70, 130, 169,0.78),rgba(70, 130, 169,0.9))]" aria-hidden="true" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_25%,rgba(70, 130, 169,0.18),transparent_55%)]" aria-hidden="true" />
+          <div
+            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(35,40,56,0.88),rgba(72,31,53,0.92))]"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_18%,rgba(249,178,215,0.16),transparent_52%),radial-gradient(ellipse_at_18%_85%,rgba(127,205,159,0.12),transparent_46%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0 opacity-[0.16]"
+            style={{
+              backgroundImage:
+                'radial-gradient(rgba(253, 247, 250, 0.35) 1px, transparent 1px)',
+              backgroundSize: '22px 22px',
+            }}
+            aria-hidden="true"
+          />
 
           <div className="relative z-10">
             <Link to="/" className="inline-flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#4682A9] text-[#4682A9] shadow-[0_12px_30px_-12px_rgba(70, 130, 169,0.8)]">
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F9B2D7] text-[#33152A] shadow-[0_12px_30px_-12px_rgba(0,0,0,0.55)]">
                 <ShieldCheck className="h-5 w-5" />
               </span>
               <span className="font-display text-xl font-semibold tracking-tight">EduFanor</span>
@@ -31,7 +46,7 @@ export default function AuthLayout({ children }) {
           </div>
 
           <div className="relative z-10 max-w-md">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#91C8E4]">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#F9B2D7]">
               {isAr ? 'تعلّم بثقة ووضوح' : 'Learn with clarity and confidence'}
             </p>
             <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight">
@@ -39,17 +54,17 @@ export default function AuthLayout({ children }) {
                 <>
                   معرفة صغيرة.
                   <br />
-                  <span className="italic text-[#4682A9]">استعداد أكبر.</span>
+                  <span className="italic text-[#F9B2D7]">استعداد أكبر.</span>
                 </>
               ) : (
                 <>
                   A little knowledge.
                   <br />
-                  <span className="italic text-[#4682A9]">A calmer response.</span>
+                  <span className="italic text-[#F9B2D7]">A calmer response.</span>
                 </>
               )}
             </h2>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#4682A9]/65">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#FDF7FA]/75">
               {isAr
                 ? 'دروس منظمة، اختبارات قصيرة، وتقدّم محفوظ — مساحة تعلّم هادئة للإسعافات الأولية.'
                 : 'Structured lessons, short quizzes, and saved progress — a calm first-aid learning space.'}
@@ -57,15 +72,15 @@ export default function AuthLayout({ children }) {
 
             <ul className="mt-8 space-y-3">
               {points.map((point) => (
-                <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-[#4682A9]/80">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#4682A9]" />
+                <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-[#FDF7FA]/85">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#F9B2D7]" />
                   <span className="leading-relaxed">{point}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <p className="relative z-10 max-w-sm text-[10px] leading-relaxed text-[#4682A9]/45">
+          <p className="relative z-10 max-w-sm text-[10px] leading-relaxed text-[#FDF7FA]/50">
             {isAr
               ? 'المحتوى تعليمي فقط. في الطوارئ، اتصل بخدمات الإسعاف المحلية أولاً.'
               : 'Educational content only. In an emergency, contact local emergency services first.'}
@@ -95,7 +110,7 @@ export default function AuthLayout({ children }) {
                 className="flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface text-ink transition-colors hover:bg-surface-muted"
                 aria-label={t('nav.toggleTheme')}
               >
-                {isDark ? <Sun className="h-4 w-4 text-[#4682A9] dark:text-[#F5FAFF]" /> : <Moon className="h-4 w-4 text-brand-ink" />}
+                {isDark ? <Sun className="h-4 w-4 text-amber" /> : <Moon className="h-4 w-4 text-primary" />}
               </button>
             </div>
           </div>
@@ -104,7 +119,7 @@ export default function AuthLayout({ children }) {
             <div className="w-full max-w-md">
               <div className="mb-6 flex items-center gap-3 lg:hidden">
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary">
-                  <ShieldCheck className="h-5 w-5 text-[#91C8E4] dark:text-[#F5FAFF]" />
+                  <ShieldCheck className="h-5 w-5" />
                 </span>
                 <span className="font-display text-lg font-semibold tracking-tight text-ink">EduFanor</span>
               </div>

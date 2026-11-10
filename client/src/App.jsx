@@ -32,6 +32,8 @@ import AdminStudentDetail from './pages/admin/AdminStudentDetail';
 import AdminCourses from './pages/admin/AdminCourses';
 import AdminCourseDetail from './pages/admin/AdminCourseDetail';
 import AdminLessonEditor from './pages/admin/AdminLessonEditor';
+import AdminLessons from './pages/admin/AdminLessons';
+import AdminQuizzes from './pages/admin/AdminQuizzes';
 import AdminAnalytics from './pages/admin/AdminAnalytics';
 import AdminActivity from './pages/admin/AdminActivity';
 import AdminAudit from './pages/admin/AdminAudit';
@@ -81,7 +83,7 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Admin Routes */}
+        {/* Admin Routes - Isolated entirely with AdminLayout */}
         <Route
           path="/admin"
           element={
@@ -91,18 +93,16 @@ export default function App() {
           }
         >
           <Route index element={<AdminOverview />} />
-          
-          {/* مسارات مباشرة لفتح استوديو الدروس الجديد */}
+          <Route path="lessons" element={<AdminLessons />} />
           <Route path="lessons/new" element={<AdminLessonEditor />} />
-          <Route path="editor" element={<AdminLessonEditor />} />
-
+          <Route path="lessons/:lessonId" element={<AdminLessonEditor />} />
+          <Route path="quizzes" element={<AdminQuizzes />} />
           <Route path="students" element={<AdminStudents />} />
           <Route path="students/:id" element={<AdminStudentDetail />} />
           <Route path="courses" element={<AdminCourses />} />
           <Route path="courses/:id" element={<AdminCourseDetail />} />
           <Route path="courses/:id/lessons/new" element={<AdminLessonEditor />} />
           <Route path="courses/:id/lessons/:lessonId" element={<AdminLessonEditor />} />
-          <Route path="lessons/:lessonId" element={<AdminLessonEditor />} />
           <Route path="analytics" element={<AdminAnalytics />} />
           <Route path="activity" element={<AdminActivity />} />
           <Route path="audit" element={<AdminAudit />} />

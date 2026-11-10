@@ -23,6 +23,7 @@ import {
   Play,
   Plus,
   ShieldCheck,
+  Sparkles,
   Table as TableIcon,
   Trash2,
   Type,
@@ -509,7 +510,7 @@ const textToRows = (value) =>
 
 function BlockEditBody({ block, index, helpers }) {
   const { t } = useTranslation();
-  const { update, updateContent, updateData, updateDataLang, gallery, steps: stepHelpers } = helpers;
+  const { update, updateContent, updateData, updateDataLang, gallery, steps: stepHelpers, onImprove } = helpers;
   const type = block.type;
 
   if (TEXT_TYPES.has(type)) {
@@ -525,6 +526,15 @@ function BlockEditBody({ block, index, helpers }) {
           placeholderAr={isShort ? 'عنوان…' : undefined}
           placeholderEn={isShort ? 'Heading…' : undefined}
         />
+        {onImprove && (
+          <button
+            type="button"
+            onClick={() => onImprove(index)}
+            className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-extrabold text-primary transition-colors hover:bg-brand-soft disabled:opacity-50 dark:text-brand-ink"
+          >
+            <Sparkles className="h-3 w-3" /> {t('admin.editor.aiImprove')}
+          </button>
+        )}
         {CALLOUT_TYPES.has(type) && <p className="text-[10px] font-semibold text-ink-muted">{t(`admin.courses.blocks.${type}Hint`)}</p>}
       </div>
     );
@@ -837,7 +847,7 @@ function BlockEditBody({ block, index, helpers }) {
 
 const subLangSafeRows = (rows) => (Array.isArray(rows) ? rows : []);
 
-export default function LessonBlocksEditor({ blocks = [], onChange }) {
+export default function LessonBlocksEditor({ blocks = [], onChange, onImprove }) {
   const { t } = useTranslation();
   const [menuAt, setMenuAt] = useState(null);
   const [collapsed, setCollapsed] = useState(() => new Set());
@@ -959,7 +969,7 @@ export default function LessonBlocksEditor({ blocks = [], onChange }) {
       })),
   };
 
-  const helpers = { update, updateContent, updateData, updateDataLang, gallery: galleryHelpers, steps: stepsHelpers };
+  const helpers = { update, updateContent, updateData, updateDataLang, gallery: galleryHelpers, steps: stepsHelpers, onImprove };
 
   const toggleCollapse = (blockId) =>
     setCollapsed((previous) => {

@@ -74,7 +74,7 @@ export default function Profile() {
                   />
                 </div>
                 <span className="absolute -bottom-1 -end-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-on-primary shadow-md">
-                  <Camera className="h-4 w-4 text-[#91C8E4] dark:text-[#F5FAFF]" />
+                  <Camera className="h-4 w-4 text-accent" />
                 </span>
               </div>
 
@@ -95,7 +95,7 @@ export default function Profile() {
 
             <div className="mt-6 space-y-2.5 border-t border-line pt-5">
               <label className="label">
-                <Sparkles className="h-4 w-4 text-[#4682A9] dark:text-[#F5FAFF]" />
+                <Sparkles className="h-4 w-4 text-accent" />
                 <span>{t('profilePage.chooseAvatar')}</span>
               </label>
               <div className="grid grid-cols-6 gap-2">

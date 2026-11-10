@@ -1,13 +1,23 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const INTRO_DURATION_MS = 2600;
 
 const letters = 'EduFanor'.split('');
 
+function prefersReducedMotion() {
+  try {
+    return typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
+  } catch {
+    return false;
+  }
+}
+
 export default function Preloader({ onDone }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useRef(prefersReducedMotion()).current;
   const [visible, setVisible] = useState(true);
   const doneRef = useRef(false);
 
@@ -26,7 +36,7 @@ export default function Preloader({ onDone }) {
     );
 
     return () => window.clearTimeout(timer);
-  }, [reduceMotion, finish]);
+  }, [finish]); // reduceMotion is stable per mount
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -48,7 +58,7 @@ export default function Preloader({ onDone }) {
             duration: reduceMotion ? 0.15 : 0.55,
             ease: [0.76, 0, 0.24, 1],
           }}
-          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[#F5F5F5] dark:bg-[#1F1220]"
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[#FBE7F0] dark:bg-[#161822]"
           role="dialog"
           aria-label="EduFanor"
         >
@@ -58,7 +68,7 @@ export default function Preloader({ onDone }) {
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 0.55, scale: 1 }}
               transition={{ duration: 1.2, ease: 'easeOut' }}
-              className="pointer-events-none absolute h-64 w-64 rounded-full bg-[#91C8E4]/30 blur-[100px] dark:bg-[#8A6BBE]/20"
+              className="pointer-events-none absolute h-64 w-64 rounded-full bg-[#F9B2D7]/50 blur-[100px] dark:bg-[#F9B2D7]/15"
             />
           )}
 
@@ -94,7 +104,7 @@ export default function Preloader({ onDone }) {
                     delay: reduceMotion ? 0 : index * 0.085,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="inline-block bg-gradient-to-r from-[#4682A9] via-[#749BC2] to-[#8A6BBE] bg-clip-text text-transparent dark:from-[#91C8E4] dark:via-[#A995D5] dark:to-[#E9B9C8]"
+                  className="inline-block bg-gradient-to-r from-[#C2588A] via-[#E2769F] to-[#4E93A9] bg-clip-text text-transparent dark:from-[#F9B2D7] dark:via-[#CFECF3] dark:to-[#DAF9DE]"
                 >
                   {letter}
                 </motion.span>

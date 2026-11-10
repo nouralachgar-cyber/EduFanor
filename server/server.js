@@ -8,6 +8,7 @@ const courseRoutes = require('./routes/courseRoutes.js');
 const quizRoutes = require('./routes/quizRoutes.js');
 const progressRoutes = require('./routes/progressRoutes.js');
 const adminRoutes = require('./routes/adminRoutes.js');
+const aiRoutes = require('./routes/aiRoutes.js');
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/ai', aiRoutes);
 
 app.get('/', (req, res) => {
   res.send('EduFanor API is running...');

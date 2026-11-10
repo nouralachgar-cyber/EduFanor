@@ -14,8 +14,9 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     if (!container) return;
 
     // === Color scheme ===
-    const ambientColor = isDark ? '#4682A9' : '#4682A9';
-    const keyLightColor = isDark ? '#4682A9' : '#4682A9';
+    const ambientColor = isDark ? '#F9B2D7' : '#F6EFF3';
+    const keyLightColor = isDark ? '#FFD9EA' : '#FFF7FB';
+    const crossColor = '#A84569';
 
     // === Three.js setup ===
     const renderer = new THREE.WebGLRenderer({
@@ -36,10 +37,10 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     camera.lookAt(0, 0, 0);
 
     // Ambient light
-    const ambientLight = new THREE.AmbientLight(ambientColor, 0.5);
+    const ambientLight = new THREE.AmbientLight(ambientColor, 0.55);
     scene.add(ambientLight);
 
-    // Key light (soft pink)
+    // Key light (soft rose-white)
     const keyLight = new THREE.DirectionalLight(keyLightColor, 1);
     keyLight.position.set(3, 5, 4);
     keyLight.castShadow = true;
@@ -57,7 +58,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     const kitBody = new THREE.Mesh(
       new THREE.BoxGeometry(1.9, 1.1, 0.7),
       new THREE.MeshStandardMaterial({
-        color: isDark ? '#4682A9' : '#4682A9',
+        color: isDark ? '#F9B2D7' : '#FADCE8',
         roughness: 0.35,
         metalness: 0.02,
       })
@@ -71,7 +72,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     const lid = new THREE.Mesh(
       new THREE.BoxGeometry(1.9, 0.08, 0.7),
       new THREE.MeshStandardMaterial({
-        color: '#4682A9',
+        color: isDark ? '#F3A6C8' : '#F3A6C8',
         roughness: 0.5,
         metalness: 0.02,
       })
@@ -87,7 +88,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
 
     const verticalBar = new THREE.Mesh(
       new THREE.BoxGeometry(crossBarThickness, crossTotalHeight, 0.05),
-      new THREE.MeshStandardMaterial({ color: keyLightColor, roughness: 0.9, metalness: 0.0 })
+      new THREE.MeshStandardMaterial({ color: crossColor, roughness: 0.9, metalness: 0.0 })
     );
     verticalBar.position.z = 0.22;
     verticalBar.position.y = crossTotalHeight * 0.18;
@@ -96,7 +97,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
 
     const horizontalBar = new THREE.Mesh(
       new THREE.BoxGeometry(crossTotalHeight, crossBarThickness, 0.05),
-      new THREE.MeshStandardMaterial({ color: keyLightColor, roughness: 0.9, metalness: 0.0 })
+      new THREE.MeshStandardMaterial({ color: crossColor, roughness: 0.9, metalness: 0.0 })
     );
     horizontalBar.position.z = 0.22;
     horizontalBar.position.y = -crossBarThickness * 0.5;
@@ -111,7 +112,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     for (let i = 0; i < 3; i++) {
       const bandage = new THREE.Mesh(
         new THREE.CylinderGeometry(0.03 + i * 0.02, 0.05 + i * 0.02, 0.45 + i * 0.08, 6),
-        new THREE.MeshStandardMaterial({ color: '#FF6B6B', roughness: 0.95, metalness: 0.0 })
+        new THREE.MeshStandardMaterial({ color: '#E2769F', roughness: 0.95, metalness: 0.0 })
       );
       bandage.position.set((i - 1) * 0.35, -0.1 + i * 0.03, 0.1);
       bandage.rotation.z = (i % 2 === 0 ? 1 : -1) * 0.25;
@@ -122,7 +123,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     // === Medical Glove ===
     const glove = new THREE.Mesh(
       new THREE.SphereGeometry(0.14, 14, 14),
-      new THREE.MeshStandardMaterial({ color: '#FFD09A', roughness: 0.75, metalness: 0.15 })
+      new THREE.MeshStandardMaterial({ color: '#F6FFDC', roughness: 0.75, metalness: 0.15 })
     );
     glove.position.set(0.55, 0.08, -0.05);
     glove.castShadow = true;

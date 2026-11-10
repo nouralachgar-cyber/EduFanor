@@ -7,107 +7,146 @@
   --font-display: "Fraunces", "Tajawal", ui-serif, Georgia, "Times New Roman", serif;
   --font-arabic: "Tajawal", "Plus Jakarta Sans", ui-sans-serif, sans-serif;
 
-  /* EduFanor Grey & Blue identity */
-  --color-navy: #4B164C;
-  --color-navy-deep: #4B164C;
-  --color-navy-ink: #4B164C;
-  --color-slate-blue: #DD88CF;
-  --color-medical-teal: #4B164C;
-  --color-teal-strong: #4B164C;
-  --color-teal-light: #DD88CF;
-  --color-light-blue-grey: #F5F5F5;
-  --color-alert-red: #D94343;
-  --color-soft-blue-grey: #DD88CF;
-  --color-sage: #DD88CF;
-  --color-panel-soft: #DD88CF;
-  --color-panel-strong: #DD88CF;
+  /* ============================================================
+     EduFanor — Pastel Medical × Modern Education
+     Pastels: pink #F9B2D7 · sky #CFECF3 · mint #DAF9DE · cream #F6FFDC
+     Semantic: mint/cream content, sky/teal data & info,
+               rose-pink highlights/actions, amber = soft warning-rose
+     ============================================================ */
 
-  --color-primary: #4B164C;
-  --color-primary-hover: #DD88CF;
+  --color-pink: #F9B2D7;
+  --color-pink-soft: #FBE7F0;
+  --color-pink-ink: #A84569;
+
+  --color-sky: #CFECF3;
+  --color-sky-soft: #EAF5F8;
+  --color-sky-ink: #23617B;
+
+  --color-mint: #DAF9DE;
+  --color-mint-soft: #ECFAEE;
+  --color-mint-ink: #2F7A4E;
+
+  --color-cream: #F6FFDC;
+  --color-sand: #EFE9D8;
+  --color-beige: #F9F6E8;
+
+  --color-primary: #A84569;
+  --color-primary-hover: #943A5B;
   --color-on-primary: #FFFFFF;
-  --color-brand: #4B164C;
-  --color-brand-ink: #4B164C;
-  --color-brand-soft: #DD88CF;
-  --color-teal: #4B164C;
-  --color-teal-deep: #4B164C;
-  --color-accent: #DD88CF;
-  --color-amber: #4B164C;
-  --color-amber-soft: #DD88CF;
+  --color-brand: #A84569;
+  --color-brand-ink: #8D3A56;
+  --color-brand-soft: #FBE7F0;
+  --color-teal: #4E93A9;
+  --color-teal-deep: #23617B;
+  --color-teal-light: #CFECF3;
+  --color-teal-strong: #23617B;
+  --color-medical-teal: #23617B;
+  --color-accent: #C2588A;
+  --color-amber: #C05C86;
+  --color-amber-soft: #FBE0EE;
 
-  --color-cream: #F5F5F5;
-  --color-sand: #DD88CF;
-  --color-beige: #F5F5F5;
-  --color-sage-green: #DD88CF;
-  --color-navy-pure: #4B164C;
-  --color-burgundy: #4B164C;
-
-  --color-ink: #4B164C;
-  --color-ink-muted: #DD88CF;
-  --color-surface: #F5F5F5;
+  --color-ink: #2F3A45;
+  --color-ink-muted: #64707D;
+  --color-surface: #F6FFDC;
+  --color-surface-muted: #F6F9EF;
   --color-card: #FFFFFF;
-  --color-surface-muted: #DD88CF;
-  --color-line: #DD88CF;
-  --color-line-strong: #DD88CF;
+  --color-elevated: #FFFFFF;
+  --color-line: #E3E8DF;
+  --color-line-strong: #CBD3C8;
 
-  --color-success-soft: #EAF3EE;
-  --color-success-ink: #4F7A63;
-  --color-danger: #D94343;
-  --color-danger-soft: #FAE7E7;
+  --color-success-soft: #E6F7EA;
+  --color-success-ink: #2F7A4E;
+  --color-danger: #D64550;
+  --color-danger-soft: #FCE9EA;
+  --color-alert-red: #D64550;
 
-  --shadow-pop: 0 18px 50px -28px rgba(75, 22, 76, 0.35);
-  --shadow-lift: 0 30px 70px -34px rgba(75, 22, 76, 0.42);
+  --color-sage: #63B48B;
+  --color-sage-green: #2F7A4E;
+
+  /* Legacy aliases (kept for safety, mapped to the new identity) */
+  --color-navy: #2F3A45;
+  --color-navy-deep: #232B33;
+  --color-navy-ink: #2F3A45;
+  --color-navy-pure: #26313B;
+  --color-plum: #8D3A56;
+  --color-burgundy: #7E3450;
+  --color-slate-blue: #E2769F;
+  --color-light-blue-grey: #F6F9EF;
+  --color-soft-blue-grey: #E4EAE2;
+  --color-panel-soft: #FBE7F0;
+  --color-panel-strong: #F3D4E2;
+
+  --shadow-pop: 0 18px 50px -28px rgba(168, 69, 105, 0.28);
+  --shadow-lift: 0 30px 70px -34px rgba(168, 69, 105, 0.34);
 }
 
 .dark {
-  --color-navy: #DD88CF;
-  --color-navy-deep: #4B164C;
-  --color-navy-ink: #F8E7F6;
-  --color-slate-blue: #F8E7F6;
-  --color-medical-teal: #DD88CF;
-  --color-teal-strong: #DD88CF;
-  --color-teal-light: #F8E7F6;
-  --color-light-blue-grey: #4B164C;
-  --color-alert-red: #E57A7A;
-  --color-soft-blue-grey: #47304B;
-  --color-sage: #DD88CF;
-  --color-panel-soft: #36213A;
-  --color-panel-strong: #47304B;
+  --color-pink: #F9B2D7;
+  --color-pink-soft: #3A2338;
+  --color-pink-ink: #FBC6DE;
 
-  --color-primary: #DD88CF;
-  --color-primary-hover: #F8E7F6;
-  --color-on-primary: #4B164C;
-  --color-brand: #DD88CF;
-  --color-brand-ink: #DD88CF;
-  --color-brand-soft: #36213A;
-  --color-teal: #DD88CF;
-  --color-teal-deep: #FFFFFF;
-  --color-accent: #DD88CF;
-  --color-amber: #DD88CF;
-  --color-amber-soft: #36213A;
+  --color-sky: #CFECF3;
+  --color-sky-soft: #1E3441;
+  --color-sky-ink: #C4E7F0;
 
-  --color-cream: #4B164C;
-  --color-sand: #36213A;
-  --color-beige: #4B164C;
-  --color-sage-green: #DD88CF;
-  --color-navy-pure: #4B164C;
-  --color-burgundy: #DD88CF;
+  --color-mint: #DAF9DE;
+  --color-mint-soft: #22402F;
+  --color-mint-ink: #BFE6C8;
 
-  --color-ink: #F8E7F6;
-  --color-ink-muted: #F8E7F6;
-  --color-surface: #4B164C;
-  --color-card: #36213A;
-  --color-surface-muted: #4B164C;
-  --color-line: #47304B;
-  --color-line-strong: #DD88CF;
+  --color-cream: #242B24;
+  --color-sand: #2A2F39;
+  --color-beige: #1F2621;
 
-  --color-success-soft: #1F3F2E;
-  --color-success-ink: #B7D8C0;
-  --color-danger: #E57A7A;
-  --color-danger-soft: #3D2424;
+  --color-primary: #F9B2D7;
+  --color-primary-hover: #FBC5DF;
+  --color-on-primary: #36182C;
+  --color-brand: #F9B2D7;
+  --color-brand-ink: #FBC6DE;
+  --color-brand-soft: #352231;
+  --color-teal: #8FC6D8;
+  --color-teal-deep: #C4E7F0;
+  --color-teal-light: #1E3441;
+  --color-teal-strong: #C4E7F0;
+  --color-medical-teal: #C4E7F0;
+  --color-accent: #F9B2D7;
+  --color-amber: #F6A8CE;
+  --color-amber-soft: #4A2B3B;
+
+  --color-ink: #F4F2F8;
+  --color-ink-muted: #AEB3C2;
+  --color-surface: #161822;
+  --color-surface-muted: #1D2030;
+  --color-card: #262A3A;
+  --color-elevated: #303548;
+  --color-line: #3D4356;
+  --color-line-strong: #4E556B;
+
+  --color-success-soft: #22402F;
+  --color-success-ink: #A9DFB9;
+  --color-danger: #F0939B;
+  --color-danger-soft: #412229;
+  --color-alert-red: #F0939B;
+
+  --color-sage: #7FCD9F;
+  --color-sage-green: #B5E4C6;
+
+  --color-navy: #161822;
+  --color-navy-deep: #10121A;
+  --color-navy-ink: #F4F2F8;
+  --color-navy-pure: #161822;
+  --color-plum: #E2769F;
+  --color-burgundy: #F6A8CE;
+  --color-slate-blue: #F6A8CE;
+  --color-light-blue-grey: #1D2030;
+  --color-soft-blue-grey: #262A3A;
+  --color-panel-soft: #352231;
+  --color-panel-strong: #4A2B3B;
 
   --shadow-pop: 0 20px 55px -28px rgba(0, 0, 0, 0.7);
   --shadow-lift: 0 32px 80px -34px rgba(0, 0, 0, 0.78);
-}@layer base {
+}
+
+@layer base {
   *,
   *::before,
   *::after {
@@ -150,7 +189,7 @@
   }
 
   ::selection {
-    background: rgba(75, 22, 76, 0.3);
+    background: rgba(168, 69, 105, 0.24);
     color: inherit;
   }
 
@@ -200,7 +239,7 @@
     border-radius: 1.5rem;
     border: 1px solid var(--color-line);
     background-color: var(--color-card);
-    box-shadow: 0 1px 0 rgba(75, 22, 76, 0.05);
+    box-shadow: 0 1px 0 rgba(47, 58, 69, 0.04);
   }
 
   .card-hover {
@@ -237,7 +276,7 @@
   .btn-primary {
     background-color: var(--color-primary);
     color: var(--color-on-primary);
-    box-shadow: 0 12px 26px -14px rgba(75, 22, 76, 0.5);
+    box-shadow: 0 12px 26px -14px rgba(168, 69, 105, 0.45);
   }
 
   .btn-primary:hover {
@@ -325,7 +364,7 @@
 
   .input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(75, 22, 76, 0.22);
+    box-shadow: 0 0 0 4px rgba(168, 69, 105, 0.18);
   }
 
   .input:disabled {
@@ -400,8 +439,8 @@
   .app-shell {
     min-height: 100vh;
     background:
-      radial-gradient(circle at 100% 0%, rgba(75, 22, 76, 0.16), transparent 38%),
-      radial-gradient(circle at 0% 100%, rgba(75, 22, 76, 0.08), transparent 42%),
+      radial-gradient(circle at 100% 0%, rgba(249, 178, 215, 0.22), transparent 38%),
+      radial-gradient(circle at 0% 100%, rgba(218, 249, 222, 0.4), transparent 42%),
       var(--color-surface);
   }
 }
@@ -468,7 +507,7 @@
       to bottom,
       transparent 0,
       transparent 31px,
-      rgba(75, 22, 76, 0.18) 32px
+      rgba(47, 58, 69, 0.1) 32px
     );
     background-size: 100% 32px;
   }

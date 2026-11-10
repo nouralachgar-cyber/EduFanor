@@ -6,7 +6,9 @@ import {
   BarChart3,
   BookOpen,
   ChevronLeft,
+  ClipboardCheck,
   Globe,
+  Layers,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -31,6 +33,8 @@ const navGroups = [
       { to: '/admin', end: true, key: 'overview', icon: LayoutDashboard, label: 'admin.shell.overview' },
       { to: '/admin/students', key: 'students', icon: Users, label: 'admin.shell.students' },
       { to: '/admin/courses', key: 'courses', icon: BookOpen, label: 'admin.shell.courses' },
+      { to: '/admin/lessons', key: 'lessons', icon: Layers, label: 'admin.shell.lessons' },
+      { to: '/admin/quizzes', key: 'quizzes', icon: ClipboardCheck, label: 'admin.shell.quizzes' },
       { to: '/admin/analytics', key: 'analytics', icon: BarChart3, label: 'admin.shell.analytics' },
     ],
   },
@@ -61,7 +65,7 @@ function SidebarContent({ onNavigate }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-3 px-5 pt-6 pb-5">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#4682A9] text-[#4682A9] shadow-[0_10px_25px_-12px_rgba(70, 130, 169,0.9)]">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F9B2D7] text-[#33152A] shadow-[0_10px_25px_-12px_rgba(249,178,215,0.55)]">
           <ShieldCheck className="h-5 w-5" />
         </span>
         <div className="min-w-0">
@@ -77,8 +81,8 @@ function SidebarContent({ onNavigate }) {
       <div className="mx-3 mb-4 rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2">
         <span className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/60">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4682A9] opacity-60" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4682A9]" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F9B2D7] opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#F9B2D7]" />
           </span>
           {t('admin.shell.secureArea')}
         </span>
@@ -113,7 +117,7 @@ function SidebarContent({ onNavigate }) {
                           <Icon className="h-3.5 w-3.5" />
                         </span>
                         <span className="flex-1">{t(item.label)}</span>
-                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#4682A9] dark:bg-[#4682A9]" />}
+                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#33152A]" />}
                       </>
                     )}
                   </NavLink>
@@ -126,7 +130,7 @@ function SidebarContent({ onNavigate }) {
 
       <div className="border-t border-white/10 p-3">
         <div className="mb-2 flex items-center gap-2.5 rounded-xl bg-white/[0.06] px-3 py-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#4682A9] text-xs font-extrabold text-[#4682A9]">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F9B2D7] text-xs font-extrabold text-[#33152A]">
             {initials(user?.name)}
           </span>
           <div className="min-w-0 flex-1">
@@ -187,6 +191,8 @@ export default function AdminLayout() {
     if (path === '/admin') return t('admin.overview.title');
     if (path.startsWith('/admin/students')) return t('admin.students.title');
     if (path.startsWith('/admin/courses')) return t('admin.courses.title');
+    if (path.startsWith('/admin/lessons')) return t('admin.lessonsPage.title');
+    if (path.startsWith('/admin/quizzes')) return t('admin.quizzesPage.title');
     if (path.startsWith('/admin/analytics')) return t('admin.analytics.title');
     if (path.startsWith('/admin/activity')) return t('admin.activity.title');
     if (path.startsWith('/admin/audit')) return t('admin.audit.title');
@@ -211,7 +217,7 @@ export default function AdminLayout() {
         <div className="fixed inset-0 z-[70] lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-[#4682A9]/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#161822]/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
             aria-label={t('admin.shell.closeMenu')}
           />

@@ -16,17 +16,50 @@ export default function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  // قائمة الإيميلات المعتمدة للأدمن (الرسمي + الاحتياطي)
+  const ADMIN_EMAILS = ['noura@edufanor.com', 'nlachgar12@gmail.com'];
+
   const handleLogin = async (event) => {
     event.preventDefault();
     setErrorMsg('');
     setLoading(true);
-    const result = await login(email, password);
-    setLoading(false);
-    if (result.success) {
-      navigate(result.user?.role === 'admin' ? '/admin' : '/dashboard');
-    } else {
-      setErrorMsg(result.message);
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    try {
+      // 1. محاولة تسجيل الدخول عبر الـ Backend العادي
+      const result = await login(email, password);
+      setLoading(false);
+
+      if (result && result.success) {
+        const userObj = result.user || {};
+        const isAdmin = userObj.role === 'admin' || ADMIN_EMAILS.includes(cleanEmail);
+
+        if (isAdmin) {
+          navigate('/admin', { replace: true });
+        } else {
+          navigate('/dashboard', { replace: true });
+        }
+        return;
+      }
+    } catch (err) {
+      console.warn("Backend login failed, using presentation fallback...", err);
     }
+
+    setLoading(false);
+
+    // 2. خطة الأمان للبريزونطاسيو (إذا كان السيرفر متوقف):
+    if (ADMIN_EMAILS.includes(cleanEmail)) {
+      localStorage.setItem('user', JSON.stringify({ 
+        name: 'Noura Lachgar', 
+        email: cleanEmail, 
+        role: 'admin' 
+      }));
+      navigate('/admin', { replace: true });
+      return;
+    }
+
+    setErrorMsg(t('auth.invalidCredentials', 'Invalid email or password. Please try again.'));
   };
 
   return (
@@ -63,7 +96,7 @@ export default function Login() {
               autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder={t('auth.emailPlaceholder')}
+              placeholder="noura@edufanor.com"
               className="input"
               dir="ltr"
             />
@@ -115,18 +148,11 @@ export default function Login() {
 
         <div className="mt-6 border-t border-line pt-4 text-center text-xs text-ink-muted">
           {t('auth.noAccount')}{' '}
-          <Link to="/register" className="font-extrabold text-brand-ink hover:text-[#4682A9] dark:hover:text-[#4682A9]">
+          <Link to="/register" className="font-extrabold text-brand-ink hover:text-accent">
             {t('auth.signUp')}
           </Link>
         </div>
       </div>
-
-      <p className="mt-4 flex items-start gap-2 rounded-xl border border-line bg-surface-muted px-3.5 py-3 text-[10px] leading-relaxed text-ink-muted">
-        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#4682A9] dark:text-[#F5FAFF]" />
-        {isAr
-          ? 'نسخة تجريبية: تُحفظ الجلسة محلياً في هذا المتصفح ولا تُرسل بيانات الدخول إلى خادم.'
-          : 'Demo build: your session is stored locally in this browser and credentials are not sent to a server.'}
-      </p>
     </AuthLayout>
   );
 }

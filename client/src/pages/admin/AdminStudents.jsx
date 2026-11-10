@@ -116,7 +116,7 @@ export default function AdminStudents() {
   );
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6 bg-[#F5F5F5] min-h-screen p-6 text-[#4B164C]">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.students.title')}
@@ -125,46 +125,46 @@ export default function AdminStudents() {
           <button
             type="button"
             onClick={load}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-card text-ink transition-colors hover:bg-surface-muted"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30 shadow-sm"
             aria-label={t('admin.common.refresh')}
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
         }
       />
 
       <div className="flex flex-wrap items-center gap-2">
-        <Badge tone="green">
-          <Users className="h-3 w-3" /> {formatNumber(pagination.total, i18n.language)} {t('admin.common.students')}
+        <Badge tone="green" className="bg-[#F8E7F6] text-[#4B164C] border border-[#DD88CF]">
+          <Users className="h-3.5 w-3.5 text-[#DD88CF]" /> {formatNumber(pagination.total, i18n.language)} {t('admin.common.students')}
         </Badge>
-        <Badge tone="sage">{t('admin.common.active')}: {formatNumber(summary.active, i18n.language)}</Badge>
-        <Badge tone="red">{t('admin.common.suspended')}: {formatNumber(summary.suspended, i18n.language)}</Badge>
+        <Badge tone="sage" className="bg-emerald-50 text-emerald-800 border border-emerald-200">{t('admin.common.active')}: {formatNumber(summary.active, i18n.language)}</Badge>
+        <Badge tone="red" className="bg-red-50 text-red-700 border border-red-200">{t('admin.common.suspended')}: {formatNumber(summary.suspended, i18n.language)}</Badge>
       </div>
 
-      <Panel noPadding>
-        <div className="flex flex-col gap-2.5 border-b border-line p-3.5 lg:flex-row lg:items-center">
+      <Panel noPadding className="bg-white border border-[#DD88CF]/40 rounded-2xl shadow-sm overflow-hidden">
+        <div className="flex flex-col gap-3 border-b border-[#DD88CF]/30 p-4 bg-[#F8E7F6]/50 lg:flex-row lg:items-center">
           <div className="relative min-w-0 flex-1">
-            <Search className="pointer-events-none absolute start-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-muted" />
+            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4B164C]/60" />
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.students.searchPlaceholder')}
-              className="input h-9 ps-9 text-xs"
+              className="w-full rounded-xl border border-[#DD88CF] bg-white py-2.5 ps-10 pe-4 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-            <select value={status} onChange={(event) => setStatus(event.target.value)} className="input h-9 text-xs" aria-label={t('admin.common.status')}>
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            <select value={status} onChange={(event) => setStatus(event.target.value)} className="rounded-xl border border-[#DD88CF] bg-white px-4 py-2.5 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] shadow-sm" aria-label={t('admin.common.status')}>
               <option value="">{t('admin.students.allStatuses')}</option>
               <option value="active">{t('admin.common.active')}</option>
               <option value="suspended">{t('admin.common.suspended')}</option>
             </select>
-            <select value={activity} onChange={(event) => setActivity(event.target.value)} className="input h-9 text-xs" aria-label={t('admin.common.filter')}>
+            <select value={activity} onChange={(event) => setActivity(event.target.value)} className="rounded-xl border border-[#DD88CF] bg-white px-4 py-2.5 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] shadow-sm" aria-label={t('admin.common.filter')}>
               <option value="">{t('admin.students.allActivity')}</option>
               <option value="active">{t('admin.students.onlyActive')}</option>
               <option value="inactive">{t('admin.students.onlyInactive')}</option>
             </select>
-            <select value={sort} onChange={(event) => setSort(event.target.value)} className="input col-span-2 h-9 text-xs sm:col-span-1" aria-label={t('admin.common.filter')}>
+            <select value={sort} onChange={(event) => setSort(event.target.value)} className="rounded-xl border border-[#DD88CF] bg-white px-4 py-2.5 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] col-span-2 sm:col-span-1 shadow-sm" aria-label={t('admin.common.filter')}>
               {sorts.map((option) => (
                 <option key={option} value={option}>
                   {t(`admin.students.sort${option.charAt(0).toUpperCase()}${option.slice(1)}`, { defaultValue: option })}
@@ -183,55 +183,54 @@ export default function AdminStudents() {
         ) : (
           <>
             <div className="admin-scroll hidden overflow-x-auto md:block">
-              <table className="admin-table">
+              <table className="admin-table w-full text-left border-collapse">
                 <thead>
-                  <tr>
-                    <th>{t('admin.students.name')}</th>
-                    <th>{t('admin.common.status')}</th>
-                    <th>{t('admin.students.joined')}</th>
-                    <th>{t('admin.students.lastActive')}</th>
-                    <th>{t('admin.students.lessonsDone')}</th>
-                    <th>{t('admin.students.quizzesTaken')}</th>
-                    <th>{t('admin.students.bestScore')}</th>
-                    <th>{t('admin.common.actions')}</th>
+                  <tr className="border-b border-[#DD88CF]/30 bg-[#F8E7F6]/50 text-xs text-[#4B164C]">
+                    <th className="p-3.5">{t('admin.students.name')}</th>
+                    <th className="p-3.5">{t('admin.common.status')}</th>
+                    <th className="p-3.5">{t('admin.students.joined')}</th>
+                    <th className="p-3.5">{t('admin.students.lastActive')}</th>
+                    <th className="p-3.5">{t('admin.students.lessonsDone')}</th>
+                    <th className="p-3.5">{t('admin.students.quizzesTaken')}</th>
+                    <th className="p-3.5">{t('admin.students.bestScore')}</th>
+                    <th className="p-3.5">{t('admin.common.actions')}</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-[#DD88CF]/20 text-xs">
                   {rows.map((student) => (
-                    <tr key={student._id}>
-                      <td>
-                        <Link to={`/admin/students/${student._id}`} className="group flex items-center gap-2.5">
-                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-soft text-[10px] font-extrabold text-success-ink">
+                    <tr key={student._id} className="hover:bg-[#F5F5F5]/60 transition-colors">
+                      <td className="p-3.5">
+                        <Link to={`/admin/students/${student._id}`} className="group flex items-center gap-3">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#F8E7F6] text-xs font-extrabold text-[#4B164C] border border-[#DD88CF]/50">
                             {initials(student.name)}
                           </span>
                           <span className="min-w-0">
-                            <span className="block truncate text-xs font-extrabold text-ink group-hover:text-primary dark:group-hover:text-brand-ink">{student.name}</span>
-                            <span className="block truncate text-[10px] text-ink-muted" dir="ltr">{student.email}</span>
+                            <span className="block truncate text-xs font-extrabold text-[#4B164C] group-hover:text-[#DD88CF]">{student.name}</span>
+                            <span className="block truncate text-[10px] text-[#4B164C]/70" dir="ltr">{student.email}</span>
                           </span>
                         </Link>
                       </td>
-                      <td>
+                      <td className="p-3.5">
                         <div className="flex flex-col items-start gap-1">
-                          <Badge tone={student.status === 'suspended' ? 'red' : 'green'}>
+                          <Badge tone={student.status === 'suspended' ? 'red' : 'green'} className={student.status === 'suspended' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}>
                             {student.status === 'suspended' ? t('admin.common.suspended') : t('admin.common.active')}
                           </Badge>
-                          {student.active && <span className="text-[9px] font-bold text-success-ink">• {t('admin.common.active')}</span>}
                         </div>
                       </td>
-                      <td className="text-[11px] text-ink-muted">{formatDate(student.createdAt, i18n.language)}</td>
-                      <td className="text-[11px] text-ink-muted">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</td>
-                      <td className="font-bold">{formatNumber(student.completedLessonCount || 0, i18n.language)}</td>
-                      <td className="font-bold">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</td>
-                      <td className="font-bold">{formatPercent(student.bestQuiz, i18n.language)}</td>
-                      <td>
-                        <div className="flex items-center gap-1">
+                      <td className="p-3.5 text-xs text-[#4B164C]/70">{formatDate(student.createdAt, i18n.language)}</td>
+                      <td className="p-3.5 text-xs text-[#4B164C]/70">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</td>
+                      <td className="p-3.5 font-bold text-[#4B164C]">{formatNumber(student.completedLessonCount || 0, i18n.language)}</td>
+                      <td className="p-3.5 font-bold text-[#4B164C]">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</td>
+                      <td className="p-3.5 font-bold text-[#4B164C]">{formatPercent(student.bestQuiz, i18n.language)}</td>
+                      <td className="p-3.5">
+                        <div className="flex items-center gap-2">
                           <Link
                             to={`/admin/students/${student._id}`}
-                            className="flex h-7 w-7 items-center justify-center rounded-lg border border-line text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink"
+                            className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30 shadow-sm"
                             aria-label={t('admin.common.view')}
                             title={t('admin.common.view')}
                           >
-                            <ArrowUpRight className="h-3.5 w-3.5" />
+                            <ArrowUpRight className="h-4 w-4 text-[#DD88CF]" />
                           </Link>
                           <button
                             type="button"
@@ -241,15 +240,15 @@ export default function AdminStudents() {
                                 status: student.status === 'suspended' ? 'active' : 'suspended',
                               })
                             }
-                            className={`flex h-7 w-7 items-center justify-center rounded-lg border transition-colors ${
+                            className={`flex h-8 w-8 items-center justify-center rounded-xl border transition-colors shadow-sm ${
                               student.status === 'suspended'
-                                ? 'border-success-soft text-success-ink hover:bg-success-soft'
-                                : 'border-line text-ink-muted hover:bg-danger-soft hover:text-danger'
+                                ? 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
+                                : 'border-red-200 bg-red-50 text-red-600 hover:bg-red-100'
                             }`}
                             aria-label={student.status === 'suspended' ? t('admin.students.activate') : t('admin.students.suspend')}
                             title={student.status === 'suspended' ? t('admin.students.activate') : t('admin.students.suspend')}
                           >
-                            {student.status === 'suspended' ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Ban className="h-3.5 w-3.5" />}
+                            {student.status === 'suspended' ? <CheckCircle2 className="h-4 w-4" /> : <Ban className="h-4 w-4" />}
                           </button>
                         </div>
                       </td>
@@ -259,43 +258,43 @@ export default function AdminStudents() {
               </table>
             </div>
 
-            <div className="divide-y divide-line md:hidden">
+            <div className="divide-y divide-[#DD88CF]/20 md:hidden">
               {rows.map((student) => (
-                <div key={student._id} className="p-4">
-                  <div className="flex items-start gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-xs font-extrabold text-success-ink">
+                <div key={student._id} className="p-4 hover:bg-[#F5F5F5]/60 transition-colors">
+                  <div className="flex items-start gap-3.5">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F8E7F6] text-xs font-extrabold text-[#4B164C] border border-[#DD88CF]/50">
                       {initials(student.name)}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <Link to={`/admin/students/${student._id}`} className="block truncate text-sm font-extrabold text-ink">
+                      <Link to={`/admin/students/${student._id}`} className="block truncate text-xs font-extrabold text-[#4B164C]">
                         {student.name}
                       </Link>
-                      <p className="flex items-center gap-1 truncate text-[10px] text-ink-muted" dir="ltr">
-                        <Mail className="h-3 w-3 shrink-0" /> {student.email}
+                      <p className="flex items-center gap-1.5 truncate text-[10px] text-[#4B164C]/70" dir="ltr">
+                        <Mail className="h-3.5 w-3.5 shrink-0 text-[#DD88CF]" /> {student.email}
                       </p>
-                      <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                        <Badge tone={student.status === 'suspended' ? 'red' : 'green'}>
+                      <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                        <Badge tone={student.status === 'suspended' ? 'red' : 'green'} className={student.status === 'suspended' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}>
                           {student.status === 'suspended' ? t('admin.common.suspended') : t('admin.common.active')}
                         </Badge>
-                        <Badge tone="outline">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</Badge>
+                        <Badge tone="outline" className="bg-[#F5F5F5] text-[#4B164C] border border-[#DD88CF]">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</Badge>
                       </div>
-                      <div className="mt-2.5 grid grid-cols-3 gap-1.5 text-center">
-                        <div className="rounded-lg bg-surface-muted px-1 py-1.5">
-                          <p className="text-[9px] font-bold text-ink-muted">{t('admin.students.lessonsDone')}</p>
-                          <p className="text-xs font-extrabold text-ink">{formatNumber(student.completedLessonCount || 0, i18n.language)}</p>
+                      <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+                        <div className="rounded-xl border border-[#DD88CF]/30 bg-[#F5F5F5] p-2">
+                          <p className="text-[9px] font-bold text-[#4B164C]/60">{t('admin.students.lessonsDone')}</p>
+                          <p className="text-xs font-extrabold text-[#4B164C]">{formatNumber(student.completedLessonCount || 0, i18n.language)}</p>
                         </div>
-                        <div className="rounded-lg bg-surface-muted px-1 py-1.5">
-                          <p className="text-[9px] font-bold text-ink-muted">{t('admin.students.quizzesTaken')}</p>
-                          <p className="text-xs font-extrabold text-ink">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</p>
+                        <div className="rounded-xl border border-[#DD88CF]/30 bg-[#F5F5F5] p-2">
+                          <p className="text-[9px] font-bold text-[#4B164C]/60">{t('admin.students.quizzesTaken')}</p>
+                          <p className="text-xs font-extrabold text-[#4B164C]">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</p>
                         </div>
-                        <div className="rounded-lg bg-surface-muted px-1 py-1.5">
-                          <p className="text-[9px] font-bold text-ink-muted">{t('admin.students.bestScore')}</p>
-                          <p className="text-xs font-extrabold text-ink">{formatPercent(student.bestQuiz, i18n.language)}</p>
+                        <div className="rounded-xl border border-[#DD88CF]/30 bg-[#F5F5F5] p-2">
+                          <p className="text-[9px] font-bold text-[#4B164C]/60">{t('admin.students.bestScore')}</p>
+                          <p className="text-xs font-extrabold text-[#4B164C]">{formatPercent(student.bestQuiz, i18n.language)}</p>
                         </div>
                       </div>
-                      <div className="mt-2 flex gap-1.5">
-                        <Link to={`/admin/students/${student._id}`} className="btn-secondary h-8 flex-1 text-[10px]">
-                          <UserRound className="h-3 w-3" /> {t('admin.common.view')}
+                      <div className="mt-3 flex gap-2">
+                        <Link to={`/admin/students/${student._id}`} className="flex-1 rounded-xl border border-[#DD88CF] bg-[#F8E7F6] py-2 text-center text-xs font-bold text-[#4B164C] hover:bg-[#DD88CF]/30 transition-colors shadow-sm flex items-center justify-center gap-1.5">
+                          <UserRound className="h-3.5 w-3.5 text-[#DD88CF]" /> {t('admin.common.view')}
                         </Link>
                         <button
                           type="button"
@@ -305,9 +304,13 @@ export default function AdminStudents() {
                               status: student.status === 'suspended' ? 'active' : 'suspended',
                             })
                           }
-                          className="btn-secondary h-8 text-[10px]"
+                          className={`rounded-xl px-4 py-2 text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 ${
+                            student.status === 'suspended'
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-red-50 text-red-600 border border-red-200'
+                          }`}
                         >
-                          {student.status === 'suspended' ? <ShieldCheck className="h-3 w-3" /> : <Ban className="h-3 w-3" />}
+                          {student.status === 'suspended' ? <ShieldCheck className="h-3.5 w-3.5" /> : <Ban className="h-3.5 w-3.5" />}
                           {student.status === 'suspended' ? t('admin.students.activate') : t('admin.students.suspend')}
                         </button>
                       </div>

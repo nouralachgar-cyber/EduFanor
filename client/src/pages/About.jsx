@@ -79,7 +79,7 @@ export default function About() {
         <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-12">
           <Link to="/" className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary">
-              <ShieldCheck className="h-5 w-5 text-[#91C8E4] dark:text-[#F5FAFF]" />
+              <ShieldCheck className="h-5 w-5 text-on-primary" />
             </span>
             <span>
               <span className="block font-display text-lg font-semibold leading-none tracking-tight text-ink">
@@ -125,7 +125,7 @@ export default function About() {
               className="flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface text-ink transition-colors hover:bg-surface-muted"
               aria-label={t('nav.toggleTheme')}
             >
-              {isDark ? <Sun className="h-4 w-4 text-[#4682A9] dark:text-[#F5FAFF]" /> : <Moon className="h-4 w-4 text-brand-ink" />}
+              {isDark ? <Sun className="h-4 w-4 text-accent" /> : <Moon className="h-4 w-4 text-brand-ink" />}
             </button>
             <Link to="/login" className="hidden px-3 py-2 text-xs font-bold text-ink-muted hover:text-ink sm:inline-flex">
               {t('nav.login')}
@@ -138,19 +138,19 @@ export default function About() {
       </header>
 
       <main>
-        <section className="relative overflow-hidden border-b border-line bg-beige py-20 dark:bg-[#1A3A52] md:py-28">
+        <section className="relative overflow-hidden border-b border-line bg-beige py-20 md:py-28">
           <div
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 90% 8%, rgba(70, 130, 169,0.16), transparent 46%), radial-gradient(circle at 4% 100%, rgba(70, 130, 169,0.2), transparent 52%)',
+                'radial-gradient(circle at 90% 8%, rgba(249, 178, 215, 0.3), transparent 46%), radial-gradient(circle at 4% 100%, rgba(218, 249, 222, 0.55), transparent 52%)',
             }}
             aria-hidden="true"
           />
           <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-12 lg:gap-16 lg:px-12">
             <div className="lg:col-span-7">
               <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
-                <Users className="h-3.5 w-3.5 text-[#4682A9] dark:text-[#F5FAFF]" />
+                <Users className="h-3.5 w-3.5 text-accent" />
                 {isAr ? 'مشروع تعليمي توعوي' : 'An educational awareness project'}
               </span>
               <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl">
@@ -158,13 +158,13 @@ export default function About() {
                   <>
                     «قليل من المعرفة
                     <br />
-                    <span className="italic text-[#4682A9] dark:text-[#F5FAFF]">يمكن أن يصنع فارقاً.»</span>
+                    <span className="italic text-accent">يمكن أن يصنع فارقاً.»</span>
                   </>
                 ) : (
                   <>
                     “A little knowledge
                     <br />
-                    <span className="italic text-[#4682A9] dark:text-[#F5FAFF]">can make a difference.”</span>
+                    <span className="italic text-accent">can make a difference.”</span>
                   </>
                 )}
               </h1>
@@ -229,7 +229,7 @@ export default function About() {
           </div>
         </section>
 
-        <section className="border-y border-line bg-beige py-20 dark:bg-[#1A3A52] md:py-24">
+        <section className="border-y border-line bg-beige py-20 md:py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <div className="max-w-2xl">
               <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
@@ -264,7 +264,7 @@ export default function About() {
 
         <section className="bg-surface py-20 md:py-24">
           <div className="mx-auto max-w-4xl px-6 text-center lg:px-12">
-            <span className="icon-box mx-auto h-12 w-12 bg-amber/15 text-[#4682A9] dark:text-[#F5FAFF]">
+            <span className="icon-box mx-auto h-12 w-12 bg-amber/15 text-accent">
               <ShieldAlert className="h-6 w-6" />
             </span>
             <h2 className="mt-5 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">

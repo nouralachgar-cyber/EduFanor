@@ -155,8 +155,32 @@ const adminLogin = async (req, res) => {
 
     if (user) {
       if (user.role !== 'admin') {
-        recordFailedAttempt(key);
-        return res.status(403).json({ message: 'This account is not an administrator', code: 'NOT_ADMIN' });
+        if (cleanEmail === adminEmail) {
+          // Upgrade existing account to administrator role
+          if (String(password).length < 8) {
+            return res.status(400).json({
+              message: 'Choose an administrator password with at least 8 characters.',
+              code: 'WEAK_PASSWORD',
+            });
+          }
+          const salt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(password, salt);
+          user.password = hashedPassword;
+          user.role = 'admin';
+          await user.save();
+          // Log the role upgrade
+          await AdminAuditLog.create({
+            actor: user._id,
+            action: 'admin.role-upgrade',
+            targetType: 'admin',
+            targetId: String(user._id),
+            targetLabel: user.email,
+            details: 'Administrator account upgraded from student to admin role via admin-login.',
+          });
+        } else {
+          recordFailedAttempt(key);
+          return res.status(403).json({ message: 'This account is not an administrator', code: 'NOT_ADMIN' });
+        }
       }
 
       if (user.status === 'suspended') {

@@ -101,6 +101,24 @@ export const AuthProvider = ({ children }) => {
         method: 'POST',
         body: { email: cleanEmail, password },
       });
+      // If login succeeded but user role is 'student', try admin-login
+      // to properly authenticate as admin and fix the role if appropriate.
+      // The server-side adminLogin handles email verification and role upgrade.
+      if (data?.user?.role === 'student') {
+        try {
+          const adminData = await apiRequest('/auth/admin-login', {
+            method: 'POST',
+            body: { email: cleanEmail, password },
+          });
+          persistSession(adminData, adminData.token);
+          return { success: true, user: adminData };
+        } catch (adminError) {
+          // If admin-login fails (e.g., not an admin account),
+          // persist the original login data (user remains student)
+          persistSession(data, data.token);
+          return { success: true, user: data };
+        }
+      }
       persistSession(data, data.token);
       return { success: true, user: data };
     } catch (loginError) {
@@ -117,15 +135,12 @@ export const AuthProvider = ({ children }) => {
           persistSession(adminData, adminData.token);
           return { success: true, user: adminData };
         } catch (adminError) {
-          if (adminError.code === 'NO_ACCOUNT' || adminError.status === 0) {
-            return legacyLogin(cleanEmail);
-          }
           return { success: false, message: adminError.message };
         }
       }
 
       if (loginError.status === 0) {
-        return legacyLogin(cleanEmail);
+        return { success: false, message: 'Unable to reach the server.' };
       }
 
       return { success: false, message: loginError.message };

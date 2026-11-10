@@ -134,14 +134,14 @@ export default function Register() {
 
         <div className="mt-6 border-t border-line pt-4 text-center text-xs text-ink-muted">
           {t('auth.hasAccount')}{' '}
-          <Link to="/login" className="font-extrabold text-brand-ink hover:text-[#4682A9] dark:hover:text-[#4682A9]">
+          <Link to="/login" className="font-extrabold text-brand-ink hover:text-accent">
             {t('auth.signIn')}
           </Link>
         </div>
       </div>
 
       <p className="mt-4 flex items-start gap-2 rounded-xl border border-line bg-surface-muted px-3.5 py-3 text-[10px] leading-relaxed text-ink-muted">
-        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#4682A9] dark:text-[#F5FAFF]" />
+        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
         {isAr
           ? 'نسخة تجريبية: يُحفظ الحساب محلياً في هذا المتصفح ولا تُرسل البيانات إلى خادم.'
           : 'Demo build: your account is stored locally in this browser and is not sent to a server.'}

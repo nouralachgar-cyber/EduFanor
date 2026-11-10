@@ -32,7 +32,7 @@ export default function Courses() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 90% 8%, rgba(70, 130, 169,0.13), transparent 44%), radial-gradient(circle at 4% 100%, rgba(70, 130, 169,0.18), transparent 52%)',
+                'radial-gradient(circle at 90% 8%, rgba(249, 178, 215, 0.3), transparent 44%), radial-gradient(circle at 4% 100%, rgba(207, 236, 243, 0.55), transparent 52%)',
             }}
             aria-hidden="true"
           />
@@ -58,7 +58,7 @@ export default function Courses() {
                 </p>
               </div>
               <div className="rounded-2xl border border-line bg-surface/80 px-5 py-4 text-center backdrop-blur-sm">
-                <p className="font-display text-2xl font-semibold text-[#4682A9] dark:text-[#F5FAFF]">{completedCount}</p>
+                <p className="font-display text-2xl font-semibold text-accent">{completedCount}</p>
                 <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
                   {t('coursesPage.completed')}
                 </p>
@@ -116,7 +116,7 @@ export default function Courses() {
                     <div className="flex items-center justify-between gap-3">
                       <span className="chip bg-brand-soft text-brand-ink">{course.level}</span>
                       <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink-muted">
-                        <Clock className="h-3.5 w-3.5 text-[#4682A9] dark:text-[#F5FAFF]" />
+                        <Clock className="h-3.5 w-3.5 text-accent" />
                         <span>{course.duration}</span>
                       </div>
                     </div>

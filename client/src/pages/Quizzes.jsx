@@ -145,7 +145,7 @@ export default function Quizzes() {
           </div>
 
           <div className="flex items-center gap-3 rounded-2xl border border-line bg-card px-4 py-3">
-            <Award className="h-5 w-5 text-[#4682A9] dark:text-[#F5FAFF]" />
+            <Award className="h-5 w-5 text-on-primary" />
             <div>
               <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
                 {isAr ? 'أفضل نتيجة' : 'Best score'}
@@ -241,7 +241,7 @@ export default function Quizzes() {
           </section>
         ) : (
           <section className="card space-y-6 p-8 text-center sm:p-10">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber/15 text-[#4682A9] dark:text-[#F5FAFF]">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-pink-soft text-[#A84569] dark:text-[#F9B2D7]">
               <Award className="h-8 w-8" />
             </div>
             <div>

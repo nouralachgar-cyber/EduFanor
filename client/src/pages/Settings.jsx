@@ -138,7 +138,7 @@ export default function Settings() {
                 </p>
               </div>
             </div>
-            <Sparkles className="h-5 w-5 shrink-0 text-[#4682A9] dark:text-[#F5FAFF]" />
+            <Sparkles className="h-5 w-5 shrink-0 text-accent" />
           </div>
         </section>
 
@@ -156,7 +156,7 @@ export default function Settings() {
         </section>
 
         <p className="flex items-start gap-2 rounded-2xl border border-line bg-surface-muted px-4 py-3 text-[11px] leading-relaxed text-ink-muted">
-          <Globe className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#4682A9] dark:text-[#F5FAFF]" />
+          <Globe className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
           {t('footer.disclaimer')}
         </p>
       </div>

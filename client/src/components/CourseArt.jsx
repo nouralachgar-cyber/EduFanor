@@ -1,14 +1,20 @@
 import React, { useId } from 'react';
 import { HeartPulse, Wind, Droplets, CheckCircle2 } from './icons';
 
+/*
+ * Course art — Pastel Medical tiles.
+ *  cpr     → pink tile (primary care)
+ *  choking → sky tile (airway)
+ *  burns   → mint tile (soothing care)
+ */
 const VARIANTS = {
   cpr: {
     icon: HeartPulse,
-    tile: 'bg-[#4682A9] text-[#91C8E4]',
+    tile: 'bg-[#F9B2D7] text-[#7A2E4C]',
     motif: (
       <svg
         viewBox="0 0 220 60"
-        className="absolute bottom-3 start-0 w-full text-[#4682A9]/10"
+        className="absolute bottom-3 start-0 w-full text-[#A84569]/15"
         fill="none"
         aria-hidden="true"
       >
@@ -24,11 +30,11 @@ const VARIANTS = {
   },
   choking: {
     icon: Wind,
-    tile: 'bg-[#91C8E4] text-[#4682A9] ring-1 ring-[#4682A9]/45',
+    tile: 'bg-[#CFECF3] text-[#1F5568] ring-1 ring-[#7FA0AC]/40',
     motif: (
       <svg
         viewBox="0 0 120 120"
-        className="absolute -end-4 -top-4 h-32 w-32 text-[#4682A9]/10"
+        className="absolute -end-4 -top-4 h-32 w-32 text-[#23617B]/12"
         fill="none"
         aria-hidden="true"
       >
@@ -39,11 +45,11 @@ const VARIANTS = {
   },
   burns: {
     icon: Droplets,
-    tile: 'bg-[#4682A9] text-[#4682A9]',
+    tile: 'bg-[#DAF9DE] text-[#2F7A4E]',
     motif: (
       <svg
         viewBox="0 0 120 120"
-        className="absolute -end-2 -top-3 h-28 w-28 text-[#4682A9]/30"
+        className="absolute -end-2 -top-3 h-28 w-28 text-[#63B48B]/35"
         fill="currentColor"
         aria-hidden="true"
       >
@@ -61,7 +67,7 @@ export default function CourseArt({ category, completed = false }) {
 
   return (
     <div className="relative h-36 overflow-hidden rounded-t-2xl border-b border-line bg-cream">
-      <svg className="absolute inset-0 h-full w-full text-[#4682A9]/[0.07]" aria-hidden="true">
+      <svg className="absolute inset-0 h-full w-full text-[#2F3A45]/[0.05]" aria-hidden="true">
         <defs>
           <pattern id={patternId} width="26" height="26" patternUnits="userSpaceOnUse">
             <path
@@ -81,7 +87,7 @@ export default function CourseArt({ category, completed = false }) {
 
       <div className="relative z-10 flex h-full items-center justify-center">
         <div
-          className={`flex h-14 w-14 items-center justify-center rounded-2xl shadow-md ring-4 ring-white/60 ${variant.tile}`}
+          className={`flex h-14 w-14 items-center justify-center rounded-2xl shadow-md ring-4 ring-white/70 dark:ring-white/25 ${variant.tile}`}
         >
           <Icon className="h-7 w-7" />
         </div>

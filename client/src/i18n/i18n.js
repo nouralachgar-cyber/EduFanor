@@ -151,28 +151,81 @@ const resources = {
       },
       aiTutorPage: {
         badge: "المساعد الذكي",
-        statusChip: "قيد التطوير",
+        statusChip: "يعمل الآن عبر Grok",
         title: "مساعدك الذكي للإسعافات الأولية",
-        subtitle: "نعمل على تجهيز مساعد ذكي للإجابة عن أسئلتك وتوضيح خطوات الإسعافات الأولية كخطوة بخطوة.",
-        previewLabel: "معاينة الواجهة القادمة",
-        botGreeting: "مرحباً! قريباً سأجيب عن أسئلتك حول الإسعافات الأولية بالعربية والإنجليزية.",
-        sampleQuestionsTitle: "أسئلة سأتمكن من مساعدتك بها:",
+        subtitle: "اسأل، تدرّب، وتفوّق: محادثة مباشرة مع مساعد إسعافي، سيناريوهات تدريبية واقعية، وخطة دراسية مخصّصة عليك بناء على تقدمك.",
         q1: "كيف أتصرف عند اختناق طفل؟",
         q2: "ما معدل الضغطات الصدرية الصحيح؟",
         q3: "كيف أعالج حرقاً من الدرجة الثانية؟",
-        inputPlaceholder: "اسأل عن أي مهارة إسعافية...",
-        sendBtn: "إرسال",
-        comingSoonToast: "المساعد الذكي قيد التطوير وسيتوفر قريباً",
-        featuresTitle: "ماذا سيفعل المساعد الذكي؟",
-        f1Title: "إجابات فورية عن أسئلتك",
-        f1Desc: "شروحات مبسطة لخطوات الإسعافات الأولية في أي وقت.",
-        f2Title: "مراجعة المفاهيم",
-        f2Desc: "تلخيص ومراجعة للمهارات التي تعلمتها في المساقات.",
-        f3Title: "تدرّب قبل المواقف الحقيقية",
-        f3Desc: "سيناريوهات تدريبية وأسئلة قصيرة قبل اختبارك.",
-        guideTitle: "وحتى ذلك الحين…",
-        guideSubtitle: "يمكنك مراجعة دليل الطوارئ السريع أدناه",
+        guideTitle: "هل تريد المزيد؟",
+        guideSubtitle: "استعرض المساقات المتاحة أو اختبر نفسك بالاختبارات الرسمية",
         disclaimer: "المحتوى التعليمي لا يُغني عن الاتصال بخدمات الطوارئ أو التدريب المعتمد."
+      },
+      ai: {
+        tabsLabel: "أقسام المساعد الذكي",
+        tab: {
+          chat: "المحادثة الذكية",
+          scenarios: "سيناريوهات تدريبية",
+          plan: "خطة التفوق"
+        },
+        suggest: {
+          q1: "خطوات الإسعاف عند إصابة الرأس؟",
+          q2: "كيف أتعامل مع نزيف حاد؟"
+        },
+        common: {
+          retry: "إعادة المحاولة"
+        },
+        chat: {
+          welcome: "مرحباً! أنا مساعد EduFanor الذكي للإسعافات الأولية. اسألني عن أي مهارة إسعافية وسأشرحها لك خطوة بخطوة. تذكّر: عند الطوارئ الحقيقية اتصل فوراً بخدمات الإسعاف.",
+          panelTitle: "محادثة مباشرة",
+          clear: "محادثة جديدة",
+          retry: "إعادة",
+          copy: "نسخ",
+          copied: "تم النسخ",
+          placeholder: "اكتب سؤالك الإسعافي...",
+          send: "إرسال",
+          hint: "اضغط Enter للإرسال وShift+Enter لسطر جديد. لا ترسل معلومات شخصية."
+        },
+        difficultyLabel: "مستوى الصعوبة",
+        difficulty: {
+          easy: "سهل",
+          medium: "متوسط",
+          hard: "صعب"
+        },
+        scenario: {
+          title: "سيناريو إسعافي تفاعلي",
+          subtitle: "مواقف واقعية لتطبيق ما تعلمته مع تغذية راجعة فورية",
+          topicLabel: "اختر الموضوع",
+          topics: {
+            surprise: "موقف مفاجئ",
+            choking: "الاختناق",
+            burn: "الحروق",
+            unconscious: "فقدان الوعي",
+            cardiac: "القلب والتنفس",
+            bleeding: "النزيف",
+            injury: "الإصابات"
+          },
+          generate: "أنشئ سيناريو",
+          reGenerate: "سيناريو جديد",
+          building: "نبني موقفاً واقعياً للتدريب...",
+          disclaimer: "تمرين تعليمي مولّد بالذكاء الاصطناعي — لا يغني عن الإسعاف الحقيقي أو الاتصال بالطوارئ (15).",
+          correctTitle: "إجابة نموذجية!",
+          wrongTitle: "هذه ليست أفضل خطوة",
+          reviewLesson: "راجع الدرس المقترح"
+        },
+        plan: {
+          title: "خطة التفوق الخاصة بك",
+          subtitle: "مبنية على تقدمك الفعلي في المساقات المنشورة",
+          generate: "أنشئ خطتي",
+          thinking: "نحلل تقدمك ونصمّم خطتك...",
+          privacyNote: "الخطة مبنية على أسماء الدروس وسجل الإنجاز فقط — لا يُرسل أي بيانات شخصية.",
+          cached: "آخر خطة مولّدة: {{time}}",
+          summaryLabel: "خلاصة وضعك",
+          nextLabel: "الخطوات التالية",
+          revisionLabel: "مواضيع تحتاج مراجعة",
+          weekLabel: "خطة الأسبوعين",
+          practiceLabel: "نصائح للتدريب"
+        }
       },
       dashboard: {
         badge: "رحلتك التعليمية",
@@ -506,28 +559,81 @@ const resources = {
       },
       aiTutorPage: {
         badge: "AI Tutor",
-        statusChip: "In development",
+        statusChip: "Live with Grok",
         title: "Your first aid AI tutor",
-        subtitle: "We are preparing an AI assistant that answers your questions and explains first aid steps clearly.",
-        previewLabel: "Preview of the upcoming experience",
-        botGreeting: "Hi! Soon I will answer your first aid questions in both Arabic and English.",
-        sampleQuestionsTitle: "Questions I will help you with:",
+        subtitle: "Ask, practice, and excel: chat with a first-aid assistant, train with realistic scenarios, and get a study plan built from your progress.",
         q1: "What should I do when a child is choking?",
         q2: "What is the correct chest compression rate?",
         q3: "How do I treat a second-degree burn?",
-        inputPlaceholder: "Ask about any first aid skill...",
-        sendBtn: "Send",
-        comingSoonToast: "The AI tutor is under development and will be available soon",
-        featuresTitle: "What will the AI tutor do?",
-        f1Title: "Answer your questions instantly",
-        f1Desc: "Clear explanations of first aid steps whenever you need them.",
-        f2Title: "Review key concepts",
-        f2Desc: "Summaries and reviews of the skills you learned in the courses.",
-        f3Title: "Practice before real situations",
-        f3Desc: "Training scenarios and short quizzes before your assessments.",
-        guideTitle: "Until then…",
-        guideSubtitle: "You can review the quick emergency guide below",
+        guideTitle: "Want to go further?",
+        guideSubtitle: "Browse the available courses or test yourself with the official quizzes",
         disclaimer: "Educational content does not replace emergency services or certified training."
+      },
+      ai: {
+        tabsLabel: "Tutor sections",
+        tab: {
+          chat: "Smart chat",
+          scenarios: "Practice scenarios",
+          plan: "Study plan"
+        },
+        suggest: {
+          q1: "First aid steps for a head injury?",
+          q2: "How should I handle severe bleeding?"
+        },
+        common: {
+          retry: "Try again"
+        },
+        chat: {
+          welcome: "Hi! I am the EduFanor AI tutor for first aid. Ask me about any first-aid skill and I will walk you through it step by step. Remember: in a real emergency, always call emergency services first.",
+          panelTitle: "Live chat",
+          clear: "New chat",
+          retry: "Retry",
+          copy: "Copy",
+          copied: "Copied",
+          placeholder: "Type your first-aid question...",
+          send: "Send",
+          hint: "Press Enter to send and Shift+Enter for a new line. Never share personal information."
+        },
+        difficultyLabel: "Difficulty level",
+        difficulty: {
+          easy: "Easy",
+          medium: "Medium",
+          hard: "Hard"
+        },
+        scenario: {
+          title: "Interactive first-aid scenario",
+          subtitle: "Realistic situations to apply what you learned, with instant feedback",
+          topicLabel: "Pick a topic",
+          topics: {
+            surprise: "Surprise me",
+            choking: "Choking",
+            burn: "Burns",
+            unconscious: "Unconsciousness",
+            cardiac: "Heart & breathing",
+            bleeding: "Bleeding",
+            injury: "Injuries"
+          },
+          generate: "Create scenario",
+          reGenerate: "New scenario",
+          building: "Building a realistic training situation...",
+          disclaimer: "An AI-generated educational exercise — it does not replace real first aid or calling emergency services (15).",
+          correctTitle: "Model answer!",
+          wrongTitle: "Not the best next step",
+          reviewLesson: "Review the suggested lesson"
+        },
+        plan: {
+          title: "Your success plan",
+          subtitle: "Built from your actual progress in published courses",
+          generate: "Generate my plan",
+          thinking: "Analyzing your progress and designing your plan...",
+          privacyNote: "The plan uses only lesson titles and completion records — no personal data is sent.",
+          cached: "Last plan generated: {{time}}",
+          summaryLabel: "Where you stand",
+          nextLabel: "Next steps",
+          revisionLabel: "Topics to revisit",
+          weekLabel: "Seven-day plan",
+          practiceLabel: "Practice tips"
+        }
       },
       dashboard: {
         badge: "Your Learning Journey",
