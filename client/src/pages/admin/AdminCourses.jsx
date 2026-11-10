@@ -59,7 +59,7 @@ export default function AdminCourses() {
   };
 
   const openEdit = (course) => {
-    setEditingCourse({ id: course._id });
+    setEditingCourse(course);
     setFormOpen(true);
   };
 
