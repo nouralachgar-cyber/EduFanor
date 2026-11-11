@@ -78,9 +78,11 @@ export default function About() {
       <header className="sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur-xl">
         <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-12">
           <Link to="/" className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
-              <ShieldCheck className="h-5 w-5 text-on-primary" />
-            </span>
+            <img
+              src="/edufanor.png"
+              alt="EduFanor Logo"
+              className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
             <span>
               <span className="block font-display text-lg font-semibold leading-none tracking-tight text-ink">
                 EduFanor

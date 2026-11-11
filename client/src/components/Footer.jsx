@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ShieldCheck, Mail } from './icons';
+import { Mail } from './icons';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -12,9 +12,11 @@ export default function Footer() {
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <Link to="/" className="inline-flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
-                <ShieldCheck className="h-5 w-5" />
-              </span>
+              <img
+                src="/edufanor.png"
+                alt="EduFanor Logo"
+                className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
               <span className="font-display text-lg font-semibold text-ink">{t('nav.brand')}</span>
             </Link>
             <p className="mt-3 text-xs leading-relaxed text-ink-muted">{t('footer.desc')}</p>

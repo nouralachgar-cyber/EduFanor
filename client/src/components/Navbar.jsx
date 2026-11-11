@@ -118,9 +118,11 @@ export default function Navbar() {
         }`}
       >
         <Link to="/dashboard" className="group flex shrink-0 items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary shadow-sm transition-transform duration-300 group-hover:scale-105">
-            <ShieldCheck className="h-5 w-5 text-on-primary" />
-          </span>
+          <img
+            src="/edufanor.png"
+            alt="EduFanor Logo"
+            className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          />
           <span className="hidden leading-tight sm:block">
             <span className="block font-display text-lg font-semibold tracking-tight text-ink">
               {t('nav.brand')}

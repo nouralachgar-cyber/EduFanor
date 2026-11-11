@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ShieldCheck, ArrowLeft, ArrowRight, Sun, Moon, CheckCircle2, Globe } from './icons';
+import { ArrowLeft, ArrowRight, Sun, Moon, CheckCircle2, Globe } from './icons';
 import { useTheme } from '../context/ThemeContext';
 
 export default function AuthLayout({ children }) {
@@ -15,7 +15,7 @@ export default function AuthLayout({ children }) {
     <div className="min-h-screen bg-surface text-ink">
       <div className="grid min-h-screen lg:grid-cols-2">
         <aside
-          className="relative hidden overflow-hidden bg-[#232838] bg-cover bg-center px-10 py-10 text-[#FDF7FA] lg:flex lg:flex-col lg:justify-between"
+          className="relative hidden overflow-hidden bg-[#203562] bg-cover bg-center px-10 py-10 text-[#E3E8F8] lg:flex lg:flex-col lg:justify-between"
           style={{ backgroundImage: "url('/heroa.jpg')" }}
         >
           <div
@@ -38,15 +38,17 @@ export default function AuthLayout({ children }) {
 
           <div className="relative z-10">
             <Link to="/" className="inline-flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E9D8D9] text-[#4F2230] shadow-[0_12px_30px_-12px_rgba(0,0,0,0.55)]">
-                <ShieldCheck className="h-5 w-5" />
-              </span>
+              <img
+                src="/edufanor.png"
+                alt="EduFanor Logo"
+                className="h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
               <span className="font-display text-xl font-semibold tracking-tight">EduFanor</span>
             </Link>
           </div>
 
           <div className="relative z-10 max-w-md">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#B58B83]">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#C0C5CD]">
               {isAr ? 'تعلّم بثقة ووضوح' : 'Learn with clarity and confidence'}
             </p>
             <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight">
@@ -54,17 +56,17 @@ export default function AuthLayout({ children }) {
                 <>
                   معرفة صغيرة.
                   <br />
-                  <span className="italic text-[#B58B83]">استعداد أكبر.</span>
+                  <span className="italic text-[#C0C5CD]">استعداد أكبر.</span>
                 </>
               ) : (
                 <>
                   A little knowledge.
                   <br />
-                  <span className="italic text-[#B58B83]">A calmer response.</span>
+                  <span className="italic text-[#C0C5CD]">A calmer response.</span>
                 </>
               )}
             </h2>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#FDF7FA]/75">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#E3E8F8]/75">
               {isAr
                 ? 'دروس منظمة، اختبارات قصيرة، وتقدّم محفوظ — مساحة تعلّم هادئة للإسعافات الأولية.'
                 : 'Structured lessons, short quizzes, and saved progress — a calm first-aid learning space.'}
@@ -72,15 +74,15 @@ export default function AuthLayout({ children }) {
 
             <ul className="mt-8 space-y-3">
               {points.map((point) => (
-                <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-[#FDF7FA]/85">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#B58B83]" />
+                <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-[#E3E8F8]/85">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#C0C5CD]" />
                   <span className="leading-relaxed">{point}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <p className="relative z-10 max-w-sm text-[10px] leading-relaxed text-[#FDF7FA]/50">
+          <p className="relative z-10 max-w-sm text-[10px] leading-relaxed text-[#E3E8F8]/50">
             {isAr
               ? 'المحتوى تعليمي فقط. في الطوارئ، اتصل بخدمات الإسعاف المحلية أولاً.'
               : 'Educational content only. In an emergency, contact local emergency services first.'}
@@ -118,9 +120,11 @@ export default function AuthLayout({ children }) {
           <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6">
             <div className="w-full max-w-md">
               <div className="mb-6 flex items-center gap-3 lg:hidden">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
-                  <ShieldCheck className="h-5 w-5" />
-                </span>
+                <img
+                  src="/edufanor.png"
+                  alt="EduFanor Logo"
+                  className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                />
                 <span className="font-display text-lg font-semibold tracking-tight text-ink">EduFanor</span>
               </div>
               {children}

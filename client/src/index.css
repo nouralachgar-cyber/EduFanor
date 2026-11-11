@@ -7,29 +7,29 @@
    ============================================================ */
 :root {
   /* Brand */
-  --primary: #642D3D;
-  --primary-hover: #4F2230;
-  --primary-active: #421B28;
-  --secondary: #9A6873;
-  --accent: #B58B83;
+  --primary: #203562;
+  --primary-hover: #3E588F;
+  --primary-active: #203562;
+  --secondary: #3E588F;
+  --accent: #3E588F;
 
   /* Backgrounds */
-  --bg-main: #FAF7F4;
-  --bg-secondary: #F1EBE8;
+  --bg-main: #E3E8F8;
+  --bg-secondary: #C0C5CD;
   --bg-card: #FFFFFF;
-  --bg-highlight: #E9D8D9;
-  --bg-dark: #343333;
+  --bg-highlight: #C0C5CD;
+  --bg-dark: #203562;
 
   /* Text */
-  --text-primary: #343333;
-  --text-secondary: #665C59;
-  --text-muted: #8B807B;
-  --text-inverse: #FFFFFF;
+  --text-primary: #203562;
+  --text-secondary: #3E588F;
+  --text-muted: #3E588F;
+  --text-inverse: #E3E8F8;
 
   /* Borders and interactions */
-  --border: #E7E0DC;
-  --border-hover: #CBAEB1;
-  --focus-ring: #AD7885;
+  --border: #C0C5CD;
+  --border-hover: #3E588F;
+  --focus-ring: #3E588F;
 
   /* Learning status */
   --success: #315B45;
@@ -42,26 +42,26 @@
 
 /* Dark theme: warm dark surfaces derived from the same palette hues */
 .dark {
-  --primary: #E9D8D9;
-  --primary-hover: #F2E4E5;
-  --primary-active: #DFC4C6;
-  --secondary: #C9A8AE;
-  --accent: #CBAEB1;
+  --primary: #E3E8F8;
+  --primary-hover: #C0C5CD;
+  --primary-active: #E3E8F8;
+  --secondary: #C0C5CD;
+  --accent: #C0C5CD;
 
-  --bg-main: #262323;
-  --bg-secondary: #343333;
-  --bg-card: #3D3A39;
-  --bg-highlight: #4A3E3F;
-  --bg-dark: #211F1F;
+  --bg-main: #203562;
+  --bg-secondary: #3E588F;
+  --bg-card: #3E588F;
+  --bg-highlight: #3E588F;
+  --bg-dark: #203562;
 
-  --text-primary: #F1EBE8;
-  --text-secondary: #C6BBB7;
-  --text-muted: #A09590;
-  --text-inverse: #421B28;
+  --text-primary: #E3E8F8;
+  --text-secondary: #C0C5CD;
+  --text-muted: #C0C5CD;
+  --text-inverse: #203562;
 
-  --border: #4E4746;
-  --border-hover: #6E5A5D;
-  --focus-ring: #CBAEB1;
+  --border: #3E588F;
+  --border-hover: #C0C5CD;
+  --focus-ring: #C0C5CD;
 
   --success: #BFE0C9;
   --success-bg: #263A2E;
@@ -145,8 +145,8 @@
   --color-panel-soft: var(--bg-highlight);
   --color-panel-strong: var(--border-hover);
 
-  --shadow-pop: 0 18px 50px -28px rgba(100, 45, 61, 0.32);
-  --shadow-lift: 0 30px 70px -34px rgba(100, 45, 61, 0.38);
+  --shadow-pop: 0 18px 50px -28px rgba(32, 53, 98, 0.32);
+  --shadow-lift: 0 30px 70px -34px rgba(32, 53, 98, 0.38);
 }
 
 @layer base {
@@ -192,7 +192,7 @@
   }
 
   ::selection {
-    background: rgba(100, 45, 61, 0.24);
+    background: rgba(32, 53, 98, 0.24);
     color: inherit;
   }
 
@@ -242,7 +242,7 @@
     border-radius: 1.5rem;
     border: 1px solid var(--color-line);
     background-color: var(--color-card);
-    box-shadow: 0 1px 0 rgba(52, 51, 51, 0.04);
+    box-shadow: 0 1px 0 rgba(32, 53, 98, 0.04);
   }
 
   .card-hover {
@@ -279,7 +279,7 @@
   .btn-primary {
     background-color: var(--color-primary);
     color: var(--color-on-primary);
-    box-shadow: 0 12px 26px -14px rgba(100, 45, 61, 0.45);
+    box-shadow: 0 12px 26px -14px rgba(32, 53, 98, 0.45);
   }
 
   .btn-primary:hover {
@@ -367,7 +367,7 @@
 
   .input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(173, 120, 133, 0.22);
+    box-shadow: 0 0 0 4px rgba(62, 88, 143, 0.22);
   }
 
   .input:disabled {
@@ -510,7 +510,7 @@
       to bottom,
       transparent 0,
       transparent 31px,
-      rgba(52, 51, 51, 0.1) 32px
+      rgba(32, 53, 98, 0.1) 32px
     );
     background-size: 100% 32px;
   }

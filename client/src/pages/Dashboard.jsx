@@ -185,7 +185,7 @@ export default function Dashboard() {
       icon: Flame,
       label: t('dashboard.stats.learningStreak'),
       value: `${streak} ${t('dashboard.stats.days')}`,
-      color: 'bg-pink-soft text-[#642D3D] dark:text-[#CBAEB1]',
+      color: 'bg-pink-soft text-[#3E588F] dark:text-[#C0C5CD]',
     },
   ];
 

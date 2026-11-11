@@ -56,7 +56,7 @@ export function Globe3D({
         }
         marker.className = d.src
           ? "w-6 h-6 rounded-full border-2 border-white shadow-lg transition-transform group-hover:scale-125"
-          : "block h-2.5 w-2.5 rounded-full border-2 border-white bg-[#642D3D] shadow-lg transition-transform group-hover:scale-125";
+          : "block h-2.5 w-2.5 rounded-full border-2 border-white bg-[#3E588F] shadow-lg transition-transform group-hover:scale-125";
 
         const label = document.createElement("span");
         label.innerText = d.label || "";
@@ -78,7 +78,7 @@ export function Globe3D({
 
     // إعدادات الغلاف الجوي
     globe.showAtmosphere(true);
-    globe.atmosphereColor(config.atmosphereColor || "#B58B83");
+    globe.atmosphereColor(config.atmosphereColor || "#C0C5CD");
     globe.atmosphereAltitude(0.15);
 
     scene.add(globe);

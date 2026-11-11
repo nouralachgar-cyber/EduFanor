@@ -24,7 +24,6 @@ import {
   Menu,
   Moon,
   ShieldAlert,
-  ShieldCheck,
   Sun,
   Timer,
   TrendingUp,
@@ -32,6 +31,7 @@ import {
   X,
 } from '../components/icons';
 import { useTheme } from '../context/ThemeContext';
+import { Hero10 } from '../components/Hero10';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -49,14 +49,14 @@ const GLOBE_ARCS = [
     startLng: -7.5898,
     endLat: 40.7128,
     endLng: -74.006,
-    color: '#B58B83',
+    color: '#C0C5CD',
   },
   {
     startLat: 33.5731,
     startLng: -7.5898,
     endLat: 51.5074,
     endLng: -0.1278,
-    color: '#F1EBE8',
+    color: '#E3E8F8',
   },
   {
     startLat: 33.5731,
@@ -70,19 +70,19 @@ const GLOBE_ARCS = [
     startLng: -7.5898,
     endLat: 35.6762,
     endLng: 139.6503,
-    color: '#B58B83',
+    color: '#C0C5CD',
   },
 ];
 
 function SectionLabel({ index, children, tone = 'light' }) {
   const textTone =
     tone === 'dark'
-      ? 'text-[#B58B83]/90'
-      : 'text-ink-muted dark:text-[#CBAEB1]/80';
+      ? 'text-[#C0C5CD]/90'
+      : 'text-ink-muted dark:text-[#C0C5CD]/80';
   const numberTone =
     tone === 'dark'
-      ? 'text-[#B58B83]'
-      : 'text-[#9A6873] dark:text-[#CBAEB1]';
+      ? 'text-[#C0C5CD]'
+      : 'text-[#C0C5CD] dark:text-[#C0C5CD]';
 
   return (
     <div
@@ -114,13 +114,13 @@ const PREMIUM_ICON_SIZES = {
  */
 const PREMIUM_ICON_TONES = {
   amber: {
-    dark: 'border-[#B58B83]/35 bg-[linear-gradient(145deg,rgba(181,139,131,0.22),rgba(35,24,40,0.4)_55%,rgba(181,139,131,0.14))] shadow-[0_0_34px_-10px_rgba(181,139,131,0.35),inset_0_1px_0_rgba(255,255,255,0.22)] hover:border-[#B58B83]/70 hover:shadow-[0_0_42px_-8px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.28)] group-hover:shadow-[0_0_40px_-8px_rgba(181,139,131,0.48),inset_0_1px_0_rgba(255,255,255,0.26)]',
-    glyph: 'text-[#B58B83] drop-shadow-[0_0_12px_rgba(181,139,131,0.55)]',
+    dark: 'border-[#C0C5CD]/35 bg-[linear-gradient(145deg,rgba(181,139,131,0.22),rgba(35,24,40,0.4)_55%,rgba(181,139,131,0.14))] shadow-[0_0_34px_-10px_rgba(181,139,131,0.35),inset_0_1px_0_rgba(255,255,255,0.22)] hover:border-[#C0C5CD]/70 hover:shadow-[0_0_42px_-8px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.28)] group-hover:shadow-[0_0_40px_-8px_rgba(181,139,131,0.48),inset_0_1px_0_rgba(255,255,255,0.26)]',
+    glyph: 'text-[#C0C5CD] drop-shadow-[0_0_12px_rgba(181,139,131,0.55)]',
   },
   amberLight:
-    'border-[#E39CBF]/45 bg-[linear-gradient(145deg,rgba(181,139,131,0.55),rgba(181,139,131,0.24)_55%,rgba(255,255,255,0.85))] shadow-[0_0_28px_-12px_rgba(181,139,131,0.8),inset_0_1px_0_rgba(255,255,255,0.9)] hover:border-[#B58B83]/65 dark:border-[#B58B83]/30 dark:bg-[linear-gradient(145deg,rgba(181,139,131,0.16),rgba(53,34,49,0.55)_55%,rgba(181,139,131,0.1))] dark:shadow-[0_0_34px_-10px_rgba(181,139,131,0.3),inset_0_1px_0_rgba(255,255,255,0.14)] dark:hover:border-[#B58B83]/65 group-hover:border-[#B58B83]/55 group-hover:shadow-[0_0_30px_-10px_rgba(181,139,131,0.85)] dark:group-hover:shadow-[0_0_38px_-8px_rgba(181,139,131,0.4)]',
+    'border-[#C0C5CD]/45 bg-[linear-gradient(145deg,rgba(181,139,131,0.55),rgba(181,139,131,0.24)_55%,rgba(255,255,255,0.85))] shadow-[0_0_28px_-12px_rgba(181,139,131,0.8),inset_0_1px_0_rgba(255,255,255,0.9)] hover:border-[#C0C5CD]/65 dark:border-[#C0C5CD]/30 dark:bg-[linear-gradient(145deg,rgba(181,139,131,0.16),rgba(53,34,49,0.55)_55%,rgba(181,139,131,0.1))] dark:shadow-[0_0_34px_-10px_rgba(181,139,131,0.3),inset_0_1px_0_rgba(255,255,255,0.14)] dark:hover:border-[#C0C5CD]/65 group-hover:border-[#C0C5CD]/55 group-hover:shadow-[0_0_30px_-10px_rgba(181,139,131,0.85)] dark:group-hover:shadow-[0_0_38px_-8px_rgba(181,139,131,0.4)]',
   amberGlyphLight:
-    'text-[#9A6873] dark:text-[#CBAEB1] dark:drop-shadow-[0_0_12px_rgba(181,139,131,0.5)]',
+    'text-[#C0C5CD] dark:text-[#C0C5CD] dark:drop-shadow-[0_0_12px_rgba(181,139,131,0.5)]',
   green: {
     dark: 'border-[#8FBFA3]/35 bg-[linear-gradient(145deg,rgba(127,205,159,0.2),rgba(30,44,38,0.5)_55%,rgba(127,205,159,0.12))] shadow-[0_0_34px_-10px_rgba(127,205,159,0.3),inset_0_1px_0_rgba(255,255,255,0.2)] hover:border-[#8FBFA3]/70 hover:shadow-[0_0_42px_-8px_rgba(127,205,159,0.45),inset_0_1px_0_rgba(255,255,255,0.26)] group-hover:shadow-[0_0_40px_-8px_rgba(127,205,159,0.42),inset_0_1px_0_rgba(255,255,255,0.24)]',
     glyph: 'text-[#8FBFA3] drop-shadow-[0_0_12px_rgba(127,205,159,0.5)]',
@@ -130,21 +130,21 @@ const PREMIUM_ICON_TONES = {
   greenGlyphLight:
     'text-[#315B45] dark:text-[#8FBFA3]',
   duo: {
-    dark: 'border-[#F1EBE8]/30 bg-[linear-gradient(140deg,rgba(181,139,131,0.24)_0%,rgba(203,174,177,0.18)_52%,rgba(181,139,131,0.12)_100%)] shadow-[0_0_36px_-10px_rgba(181,139,131,0.32),inset_0_1px_0_rgba(255,255,255,0.24)] hover:border-[#B58B83]/65 hover:shadow-[0_0_44px_-8px_rgba(181,139,131,0.45),inset_0_1px_0_rgba(255,255,255,0.3)] group-hover:shadow-[0_0_42px_-8px_rgba(181,139,131,0.42),inset_0_1px_0_rgba(255,255,255,0.28)]',
-    glyph: 'text-[#B58B83] drop-shadow-[0_0_14px_rgba(181,139,131,0.5)]',
+    dark: 'border-[#E3E8F8]/30 bg-[linear-gradient(140deg,rgba(181,139,131,0.24)_0%,rgba(203,174,177,0.18)_52%,rgba(181,139,131,0.12)_100%)] shadow-[0_0_36px_-10px_rgba(181,139,131,0.32),inset_0_1px_0_rgba(255,255,255,0.24)] hover:border-[#C0C5CD]/65 hover:shadow-[0_0_44px_-8px_rgba(181,139,131,0.45),inset_0_1px_0_rgba(255,255,255,0.3)] group-hover:shadow-[0_0_42px_-8px_rgba(181,139,131,0.42),inset_0_1px_0_rgba(255,255,255,0.28)]',
+    glyph: 'text-[#C0C5CD] drop-shadow-[0_0_14px_rgba(181,139,131,0.5)]',
   },
   duoLight:
-    'border-[#B58B83]/50 bg-[linear-gradient(140deg,rgba(181,139,131,0.45)_0%,rgba(203,174,177,0.6)_100%)] shadow-[0_0_28px_-12px_rgba(181,139,131,0.7),inset_0_1px_0_rgba(255,255,255,0.8)] hover:border-[#B58B83]/60 dark:border-[#F1EBE8]/30 dark:bg-[linear-gradient(140deg,rgba(181,139,131,0.2)_0%,rgba(203,174,177,0.14)_100%)] dark:shadow-[0_0_36px_-10px_rgba(203,174,177,0.3),inset_0_1px_0_rgba(255,255,255,0.2)] dark:hover:border-[#B58B83]/65 group-hover:border-[#B58B83]/55 dark:group-hover:shadow-[0_0_40px_-8px_rgba(181,139,131,0.4)]',
+    'border-[#C0C5CD]/50 bg-[linear-gradient(140deg,rgba(181,139,131,0.45)_0%,rgba(203,174,177,0.6)_100%)] shadow-[0_0_28px_-12px_rgba(181,139,131,0.7),inset_0_1px_0_rgba(255,255,255,0.8)] hover:border-[#C0C5CD]/60 dark:border-[#E3E8F8]/30 dark:bg-[linear-gradient(140deg,rgba(181,139,131,0.2)_0%,rgba(203,174,177,0.14)_100%)] dark:shadow-[0_0_36px_-10px_rgba(203,174,177,0.3),inset_0_1px_0_rgba(255,255,255,0.2)] dark:hover:border-[#C0C5CD]/65 group-hover:border-[#C0C5CD]/55 dark:group-hover:shadow-[0_0_40px_-8px_rgba(181,139,131,0.4)]',
   duoGlyphLight:
-    'text-[#642D3D] dark:text-[#CBAEB1]',
+    'text-[#3E588F] dark:text-[#C0C5CD]',
   brand: {
-    dark: 'border-white/20 bg-[linear-gradient(150deg,rgba(181,139,131,0.92),rgba(203,174,177,0.85))] shadow-[0_0_32px_-12px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.35)] hover:border-[#B58B83]/55 group-hover:-translate-y-0.5',
-    glyph: 'text-[#4F2230] drop-shadow-none',
+    dark: 'border-white/20 bg-[linear-gradient(150deg,rgba(181,139,131,0.92),rgba(203,174,177,0.85))] shadow-[0_0_32px_-12px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.35)] hover:border-[#C0C5CD]/55 group-hover:-translate-y-0.5',
+    glyph: 'text-[#203562] drop-shadow-none',
   },
   brandLight:
-    'border-[#642D3D]/25 bg-[linear-gradient(150deg,#642D3D,#B58B83)] shadow-[0_0_30px_-14px_rgba(100,45,61,0.65),inset_0_1px_0_rgba(255,255,255,0.3)] hover:border-[#642D3D]/50 dark:border-white/20 dark:bg-[linear-gradient(150deg,#B58B83,#EFDADB)] dark:shadow-[0_0_32px_-12px_rgba(181,139,131,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] group-hover:-translate-y-0.5',
+    'border-[#3E588F]/25 bg-[linear-gradient(150deg,#3E588F,#C0C5CD)] shadow-[0_0_30px_-14px_rgba(32, 53, 98,0.65),inset_0_1px_0_rgba(255,255,255,0.3)] hover:border-[#3E588F]/50 dark:border-white/20 dark:bg-[linear-gradient(150deg,#C0C5CD,#E3E8F8)] dark:shadow-[0_0_32px_-12px_rgba(181,139,131,0.4),inset_0_1px_0_rgba(255,255,255,0.28)] group-hover:-translate-y-0.5',
   brandGlyphLight:
-    'text-white dark:text-[#4F2230]',
+    'text-white dark:text-[#203562]',
 };
 
 function PremiumIcon({
@@ -197,10 +197,10 @@ function InteractiveGlobe({ isAr, reduceMotion }) {
   const [size, setSize] = useState(520);
 
   const lights = useMemo(() => {
-    const ambient = new THREE.AmbientLight('#B58B83', 2.2);
+    const ambient = new THREE.AmbientLight('#C0C5CD', 2.2);
     const key = new THREE.DirectionalLight('#ffffff', 1.7);
     key.position.set(1, 0.9, 1.1);
-    const fill = new THREE.DirectionalLight('#F1EBE8', 1.1);
+    const fill = new THREE.DirectionalLight('#E3E8F8', 1.1);
     fill.position.set(-1, 0.4, -0.4);
     return [ambient, key, fill];
   }, []);
@@ -251,7 +251,7 @@ function InteractiveGlobe({ isAr, reduceMotion }) {
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute inset-[7%] rounded-full border border-[#E39CBF]/30 dark:border-[#B58B83]/15"
+        className="pointer-events-none absolute inset-[7%] rounded-full border border-[#C0C5CD]/30 dark:border-[#C0C5CD]/15"
         aria-hidden="true"
       />
       <div
@@ -259,7 +259,7 @@ function InteractiveGlobe({ isAr, reduceMotion }) {
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute inset-[13%] animate-spin rounded-full border border-dashed border-[#E39CBF]/30 dark:border-[#B58B83]/15 motion-reduce:animate-none [animation-duration:70s]"
+        className="pointer-events-none absolute inset-[13%] animate-spin rounded-full border border-dashed border-[#C0C5CD]/30 dark:border-[#C0C5CD]/15 motion-reduce:animate-none [animation-duration:70s]"
         aria-hidden="true"
       />
 
@@ -272,10 +272,10 @@ function InteractiveGlobe({ isAr, reduceMotion }) {
           globeImageUrl="https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
           bumpImageUrl="https://unpkg.com/three-globe/example/img/earth-topology.png"
           showAtmosphere
-          atmosphereColor="#B58B83"
+          atmosphereColor="#C0C5CD"
           atmosphereAltitude={0.22}
           pointsData={GLOBE_POINTS}
-          pointColor={() => '#B58B83'}
+          pointColor={() => '#C0C5CD'}
           pointAltitude={0.045}
           pointRadius="size"
           pointResolution={12}
@@ -284,7 +284,7 @@ function InteractiveGlobe({ isAr, reduceMotion }) {
           labelText="label"
           labelSize={0.42}
           labelDotRadius={0.14}
-          labelColor={() => '#B58B83'}
+          labelColor={() => '#C0C5CD'}
           labelAltitude={0.012}
           labelResolution={2}
           ringsData={ringsData}
@@ -302,7 +302,7 @@ function InteractiveGlobe({ isAr, reduceMotion }) {
         />
       </div>
 
-      <span className="absolute bottom-0 start-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#B58B83]/30 bg-[#232838]/75 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] text-[#B58B83]/90 backdrop-blur-md rtl:translate-x-1/2">
+      <span className="absolute bottom-0 start-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#C0C5CD]/30 bg-[#203562]/75 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.22em] text-[#C0C5CD]/90 backdrop-blur-md rtl:translate-x-1/2">
         {/* Caption tied to the learning cycle, not invented data. */}
         {isAr ? 'تعلّم · تدرّب · استجب' : 'Learn · Practice · Respond'}
       </span>
@@ -315,19 +315,19 @@ function OrbitVisual({ isAr }) {
     <div className="relative mx-auto aspect-square w-full max-w-[440px]" aria-hidden="true">
       <div className="absolute inset-[6%] rounded-full bg-[radial-gradient(circle,rgba(181,139,131,0.28),transparent_66%)] blur-2xl" />
       <div className="absolute inset-[2%] rounded-full border border-ink/[0.06] dark:border-white/[0.06]" />
-      <div className="absolute inset-[11%] rounded-full border border-[#E39CBF]/25 dark:border-[#B58B83]/15" />
+      <div className="absolute inset-[11%] rounded-full border border-[#C0C5CD]/25 dark:border-[#C0C5CD]/15" />
       <div className="absolute inset-[20%] animate-spin rounded-full border border-dashed border-ink/15 dark:border-white/15 motion-reduce:animate-none [animation-duration:58s]">
-        <span className="absolute start-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#642D3D] shadow-[0_0_22px_7px_rgba(100,45,61,0.35)] dark:bg-[#CBAEB1] dark:shadow-[0_0_22px_7px_rgba(181,139,131,0.35)] rtl:translate-x-1/2" />
+        <span className="absolute start-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#3E588F] shadow-[0_0_22px_7px_rgba(32, 53, 98,0.35)] dark:bg-[#C0C5CD] dark:shadow-[0_0_22px_7px_rgba(181,139,131,0.35)] rtl:translate-x-1/2" />
       </div>
       <div className="absolute inset-[31%] rounded-full border border-[#8FBFA3]/35 dark:border-[#8FBFA3]/20" />
       <div className="absolute inset-[14%] animate-spin rounded-full border border-transparent motion-reduce:animate-none [animation-direction:reverse] [animation-duration:44s]">
-        <span className="absolute bottom-0 start-1/2 h-1.5 w-1.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-[#9A6873] shadow-[0_0_18px_5px_rgba(78,147,169,0.35)] dark:bg-[#F1EBE8] dark:shadow-[0_0_18px_5px_rgba(203,174,177,0.3)] rtl:translate-x-1/2" />
+        <span className="absolute bottom-0 start-1/2 h-1.5 w-1.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-[#C0C5CD] shadow-[0_0_18px_5px_rgba(78,147,169,0.35)] dark:bg-[#E3E8F8] dark:shadow-[0_0_18px_5px_rgba(203,174,177,0.3)] rtl:translate-x-1/2" />
       </div>
 
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="flex h-32 w-32 flex-col items-center justify-center rounded-full border border-[#E39CBF]/40 bg-[linear-gradient(160deg,rgba(255,255,255,0.85),rgba(181,139,131,0.55))] text-center shadow-[0_30px_80px_-30px_rgba(100,45,61,0.35)] backdrop-blur-md dark:border-[#B58B83]/30 dark:bg-[linear-gradient(160deg,rgba(53,34,49,0.9),rgba(35,40,56,0.9))] sm:h-36 sm:w-36">
+        <div className="flex h-32 w-32 flex-col items-center justify-center rounded-full border border-[#C0C5CD]/40 bg-[linear-gradient(160deg,rgba(255,255,255,0.85),rgba(181,139,131,0.55))] text-center shadow-[0_30px_80px_-30px_rgba(32, 53, 98,0.35)] backdrop-blur-md dark:border-[#C0C5CD]/30 dark:bg-[linear-gradient(160deg,rgba(53,34,49,0.9),rgba(35,40,56,0.9))] sm:h-36 sm:w-36">
           <PremiumIcon icon={HeartPulse} tone="amber" size="md" surface="dark" />
-          <p className="mt-2.5 max-w-[7rem] text-[9px] font-extrabold uppercase leading-relaxed tracking-[0.2em] text-[#642D3D]/75 dark:text-[#CBAEB1]/80">
+          <p className="mt-2.5 max-w-[7rem] text-[9px] font-extrabold uppercase leading-relaxed tracking-[0.2em] text-[#3E588F]/75 dark:text-[#C0C5CD]/80">
             {isAr ? 'درس واحد' : 'One lesson'}
             <br />
             {isAr ? 'استجابة أهدأ' : 'A calmer response'}
@@ -335,13 +335,13 @@ function OrbitVisual({ isAr }) {
         </div>
       </div>
 
-      <span className="absolute left-1/2 top-[6%] -translate-x-1/2 text-[9px] font-bold uppercase tracking-[0.28em] text-ink/55 dark:text-[#F9F1F6]/55">
+      <span className="absolute left-1/2 top-[6%] -translate-x-1/2 text-[9px] font-bold uppercase tracking-[0.28em] text-ink/55 dark:text-[#E3E8F8]/55">
         {isAr ? 'تعلّم' : 'Learn'}
       </span>
-      <span className="absolute bottom-[13%] start-[6%] text-[9px] font-bold uppercase tracking-[0.28em] text-ink/35 dark:text-[#F9F1F6]/35">
+      <span className="absolute bottom-[13%] start-[6%] text-[9px] font-bold uppercase tracking-[0.28em] text-ink/35 dark:text-[#E3E8F8]/35">
         {isAr ? 'استعد' : 'Prepare'}
       </span>
-      <span className="absolute bottom-[13%] end-[6%] text-[9px] font-bold uppercase tracking-[0.28em] text-ink/35 dark:text-[#F9F1F6]/35">
+      <span className="absolute bottom-[13%] end-[6%] text-[9px] font-bold uppercase tracking-[0.28em] text-ink/35 dark:text-[#E3E8F8]/35">
         {isAr ? 'استجب' : 'Respond'}
       </span>
     </div>
@@ -353,7 +353,7 @@ function LandingFooter() {
   const isAr = i18n.language === 'ar';
 
   return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#232838] text-[#FAF7F4]">
+    <footer className="relative overflow-hidden border-t border-white/10 bg-[#203562] text-[#E3E8F8]">
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(181,139,131,0.07),transparent_45%),radial-gradient(circle_at_88%_100%,rgba(203,174,177,0.05),transparent_45%)]"
         aria-hidden="true"
@@ -361,36 +361,34 @@ function LandingFooter() {
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-12">
         <div className="lg:col-span-5">
           <Link to="/" className="group inline-flex items-center gap-3">
-            <PremiumIcon
-              icon={ShieldCheck}
-              tone="brand"
-              size="md"
-              surface="dark"
-              className="transition-transform duration-500 group-hover:-translate-y-1"
+            <img
+              src="/edufanor.png"
+              alt="EduFanor Logo"
+              className="h-10 w-auto object-contain transition-transform duration-500 group-hover:-translate-y-1"
             />
             <span className="flex flex-col leading-none">
-              <span className="font-display text-xl font-semibold tracking-tight text-[#FAF7F4]">
+              <span className="font-display text-xl font-semibold tracking-tight text-[#E3E8F8]">
                 EduFanor
               </span>
-              <span className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.3em] text-[#B58B83]/80">
+              <span className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.3em] text-[#C0C5CD]/80">
                 {isAr ? 'تعلّم · استعد · استجب' : 'Learn · Prepare · Respond'}
               </span>
             </span>
           </Link>
 
-          <p className="mt-6 max-w-sm text-[13.5px] leading-relaxed text-[#FAF7F4]/80">
+          <p className="mt-6 max-w-sm text-[13.5px] leading-relaxed text-[#E3E8F8]/80">
             {t('footer.desc')}
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-[9.5px] font-bold uppercase tracking-[0.18em] text-[#FAF7F4]/85">
-              <span className="text-[#B58B83]">عربي</span>
-              <span className="text-[#FAF7F4]/40">/</span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-[9.5px] font-bold uppercase tracking-[0.18em] text-[#E3E8F8]/85">
+              <span className="text-[#C0C5CD]">عربي</span>
+              <span className="text-[#E3E8F8]/40">/</span>
               <span>English</span>
             </span>
             <a
               href="mailto:support@edufanor.com"
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-[11px] font-semibold text-[#FAF7F4]/85 transition-colors hover:border-[#B58B83]/50 hover:text-[#B58B83]"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-[11px] font-semibold text-[#E3E8F8]/85 transition-colors hover:border-[#C0C5CD]/50 hover:text-[#C0C5CD]"
               dir="ltr"
             >
               <PremiumIcon icon={Mail} tone="amber" size="badge" surface="dark" />
@@ -401,49 +399,49 @@ function LandingFooter() {
 
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7">
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#B58B83]/70">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C0C5CD]/70">
               {isAr ? 'اكتشف' : 'Explore'}
             </p>
-            <nav className="mt-4 flex flex-col gap-2.5 text-[13px] font-semibold text-[#FAF7F4]/85">
-              <a href="#our-impact" className="transition-colors hover:text-[#B58B83]">
+            <nav className="mt-4 flex flex-col gap-2.5 text-[13px] font-semibold text-[#E3E8F8]/85">
+              <a href="#our-impact" className="transition-colors hover:text-[#C0C5CD]">
                 {isAr ? 'أثرنا' : 'Our impact'}
               </a>
-              <a href="#platform" className="transition-colors hover:text-[#B58B83]">
+              <a href="#platform" className="transition-colors hover:text-[#C0C5CD]">
                 {isAr ? 'المنصة' : 'Platform'}
               </a>
-              <a href="#courses" className="transition-colors hover:text-[#B58B83]">
+              <a href="#courses" className="transition-colors hover:text-[#C0C5CD]">
                 {isAr ? 'المسارات' : 'Learning path'}
               </a>
             </nav>
           </div>
 
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#B58B83]/70">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C0C5CD]/70">
               {isAr ? 'المنصة' : 'Platform'}
             </p>
-            <nav className="mt-4 flex flex-col gap-2.5 text-[13px] font-semibold text-[#FAF7F4]/85">
-              <Link to="/about" className="transition-colors hover:text-[#B58B83]">
+            <nav className="mt-4 flex flex-col gap-2.5 text-[13px] font-semibold text-[#E3E8F8]/85">
+              <Link to="/about" className="transition-colors hover:text-[#C0C5CD]">
                 {isAr ? 'عن المنصة' : 'About'}
               </Link>
-              <Link to="/login" className="transition-colors hover:text-[#B58B83]">
+              <Link to="/login" className="transition-colors hover:text-[#C0C5CD]">
                 {isAr ? 'تسجيل الدخول' : 'Sign in'}
               </Link>
-              <Link to="/register" className="transition-colors hover:text-[#B58B83]">
+              <Link to="/register" className="transition-colors hover:text-[#C0C5CD]">
                 {isAr ? 'حساب جديد' : 'Create account'}
               </Link>
             </nav>
           </div>
 
           <div className="col-span-2 sm:col-span-1">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#B58B83]/70">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C0C5CD]/70">
               {isAr ? 'ملاحظة مسؤولة' : 'A responsible note'}
             </p>
-            <p className="mt-4 text-[11.5px] leading-relaxed text-[#FAF7F4]/75">
+            <p className="mt-4 text-[11.5px] leading-relaxed text-[#E3E8F8]/75">
               {t('footer.disclaimer')}
             </p>
             <a
               href="#home"
-              className="mt-4 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#B58B83] transition-colors hover:text-[#FAF7F4]"
+              className="mt-4 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#C0C5CD] transition-colors hover:text-[#E3E8F8]"
             >
               {isAr ? 'إلى الأعلى' : 'Back to top'}
               <ArrowRight className="h-3.5 w-3.5 -rotate-90 rtl:rotate-90" />
@@ -453,7 +451,7 @@ function LandingFooter() {
       </div>
 
       <div className="relative border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-6 text-center text-[11px] text-[#FAF7F4]/65 sm:flex-row sm:text-start sm:px-8 lg:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-6 text-center text-[11px] text-[#E3E8F8]/65 sm:flex-row sm:text-start sm:px-8 lg:px-12">
           <p>
             © {CURRENT_YEAR} EduFanor. {isAr ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
           </p>
@@ -542,44 +540,44 @@ export default function PublicLandingPage() {
 
   const onHero = !scrolled || mobileMenuOpen;
 
-  const wordmarkTone = onHero ? 'text-[#FAF7F4]' : 'text-ink dark:text-[#FAF7F4]';
-  const subwordTone = onHero ? 'text-[#FAF7F4]/70' : 'text-[#9A6873] dark:text-[#CBAEB1]';
+  const wordmarkTone = onHero ? 'text-[#E3E8F8]' : 'text-ink dark:text-[#E3E8F8]';
+  const subwordTone = onHero ? 'text-[#E3E8F8]/70' : 'text-[#C0C5CD] dark:text-[#C0C5CD]';
   const navIdle = onHero
-    ? 'text-[#FAF7F4]/85 hover:bg-white/[0.08] hover:text-[#FAF7F4]'
-    : 'text-ink/75 hover:bg-ink/[0.05] hover:text-ink dark:text-[#FAF7F4]/80 dark:hover:bg-white/[0.06] dark:hover:text-[#FAF7F4]';
+    ? 'text-[#E3E8F8]/85 hover:bg-white/[0.08] hover:text-[#E3E8F8]'
+    : 'text-ink/75 hover:bg-ink/[0.05] hover:text-ink dark:text-[#E3E8F8]/80 dark:hover:bg-white/[0.06] dark:hover:text-[#E3E8F8]';
   const navActive = onHero
-    ? 'bg-white/[0.1] text-[#FAF7F4] ring-1 ring-[#B58B83]/40'
-    : 'bg-[#E9D8D9] text-[#4F2230] ring-1 ring-[#642D3D]/25 dark:bg-[#CBAEB1] dark:text-[#4F2230] dark:ring-[#B58B83]/40';
+    ? 'bg-white/[0.1] text-[#E3E8F8] ring-1 ring-[#C0C5CD]/40'
+    : 'bg-[#E3E8F8] text-[#203562] ring-1 ring-[#3E588F]/25 dark:bg-[#C0C5CD] dark:text-[#203562] dark:ring-[#C0C5CD]/40';
   const controlTone = onHero
-    ? 'border-white/15 bg-white/[0.06] text-[#FAF7F4] shadow-[0_0_28px_-14px_rgba(181,139,131,0.55)] ring-1 ring-white/10 hover:border-white/30 hover:bg-white/[0.12] hover:ring-[#B58B83]/45 hover:shadow-[0_0_32px_-12px_rgba(181,139,131,0.6)]'
-    : 'border-ink/10 bg-white/70 text-ink shadow-[0_0_26px_-16px_rgba(52,51,51,0.7)] ring-1 ring-ink/10 hover:border-ink/25 hover:bg-white hover:ring-[#B58B83]/40 dark:border-white/15 dark:bg-white/[0.05] dark:text-[#FAF7F4] dark:shadow-[0_0_30px_-14px_rgba(181,139,131,0.35)] dark:hover:bg-white/[0.1]';
+    ? 'border-white/15 bg-white/[0.06] text-[#E3E8F8] shadow-[0_0_28px_-14px_rgba(181,139,131,0.55)] ring-1 ring-white/10 hover:border-white/30 hover:bg-white/[0.12] hover:ring-[#C0C5CD]/45 hover:shadow-[0_0_32px_-12px_rgba(181,139,131,0.6)]'
+    : 'border-ink/10 bg-white/70 text-ink shadow-[0_0_26px_-16px_rgba(32, 53, 98,0.7)] ring-1 ring-ink/10 hover:border-ink/25 hover:bg-white hover:ring-[#C0C5CD]/40 dark:border-white/15 dark:bg-white/[0.05] dark:text-[#E3E8F8] dark:shadow-[0_0_30px_-14px_rgba(181,139,131,0.35)] dark:hover:bg-white/[0.1]';
   const loginTone = onHero
-    ? 'text-[#FAF7F4]/85 hover:bg-white/[0.07] hover:text-[#FAF7F4]'
-    : 'text-ink/75 hover:bg-ink/[0.05] hover:text-ink dark:text-[#FAF7F4]/80 dark:hover:bg-white/[0.06] dark:hover:text-[#FAF7F4]';
+    ? 'text-[#E3E8F8]/85 hover:bg-white/[0.07] hover:text-[#E3E8F8]'
+    : 'text-ink/75 hover:bg-ink/[0.05] hover:text-ink dark:text-[#E3E8F8]/80 dark:hover:bg-white/[0.06] dark:hover:text-[#E3E8F8]';
   const ctaTone = onHero
-    ? 'bg-[#E9D8D9] text-[#4F2230] shadow-[0_16px_44px_-18px_rgba(181,139,131,0.55)] hover:bg-[#EFDADB]'
-    : 'bg-primary text-white shadow-[0_16px_44px_-20px_rgba(100,45,61,0.55)] hover:bg-[#B58B83] dark:bg-[#CBAEB1] dark:text-[#4F2230] dark:hover:bg-[#EFDADB]';
+    ? 'bg-[#E3E8F8] text-[#203562] shadow-[0_16px_44px_-18px_rgba(181,139,131,0.55)] hover:bg-[#E3E8F8]'
+    : 'bg-primary text-white shadow-[0_16px_44px_-20px_rgba(32, 53, 98,0.55)] hover:bg-[#C0C5CD] dark:bg-[#C0C5CD] dark:text-[#203562] dark:hover:bg-[#E3E8F8]';
   const segWrapTone = onHero
     ? 'border-white/15 bg-white/[0.06]'
     : 'border-ink/10 bg-white/60 dark:border-white/15 dark:bg-white/[0.05]';
   const segActiveTone = onHero
-    ? 'bg-[#E9D8D9] text-[#4F2230]'
-    : 'bg-primary text-white dark:bg-[#CBAEB1] dark:text-[#4F2230]';
+    ? 'bg-[#E3E8F8] text-[#203562]'
+    : 'bg-primary text-white dark:bg-[#C0C5CD] dark:text-[#203562]';
   const segIdleTone = onHero
     ? 'text-white/70 hover:text-white'
-    : 'text-ink/60 hover:text-ink dark:text-[#FAF7F4]/70 dark:hover:text-white';
+    : 'text-ink/60 hover:text-ink dark:text-[#E3E8F8]/70 dark:hover:text-white';
 
   const headerTone = mobileMenuOpen
-    ? 'border-b border-white/10 bg-[#232838]/95 backdrop-blur-xl'
+    ? 'border-b border-white/10 bg-[#203562]/95 backdrop-blur-xl'
     : scrolled
-      ? 'border-b border-ink/[0.08] bg-[#FAF7F4]/90 shadow-[0_24px_60px_-44px_rgba(52,51,51,0.6)] backdrop-blur-xl dark:border-white/10 dark:bg-[#2B2726]/88'
+      ? 'border-b border-ink/[0.08] bg-[#E3E8F8]/90 shadow-[0_24px_60px_-44px_rgba(32, 53, 98,0.6)] backdrop-blur-xl dark:border-white/10 dark:bg-[#203562]/88'
       : 'border-b border-transparent bg-[linear-gradient(180deg,rgba(35,40,56,0.6)_0%,rgba(35,40,56,0.2)_62%,rgba(35,40,56,0)_100%)]';
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-surface text-ink transition-colors duration-500">
       <a
         href="#home"
-        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-[#E9D8D9] focus:px-4 focus:py-2 focus:text-xs focus:font-bold focus:text-[#4F2230]"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-[#E3E8F8] focus:px-4 focus:py-2 focus:text-xs focus:font-bold focus:text-[#203562]"
       >
         {isAr ? 'انتقل إلى المحتوى' : 'Skip to content'}
       </a>
@@ -591,11 +589,10 @@ export default function PublicLandingPage() {
           }`}
         >
           <Link to="/" className="group flex shrink-0 items-center gap-3">
-            <PremiumIcon
-              icon={ShieldCheck}
-              tone="brand"
-              size="sm"
-              surface={onHero ? 'dark' : 'light'}
+            <img
+              src="/edufanor.png"
+              alt="EduFanor Logo"
+              className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
             <span className="flex flex-col leading-none">
               <span className={`font-display text-[1.28rem] font-semibold tracking-tight ${wordmarkTone}`}>
@@ -617,7 +614,7 @@ export default function PublicLandingPage() {
                   key={item.href}
                   href={item.href}
                   aria-current={active ? 'true' : undefined}
-                  className={`rounded-full px-3 py-2 text-[12.5px] font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B58B83]/50 ${
+                  className={`rounded-full px-3 py-2 text-[12.5px] font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C5CD]/50 ${
                     active ? navActive : navIdle
                   }`}
                 >
@@ -660,25 +657,25 @@ export default function PublicLandingPage() {
               onClick={toggleTheme}
               aria-label={isAr ? 'تبديل المظهر' : 'Toggle theme'}
               title={isAr ? 'تبديل المظهر' : 'Toggle theme'}
-              className={`group flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B58B83]/50 ${controlTone}`}
+              className={`group flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C5CD]/50 ${controlTone}`}
             >
               {isDark ? (
-                <Sun className="h-4 w-4 text-[#B58B83] drop-shadow-[0_0_9px_rgba(181,139,131,0.6)] transition-transform duration-500 group-hover:rotate-45" />
+                <Sun className="h-4 w-4 text-[#C0C5CD] drop-shadow-[0_0_9px_rgba(181,139,131,0.6)] transition-transform duration-500 group-hover:rotate-45" />
               ) : (
-                <Moon className="h-4 w-4 text-[#9A6873] transition-transform duration-500 group-hover:-rotate-12 dark:text-[#CBAEB1]" />
+                <Moon className="h-4 w-4 text-[#C0C5CD] transition-transform duration-500 group-hover:-rotate-12 dark:text-[#C0C5CD]" />
               )}
             </button>
 
             <Link
               to="/login"
-              className={`hidden rounded-full px-4 py-2 text-[12.5px] font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B58B83]/50 lg:inline-flex ${loginTone}`}
+              className={`hidden rounded-full px-4 py-2 text-[12.5px] font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C5CD]/50 lg:inline-flex ${loginTone}`}
             >
               {isAr ? 'تسجيل الدخول' : 'Log in'}
             </Link>
 
             <Link
               to="/register"
-              className={`group hidden items-center gap-2 rounded-full px-5 py-2.5 text-[12.5px] font-extrabold tracking-[0.02em] transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B58B83]/50 lg:inline-flex ${ctaTone}`}
+              className={`group hidden items-center gap-2 rounded-full px-5 py-2.5 text-[12.5px] font-extrabold tracking-[0.02em] transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C5CD]/50 lg:inline-flex ${ctaTone}`}
             >
               {isAr ? 'إنشاء حساب' : 'Sign up'}
               {isAr ? (
@@ -693,7 +690,7 @@ export default function PublicLandingPage() {
               onClick={() => setMobileMenuOpen((open) => !open)}
               aria-label={isAr ? 'القائمة' : 'Menu'}
               aria-expanded={mobileMenuOpen}
-              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B58B83]/50 lg:hidden ${controlTone}`}
+              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C5CD]/50 lg:hidden ${controlTone}`}
             >
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
@@ -707,7 +704,7 @@ export default function PublicLandingPage() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="overflow-hidden border-t border-white/10 bg-[#232838]/97 backdrop-blur-xl lg:hidden"
+              className="overflow-hidden border-t border-white/10 bg-[#203562]/97 backdrop-blur-xl lg:hidden"
             >
               <nav
                 className="mx-auto flex max-w-[1440px] flex-col gap-0.5 px-5 py-5 sm:px-8"
@@ -723,8 +720,8 @@ export default function PublicLandingPage() {
                       aria-current={active ? 'true' : undefined}
                       className={`flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-colors ${
                         active
-                          ? 'bg-white/[0.08] text-[#FAF7F4]'
-                          : 'text-[#FAF7F4]/80 hover:bg-white/[0.05] hover:text-[#FAF7F4]'
+                          ? 'bg-white/[0.08] text-[#E3E8F8]'
+                          : 'text-[#E3E8F8]/80 hover:bg-white/[0.05] hover:text-[#E3E8F8]'
                       }`}
                     >
                       <span>{item.label}</span>
@@ -738,7 +735,7 @@ export default function PublicLandingPage() {
                 })}
 
                 <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5">
-                  <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#FAF7F4]/70">
+                  <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#E3E8F8]/70">
                     {isAr ? 'اللغة' : 'Language'}
                   </span>
                   <div
@@ -751,7 +748,7 @@ export default function PublicLandingPage() {
                       onClick={() => i18n.changeLanguage('ar')}
                       aria-pressed={isAr}
                       className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold transition-colors ${
-                        isAr ? 'bg-[#E9D8D9] text-[#4F2230]' : 'text-[#FAF7F4]/60'
+                        isAr ? 'bg-[#E3E8F8] text-[#203562]' : 'text-[#E3E8F8]/60'
                       }`}
                     >
                       عربي
@@ -761,7 +758,7 @@ export default function PublicLandingPage() {
                       onClick={() => i18n.changeLanguage('en')}
                       aria-pressed={!isAr}
                       className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold transition-colors ${
-                        !isAr ? 'bg-[#E9D8D9] text-[#4F2230]' : 'text-[#FAF7F4]/60'
+                        !isAr ? 'bg-[#E3E8F8] text-[#203562]' : 'text-[#E3E8F8]/60'
                       }`}
                     >
                       EN
@@ -773,14 +770,14 @@ export default function PublicLandingPage() {
                   <Link
                     to="/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-full border border-white/20 py-3 text-center text-[13px] font-semibold text-[#FAF7F4] transition-colors hover:bg-white/[0.08]"
+                    className="rounded-full border border-white/20 py-3 text-center text-[13px] font-semibold text-[#E3E8F8] transition-colors hover:bg-white/[0.08]"
                   >
                     {isAr ? 'تسجيل الدخول' : 'Log in'}
                   </Link>
                   <Link
                     to="/register"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-full bg-[#E9D8D9] py-3 text-center text-[13px] font-extrabold text-[#4F2230] transition-colors hover:bg-[#EFDADB]"
+                    className="rounded-full bg-[#E3E8F8] py-3 text-center text-[13px] font-extrabold text-[#203562] transition-colors hover:bg-[#E3E8F8]"
                   >
                     {isAr ? 'إنشاء حساب' : 'Sign up'}
                   </Link>
@@ -796,7 +793,7 @@ export default function PublicLandingPage() {
         <section
           id="home"
           ref={heroRef}
-          className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#232838] px-5 pb-32 pt-40 text-[#FDF7FA] sm:px-8 lg:px-12"
+          className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#E3E8F8] px-5 pb-32 pt-40 text-[#203562] sm:px-8 lg:px-12"
         >
           {/* Parallaxed photographic plate */}
           <motion.div
@@ -809,27 +806,27 @@ export default function PublicLandingPage() {
 
           {/* Midnight-to-plum color grading — layered cinematic overlays */}
           <div
-            className="absolute inset-0 -z-20 bg-[linear-gradient(105deg,rgba(35,40,56,0.97)_0%,rgba(35,40,56,0.88)_34%,rgba(66,34,49,0.56)_62%,rgba(66,34,49,0.2)_82%)]"
+            className="absolute inset-0 -z-20 bg-[linear-gradient(105deg,rgba(227,232,248,0.85)_0%,rgba(227,232,248,0.75)_34%,rgba(62,88,143,0.12)_62%,rgba(62,88,143,0.06)_82%)]"
             aria-hidden="true"
           />
           <div
-            className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,rgba(30,34,48,0.84)_0%,rgba(30,34,48,0.24)_22%,transparent_38%,rgba(70,32,45,0.6)_78%,rgba(35,40,56,0.96)_100%)]"
+            className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,rgba(227,232,248,0.7)_0%,rgba(30,34,48,0.24)_22%,transparent_38%,rgba(62,88,143,0.1)_78%,rgba(227,232,248,0.85)_100%)]"
             aria-hidden="true"
           />
           <div
-            className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_78%_18%,rgba(181,139,131,0.14),transparent_55%),radial-gradient(ellipse_at_88%_78%,rgba(203,174,177,0.08),transparent_52%),radial-gradient(ellipse_at_8%_88%,rgba(64,34,49,0.55),transparent_58%)]"
+            className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_78%_18%,rgba(181,139,131,0.14),transparent_55%),radial-gradient(ellipse_at_88%_78%,rgba(203,174,177,0.08),transparent_52%),radial-gradient(ellipse_at_8%_88%,rgba(62,88,143,0.08),transparent_58%)]"
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none absolute inset-0 -z-10 shadow-[inset_0_0_180px_55px_rgba(35,40,56,0.85)]"
+            className="pointer-events-none absolute inset-0 -z-10 shadow-[inset_0_0_120px_40px_rgba(32,53,98,0.08)]"
             aria-hidden="true"
           />
           <div
-            className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-[#232838] via-[#232838]/55 to-transparent"
+            className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-[#E3E8F8] via-[#E3E8F8]/55 to-transparent"
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.13]"
+            className="pointer-events-none absolute inset-0 opacity-[0.06]"
             style={{
               backgroundImage: 'radial-gradient(rgba(253, 247, 250, 0.4) 1px, transparent 1px)',
               backgroundSize: '26px 26px',
@@ -840,22 +837,22 @@ export default function PublicLandingPage() {
           <div className="relative mx-auto w-full max-w-6xl">
             <motion.div style={{ y: copyY, opacity: copyOpacity }} className="relative max-w-3xl">
               <div
-                className="pointer-events-none absolute -inset-10 -z-10 bg-[radial-gradient(ellipse_at_30%_45%,rgba(35,40,56,0.9),rgba(35,40,56,0.55)_48%,transparent_78%)] blur-2xl"
+                className="pointer-events-none absolute -inset-10 -z-10 bg-[radial-gradient(ellipse_at_30%_45%,rgba(32,53,98,0.12),rgba(32,53,98,0.08)_48%,transparent_78%)] blur-2xl"
                 aria-hidden="true"
               />
               <motion.p
                 {...heroLine(0)}
-                className={`flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.32em] text-[#B58B83] [text-shadow:0_2px_18px_rgba(35,40,56,0.9)] ${
+                className={`flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.32em] text-[#C0C5CD] [text-shadow:0_2px_18px_rgba(32,53,98,0.12)] ${
                   isAr ? 'font-arabic tracking-[0.14em]' : ''
                 }`}
               >
-                <span className="h-px w-10 bg-[#E9D8D9]/80" aria-hidden="true" />
+                <span className="h-px w-10 bg-[#E3E8F8]/80" aria-hidden="true" />
                 {isAr ? 'تعلّم الإسعافات الأولية بثقة' : 'Learn first aid with confidence'}
               </motion.p>
 
               <motion.h1
                 {...heroLine(0.08)}
-                className={`mt-8 font-display font-bold [text-shadow:0_24px_66px_rgba(35,40,56,0.95),0_4px_18px_rgba(35,40,56,0.8)] ${
+                className={`mt-8 font-display font-bold [text-shadow:0_24px_66px_rgba(32,53,98,0.15),0_4px_18px_rgba(32,53,98,0.12)] ${
                   isAr
                     ? 'text-[clamp(2.5rem,6.5vw,5rem)] font-arabic leading-[1.2] tracking-normal'
                     : 'text-[clamp(2.95rem,7.2vw,5.8rem)] leading-[0.94] tracking-[-0.045em]'
@@ -863,15 +860,15 @@ export default function PublicLandingPage() {
               >
                 {isAr ? (
                   <>
-                    <span className="block text-[#FDF7FA]">معرفة صغيرة.</span>
-                    <span className="mt-2 block bg-[linear-gradient(100deg,#B58B83_0%,#B58B83_32%,#FDF7FA_62%,#FDF7FA_100%)] bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_14px_48px_rgba(35,40,56,0.45)]">
+                    <span className="block text-[#203562]">معرفة صغيرة.</span>
+                    <span className="mt-2 block bg-[linear-gradient(100deg,#3E588F_0%,#3E588F_32%,#203562_62%,#203562_100%)] bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_14px_48px_rgba(35,40,56,0.45)]">
                       وثقة تُحدث فرقًا.
                     </span>
                   </>
                 ) : (
                   <>
-                    <span className="block text-[#FDF7FA]">A little knowledge.</span>
-                    <span className="mt-2 block bg-[linear-gradient(100deg,#B58B83_0%,#B58B83_32%,#FDF7FA_62%,#FDF7FA_100%)] bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_14px_48px_rgba(35,40,56,0.45)]">
+                    <span className="block text-[#203562]">A little knowledge.</span>
+                    <span className="mt-2 block bg-[linear-gradient(100deg,#3E588F_0%,#3E588F_32%,#203562_62%,#203562_100%)] bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_14px_48px_rgba(35,40,56,0.45)]">
                       The confidence to act.
                     </span>
                   </>
@@ -880,7 +877,7 @@ export default function PublicLandingPage() {
 
               <motion.p
                 {...heroLine(0.16)}
-                className={`mt-6 max-w-[34rem] text-balance text-[clamp(0.99rem,1.35vw,1.14rem)] text-[#FDF7FA]/85 leading-[1.7] [text-shadow:0_2px_22px_rgba(35,40,56,0.95)] ${
+                className={`mt-6 max-w-[34rem] text-balance text-[clamp(0.99rem,1.35vw,1.14rem)] text-[#203562]/85 leading-[1.7] [text-shadow:0_2px_22px_rgba(32,53,98,0.15)] ${
                   isAr ? 'font-arabic leading-[2.05]' : 'leading-[1.85] tracking-[0.005em]'
                 }`}
               >
@@ -895,7 +892,7 @@ export default function PublicLandingPage() {
               >
                 <Link
                   to="/register"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#E9D8D9] px-8 py-4 text-[13.5px] font-extrabold tracking-[0.01em] text-[#4F2230] shadow-[0_24px_60px_-22px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.55)] ring-1 ring-[#B58B83]/50 transition-all duration-300 hover:-translate-y-1 hover:bg-[#EFDADB] hover:shadow-[0_30px_70px_-22px_rgba(181,139,131,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B58B83]/70 sm:w-auto"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#E3E8F8] px-8 py-4 text-[13.5px] font-extrabold tracking-[0.01em] text-[#203562] shadow-[0_24px_60px_-22px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.55)] ring-1 ring-[#C0C5CD]/50 transition-all duration-300 hover:-translate-y-1 hover:bg-[#E3E8F8] hover:shadow-[0_30px_70px_-22px_rgba(181,139,131,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C5CD]/70 sm:w-auto"
                 >
                   {isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
                   {isAr ? (
@@ -906,7 +903,7 @@ export default function PublicLandingPage() {
                 </Link>
                 <a
                   href="#our-impact"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-[#B58B83]/30 bg-[#E9D8D9]/[0.08] px-8 py-4 text-[13.5px] font-bold text-[#B58B83] shadow-[0_0_44px_-18px_rgba(181,139,131,0.5)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[#B58B83]/60 hover:bg-[#E9D8D9]/15 hover:text-[#EFDADB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B58B83]/50 sm:w-auto"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-[#C0C5CD]/30 bg-[#E3E8F8]/[0.08] px-8 py-4 text-[13.5px] font-bold text-[#C0C5CD] shadow-[0_0_44px_-18px_rgba(181,139,131,0.5)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[#C0C5CD]/60 hover:bg-[#E3E8F8]/15 hover:text-[#E3E8F8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C5CD]/50 sm:w-auto"
                 >
                   {isAr ? 'اكتشف أثرنا' : 'Explore our impact'}
                   <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -932,10 +929,10 @@ export default function PublicLandingPage() {
               </motion.div>
               <motion.h2
                 {...reveal(0.06)}
-                className={`mt-6 max-w-2xl font-display font-semibold tracking-[-0.02em] text-ink ${
+                className={`mt-6 max-w-2xl font-display font-bold tracking-[-0.025em] text-ink ${
                   isAr
-                    ? 'text-[clamp(1.95rem,4.2vw,3.4rem)] leading-[1.3]'
-                    : 'text-[clamp(1.9rem,4.4vw,3.6rem)] leading-[1.04]'
+                    ? 'text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.25]'
+                    : 'text-[clamp(2rem,4.6vw,3.8rem)] leading-[1.02]'
                 }`}
               >
                 {isAr ? (
@@ -954,8 +951,8 @@ export default function PublicLandingPage() {
               </motion.h2>
               <motion.p
                 {...reveal(0.12)}
-                className={`mt-6 max-w-xl text-[14.5px] text-ink-muted dark:text-[#FAF7F4]/80 ${
-                  isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
+                className={`mt-6 max-w-2xl text-[15px] text-ink-muted dark:text-[#E3E8F8]/85 ${
+                  isAr ? 'font-arabic leading-[2]' : 'leading-[1.85] tracking-[0.005em]'
                 }`}
               >
                 {isAr
@@ -963,68 +960,7 @@ export default function PublicLandingPage() {
                   : 'First-aid knowledge can help people respond more confidently in an emergency. EduFanor makes essential learning accessible through clear lessons and interactive experiences, helping people provide appropriate initial assistance while waiting for emergency responders.'}
               </motion.p>
 
-              <div className="mt-10 border-t border-ink/[0.08] dark:border-white/10">
-                {[
-                  {
-                    icon: BookOpen,
-                    title: isAr ? 'تعلّم بخطوات واضحة' : 'Learn in clear steps',
-                    text: isAr
-                      ? 'دروس منسّمة تقودك من الأساسيات إلى الاستجابة الواعية.'
-                      : 'Structured lessons guide you from the basics to considered response.',
-                  },
-                  {
-                    icon: Brain,
-                    title: isAr ? 'اختبر فهمك' : 'Practice what you learn',
-                    text: isAr
-                      ? 'اختبارات قصيرة وتغذية راجعة فورية لتثبيت المعرفة.'
-                      : 'Short quizzes and instant feedback help knowledge stick.',
-                  },
-                  {
-                    icon: CheckCircle2,
-                    title: isAr ? 'تابع تقدّمك' : 'See your progress',
-                    text: isAr
-                      ? 'لوحة تعلّم تعرض الدروس المكتملة والخطوة التالية.'
-                      : 'Your dashboard surfaces completed lessons and your next step.',
-                  },
-                ].map((item, index) => {
-                  const Icon = item.icon;
-                  return (
-                    <motion.div
-                      key={item.title}
-                      {...reveal(index * 0.05)}
-                      className="group flex items-start gap-4 border-b border-ink/[0.08] py-5 dark:border-white/10"
-                    >
-                      <PremiumIcon
-                        icon={Icon}
-                        tone={index % 2 === 0 ? 'amber' : 'green'}
-                        size="md"
-                        surface="light"
-                      />
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-3">
-                          <span className="font-display text-sm font-semibold text-[#9A6873] dark:text-[#CBAEB1]">
-                            0{index + 1}
-                          </span>
-                          <h3
-                            className={`font-display font-semibold text-ink ${
-                              isAr ? 'text-base leading-[1.6]' : 'text-[15px]'
-                            }`}
-                          >
-                            {item.title}
-                          </h3>
-                        </div>
-                        <p
-                          className={`mt-1.5 max-w-md text-[13px] text-ink-muted dark:text-[#FAF7F4]/75 ${
-                            isAr ? 'font-arabic leading-[1.9]' : 'leading-relaxed'
-                          }`}
-                        >
-                          {item.text}
-                        </p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
+              <div className="mt-8 h-px w-full bg-ink/[0.08] dark:bg-white/10" />
             </div>
 
             <motion.div {...reveal(0.1)} className="lg:col-span-6">
@@ -1036,13 +972,13 @@ export default function PublicLandingPage() {
         {/* The Platform — soft pastel editorial board with dot texture. */}
         <section
           id="platform"
-          className="relative overflow-hidden border-y border-[#F0C3DA]/60 bg-[#E9D8D9] py-20 transition-colors duration-500 dark:border-white/10 dark:bg-[#1A1D2B] md:py-28 lg:py-32"
+          className="relative overflow-hidden border-y border-[#E3E8F8]/60 bg-[#E3E8F8] py-20 transition-colors duration-500 dark:border-white/10 dark:bg-[#203562] md:py-28 lg:py-32"
         >
           <div
             className="pointer-events-none absolute inset-0 opacity-[0.4] dark:opacity-[0.2]"
             style={{
               backgroundImage:
-                'radial-gradient(rgba(100, 45, 61, 0.16) 1px, transparent 1px)',
+                'radial-gradient(rgba(32, 53, 98, 0.16) 1px, transparent 1px)',
               backgroundSize: '24px 24px',
             }}
             aria-hidden="true"
@@ -1080,7 +1016,7 @@ export default function PublicLandingPage() {
                     <>
                       A calmer way
                       <br />
-                      <span className="italic text-[#642D3D] dark:text-[#CBAEB1]">
+                      <span className="italic text-[#3E588F] dark:text-[#C0C5CD]">
                         to learn something serious.
                       </span>
                     </>
@@ -1089,7 +1025,7 @@ export default function PublicLandingPage() {
 
                 <motion.p
                   {...reveal(0.12)}
-                  className={`mt-5 max-w-sm text-[13.5px] text-ink-muted dark:text-[#FAF7F4]/75 ${
+                  className={`mt-5 max-w-sm text-[13.5px] text-ink-muted dark:text-[#E3E8F8]/75 ${
                     isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
                   }`}
                 >
@@ -1102,7 +1038,7 @@ export default function PublicLandingPage() {
                   {...reveal(0.18)}
                   className="mt-8 hidden border-t border-ink/10 pt-6 dark:border-white/10 lg:block"
                 >
-                  <p className="font-display text-lg italic leading-relaxed text-ink dark:text-[#FAF7F4]">
+                  <p className="font-display text-lg italic leading-relaxed text-ink dark:text-[#E3E8F8]">
                     {isAr ? '«الوضوح أولًا. الثقة تتبعه.»' : '“Clarity first. Confidence follows.”'}
                   </p>
                 </motion.div>
@@ -1156,7 +1092,7 @@ export default function PublicLandingPage() {
                           size="sm"
                           surface="light"
                         />
-                        <span className="font-display text-sm font-semibold text-ink/40 dark:text-[#FAF7F4]/40">
+                        <span className="font-display text-sm font-semibold text-ink/40 dark:text-[#E3E8F8]/40">
                           {item.number}
                         </span>
                       </div>
@@ -1168,7 +1104,7 @@ export default function PublicLandingPage() {
                         {item.title}
                       </h3>
                       <p
-                        className={`text-[13px] leading-[1.7] text-ink-muted dark:text-[#FAF7F4]/75 sm:col-span-6 ${
+                        className={`text-[13px] leading-[1.7] text-ink-muted dark:text-[#E3E8F8]/75 sm:col-span-6 ${
                           isAr ? 'font-arabic leading-[1.9]' : 'leading-relaxed'
                         }`}
                       >
@@ -1180,7 +1116,7 @@ export default function PublicLandingPage() {
 
                 <motion.div
                   {...reveal(0.1)}
-                  className="mt-8 flex gap-4 border-s-2 border-[#F0A9C9] bg-white/50 px-5 py-4 dark:border-[#B58B83]/40 dark:bg-white/[0.04]"
+                  className="mt-8 flex gap-4 border-s-2 border-[#E3E8F8] bg-white/50 px-5 py-4 dark:border-[#C0C5CD]/40 dark:bg-white/[0.04]"
                 >
                   <PremiumIcon
                     icon={ShieldAlert}
@@ -1189,7 +1125,7 @@ export default function PublicLandingPage() {
                     surface="light"
                     className="mt-0.5"
                   />
-                  <p className="text-[12px] leading-[1.7] text-ink-muted dark:text-[#FAF7F4]/75">
+                  <p className="text-[12px] leading-[1.7] text-ink-muted dark:text-[#E3E8F8]/75">
                     {isAr
                       ? 'المحتوى تعليمي ولا يغني عن الاتصال بخدمات الطوارئ أو التدريب المعتمد. الأولوية دائمًا لسلامة المكان وطلب المساعدة المختصة.'
                       : 'Educational content never replaces emergency services or certified training. Scene safety and professional help always come first.'}
@@ -1203,7 +1139,7 @@ export default function PublicLandingPage() {
         {/* Mission — immersive midnight editorial moment with pastel glows. */}
         <section
           id="our-mission"
-          className="relative overflow-hidden bg-[#232838] py-24 text-[#FDF7FA] transition-colors duration-500 md:py-32"
+          className="relative overflow-hidden bg-[#203562] py-24 text-[#E3E8F8] transition-colors duration-500 md:py-32"
         >
           <div
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_12%,rgba(181,139,131,0.1),transparent_44%),radial-gradient(circle_at_84%_86%,rgba(203,174,177,0.07),transparent_46%)]"
@@ -1227,7 +1163,7 @@ export default function PublicLandingPage() {
 
               <motion.h2
                 {...reveal(0.06)}
-                className={`mt-7 max-w-3xl font-display font-semibold tracking-[-0.02em] text-[#FDF7FA] ${
+                className={`mt-7 max-w-3xl font-display font-semibold tracking-[-0.02em] text-[#E3E8F8] ${
                   isAr
                     ? 'font-arabic text-[clamp(2rem,5vw,4.1rem)] leading-[1.32]'
                     : 'text-[clamp(1.85rem,5.2vw,4.4rem)] leading-[1.04]'
@@ -1241,7 +1177,7 @@ export default function PublicLandingPage() {
                     <br />
                     بل لأشخاص
                     <br />
-                    <span className="text-[#B58B83]">تعلّموا ماذا يفعلون.</span>
+                    <span className="text-[#C0C5CD]">تعلّموا ماذا يفعلون.</span>
                   </>
                 ) : (
                   <>
@@ -1251,14 +1187,14 @@ export default function PublicLandingPage() {
                     <br />
                     They are for people
                     <br />
-                    <span className="italic text-[#B58B83]">who learned what to do.</span>
+                    <span className="italic text-[#C0C5CD]">who learned what to do.</span>
                   </>
                 )}
               </motion.h2>
 
               <motion.p
                 {...reveal(0.12)}
-                className={`mt-7 max-w-2xl text-[14.5px] text-[#FDF7FA]/85 ${
+                className={`mt-7 max-w-2xl text-[14.5px] text-[#E3E8F8]/85 ${
                   isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
                 }`}
               >
@@ -1267,34 +1203,15 @@ export default function PublicLandingPage() {
                   : 'Our mission is to make first-aid knowledge accessible to everyone. Through clear lessons, interactive learning, and responsible guidance, we help people build the confidence to provide appropriate initial assistance while waiting for emergency responders.'}
               </motion.p>
 
-              <motion.div {...reveal(0.18)} className="mt-9 flex flex-wrap gap-3">
-                <Link
-                  to="/about"
-                  className="group inline-flex h-11 items-center gap-2.5 rounded-full bg-[#E9D8D9] px-6 text-[12.5px] font-extrabold text-[#4F2230] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EFDADB]"
-                >
-                  {isAr ? 'اقرأ قصتنا' : 'Read our story'}
-                  {isAr ? (
-                    <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
-                  ) : (
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  )}
-                </Link>
-                <a
-                  href="#courses"
-                  className="inline-flex h-11 items-center rounded-full border border-[#B58B83]/40 px-6 text-[12.5px] font-bold text-[#FDF7FA] transition-colors hover:border-[#B58B83] hover:bg-[#E9D8D9]/10 hover:text-[#B58B83]"
-                >
-                  {isAr ? 'استعرض المسارات' : 'Browse the learning path'}
-                </a>
-              </motion.div>
             </div>
 
             <motion.div
               {...reveal(0.14)}
               className="group relative flex justify-center lg:col-span-5"
             >
-              <div className="relative w-full max-w-[520px] overflow-hidden rounded-[1.75rem] border border-white/15 bg-[#232838] shadow-[0_40px_90px_-40px_rgba(0,0,0,0.7)]">
+              <div className="relative w-full max-w-[520px] overflow-hidden rounded-[1.75rem] border border-white/15 bg-[#203562] shadow-[0_40px_90px_-40px_rgba(0,0,0,0.7)]">
                 <div
-                  className="pointer-events-none absolute -end-10 -top-12 z-10 h-40 w-40 rounded-full bg-[#E9D8D9]/20 blur-3xl"
+                  className="pointer-events-none absolute -end-10 -top-12 z-10 h-40 w-40 rounded-full bg-[#E3E8F8]/20 blur-3xl"
                   aria-hidden="true"
                 />
                 <div className="relative aspect-[4/5] w-full overflow-hidden">
@@ -1312,7 +1229,7 @@ export default function PublicLandingPage() {
                     className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_62%,rgba(35,40,56,0.78)_100%)]"
                     aria-hidden="true"
                   />
-                  <span className="absolute bottom-4 start-4 z-10 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-[#232838]/70 py-1.5 pe-4 ps-2 text-[9px] font-extrabold uppercase tracking-[0.22em] text-[#B58B83] shadow-[0_16px_40px_-20px_rgba(0,0,0,0.9)] backdrop-blur-md">
+                  <span className="absolute bottom-4 start-4 z-10 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-[#203562]/70 py-1.5 pe-4 ps-2 text-[9px] font-extrabold uppercase tracking-[0.22em] text-[#C0C5CD] shadow-[0_16px_40px_-20px_rgba(0,0,0,0.9)] backdrop-blur-md">
                     <PremiumIcon icon={HeartPulse} tone="amber" size="badge" surface="dark" />
                     {isAr ? 'وضوح · ثقة · استعداد' : 'Clarity · Confidence · Readiness'}
                   </span>
@@ -1357,7 +1274,7 @@ export default function PublicLandingPage() {
                 </motion.h2>
                 <motion.p
                   {...reveal(0.12)}
-                  className={`mt-5 max-w-2xl text-[13.5px] text-ink-muted dark:text-[#FAF7F4]/80 ${
+                  className={`mt-5 max-w-2xl text-[13.5px] text-ink-muted dark:text-[#E3E8F8]/80 ${
                     isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
                   }`}
                 >
@@ -1367,19 +1284,6 @@ export default function PublicLandingPage() {
                 </motion.p>
               </div>
 
-              <motion.div {...reveal(0.14)} className="lg:col-span-4 lg:justify-self-end">
-                <Link
-                  to="/register"
-                  className="group inline-flex h-11 items-center gap-2.5 rounded-full border border-ink/20 px-5 text-[12.5px] font-bold text-ink transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white dark:border-[#B58B83]/40 dark:text-[#FAF7F4] dark:hover:border-[#B58B83] dark:hover:bg-[#E9D8D9] dark:hover:text-[#4F2230]"
-                >
-                  {isAr ? 'أنشئ حسابًا مجانيًا' : 'Create a free account'}
-                  {isAr ? (
-                    <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
-                  ) : (
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  )}
-                </Link>
-              </motion.div>
             </div>
 
             <motion.div
@@ -1406,7 +1310,7 @@ export default function PublicLandingPage() {
                   text: isAr ? 'تقدّمك محفوظ في حسابك.' : 'Your progress saved to your account.',
                 },
               ].map((step, index) => (
-                <div key={step.number} className="group bg-white p-5 dark:bg-[#20232F] sm:p-6">
+                <div key={step.number} className="group bg-white p-5 dark:bg-[#203562] sm:p-6">
                   <PremiumIcon
                     icon={step.icon}
                     tone={index % 2 === 0 ? 'amber' : 'green'}
@@ -1414,15 +1318,15 @@ export default function PublicLandingPage() {
                     surface="light"
                   />
                   <div className="mt-4 flex items-center gap-3">
-                    <span className="font-display text-sm font-semibold text-ink dark:text-[#FAF7F4]">
+                    <span className="font-display text-sm font-semibold text-ink dark:text-[#E3E8F8]">
                       {step.number}
                     </span>
                     <span className="h-px w-5 bg-ink/15 dark:bg-white/15" aria-hidden="true" />
-                    <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-ink/60 dark:text-[#FAF7F4]/50">
+                    <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-ink/60 dark:text-[#E3E8F8]/50">
                       {step.title}
                     </p>
                   </div>
-                  <p className="mt-3 text-[13px] leading-relaxed text-ink-muted dark:text-[#FAF7F4]/75">
+                  <p className="mt-3 text-[13px] leading-relaxed text-ink-muted dark:text-[#E3E8F8]/75">
                     {step.text}
                   </p>
                 </div>
@@ -1437,22 +1341,22 @@ export default function PublicLandingPage() {
                   className="group grid gap-4 border-b border-ink/[0.08] py-8 transition-colors hover:bg-white/70 dark:border-white/10 dark:hover:bg-white/[0.02] md:grid-cols-12 md:items-center md:gap-6 md:px-3"
                 >
                   <div className="flex items-center gap-3 md:col-span-1">
-                    <span className="font-display text-2xl font-semibold text-ink/25 transition-colors group-hover:text-[#9A6873] dark:text-[#FAF7F4]/25 dark:group-hover:text-[#B58B83]">
+                    <span className="font-display text-2xl font-semibold text-ink/25 transition-colors group-hover:text-[#C0C5CD] dark:text-[#E3E8F8]/25 dark:group-hover:text-[#C0C5CD]">
                       0{index + 1}
                     </span>
                   </div>
 
                   <div className="md:col-span-5">
                     <div className="flex flex-wrap items-center gap-2.5">
-                      <span className="rounded-full border border-ink/10 bg-white/70 px-2.5 py-1 text-[9.5px] font-bold uppercase tracking-[0.14em] text-[#642D3D] dark:border-white/15 dark:bg-white/[0.04] dark:text-[#CBAEB1]">
+                      <span className="rounded-full border border-ink/10 bg-white/70 px-2.5 py-1 text-[9.5px] font-bold uppercase tracking-[0.14em] text-[#3E588F] dark:border-white/15 dark:bg-white/[0.04] dark:text-[#C0C5CD]">
                         {course.level}
                       </span>
-                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-ink-muted dark:text-[#FAF7F4]/70">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-ink-muted dark:text-[#E3E8F8]/70">
                         {course.lessons} {isAr ? 'دروس' : 'lessons'} · {course.duration}
                       </span>
                     </div>
                     <h3
-                      className={`mt-2.5 font-display font-semibold leading-snug text-ink transition-colors dark:text-[#FAF7F4] ${
+                      className={`mt-2.5 font-display font-semibold leading-snug text-ink transition-colors dark:text-[#E3E8F8] ${
                         isAr ? 'text-xl leading-[1.5]' : 'text-2xl'
                       }`}
                     >
@@ -1461,130 +1365,24 @@ export default function PublicLandingPage() {
                   </div>
 
                   <p
-                    className={`text-[13px] text-ink-muted dark:text-[#FAF7F4]/75 md:col-span-5 ${
+                    className={`text-[13px] text-ink-muted dark:text-[#E3E8F8]/75 md:col-span-5 ${
                       isAr ? 'font-arabic leading-[1.9]' : 'leading-relaxed'
                     }`}
                   >
                     {course.description}
                   </p>
 
-                  <div className="md:col-span-1 md:justify-self-end">
-                    <Link
-                      to="/register"
-                      aria-label={
-                        isAr ? `سجّل لفتح ${course.title}` : `Sign up to open ${course.title}`
-                      }
-                      className="flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 text-ink ring-1 ring-ink/10 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-primary group-hover:bg-primary group-hover:text-white group-hover:ring-primary/50 dark:border-[#B58B83]/30 dark:text-[#FAF7F4] dark:group-hover:border-[#B58B83] dark:group-hover:bg-[#E9D8D9] dark:group-hover:text-[#4F2230] dark:group-hover:ring-[#B58B83]/70"
-                    >
-                      {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-                    </Link>
-                  </div>
                 </motion.article>
               ))}
             </div>
           </div>
         </section>
 
-        {/* About / responsible editorial — clean white card moment. */}
-        <section
-          id="about"
-          className="bg-white py-20 transition-colors duration-500 dark:bg-[#2B2726] md:py-28"
-        >
-          <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-12">
-            <motion.div {...reveal(0)} className="lg:col-span-7">
-              <SectionLabel index="05">{isAr ? 'عن المنصة' : 'About EduFanor'}</SectionLabel>
-              <h2
-                className={`mt-6 max-w-2xl font-display font-semibold tracking-[-0.02em] text-ink ${
-                  isAr
-                    ? 'text-[clamp(1.95rem,4vw,3.2rem)] leading-[1.32]'
-                    : 'text-[clamp(1.95rem,4.2vw,3.4rem)] leading-[1.04]'
-                }`}
-              >
-                {isAr ? (
-                  <>
-                    «قليل من المعرفة
-                    <br />
-                    <span className="text-ink">يمكن أن يصنع فارقًا كبيرًا.»</span>
-                  </>
-                ) : (
-                  <>
-                    “A little knowledge
-                    <br />
-                    <span className="italic text-ink">can make a difference.”</span>
-                  </>
-                )}
-              </h2>
-              <p
-                className={`mt-6 max-w-2xl text-[14px] text-ink-muted dark:text-[#FAF7F4]/80 ${
-                  isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
-                }`}
-              >
-                {isAr
-                  ? 'EduFanor مشروع تعليمي يهدف إلى تقريب المعرفة الأساسية بالإسعافات الأولية من الجميع، بلغة واضحة وتجربة تعليمية منسّمة تحترم وقت المتعلم وحدود المسؤولية الصحية.'
-                  : 'EduFanor is an educational project that brings essential first-aid knowledge closer to everyone, with clear language and a structured learning experience that respects the learner’s time and the boundaries of responsible care.'}
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  to="/about"
-                  className="group inline-flex h-11 items-center gap-2.5 rounded-full bg-primary px-5 text-[12.5px] font-extrabold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#B58B83] dark:bg-[#CBAEB1] dark:text-[#4F2230] dark:hover:bg-[#EFDADB]"
-                >
-                  {isAr ? 'تعرّف على القصة كاملة' : 'Read the full story'}
-                  {isAr ? (
-                    <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
-                  ) : (
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  )}
-                </Link>
-                <Link
-                  to="/register"
-                  className="inline-flex h-11 items-center rounded-full border border-ink/20 px-5 text-[12.5px] font-bold text-ink transition-colors hover:border-[#B58B83] hover:text-[#642D3D] dark:border-[#B58B83]/40 dark:text-[#FAF7F4] dark:hover:border-[#B58B83] dark:hover:text-[#B58B83]"
-                >
-                  {isAr ? 'أنشئ حسابك' : 'Create your account'}
-                </Link>
-              </div>
-            </motion.div>
-
-            <motion.aside {...reveal(0.1)} className="lg:col-span-5">
-              <div className="relative overflow-hidden rounded-[1.75rem] border border-ink/10 bg-[#E9D8D9] p-7 shadow-[0_30px_80px_-50px_rgba(100,45,61,0.35)] dark:border-[#B58B83]/25 dark:bg-[#20232F]">
-                <div
-                  className="pointer-events-none absolute -end-10 -top-12 h-36 w-36 rounded-full bg-[#E9D8D9]/40 blur-3xl dark:bg-[#CBAEB1]/15"
-                  aria-hidden="true"
-                />
-                <div className="relative">
-                  <PremiumIcon icon={ShieldAlert} tone="amber" size="md" surface="light" />
-                  <p className="mt-6 text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#642D3D] dark:text-[#CBAEB1]">
-                    {isAr ? 'ملاحظة مسؤولة' : 'A responsible note'}
-                  </p>
-                  <p
-                    className={`mt-4 font-display font-semibold leading-snug text-ink dark:text-[#FAF7F4] ${
-                      isAr ? 'text-2xl leading-[1.5]' : 'text-2xl'
-                    }`}
-                  >
-                    {isAr ? 'تعلّم لتساعد. واعرف حدودك.' : 'Learn to help. Know your limits.'}
-                  </p>
-                  <p
-                    className={`mt-4 text-[13px] text-ink-muted dark:text-[#FAF7F4]/75 ${
-                      isAr ? 'font-arabic leading-[1.9]' : 'leading-relaxed'
-                    }`}
-                  >
-                    {isAr
-                      ? 'المحتوى تعليمي ولا يُعد بديلًا عن التدريب المعتمد أو الاستشارة الطبية. في أي طارئ، الأولوية لسلامة المكان والاتصال بخدمات الطوارئ المحلية.'
-                      : 'This content is educational and does not replace certified training or medical advice. In any emergency, prioritize scene safety and contact local emergency services.'}
-                  </p>
-                  <div className="mt-6 flex items-center gap-3 border-t border-ink/10 pt-5 dark:border-white/10">
-                    <PremiumIcon icon={ShieldCheck} tone="green" size="xs" surface="light" />
-                    <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#315B45] dark:text-[#8FBFA3]">
-                      {isAr ? 'وضوح · احترام · استعداد' : 'Clarity · Respect · Readiness'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.aside>
-          </div>
-        </section>
+        {/* About / Hero10 integration */}
+        <Hero10 id="about" isAr={isAr} />
 
         {/* Final CTA — midnight ink with pastel glow. */}
-        <section className="relative overflow-hidden bg-[#232838] px-5 py-20 text-[#FDF7FA] transition-colors duration-500 sm:px-8 md:py-28 lg:px-12">
+        <section className="relative overflow-hidden bg-[#203562] px-5 py-20 text-[#E3E8F8] transition-colors duration-500 sm:px-8 md:py-28 lg:px-12">
           <div
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_76%_22%,rgba(181,139,131,0.14),transparent_52%),radial-gradient(circle_at_10%_90%,rgba(203,174,177,0.08),transparent_46%)]"
             aria-hidden="true"
@@ -1599,7 +1397,7 @@ export default function PublicLandingPage() {
             <div>
               <motion.div {...reveal(0)} className="flex items-center gap-3">
                 <PremiumIcon icon={Footprints} tone="amber" size="badge" surface="dark" />
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.26em] text-[#B58B83]">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.26em] text-[#C0C5CD]">
                   {isAr ? 'ابدأ بخطوة واحدة' : 'Start with one step'}
                 </p>
               </motion.div>
@@ -1615,13 +1413,13 @@ export default function PublicLandingPage() {
                   <>
                     درس واحد اليوم.
                     <br />
-                    <span className="text-[#B58B83]">واستجابة أهدأ غدًا.</span>
+                    <span className="text-[#C0C5CD]">واستجابة أهدأ غدًا.</span>
                   </>
                 ) : (
                   <>
                     One lesson today.
                     <br />
-                    <span className="italic text-[#B58B83]">A calmer response tomorrow.</span>
+                    <span className="italic text-[#C0C5CD]">A calmer response tomorrow.</span>
                   </>
                 )}
               </motion.h2>
@@ -1629,7 +1427,7 @@ export default function PublicLandingPage() {
             <motion.div {...reveal(0.14)} className="shrink-0">
               <Link
                 to="/register"
-                className="group inline-flex h-12 items-center gap-3 rounded-full bg-[#E9D8D9] px-7 text-[12.5px] font-extrabold uppercase tracking-[0.12em] text-[#4F2230] shadow-[0_26px_66px_-26px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.5)] ring-1 ring-[#B58B83]/60 transition-all duration-300 hover:-translate-y-1 hover:bg-[#EFDADB] hover:ring-[#B58B83]/90"
+                className="group inline-flex h-12 items-center gap-3 rounded-full bg-[#E3E8F8] px-7 text-[12.5px] font-extrabold uppercase tracking-[0.12em] text-[#203562] shadow-[0_26px_66px_-26px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.5)] ring-1 ring-[#C0C5CD]/60 transition-all duration-300 hover:-translate-y-1 hover:bg-[#E3E8F8] hover:ring-[#C0C5CD]/90"
               >
                 {isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
                 {isAr ? (

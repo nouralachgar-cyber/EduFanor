@@ -51,7 +51,7 @@ export default function AdminOverview() {
 
   if (loading && !data) {
     return (
-      <div className="space-y-6 bg-[#FAF7F4] min-h-screen p-6 text-[#642D3D]">
+      <div className="space-y-6 bg-[#E3E8F8] min-h-screen p-6 text-[#3E588F]">
         <LoadingState label={t('admin.common.loading')} />
       </div>
     );
@@ -59,7 +59,7 @@ export default function AdminOverview() {
 
   if (error && !data) {
     return (
-      <div className="space-y-6 bg-[#FAF7F4] min-h-screen p-6 text-[#642D3D]">
+      <div className="space-y-6 bg-[#E3E8F8] min-h-screen p-6 text-[#3E588F]">
         <ErrorState
           title={t('admin.errors.loadOverview')}
           message={error}
@@ -91,14 +91,14 @@ export default function AdminOverview() {
   const greeting = isAr ? `مرحباً، ${user?.name?.split(' ')[0] || ''}` : `Welcome back, Admin, ${user?.name?.split(' ')[0] || ''}`;
 
   return (
-    <div className="space-y-6 bg-[#FAF7F4] min-h-screen p-6 text-[#642D3D]">
+    <div className="space-y-6 bg-[#E3E8F8] min-h-screen p-6 text-[#3E588F]">
       <PageHeader
         eyebrow={t('admin.shell.title')}
         title={t('admin.overview.title')}
         subtitle={t('admin.overview.subtitle')}
         actions={
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 rounded-xl border border-[#CBAEB1] bg-white p-1 shadow-sm">
+            <div className="flex items-center gap-1 rounded-xl border border-[#C0C5CD] bg-white p-1 shadow-sm">
               {ranges.map((option) => (
                 <button
                   key={option}
@@ -106,8 +106,8 @@ export default function AdminOverview() {
                   onClick={() => setRange(option)}
                   className={`rounded-lg px-3 py-1.5 text-xs font-extrabold transition-colors ${
                     range === option
-                      ? 'bg-[#642D3D] text-[#E9D8D9]'
-                      : 'text-[#642D3D]/70 hover:bg-[#E9D8D9] hover:text-[#642D3D]'
+                      ? 'bg-[#3E588F] text-[#E3E8F8]'
+                      : 'text-[#3E588F]/70 hover:bg-[#E3E8F8] hover:text-[#3E588F]'
                   }`}
                 >
                   {t('admin.overview.days', { count: option })}
@@ -117,7 +117,7 @@ export default function AdminOverview() {
             <button
               type="button"
               onClick={load}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#CBAEB1] bg-[#E9D8D9] text-[#642D3D] transition-colors hover:bg-[#CBAEB1]/30 shadow-sm"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C0C5CD] bg-[#E3E8F8] text-[#3E588F] transition-colors hover:bg-[#C0C5CD]/30 shadow-sm"
               aria-label={t('admin.common.refresh')}
               title={t('admin.common.refresh')}
             >
@@ -127,34 +127,34 @@ export default function AdminOverview() {
         }
       />
 
-      <section className="rounded-3xl border border-[#CBAEB1]/50 bg-[#642D3D] p-6 text-white shadow-lg flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+      <section className="rounded-3xl border border-[#C0C5CD]/50 bg-[#3E588F] p-6 text-white shadow-lg flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#CBAEB1]/30 bg-[#CBAEB1]/10 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.14em] text-[#E9D8D9]">
-            <Sparkles className="h-3.5 w-3.5 text-[#CBAEB1]" />
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[#C0C5CD]/30 bg-[#C0C5CD]/10 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.14em] text-[#E3E8F8]">
+            <Sparkles className="h-3.5 w-3.5 text-[#C0C5CD]" />
             {t('admin.shell.systemOnline')}
           </span>
           <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">{greeting}</h2>
-          <p className="mt-2 max-w-xl text-xs leading-relaxed text-[#E9D8D9]/80">
+          <p className="mt-2 max-w-xl text-xs leading-relaxed text-[#E3E8F8]/80">
             {isAr
               ? 'إليك ملخص أداء المنصة خلال الفترة المحددة. يمكنك إدارة الطلاب والمحتوى ومتابعة كل نشاط من مكان واحد.'
               : 'Here is how the platform is performing in the selected period. Manage students, content and activity from one place.'}
           </p>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:shrink-0">
-          <div className="rounded-2xl border border-[#CBAEB1]/30 bg-white/10 px-4 py-3 backdrop-blur-sm">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#E9D8D9]/70">
+          <div className="rounded-2xl border border-[#C0C5CD]/30 bg-white/10 px-4 py-3 backdrop-blur-sm">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#E3E8F8]/70">
               {t('admin.overview.activeStudents')}
             </p>
             <p className="mt-1 font-display text-xl font-bold text-white">{formatNumber(metrics.activeStudents, i18n.language)}</p>
           </div>
-          <div className="rounded-2xl border border-[#CBAEB1]/30 bg-white/10 px-4 py-3 backdrop-blur-sm">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#E9D8D9]/70">
+          <div className="rounded-2xl border border-[#C0C5CD]/30 bg-white/10 px-4 py-3 backdrop-blur-sm">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#E3E8F8]/70">
               {t('admin.overview.completionRate')}
             </p>
             <p className="mt-1 font-display text-xl font-bold text-white">{formatPercent(metrics.completionRate, i18n.language)}</p>
           </div>
-          <div className="col-span-2 rounded-2xl border border-[#CBAEB1]/30 bg-white/10 px-4 py-3 sm:col-span-1 backdrop-blur-sm">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#E9D8D9]/70">
+          <div className="col-span-2 rounded-2xl border border-[#C0C5CD]/30 bg-white/10 px-4 py-3 sm:col-span-1 backdrop-blur-sm">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#E3E8F8]/70">
               {t('admin.overview.averageQuiz')}
             </p>
             <p className="mt-1 font-display text-xl font-bold text-white">{formatPercent(metrics.averageQuizScore, i18n.language)}</p>
@@ -175,29 +175,29 @@ export default function AdminOverview() {
         <Panel
           title={t('admin.overview.learningActivity')}
           subtitle={t('admin.overview.inRange')}
-          className="bg-white border border-[#CBAEB1]/40 rounded-2xl p-6 shadow-sm"
+          className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm"
           actions={
-            <span className="text-xs font-bold text-[#642D3D]/70">
+            <span className="text-xs font-bold text-[#3E588F]/70">
               {t('admin.overview.generated')}: {formatDateTime(data?.generatedAt, i18n.language)}
             </span>
           }
         >
           <ActivityBars data={activity} language={i18n.language} height={170} />
           <div className="mt-5 flex flex-wrap items-center gap-4">
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#642D3D]/80"><span className="h-2.5 w-2.5 rounded-full bg-[#642D3D]" />{t('admin.overview.courseStarts')}</span>
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#642D3D]/80"><span className="h-2.5 w-2.5 rounded-full bg-[#CBAEB1]" />{t('admin.overview.completions')}</span>
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#642D3D]/80"><span className="h-2.5 w-2.5 rounded-full bg-[#9A6873]" />{t('admin.overview.quizAttempts')}</span>
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#3E588F]/80"><span className="h-2.5 w-2.5 rounded-full bg-[#3E588F]" />{t('admin.overview.courseStarts')}</span>
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#3E588F]/80"><span className="h-2.5 w-2.5 rounded-full bg-[#C0C5CD]" />{t('admin.overview.completions')}</span>
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#3E588F]/80"><span className="h-2.5 w-2.5 rounded-full bg-[#C0C5CD]" />{t('admin.overview.quizAttempts')}</span>
           </div>
         </Panel>
 
-        <Panel title={t('admin.overview.platformHealth')} className="bg-white border border-[#CBAEB1]/40 rounded-2xl p-6 shadow-sm">
+        <Panel title={t('admin.overview.platformHealth')} className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between gap-4">
-            <Donut value={metrics.completionRate || 0} label={formatPercent(metrics.completionRate, i18n.language)} sublabel={t('admin.overview.completionRate')} tone="#642D3D" />
+            <Donut value={metrics.completionRate || 0} label={formatPercent(metrics.completionRate, i18n.language)} sublabel={t('admin.overview.completionRate')} tone="#3E588F" />
             <div className="min-w-0 flex-1 space-y-3">
               {healthItems.map((item) => (
-                <Link key={item.key} to={item.to} className="flex items-center justify-between gap-2 rounded-xl bg-[#FAF7F4] px-3 py-2 transition-colors hover:bg-[#E9D8D9] border border-[#CBAEB1]/30">
-                  <span className="text-xs font-semibold text-[#642D3D]">{t(`admin.overview.health${item.key.charAt(0).toUpperCase()}${item.key.slice(1)}`)}</span>
-                  <Badge tone={item.value ? 'amber' : 'green'} className="bg-white text-[#642D3D] border border-[#CBAEB1]">{formatNumber(item.value, i18n.language)}</Badge>
+                <Link key={item.key} to={item.to} className="flex items-center justify-between gap-2 rounded-xl bg-[#E3E8F8] px-3 py-2 transition-colors hover:bg-[#E3E8F8] border border-[#C0C5CD]/30">
+                  <span className="text-xs font-semibold text-[#3E588F]">{t(`admin.overview.health${item.key.charAt(0).toUpperCase()}${item.key.slice(1)}`)}</span>
+                  <Badge tone={item.value ? 'amber' : 'green'} className="bg-white text-[#3E588F] border border-[#C0C5CD]">{formatNumber(item.value, i18n.language)}</Badge>
                 </Link>
               ))}
             </div>
@@ -209,41 +209,41 @@ export default function AdminOverview() {
         <Panel
           title={t('admin.overview.registrations')}
           subtitle={t('admin.overview.days', { count: 365 })}
-          className="bg-white border border-[#CBAEB1]/40 rounded-2xl p-6 shadow-sm"
-          actions={<CalendarDays className="h-4 w-4 text-[#CBAEB1]" />}
+          className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm"
+          actions={<CalendarDays className="h-4 w-4 text-[#C0C5CD]" />}
         >
           <LineChart
             data={registrationSeries}
-            series={[{ key: 'count', label: t('admin.overview.registrations'), color: '#642D3D' }]}
+            series={[{ key: 'count', label: t('admin.overview.registrations'), color: '#3E588F' }]}
             language={i18n.language}
             height={200}
           />
         </Panel>
 
-        <Panel title={t('admin.overview.topCourses')} noPadding className="bg-white border border-[#CBAEB1]/40 rounded-2xl shadow-sm overflow-hidden">
+        <Panel title={t('admin.overview.topCourses')} noPadding className="bg-white border border-[#C0C5CD]/40 rounded-2xl shadow-sm overflow-hidden">
           {topCourses.length === 0 ? (
             <EmptyState title={t('admin.overview.noTopCourses')} icon={Trophy} />
           ) : (
             <div className="admin-scroll overflow-x-auto">
               <table className="admin-table w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#CBAEB1]/30 bg-[#E9D8D9]/50 text-xs text-[#642D3D]">
+                  <tr className="border-b border-[#C0C5CD]/30 bg-[#E3E8F8]/50 text-xs text-[#3E588F]">
                     <th className="p-3.5">{t('admin.courses.courseTitle')}</th>
                     <th className="p-3.5">{t('admin.analytics.starts')}</th>
                     <th className="p-3.5">{t('admin.analytics.completionsShort')}</th>
                     <th className="p-3.5">{t('admin.analytics.quizAttemptsShort')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#CBAEB1]/20 text-xs">
+                <tbody className="divide-y divide-[#C0C5CD]/20 text-xs">
                   {topCourses.map((course) => (
-                    <tr key={course.courseKey} className="hover:bg-[#FAF7F4]/60 transition-colors">
+                    <tr key={course.courseKey} className="hover:bg-[#E3E8F8]/60 transition-colors">
                       <td className="p-3.5">
-                        <p className="font-bold text-[#642D3D]">{localize(course.title, i18n.language) || course.courseKey}</p>
-                        <p className="text-[10px] text-[#642D3D]/70">{course.courseKey}</p>
+                        <p className="font-bold text-[#3E588F]">{localize(course.title, i18n.language) || course.courseKey}</p>
+                        <p className="text-[10px] text-[#3E588F]/70">{course.courseKey}</p>
                       </td>
-                      <td className="p-3.5 font-bold text-[#642D3D]">{formatNumber(course.starts, i18n.language)}</td>
-                      <td className="p-3.5 font-bold text-[#642D3D]">{formatNumber(course.completions, i18n.language)}</td>
-                      <td className="p-3.5 font-bold text-[#642D3D]">{formatNumber(course.quizAttempts, i18n.language)}</td>
+                      <td className="p-3.5 font-bold text-[#3E588F]">{formatNumber(course.starts, i18n.language)}</td>
+                      <td className="p-3.5 font-bold text-[#3E588F]">{formatNumber(course.completions, i18n.language)}</td>
+                      <td className="p-3.5 font-bold text-[#3E588F]">{formatNumber(course.quizAttempts, i18n.language)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -256,75 +256,75 @@ export default function AdminOverview() {
       <div className="grid gap-6 xl:grid-cols-[1.15fr_1fr_1fr]">
         <Panel
           title={t('admin.overview.recentStudents')}
-          className="bg-white border border-[#CBAEB1]/40 rounded-2xl shadow-sm overflow-hidden"
-          actions={<Link to="/admin/students" className="text-xs font-extrabold text-[#642D3D] hover:text-[#CBAEB1] transition-colors">{t('admin.common.view')}<ArrowUpRight className="ms-1 inline h-3.5 w-3.5 text-[#CBAEB1]" /></Link>}
+          className="bg-white border border-[#C0C5CD]/40 rounded-2xl shadow-sm overflow-hidden"
+          actions={<Link to="/admin/students" className="text-xs font-extrabold text-[#3E588F] hover:text-[#C0C5CD] transition-colors">{t('admin.common.view')}<ArrowUpRight className="ms-1 inline h-3.5 w-3.5 text-[#C0C5CD]" /></Link>}
           noPadding
         >
           {recentStudents.length === 0 ? (
             <EmptyState title={t('admin.overview.noStudents')} icon={Users} />
           ) : (
-            <div className="divide-y divide-[#CBAEB1]/20">
+            <div className="divide-y divide-[#C0C5CD]/20">
               {recentStudents.map((student) => (
-                <Link key={student._id} to={`/admin/students/${student._id}`} className="flex items-center gap-3.5 px-4 py-3.5 transition-colors hover:bg-[#FAF7F4]/60">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#E9D8D9] text-xs font-extrabold text-[#642D3D] border border-[#CBAEB1]/50">
+                <Link key={student._id} to={`/admin/students/${student._id}`} className="flex items-center gap-3.5 px-4 py-3.5 transition-colors hover:bg-[#E3E8F8]/60">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#E3E8F8] text-xs font-extrabold text-[#3E588F] border border-[#C0C5CD]/50">
                     {initials(student.name)}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-xs font-extrabold text-[#642D3D]">{student.name}</p>
-                    <p className="truncate text-[10px] text-[#642D3D]/70" dir="ltr">{student.email}</p>
+                    <p className="truncate text-xs font-extrabold text-[#3E588F]">{student.name}</p>
+                    <p className="truncate text-[10px] text-[#3E588F]/70" dir="ltr">{student.email}</p>
                   </div>
-                  <span className="text-[10px] font-semibold text-[#642D3D]/60">{relativeTime(student.createdAt, i18n.language)}</span>
+                  <span className="text-[10px] font-semibold text-[#3E588F]/60">{relativeTime(student.createdAt, i18n.language)}</span>
                 </Link>
               ))}
             </div>
           )}
         </Panel>
 
-        <Panel title={t('admin.overview.recentActivity')} className="bg-white border border-[#CBAEB1]/40 rounded-2xl shadow-sm overflow-hidden" noPadding>
+        <Panel title={t('admin.overview.recentActivity')} className="bg-white border border-[#C0C5CD]/40 rounded-2xl shadow-sm overflow-hidden" noPadding>
           {recentAudit.length === 0 ? (
             <EmptyState title={t('admin.overview.noAudit')} icon={ShieldAlert} />
           ) : (
-            <div className="divide-y divide-[#CBAEB1]/20">
+            <div className="divide-y divide-[#C0C5CD]/20">
               {recentAudit.map((log) => (
-                <div key={log._id} className="px-4 py-3.5 hover:bg-[#FAF7F4]/60 transition-colors">
+                <div key={log._id} className="px-4 py-3.5 hover:bg-[#E3E8F8]/60 transition-colors">
                   <div className="flex items-start justify-between gap-2">
-                    <p className="text-xs font-extrabold text-[#642D3D]">
+                    <p className="text-xs font-extrabold text-[#3E588F]">
                       {t(`admin.audit.actions.${log.action}`, { defaultValue: log.action })}
                     </p>
-                    <span className="shrink-0 text-[10px] text-[#642D3D]/60">{relativeTime(log.createdAt, i18n.language)}</span>
+                    <span className="shrink-0 text-[10px] text-[#3E588F]/60">{relativeTime(log.createdAt, i18n.language)}</span>
                   </div>
-                  <p className="mt-1 truncate text-xs text-[#642D3D]/70">{log.targetLabel || log.targetType}</p>
+                  <p className="mt-1 truncate text-xs text-[#3E588F]/70">{log.targetLabel || log.targetType}</p>
                 </div>
               ))}
             </div>
           )}
         </Panel>
 
-        <Panel title={t('admin.overview.completions')} className="bg-white border border-[#CBAEB1]/40 rounded-2xl p-6 shadow-sm">
+        <Panel title={t('admin.overview.completions')} className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm">
           <div className="space-y-4">
             <div className="flex items-center gap-3.5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E9D8D9] text-[#642D3D] border border-[#CBAEB1]/50"><TrendingUp className="h-4 w-4 text-[#CBAEB1]" /></span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E3E8F8] text-[#3E588F] border border-[#C0C5CD]/50"><TrendingUp className="h-4 w-4 text-[#C0C5CD]" /></span>
               <div className="flex-1">
-                <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#642D3D]/60">{t('admin.overview.courseStarts')}</p>
-                <p className="font-display text-lg font-bold text-[#642D3D]">{formatNumber(metrics.courseStarts, i18n.language)}</p>
+                <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#3E588F]/60">{t('admin.overview.courseStarts')}</p>
+                <p className="font-display text-lg font-bold text-[#3E588F]">{formatNumber(metrics.courseStarts, i18n.language)}</p>
               </div>
             </div>
             <div className="flex items-center gap-3.5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E9D8D9] text-[#642D3D] border border-[#CBAEB1]/50"><Target className="h-4 w-4 text-[#CBAEB1]" /></span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E3E8F8] text-[#3E588F] border border-[#C0C5CD]/50"><Target className="h-4 w-4 text-[#C0C5CD]" /></span>
               <div className="flex-1">
-                <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#642D3D]/60">{t('admin.overview.completions')}</p>
-                <p className="font-display text-lg font-bold text-[#642D3D]">{formatNumber(metrics.courseCompletions, i18n.language)}</p>
+                <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#3E588F]/60">{t('admin.overview.completions')}</p>
+                <p className="font-display text-lg font-bold text-[#3E588F]">{formatNumber(metrics.courseCompletions, i18n.language)}</p>
               </div>
             </div>
             <div className="flex items-center gap-3.5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E9D8D9] text-[#642D3D] border border-[#CBAEB1]/50"><Layers className="h-4 w-4 text-[#CBAEB1]" /></span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E3E8F8] text-[#3E588F] border border-[#C0C5CD]/50"><Layers className="h-4 w-4 text-[#C0C5CD]" /></span>
               <div className="flex-1">
-                <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#642D3D]/60">{t('admin.overview.lessonCompletions')}</p>
-                <p className="font-display text-lg font-bold text-[#642D3D]">{formatNumber(metrics.lessonCompletions, i18n.language)}</p>
+                <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#3E588F]/60">{t('admin.overview.lessonCompletions')}</p>
+                <p className="font-display text-lg font-bold text-[#3E588F]">{formatNumber(metrics.lessonCompletions, i18n.language)}</p>
               </div>
             </div>
-            <div className="rounded-xl border border-[#CBAEB1]/30 bg-[#FAF7F4] p-3">
-              <p className="flex items-center gap-1.5 text-xs font-bold text-[#642D3D]/70"><Clock className="h-3.5 w-3.5 text-[#CBAEB1]" />{t('admin.overview.generated')} {formatDateTime(data?.generatedAt, i18n.language)}</p>
+            <div className="rounded-xl border border-[#C0C5CD]/30 bg-[#E3E8F8] p-3">
+              <p className="flex items-center gap-1.5 text-xs font-bold text-[#3E588F]/70"><Clock className="h-3.5 w-3.5 text-[#C0C5CD]" />{t('admin.overview.generated')} {formatDateTime(data?.generatedAt, i18n.language)}</p>
             </div>
           </div>
         </Panel>

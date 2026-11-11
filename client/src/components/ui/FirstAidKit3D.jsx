@@ -14,9 +14,9 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     if (!container) return;
 
     // === Color scheme ===
-    const ambientColor = isDark ? '#B58B83' : '#FAF7F4';
-    const keyLightColor = isDark ? '#F2E3E5' : '#FFF9F7';
-    const crossColor = '#642D3D';
+    const ambientColor = isDark ? '#C0C5CD' : '#E3E8F8';
+    const keyLightColor = isDark ? '#E3E8F8' : '#FFF9F7';
+    const crossColor = '#3E588F';
 
     // === Three.js setup ===
     const renderer = new THREE.WebGLRenderer({
@@ -58,7 +58,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     const kitBody = new THREE.Mesh(
       new THREE.BoxGeometry(1.9, 1.1, 0.7),
       new THREE.MeshStandardMaterial({
-        color: isDark ? '#B58B83' : '#EFE0E2',
+        color: isDark ? '#C0C5CD' : '#E3E8F8',
         roughness: 0.35,
         metalness: 0.02,
       })
@@ -72,7 +72,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     const lid = new THREE.Mesh(
       new THREE.BoxGeometry(1.9, 0.08, 0.7),
       new THREE.MeshStandardMaterial({
-        color: isDark ? '#CBAEB1' : '#CBAEB1',
+        color: isDark ? '#C0C5CD' : '#C0C5CD',
         roughness: 0.5,
         metalness: 0.02,
       })
@@ -112,7 +112,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     for (let i = 0; i < 3; i++) {
       const bandage = new THREE.Mesh(
         new THREE.CylinderGeometry(0.03 + i * 0.02, 0.05 + i * 0.02, 0.45 + i * 0.08, 6),
-        new THREE.MeshStandardMaterial({ color: '#B58B83', roughness: 0.95, metalness: 0.0 })
+        new THREE.MeshStandardMaterial({ color: '#C0C5CD', roughness: 0.95, metalness: 0.0 })
       );
       bandage.position.set((i - 1) * 0.35, -0.1 + i * 0.03, 0.1);
       bandage.rotation.z = (i % 2 === 0 ? 1 : -1) * 0.25;
@@ -123,7 +123,7 @@ const FirstAidKit3D = ({ isDark, reduceMotion }) => {
     // === Medical Glove ===
     const glove = new THREE.Mesh(
       new THREE.SphereGeometry(0.14, 14, 14),
-      new THREE.MeshStandardMaterial({ color: '#FAF7F4', roughness: 0.75, metalness: 0.15 })
+      new THREE.MeshStandardMaterial({ color: '#E3E8F8', roughness: 0.75, metalness: 0.15 })
     );
     glove.position.set(0.55, 0.08, -0.05);
     glove.castShadow = true;

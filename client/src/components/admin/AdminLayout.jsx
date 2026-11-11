@@ -65,9 +65,11 @@ function SidebarContent({ onNavigate }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-3 px-5 pt-6 pb-5">
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E9D8D9] text-[#4F2230] shadow-[0_10px_25px_-12px_rgba(181,139,131,0.55)]">
-          <ShieldCheck className="h-5 w-5" />
-        </span>
+        <img
+          src="/edufanor.png"
+          alt="EduFanor Logo"
+          className="h-10 w-auto object-contain transition-transform duration-300 hover:scale-105"
+        />
         <div className="min-w-0">
           <p className="font-display text-base font-semibold leading-tight tracking-tight text-white">
             {t('admin.shell.brand')}
@@ -81,8 +83,8 @@ function SidebarContent({ onNavigate }) {
       <div className="mx-3 mb-4 rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2">
         <span className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/60">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#E9D8D9] opacity-60" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#E9D8D9]" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#E3E8F8] opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#E3E8F8]" />
           </span>
           {t('admin.shell.secureArea')}
         </span>
@@ -117,7 +119,7 @@ function SidebarContent({ onNavigate }) {
                           <Icon className="h-3.5 w-3.5" />
                         </span>
                         <span className="flex-1">{t(item.label)}</span>
-                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#4F2230]" />}
+                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#203562]" />}
                       </>
                     )}
                   </NavLink>
@@ -130,7 +132,7 @@ function SidebarContent({ onNavigate }) {
 
       <div className="border-t border-white/10 p-3">
         <div className="mb-2 flex items-center gap-2.5 rounded-xl bg-white/[0.06] px-3 py-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E9D8D9] text-xs font-extrabold text-[#4F2230]">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E3E8F8] text-xs font-extrabold text-[#203562]">
             {initials(user?.name)}
           </span>
           <div className="min-w-0 flex-1">
@@ -217,7 +219,7 @@ export default function AdminLayout() {
         <div className="fixed inset-0 z-[70] lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-[#2B2726]/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#203562]/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
             aria-label={t('admin.shell.closeMenu')}
           />

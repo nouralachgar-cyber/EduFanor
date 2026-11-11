@@ -1,25 +1,25 @@
 .admin-shell {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 100% 0%, rgba(181, 139, 131, 0.2), transparent 34%),
-    radial-gradient(circle at 0% 100%, rgba(203, 174, 177, 0.35), transparent 40%),
+    radial-gradient(circle at 100% 0%, rgba(62, 88, 143, 0.2), transparent 34%),
+    radial-gradient(circle at 0% 100%, rgba(192, 197, 205, 0.35), transparent 40%),
     var(--color-surface);
 }
 
 .dark .admin-shell {
   background:
-    radial-gradient(circle at 100% 0%, rgba(181, 139, 131, 0.09), transparent 34%),
-    radial-gradient(circle at 0% 100%, rgba(154, 104, 115, 0.06), transparent 40%),
+    radial-gradient(circle at 100% 0%, rgba(62, 88, 143, 0.09), transparent 34%),
+    radial-gradient(circle at 0% 100%, rgba(62, 88, 143, 0.06), transparent 40%),
     var(--color-surface);
 }
 
 .admin-sidebar {
-  background: linear-gradient(180deg, #3B3536, #2B2626);
-  color: #C6BBB7;
+  background: linear-gradient(180deg, #3E588F, #203562);
+  color: #E3E8F8;
 }
 
 .dark .admin-sidebar {
-  background: linear-gradient(180deg, #211F1F, #2B2626);
+  background: linear-gradient(180deg, #203562, #203562);
 }
 
 .admin-nav-link {
@@ -35,21 +35,21 @@
 }
 
 .admin-nav-link:hover {
-  color: #B58B83;
+  color: #C0C5CD;
   background-color: rgba(255, 255, 255, 0.06);
 }
 
 .admin-nav-link-active,
 .admin-nav-link-active:hover {
-  color: #4F2230;
-  background-color: #B58B83;
+  color: #203562;
+  background-color: #C0C5CD;
   box-shadow: 0 12px 28px -18px rgba(0, 0, 0, 0.75);
 }
 
 .dark .admin-nav-link-active,
 .dark .admin-nav-link-active:hover {
-  color: #421B28;
-  background-color: #B58B83;
+  color: #203562;
+  background-color: #C0C5CD;
 }
 
 .admin-card {
@@ -116,18 +116,18 @@
   overflow: hidden;
   border-radius: 1.6rem;
   background:
-    radial-gradient(circle at 88% 15%, rgba(181, 139, 131, 0.4), transparent 32%),
-    radial-gradient(circle at 12% 110%, rgba(203, 174, 177, 0.32), transparent 40%),
-    linear-gradient(135deg, #642D3D 0%, #642D3D 55%, #4F2230 100%);
-  color: #FAF7F4;
+    radial-gradient(circle at 88% 15%, rgba(62, 88, 143, 0.4), transparent 32%),
+    radial-gradient(circle at 12% 110%, rgba(192, 197, 205, 0.32), transparent 40%),
+    linear-gradient(135deg, #3E588F 0%, #3E588F 55%, #203562 100%);
+  color: #E3E8F8;
 }
 
 .dark .admin-hero {
   background:
-    radial-gradient(circle at 88% 15%, rgba(181, 139, 131, 0.22), transparent 32%),
-    radial-gradient(circle at 12% 110%, rgba(203, 174, 177, 0.12), transparent 40%),
-    linear-gradient(135deg, #3A3233 0%, #322B2C 55%, #2B2626 100%);
-  color: #F1EBE8;
+    radial-gradient(circle at 88% 15%, rgba(62, 88, 143, 0.22), transparent 32%),
+    radial-gradient(circle at 12% 110%, rgba(192, 197, 205, 0.12), transparent 40%),
+    linear-gradient(135deg, #3E588F 0%, #203562 55%, #203562 100%);
+  color: #E3E8F8;
 }
 
 .admin-hero::after {
@@ -141,7 +141,7 @@
 }
 
 .dark .admin-hero::after {
-  background-image: radial-gradient(rgba(181, 139, 131, 0.28) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(62, 88, 143, 0.28) 1px, transparent 1px);
 }
 
 .admin-hero > * {
