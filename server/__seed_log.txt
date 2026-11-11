@@ -1,0 +1,10 @@
+seed start
+connecting
+connected
+Created course: cpr
+Created 4 lessons for cpr
+Created course: choking
+Created 3 lessons for choking
+Created course: burns
+Created 3 lessons for burns
+Seed complete. Courses: 3, lessons: 10, quizzes: 1.

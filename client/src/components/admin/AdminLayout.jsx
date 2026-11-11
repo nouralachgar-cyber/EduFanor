@@ -301,7 +301,7 @@ export default function AdminLayout() {
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-[1500px] px-3 py-5 sm:px-5 lg:px-8 lg:py-7">
+        <main className="mx-auto w-full">
           <Outlet />
         </main>
       </div>

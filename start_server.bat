@@ -1,4 +1,4 @@
 @echo off
-cd C:\Users\SKIZO-NEBRAS-MEXICY\Desktop\EduFanor\server
+cd /d "%~dp0server"
 node server.js
 pause

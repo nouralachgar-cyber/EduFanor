@@ -1,8 +1,10 @@
 param([switch]$Background)
+$serverRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 if ($Background) {
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = "node"
-    $psi.Arguments = "C:\Users\SKIZO-NEBRAS-MEXICY\Desktop\EduFanor\server\server.js"
+    $psi.Arguments = (Join-Path $serverRoot 'server.js')
+    $psi.WorkingDirectory = $serverRoot
     $psi.RedirectStandardOutput = $true
     $psi.RedirectStandardError = $true
     $psi.UseShellExecute = $false
@@ -10,5 +12,6 @@ if ($Background) {
     $process.WaitForExit()
     Write-Host "Server exited with code $($process.ExitCode)"
 } else {
+    Set-Location -LiteralPath $serverRoot
     & node .\server.js
 }

@@ -28,7 +28,7 @@ export default function StudentLayout() {
 
       <Navbar />
 
-      <div className="mx-auto flex w-full max-w-[1600px] flex-1">
+      <div className="mx-auto flex w-full  flex-1">
         <Sidebar />
         <main id="main-content" className="min-w-0 flex-1 pb-24 md:pb-0">
           <Outlet />

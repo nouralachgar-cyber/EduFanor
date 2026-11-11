@@ -1,0 +1,2 @@
+MongoDB Connected: ac-adkwpjw-shard-00-00.zpnpwgm.mongodb.net
+Server running on port 5000
