@@ -65,7 +65,7 @@ function SidebarContent({ onNavigate }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-3 px-5 pt-6 pb-5">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F9B2D7] text-[#33152A] shadow-[0_10px_25px_-12px_rgba(249,178,215,0.55)]">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E9D8D9] text-[#4F2230] shadow-[0_10px_25px_-12px_rgba(181,139,131,0.55)]">
           <ShieldCheck className="h-5 w-5" />
         </span>
         <div className="min-w-0">
@@ -81,8 +81,8 @@ function SidebarContent({ onNavigate }) {
       <div className="mx-3 mb-4 rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2">
         <span className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/60">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F9B2D7] opacity-60" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#F9B2D7]" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#E9D8D9] opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#E9D8D9]" />
           </span>
           {t('admin.shell.secureArea')}
         </span>
@@ -117,7 +117,7 @@ function SidebarContent({ onNavigate }) {
                           <Icon className="h-3.5 w-3.5" />
                         </span>
                         <span className="flex-1">{t(item.label)}</span>
-                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#33152A]" />}
+                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#4F2230]" />}
                       </>
                     )}
                   </NavLink>
@@ -130,7 +130,7 @@ function SidebarContent({ onNavigate }) {
 
       <div className="border-t border-white/10 p-3">
         <div className="mb-2 flex items-center gap-2.5 rounded-xl bg-white/[0.06] px-3 py-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F9B2D7] text-xs font-extrabold text-[#33152A]">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E9D8D9] text-xs font-extrabold text-[#4F2230]">
             {initials(user?.name)}
           </span>
           <div className="min-w-0 flex-1">
@@ -151,7 +151,7 @@ function SidebarContent({ onNavigate }) {
           <button
             type="button"
             onClick={handleLogout}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-white/65 transition-colors hover:bg-danger/20 hover:text-white"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/65 transition-colors hover:bg-danger/20 hover:text-white"
             aria-label={t('admin.shell.logout')}
             title={t('admin.shell.logout')}
           >
@@ -217,7 +217,7 @@ export default function AdminLayout() {
         <div className="fixed inset-0 z-[70] lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-[#161822]/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#2B2726]/60 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
             aria-label={t('admin.shell.closeMenu')}
           />
@@ -225,7 +225,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => setMobileOpen(false)}
-              className="absolute end-3 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-white/70 hover:bg-white/10 hover:text-white"
+              className="absolute end-3 top-4 flex h-8 w-8 items-center justify-center rounded-full text-white/70 hover:bg-white/10 hover:text-white"
               aria-label={t('admin.shell.closeMenu')}
             >
               <X className="h-4 w-4" />
@@ -241,7 +241,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-card text-ink lg:hidden"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-card text-ink lg:hidden"
               aria-label={t('admin.shell.openMenu')}
             >
               <Menu className="h-4 w-4" />
@@ -271,7 +271,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-card text-ink transition-colors hover:bg-surface-muted"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted"
               aria-label={t('admin.shell.theme')}
               title={t('admin.shell.theme')}
             >
@@ -293,7 +293,7 @@ export default function AdminLayout() {
               to="/admin/settings"
               className="ms-1 hidden items-center gap-2 rounded-xl border border-line bg-card px-2.5 py-1.5 transition-colors hover:bg-surface-muted sm:flex"
             >
-              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-primary text-[10px] font-extrabold text-white">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[10px] font-extrabold text-white">
                 {initials(user?.name)}
               </span>
               <span className="max-w-[7rem] truncate text-[11px] font-extrabold text-ink">{user?.name}</span>

@@ -166,8 +166,8 @@ export default function AiLessonTools({ lessonId, courseTitle = '', title = '', 
               onClick={() => openMode(item.key)}
               className={`group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] font-extrabold transition-all ${
                 active
-                  ? 'border-transparent bg-[linear-gradient(135deg,#A84569,#943A5B)] text-white shadow-[0_10px_26px_-12px_rgba(168,69,105,0.55)] dark:bg-[linear-gradient(135deg,#F9B2D7,#FBC6DE)] dark:text-[#33152A]'
-                  : 'border-line bg-card text-ink-muted hover:border-primary/40 hover:text-primary dark:hover:border-[#F9B2D7]/40 dark:hover:text-[#F9B2D7]'
+                  ? 'border-transparent bg-[linear-gradient(135deg,#642D3D,#4F2230)] text-white shadow-[0_10px_26px_-12px_rgba(100,45,61,0.55)] dark:bg-[linear-gradient(135deg,#B58B83,#EFDADB)] dark:text-[#4F2230]'
+                  : 'border-line bg-card text-ink-muted hover:border-primary/40 hover:text-primary dark:hover:border-[#B58B83]/40 dark:hover:text-[#B58B83]'
               }`}
             >
               <Icon className={`h-3.5 w-3.5 ${busy && mode === item.key ? 'animate-pulse' : ''}`} />
@@ -307,7 +307,7 @@ function ChipRow({ title, items, value, langOf, onSelect }) {
               onClick={() => onSelect(item.key)}
               className={`rounded-full border px-3.5 py-1.5 text-[11px] font-bold transition-colors ${
                 value === item.key
-                  ? 'border-transparent bg-primary text-on-primary dark:bg-[#F9B2D7] dark:text-[#33152A]'
+                  ? 'border-transparent bg-primary text-on-primary dark:bg-[#CBAEB1] dark:text-[#4F2230]'
                   : 'border-line bg-card text-ink-muted hover:border-primary/40'
               }`}
             >

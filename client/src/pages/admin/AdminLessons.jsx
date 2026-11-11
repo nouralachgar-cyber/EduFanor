@@ -116,7 +116,7 @@ export default function AdminLessons() {
   };
 
   return (
-    <div className="space-y-6 bg-[#F5F5F5] min-h-screen p-6 text-[#4B164C]">
+    <div className="space-y-6 bg-[#FAF7F4] min-h-screen p-6 text-[#642D3D]">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.lessonsPage.title')}
@@ -126,7 +126,7 @@ export default function AdminLessons() {
             <button
               type="button"
               onClick={loadLessons}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30 shadow-sm"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#CBAEB1] bg-[#E9D8D9] text-[#642D3D] transition-colors hover:bg-[#CBAEB1]/30 shadow-sm"
               aria-label={t('admin.common.refresh')}
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -134,36 +134,36 @@ export default function AdminLessons() {
             <button 
               type="button" 
               onClick={() => navigate('/admin/lessons/new')} 
-              className="flex items-center gap-1.5 rounded-xl bg-[#4B164C] px-4 py-2.5 text-xs font-extrabold text-[#F8E7F6] shadow-sm hover:bg-[#4B164C]/90"
+              className="flex items-center gap-1.5 rounded-xl bg-[#642D3D] px-4 py-2.5 text-xs font-extrabold text-[#E9D8D9] shadow-sm hover:bg-[#642D3D]/90"
             >
-              <Plus className="h-4 w-4 text-[#DD88CF]" /> {t('admin.lessonsPage.newLesson')}
+              <Plus className="h-4 w-4 text-[#CBAEB1]" /> {t('admin.lessonsPage.newLesson')}
             </button>
           </div>
         }
       />
 
       <div className="flex flex-wrap items-center gap-2">
-        <Badge tone="sage" className="bg-[#F8E7F6] text-[#4B164C] border border-[#DD88CF]"><Layers className="h-3 w-3 text-[#DD88CF]" /> {t('admin.common.lessons')}: {formatNumber(lessons.length, i18n.language)}</Badge>
+        <Badge tone="sage" className="bg-[#E9D8D9] text-[#642D3D] border border-[#CBAEB1]"><Layers className="h-3 w-3 text-[#CBAEB1]" /> {t('admin.common.lessons')}: {formatNumber(lessons.length, i18n.language)}</Badge>
         <Badge tone="green" className="bg-emerald-50 text-emerald-800 border border-emerald-200"><Eye className="h-3 w-3" /> {t('admin.common.published')}: {formatNumber(publishedCount, i18n.language)}</Badge>
         <Badge tone="amber" className="bg-amber-50 text-amber-800 border border-amber-200"><EyeOff className="h-3 w-3" /> {t('admin.common.draft')}: {formatNumber(lessons.length - publishedCount, i18n.language)}</Badge>
       </div>
 
-      <Panel noPadding className="bg-white border border-[#DD88CF]/40 rounded-2xl shadow-sm overflow-hidden">
-        <div className="flex flex-col gap-3 border-b border-[#DD88CF]/30 p-4 bg-[#F8E7F6]/50 sm:flex-row sm:items-center">
+      <Panel noPadding className="bg-white border border-[#CBAEB1]/40 rounded-2xl shadow-sm overflow-hidden">
+        <div className="flex flex-col gap-3 border-b border-[#CBAEB1]/30 p-4 bg-[#E9D8D9]/50 sm:flex-row sm:items-center">
           <div className="relative min-w-0 flex-1">
-            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4B164C]/60" />
+            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#642D3D]/60" />
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.lessonsPage.searchPlaceholder')}
-              className="w-full rounded-xl border border-[#DD88CF] bg-white py-2.5 ps-10 pe-4 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] shadow-sm"
+              className="w-full rounded-xl border border-[#CBAEB1] bg-white py-2.5 ps-10 pe-4 text-xs text-[#642D3D] focus:outline-none focus:ring-2 focus:ring-[#642D3D] shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
           <select 
             value={courseFilter} 
             onChange={(event) => setCourseFilter(event.target.value)} 
-            className="rounded-xl border border-[#DD88CF] bg-white px-4 py-2.5 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] sm:w-52 shadow-sm" 
+            className="rounded-xl border border-[#CBAEB1] bg-white px-4 py-2.5 text-xs text-[#642D3D] focus:outline-none focus:ring-2 focus:ring-[#642D3D] sm:w-52 shadow-sm" 
             aria-label={t('admin.lessonsPage.filterCourse')}
           >
             <option value="">{t('admin.lessonsPage.allCourses')}</option>
@@ -176,7 +176,7 @@ export default function AdminLessons() {
           <select 
             value={statusFilter} 
             onChange={(event) => setStatusFilter(event.target.value)} 
-            className="rounded-xl border border-[#DD88CF] bg-white px-4 py-2.5 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] sm:w-40 shadow-sm" 
+            className="rounded-xl border border-[#CBAEB1] bg-white px-4 py-2.5 text-xs text-[#642D3D] focus:outline-none focus:ring-2 focus:ring-[#642D3D] sm:w-40 shadow-sm" 
             aria-label={t('admin.common.status')}
           >
             <option value="">{t('admin.courses.allStatuses')}</option>
@@ -194,37 +194,37 @@ export default function AdminLessons() {
             title={t('admin.lessonsPage.noLessons')}
             icon={FileText}
             action={
-              <button type="button" onClick={() => navigate('/admin/lessons/new')} className="flex items-center gap-1.5 rounded-xl bg-[#4B164C] px-4 py-2.5 text-xs font-extrabold text-[#F8E7F6] shadow-sm hover:bg-[#4B164C]/90">
-                <Plus className="h-4 w-4 text-[#DD88CF]" /> {t('admin.lessonsPage.newLesson')}
+              <button type="button" onClick={() => navigate('/admin/lessons/new')} className="flex items-center gap-1.5 rounded-xl bg-[#642D3D] px-4 py-2.5 text-xs font-extrabold text-[#E9D8D9] shadow-sm hover:bg-[#642D3D]/90">
+                <Plus className="h-4 w-4 text-[#CBAEB1]" /> {t('admin.lessonsPage.newLesson')}
               </button>
             }
           />
         ) : (
-          <div className="divide-y divide-[#DD88CF]/20">
+          <div className="divide-y divide-[#CBAEB1]/20">
             {lessons.map((lesson) => {
               const courseTitle = localize(lesson.course?.title, i18n.language) || '—';
               const blocks = blockCount(lesson);
               return (
-                <div key={lesson._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between hover:bg-[#F5F5F5]/60 transition-colors">
+                <div key={lesson._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between hover:bg-[#FAF7F4]/60 transition-colors">
                   <div className="flex min-w-0 items-start gap-3.5">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#F8E7F6] text-xs font-extrabold text-[#4B164C] border border-[#DD88CF]/50">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E9D8D9] text-xs font-extrabold text-[#642D3D] border border-[#CBAEB1]/50">
                       {formatNumber(lesson.order || 0, i18n.language)}
                     </span>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <p className="text-xs font-extrabold text-[#4B164C]">{localize(lesson.title, i18n.language)}</p>
-                        <Badge tone={lesson.published ? 'green' : 'amber'} className="bg-[#F8E7F6] text-[#4B164C] border border-[#DD88CF]">
+                        <p className="text-xs font-extrabold text-[#642D3D]">{localize(lesson.title, i18n.language)}</p>
+                        <Badge tone={lesson.published ? 'green' : 'amber'} className="bg-[#E9D8D9] text-[#642D3D] border border-[#CBAEB1]">
                           {lesson.published ? t('admin.common.published') : t('admin.common.draft')}
                         </Badge>
-                        <Badge tone={lesson.reviewStatus === 'reviewed' ? 'green' : lesson.reviewStatus === 'in_review' ? 'amber' : 'outline'} className="bg-[#F5F5F5] text-[#4B164C] border border-[#DD88CF]">
+                        <Badge tone={lesson.reviewStatus === 'reviewed' ? 'green' : lesson.reviewStatus === 'in_review' ? 'amber' : 'outline'} className="bg-[#FAF7F4] text-[#642D3D] border border-[#CBAEB1]">
                           {t(`admin.courses.${lesson.reviewStatus || 'unreviewed'}`)}
                         </Badge>
-                        <Badge tone="outline" className="bg-[#F5F5F5] text-[#4B164C] border border-[#DD88CF]"><Layers className="h-3 w-3 text-[#DD88CF]" /> {formatNumber(blocks, i18n.language)} {t('admin.courses.blocksCount')}</Badge>
+                        <Badge tone="outline" className="bg-[#FAF7F4] text-[#642D3D] border border-[#CBAEB1]"><Layers className="h-3 w-3 text-[#CBAEB1]" /> {formatNumber(blocks, i18n.language)} {t('admin.courses.blocksCount')}</Badge>
                       </div>
-                      <p className="mt-1 text-[10px] font-bold text-[#4B164C]/70">
+                      <p className="mt-1 text-[10px] font-bold text-[#642D3D]/70">
                         {t('admin.lessonsPage.courseCol')}: {courseTitle} · {formatDateTime(lesson.updatedAt, i18n.language)}
                       </p>
-                      <p className="mt-0.5 line-clamp-1 max-w-2xl text-xs text-[#4B164C]/80">
+                      <p className="mt-0.5 line-clamp-1 max-w-2xl text-xs text-[#642D3D]/80">
                         {localize(lesson.content, i18n.language) || '—'}
                       </p>
                     </div>
@@ -234,31 +234,31 @@ export default function AdminLessons() {
                       type="button"
                       onClick={() => togglePublish(lesson)}
                       disabled={togglingId === lesson._id}
-                      className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30 shadow-sm disabled:opacity-40"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#CBAEB1] bg-[#E9D8D9] text-[#642D3D] transition-colors hover:bg-[#CBAEB1]/30 shadow-sm disabled:opacity-40"
                       aria-label={lesson.published ? t('admin.lessonsPage.unpublish') : t('admin.lessonsPage.publishNow')}
                       title={lesson.published ? t('admin.lessonsPage.unpublish') : t('admin.lessonsPage.publishNow')}
                     >
                       {togglingId === lesson._id ? (
-                        <RefreshCw className="h-4 w-4 animate-spin text-[#DD88CF]" />
+                        <RefreshCw className="h-4 w-4 animate-spin text-[#CBAEB1]" />
                       ) : lesson.published ? (
-                        <EyeOff className="h-4 w-4 text-[#DD88CF]" />
+                        <EyeOff className="h-4 w-4 text-[#CBAEB1]" />
                       ) : (
-                        <Eye className="h-4 w-4 text-[#DD88CF]" />
+                        <Eye className="h-4 w-4 text-[#CBAEB1]" />
                       )}
                     </button>
                     <button
                       type="button"
                       onClick={() => navigate(`/admin/lessons/${lesson._id}`)}
-                      className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30 shadow-sm"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#CBAEB1] bg-[#E9D8D9] text-[#642D3D] transition-colors hover:bg-[#CBAEB1]/30 shadow-sm"
                       aria-label={t('admin.common.edit')}
                       title={t('admin.common.edit')}
                     >
-                      <Edit3 className="h-4 w-4 text-[#DD88CF]" />
+                      <Edit3 className="h-4 w-4 text-[#CBAEB1]" />
                     </button>
                     <button
                       type="button"
                       onClick={() => setDeleting(lesson)}
-                      className="flex h-8 w-8 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition-colors hover:bg-red-100 shadow-sm"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 transition-colors hover:bg-red-100 shadow-sm"
                       aria-label={t('admin.common.delete')}
                       title={t('admin.common.delete')}
                     >

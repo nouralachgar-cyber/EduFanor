@@ -10,8 +10,8 @@ export default function ProtectedRoute({ children, requireAdmin }) {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#F5F5F5]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#DD88CF] border-t-[#4B164C]" />
+      <div className="flex min-h-screen items-center justify-center bg-[#FAF7F4]">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#CBAEB1] border-t-[#642D3D]" />
       </div>
     );
   }

@@ -23,7 +23,7 @@ export default function AuthLayout({ children }) {
             aria-hidden="true"
           />
           <div
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_18%,rgba(249,178,215,0.16),transparent_52%),radial-gradient(ellipse_at_18%_85%,rgba(127,205,159,0.12),transparent_46%)]"
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_18%,rgba(181,139,131,0.16),transparent_52%),radial-gradient(ellipse_at_18%_85%,rgba(127,205,159,0.12),transparent_46%)]"
             aria-hidden="true"
           />
           <div
@@ -38,7 +38,7 @@ export default function AuthLayout({ children }) {
 
           <div className="relative z-10">
             <Link to="/" className="inline-flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F9B2D7] text-[#33152A] shadow-[0_12px_30px_-12px_rgba(0,0,0,0.55)]">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E9D8D9] text-[#4F2230] shadow-[0_12px_30px_-12px_rgba(0,0,0,0.55)]">
                 <ShieldCheck className="h-5 w-5" />
               </span>
               <span className="font-display text-xl font-semibold tracking-tight">EduFanor</span>
@@ -46,7 +46,7 @@ export default function AuthLayout({ children }) {
           </div>
 
           <div className="relative z-10 max-w-md">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#F9B2D7]">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#B58B83]">
               {isAr ? 'تعلّم بثقة ووضوح' : 'Learn with clarity and confidence'}
             </p>
             <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight">
@@ -54,13 +54,13 @@ export default function AuthLayout({ children }) {
                 <>
                   معرفة صغيرة.
                   <br />
-                  <span className="italic text-[#F9B2D7]">استعداد أكبر.</span>
+                  <span className="italic text-[#B58B83]">استعداد أكبر.</span>
                 </>
               ) : (
                 <>
                   A little knowledge.
                   <br />
-                  <span className="italic text-[#F9B2D7]">A calmer response.</span>
+                  <span className="italic text-[#B58B83]">A calmer response.</span>
                 </>
               )}
             </h2>
@@ -73,7 +73,7 @@ export default function AuthLayout({ children }) {
             <ul className="mt-8 space-y-3">
               {points.map((point) => (
                 <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-[#FDF7FA]/85">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#F9B2D7]" />
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#B58B83]" />
                   <span className="leading-relaxed">{point}</span>
                 </li>
               ))}
@@ -107,7 +107,7 @@ export default function AuthLayout({ children }) {
               <button
                 type="button"
                 onClick={toggleTheme}
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface text-ink transition-colors hover:bg-surface-muted"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-ink transition-colors hover:bg-surface-muted"
                 aria-label={t('nav.toggleTheme')}
               >
                 {isDark ? <Sun className="h-4 w-4 text-amber" /> : <Moon className="h-4 w-4 text-primary" />}
@@ -118,7 +118,7 @@ export default function AuthLayout({ children }) {
           <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6">
             <div className="w-full max-w-md">
               <div className="mb-6 flex items-center gap-3 lg:hidden">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
                   <ShieldCheck className="h-5 w-5" />
                 </span>
                 <span className="font-display text-lg font-semibold tracking-tight text-ink">EduFanor</span>

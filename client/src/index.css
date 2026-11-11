@@ -2,148 +2,151 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ============================================================
+   EduFanor — Warm Burgundy × Soft Rose palette (test palette)
+   ============================================================ */
+:root {
+  /* Brand */
+  --primary: #642D3D;
+  --primary-hover: #4F2230;
+  --primary-active: #421B28;
+  --secondary: #9A6873;
+  --accent: #B58B83;
+
+  /* Backgrounds */
+  --bg-main: #FAF7F4;
+  --bg-secondary: #F1EBE8;
+  --bg-card: #FFFFFF;
+  --bg-highlight: #E9D8D9;
+  --bg-dark: #343333;
+
+  /* Text */
+  --text-primary: #343333;
+  --text-secondary: #665C59;
+  --text-muted: #8B807B;
+  --text-inverse: #FFFFFF;
+
+  /* Borders and interactions */
+  --border: #E7E0DC;
+  --border-hover: #CBAEB1;
+  --focus-ring: #AD7885;
+
+  /* Learning status */
+  --success: #315B45;
+  --success-bg: #E9EFE8;
+  --warning: #805C27;
+  --warning-bg: #F7EEDB;
+  --error: #A33D37;
+  --error-bg: #FBE7E5;
+}
+
+/* Dark theme: warm dark surfaces derived from the same palette hues */
+.dark {
+  --primary: #E9D8D9;
+  --primary-hover: #F2E4E5;
+  --primary-active: #DFC4C6;
+  --secondary: #C9A8AE;
+  --accent: #CBAEB1;
+
+  --bg-main: #262323;
+  --bg-secondary: #343333;
+  --bg-card: #3D3A39;
+  --bg-highlight: #4A3E3F;
+  --bg-dark: #211F1F;
+
+  --text-primary: #F1EBE8;
+  --text-secondary: #C6BBB7;
+  --text-muted: #A09590;
+  --text-inverse: #421B28;
+
+  --border: #4E4746;
+  --border-hover: #6E5A5D;
+  --focus-ring: #CBAEB1;
+
+  --success: #BFE0C9;
+  --success-bg: #263A2E;
+  --warning: #E3CFA5;
+  --warning-bg: #3B3222;
+  --error: #E8A09B;
+  --error-bg: #4A2826;
+}
+
 @theme {
   --font-sans: "Plus Jakarta Sans", "Tajawal", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Fraunces", "Tajawal", ui-serif, Georgia, "Times New Roman", serif;
   --font-arabic: "Tajawal", "Plus Jakarta Sans", ui-sans-serif, sans-serif;
 
-  /* ============================================================
-     EduFanor — Pastel Medical × Modern Education
-     Pastels: pink #F9B2D7 · sky #CFECF3 · mint #DAF9DE · cream #F6FFDC
-     Semantic: mint/cream content, sky/teal data & info,
-               rose-pink highlights/actions, amber = soft warning-rose
-     ============================================================ */
+  /* Brand */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-on-primary: var(--text-inverse);
+  --color-secondary: var(--secondary);
+  --color-brand: var(--primary);
+  --color-brand-ink: var(--primary-hover);
+  --color-brand-soft: var(--bg-highlight);
+  --color-accent: var(--accent);
+  --color-amber: var(--warning);
+  --color-amber-soft: var(--warning-bg);
 
-  --color-pink: #F9B2D7;
-  --color-pink-soft: #FBE7F0;
-  --color-pink-ink: #A84569;
+  /* Pastel slots remapped to the palette */
+  --color-pink: var(--bg-highlight);
+  --color-pink-soft: var(--bg-secondary);
+  --color-pink-ink: var(--primary);
 
-  --color-sky: #CFECF3;
-  --color-sky-soft: #EAF5F8;
-  --color-sky-ink: #23617B;
+  --color-sky: var(--bg-highlight);
+  --color-sky-soft: var(--bg-secondary);
+  --color-sky-ink: var(--text-secondary);
 
-  --color-mint: #DAF9DE;
-  --color-mint-soft: #ECFAEE;
-  --color-mint-ink: #2F7A4E;
+  --color-mint: var(--success-bg);
+  --color-mint-soft: var(--success-bg);
+  --color-mint-ink: var(--success);
 
-  --color-cream: #F6FFDC;
-  --color-sand: #EFE9D8;
-  --color-beige: #F9F6E8;
+  --color-cream: var(--bg-main);
+  --color-sand: var(--bg-highlight);
+  --color-beige: var(--bg-secondary);
 
-  --color-primary: #A84569;
-  --color-primary-hover: #943A5B;
-  --color-on-primary: #FFFFFF;
-  --color-brand: #A84569;
-  --color-brand-ink: #8D3A56;
-  --color-brand-soft: #FBE7F0;
-  --color-teal: #4E93A9;
-  --color-teal-deep: #23617B;
-  --color-teal-light: #CFECF3;
-  --color-teal-strong: #23617B;
-  --color-medical-teal: #23617B;
-  --color-accent: #C2588A;
-  --color-amber: #C05C86;
-  --color-amber-soft: #FBE0EE;
+  --color-teal: var(--secondary);
+  --color-teal-deep: var(--primary);
+  --color-teal-light: var(--bg-highlight);
+  --color-teal-strong: var(--primary-hover);
+  --color-medical-teal: var(--primary);
 
-  --color-ink: #2F3A45;
-  --color-ink-muted: #64707D;
-  --color-surface: #F6FFDC;
-  --color-surface-muted: #F6F9EF;
-  --color-card: #FFFFFF;
-  --color-elevated: #FFFFFF;
-  --color-line: #E3E8DF;
-  --color-line-strong: #CBD3C8;
+  /* Text & surfaces */
+  --color-ink: var(--text-primary);
+  --color-ink-muted: var(--text-secondary);
+  --color-surface: var(--bg-main);
+  --color-surface-muted: var(--bg-secondary);
+  --color-card: var(--bg-card);
+  --color-elevated: var(--bg-card);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-hover);
 
-  --color-success-soft: #E6F7EA;
-  --color-success-ink: #2F7A4E;
-  --color-danger: #D64550;
-  --color-danger-soft: #FCE9EA;
-  --color-alert-red: #D64550;
+  /* Status */
+  --color-success-soft: var(--success-bg);
+  --color-success-ink: var(--success);
+  --color-danger: var(--error);
+  --color-danger-soft: var(--error-bg);
+  --color-alert-red: var(--error);
 
-  --color-sage: #63B48B;
-  --color-sage-green: #2F7A4E;
+  --color-sage: var(--success);
+  --color-sage-green: var(--success);
 
   /* Legacy aliases (kept for safety, mapped to the new identity) */
-  --color-navy: #2F3A45;
-  --color-navy-deep: #232B33;
-  --color-navy-ink: #2F3A45;
-  --color-navy-pure: #26313B;
-  --color-plum: #8D3A56;
-  --color-burgundy: #7E3450;
-  --color-slate-blue: #E2769F;
-  --color-light-blue-grey: #F6F9EF;
-  --color-soft-blue-grey: #E4EAE2;
-  --color-panel-soft: #FBE7F0;
-  --color-panel-strong: #F3D4E2;
+  --color-navy: var(--bg-dark);
+  --color-navy-deep: var(--bg-dark);
+  --color-navy-ink: var(--text-primary);
+  --color-navy-pure: var(--bg-dark);
+  --color-plum: var(--primary);
+  --color-burgundy: var(--primary-hover);
+  --color-slate-blue: var(--secondary);
+  --color-light-blue-grey: var(--bg-secondary);
+  --color-soft-blue-grey: var(--bg-highlight);
+  --color-panel-soft: var(--bg-highlight);
+  --color-panel-strong: var(--border-hover);
 
-  --shadow-pop: 0 18px 50px -28px rgba(168, 69, 105, 0.28);
-  --shadow-lift: 0 30px 70px -34px rgba(168, 69, 105, 0.34);
-}
-
-.dark {
-  --color-pink: #F9B2D7;
-  --color-pink-soft: #3A2338;
-  --color-pink-ink: #FBC6DE;
-
-  --color-sky: #CFECF3;
-  --color-sky-soft: #1E3441;
-  --color-sky-ink: #C4E7F0;
-
-  --color-mint: #DAF9DE;
-  --color-mint-soft: #22402F;
-  --color-mint-ink: #BFE6C8;
-
-  --color-cream: #242B24;
-  --color-sand: #2A2F39;
-  --color-beige: #1F2621;
-
-  --color-primary: #F9B2D7;
-  --color-primary-hover: #FBC5DF;
-  --color-on-primary: #36182C;
-  --color-brand: #F9B2D7;
-  --color-brand-ink: #FBC6DE;
-  --color-brand-soft: #352231;
-  --color-teal: #8FC6D8;
-  --color-teal-deep: #C4E7F0;
-  --color-teal-light: #1E3441;
-  --color-teal-strong: #C4E7F0;
-  --color-medical-teal: #C4E7F0;
-  --color-accent: #F9B2D7;
-  --color-amber: #F6A8CE;
-  --color-amber-soft: #4A2B3B;
-
-  --color-ink: #F4F2F8;
-  --color-ink-muted: #AEB3C2;
-  --color-surface: #161822;
-  --color-surface-muted: #1D2030;
-  --color-card: #262A3A;
-  --color-elevated: #303548;
-  --color-line: #3D4356;
-  --color-line-strong: #4E556B;
-
-  --color-success-soft: #22402F;
-  --color-success-ink: #A9DFB9;
-  --color-danger: #F0939B;
-  --color-danger-soft: #412229;
-  --color-alert-red: #F0939B;
-
-  --color-sage: #7FCD9F;
-  --color-sage-green: #B5E4C6;
-
-  --color-navy: #161822;
-  --color-navy-deep: #10121A;
-  --color-navy-ink: #F4F2F8;
-  --color-navy-pure: #161822;
-  --color-plum: #E2769F;
-  --color-burgundy: #F6A8CE;
-  --color-slate-blue: #F6A8CE;
-  --color-light-blue-grey: #1D2030;
-  --color-soft-blue-grey: #262A3A;
-  --color-panel-soft: #352231;
-  --color-panel-strong: #4A2B3B;
-
-  --shadow-pop: 0 20px 55px -28px rgba(0, 0, 0, 0.7);
-  --shadow-lift: 0 32px 80px -34px rgba(0, 0, 0, 0.78);
+  --shadow-pop: 0 18px 50px -28px rgba(100, 45, 61, 0.32);
+  --shadow-lift: 0 30px 70px -34px rgba(100, 45, 61, 0.38);
 }
 
 @layer base {
@@ -189,12 +192,12 @@
   }
 
   ::selection {
-    background: rgba(168, 69, 105, 0.24);
+    background: rgba(100, 45, 61, 0.24);
     color: inherit;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
     border-radius: 6px;
   }
@@ -239,7 +242,7 @@
     border-radius: 1.5rem;
     border: 1px solid var(--color-line);
     background-color: var(--color-card);
-    box-shadow: 0 1px 0 rgba(47, 58, 69, 0.04);
+    box-shadow: 0 1px 0 rgba(52, 51, 51, 0.04);
   }
 
   .card-hover {
@@ -276,7 +279,7 @@
   .btn-primary {
     background-color: var(--color-primary);
     color: var(--color-on-primary);
-    box-shadow: 0 12px 26px -14px rgba(168, 69, 105, 0.45);
+    box-shadow: 0 12px 26px -14px rgba(100, 45, 61, 0.45);
   }
 
   .btn-primary:hover {
@@ -335,7 +338,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.85rem;
+    border-radius: 9999px;
     flex-shrink: 0;
   }
 
@@ -364,7 +367,7 @@
 
   .input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(168, 69, 105, 0.18);
+    box-shadow: 0 0 0 4px rgba(173, 120, 133, 0.22);
   }
 
   .input:disabled {
@@ -439,8 +442,8 @@
   .app-shell {
     min-height: 100vh;
     background:
-      radial-gradient(circle at 100% 0%, rgba(249, 178, 215, 0.22), transparent 38%),
-      radial-gradient(circle at 0% 100%, rgba(218, 249, 222, 0.4), transparent 42%),
+      radial-gradient(circle at 100% 0%, rgba(181, 139, 131, 0.2), transparent 38%),
+      radial-gradient(circle at 0% 100%, rgba(233, 216, 217, 0.4), transparent 42%),
       var(--color-surface);
   }
 }
@@ -507,7 +510,7 @@
       to bottom,
       transparent 0,
       transparent 31px,
-      rgba(47, 58, 69, 0.1) 32px
+      rgba(52, 51, 51, 0.1) 32px
     );
     background-size: 100% 32px;
   }

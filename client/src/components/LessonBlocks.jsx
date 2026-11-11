@@ -286,7 +286,7 @@ export function LessonBlockRenderer({ block, isAr }) {
           return (
             <div key={index} className="relative flex gap-4 rounded-2xl border border-line bg-card p-4">
               <div className="flex flex-col items-center gap-2">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary font-extrabold text-on-primary">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary font-extrabold text-on-primary">
                   {index + 1}
                 </div>
                 {index < steps.length - 1 && <div className="hidden w-px flex-1 bg-line sm:block" />}
@@ -364,7 +364,7 @@ export function LessonBlockRenderer({ block, isAr }) {
         rel="noreferrer"
         className="my-4 flex items-center gap-3 rounded-2xl border border-line bg-card p-4 transition-colors hover:border-primary/40 hover:bg-surface-muted"
       >
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand-ink">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand-ink">
           <FileDown className="h-5 w-5" />
         </span>
         <span className="min-w-0 flex-1">

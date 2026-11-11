@@ -185,7 +185,7 @@ export default function Dashboard() {
       icon: Flame,
       label: t('dashboard.stats.learningStreak'),
       value: `${streak} ${t('dashboard.stats.days')}`,
-      color: 'bg-pink-soft text-[#A84569] dark:text-[#F9B2D7]',
+      color: 'bg-pink-soft text-[#642D3D] dark:text-[#CBAEB1]',
     },
   ];
 
@@ -197,7 +197,7 @@ export default function Dashboard() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 88% 12%, rgba(249, 178, 215,0.32), transparent 46%), radial-gradient(circle at 6% 96%, rgba(207, 236, 243,0.5), transparent 52%)',
+                'radial-gradient(circle at 88% 12%, rgba(181, 139, 131,0.32), transparent 46%), radial-gradient(circle at 6% 96%, rgba(203, 174, 177,0.5), transparent 52%)',
             }}
             aria-hidden="true"
           />
@@ -278,7 +278,7 @@ export default function Dashboard() {
         </section>
 
         <section className="card flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-line bg-surface-muted text-lg font-extrabold text-ink">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-line bg-surface-muted text-lg font-extrabold text-ink">
             {user?.name ? user.name.charAt(0).toUpperCase() : 'E'}
           </div>
           <div className="min-w-0 flex-1">

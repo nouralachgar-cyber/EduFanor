@@ -83,7 +83,7 @@ export default function Sidebar() {
               to="/admin"
               className={`mt-2 flex items-center gap-3 rounded-xl border border-amber/30 px-3.5 py-2.5 text-xs font-bold transition-all ${
                 location.pathname === '/admin'
-                  ? 'bg-accent text-white dark:text-[#33152A]'
+                  ? 'bg-accent text-white dark:text-[#4F2230]'
                   : 'bg-amber/10 text-ink hover:bg-amber/20'
               }`}
             >

@@ -116,7 +116,7 @@ export default function AdminStudents() {
   );
 
   return (
-    <div className="space-y-6 bg-[#F5F5F5] min-h-screen p-6 text-[#4B164C]">
+    <div className="space-y-6 bg-[#FAF7F4] min-h-screen p-6 text-[#642D3D]">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.students.title')}
@@ -125,7 +125,7 @@ export default function AdminStudents() {
           <button
             type="button"
             onClick={load}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30 shadow-sm"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#CBAEB1] bg-[#E9D8D9] text-[#642D3D] transition-colors hover:bg-[#CBAEB1]/30 shadow-sm"
             aria-label={t('admin.common.refresh')}
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -134,37 +134,37 @@ export default function AdminStudents() {
       />
 
       <div className="flex flex-wrap items-center gap-2">
-        <Badge tone="green" className="bg-[#F8E7F6] text-[#4B164C] border border-[#DD88CF]">
-          <Users className="h-3.5 w-3.5 text-[#DD88CF]" /> {formatNumber(pagination.total, i18n.language)} {t('admin.common.students')}
+        <Badge tone="green" className="bg-[#E9D8D9] text-[#642D3D] border border-[#CBAEB1]">
+          <Users className="h-3.5 w-3.5 text-[#CBAEB1]" /> {formatNumber(pagination.total, i18n.language)} {t('admin.common.students')}
         </Badge>
         <Badge tone="sage" className="bg-emerald-50 text-emerald-800 border border-emerald-200">{t('admin.common.active')}: {formatNumber(summary.active, i18n.language)}</Badge>
         <Badge tone="red" className="bg-red-50 text-red-700 border border-red-200">{t('admin.common.suspended')}: {formatNumber(summary.suspended, i18n.language)}</Badge>
       </div>
 
-      <Panel noPadding className="bg-white border border-[#DD88CF]/40 rounded-2xl shadow-sm overflow-hidden">
-        <div className="flex flex-col gap-3 border-b border-[#DD88CF]/30 p-4 bg-[#F8E7F6]/50 lg:flex-row lg:items-center">
+      <Panel noPadding className="bg-white border border-[#CBAEB1]/40 rounded-2xl shadow-sm overflow-hidden">
+        <div className="flex flex-col gap-3 border-b border-[#CBAEB1]/30 p-4 bg-[#E9D8D9]/50 lg:flex-row lg:items-center">
           <div className="relative min-w-0 flex-1">
-            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#4B164C]/60" />
+            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#642D3D]/60" />
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.students.searchPlaceholder')}
-              className="w-full rounded-xl border border-[#DD88CF] bg-white py-2.5 ps-10 pe-4 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] shadow-sm"
+              className="w-full rounded-xl border border-[#CBAEB1] bg-white py-2.5 ps-10 pe-4 text-xs text-[#642D3D] focus:outline-none focus:ring-2 focus:ring-[#642D3D] shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-            <select value={status} onChange={(event) => setStatus(event.target.value)} className="rounded-xl border border-[#DD88CF] bg-white px-4 py-2.5 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] shadow-sm" aria-label={t('admin.common.status')}>
+            <select value={status} onChange={(event) => setStatus(event.target.value)} className="rounded-xl border border-[#CBAEB1] bg-white px-4 py-2.5 text-xs text-[#642D3D] focus:outline-none focus:ring-2 focus:ring-[#642D3D] shadow-sm" aria-label={t('admin.common.status')}>
               <option value="">{t('admin.students.allStatuses')}</option>
               <option value="active">{t('admin.common.active')}</option>
               <option value="suspended">{t('admin.common.suspended')}</option>
             </select>
-            <select value={activity} onChange={(event) => setActivity(event.target.value)} className="rounded-xl border border-[#DD88CF] bg-white px-4 py-2.5 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] shadow-sm" aria-label={t('admin.common.filter')}>
+            <select value={activity} onChange={(event) => setActivity(event.target.value)} className="rounded-xl border border-[#CBAEB1] bg-white px-4 py-2.5 text-xs text-[#642D3D] focus:outline-none focus:ring-2 focus:ring-[#642D3D] shadow-sm" aria-label={t('admin.common.filter')}>
               <option value="">{t('admin.students.allActivity')}</option>
               <option value="active">{t('admin.students.onlyActive')}</option>
               <option value="inactive">{t('admin.students.onlyInactive')}</option>
             </select>
-            <select value={sort} onChange={(event) => setSort(event.target.value)} className="rounded-xl border border-[#DD88CF] bg-white px-4 py-2.5 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] col-span-2 sm:col-span-1 shadow-sm" aria-label={t('admin.common.filter')}>
+            <select value={sort} onChange={(event) => setSort(event.target.value)} className="rounded-xl border border-[#CBAEB1] bg-white px-4 py-2.5 text-xs text-[#642D3D] focus:outline-none focus:ring-2 focus:ring-[#642D3D] col-span-2 sm:col-span-1 shadow-sm" aria-label={t('admin.common.filter')}>
               {sorts.map((option) => (
                 <option key={option} value={option}>
                   {t(`admin.students.sort${option.charAt(0).toUpperCase()}${option.slice(1)}`, { defaultValue: option })}
@@ -185,7 +185,7 @@ export default function AdminStudents() {
             <div className="admin-scroll hidden overflow-x-auto md:block">
               <table className="admin-table w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#DD88CF]/30 bg-[#F8E7F6]/50 text-xs text-[#4B164C]">
+                  <tr className="border-b border-[#CBAEB1]/30 bg-[#E9D8D9]/50 text-xs text-[#642D3D]">
                     <th className="p-3.5">{t('admin.students.name')}</th>
                     <th className="p-3.5">{t('admin.common.status')}</th>
                     <th className="p-3.5">{t('admin.students.joined')}</th>
@@ -196,17 +196,17 @@ export default function AdminStudents() {
                     <th className="p-3.5">{t('admin.common.actions')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#DD88CF]/20 text-xs">
+                <tbody className="divide-y divide-[#CBAEB1]/20 text-xs">
                   {rows.map((student) => (
-                    <tr key={student._id} className="hover:bg-[#F5F5F5]/60 transition-colors">
+                    <tr key={student._id} className="hover:bg-[#FAF7F4]/60 transition-colors">
                       <td className="p-3.5">
                         <Link to={`/admin/students/${student._id}`} className="group flex items-center gap-3">
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#F8E7F6] text-xs font-extrabold text-[#4B164C] border border-[#DD88CF]/50">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#E9D8D9] text-xs font-extrabold text-[#642D3D] border border-[#CBAEB1]/50">
                             {initials(student.name)}
                           </span>
                           <span className="min-w-0">
-                            <span className="block truncate text-xs font-extrabold text-[#4B164C] group-hover:text-[#DD88CF]">{student.name}</span>
-                            <span className="block truncate text-[10px] text-[#4B164C]/70" dir="ltr">{student.email}</span>
+                            <span className="block truncate text-xs font-extrabold text-[#642D3D] group-hover:text-[#CBAEB1]">{student.name}</span>
+                            <span className="block truncate text-[10px] text-[#642D3D]/70" dir="ltr">{student.email}</span>
                           </span>
                         </Link>
                       </td>
@@ -217,20 +217,20 @@ export default function AdminStudents() {
                           </Badge>
                         </div>
                       </td>
-                      <td className="p-3.5 text-xs text-[#4B164C]/70">{formatDate(student.createdAt, i18n.language)}</td>
-                      <td className="p-3.5 text-xs text-[#4B164C]/70">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</td>
-                      <td className="p-3.5 font-bold text-[#4B164C]">{formatNumber(student.completedLessonCount || 0, i18n.language)}</td>
-                      <td className="p-3.5 font-bold text-[#4B164C]">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</td>
-                      <td className="p-3.5 font-bold text-[#4B164C]">{formatPercent(student.bestQuiz, i18n.language)}</td>
+                      <td className="p-3.5 text-xs text-[#642D3D]/70">{formatDate(student.createdAt, i18n.language)}</td>
+                      <td className="p-3.5 text-xs text-[#642D3D]/70">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</td>
+                      <td className="p-3.5 font-bold text-[#642D3D]">{formatNumber(student.completedLessonCount || 0, i18n.language)}</td>
+                      <td className="p-3.5 font-bold text-[#642D3D]">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</td>
+                      <td className="p-3.5 font-bold text-[#642D3D]">{formatPercent(student.bestQuiz, i18n.language)}</td>
                       <td className="p-3.5">
                         <div className="flex items-center gap-2">
                           <Link
                             to={`/admin/students/${student._id}`}
-                            className="flex h-8 w-8 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30 shadow-sm"
+                            className="flex h-8 w-8 items-center justify-center rounded-full border border-[#CBAEB1] bg-[#E9D8D9] text-[#642D3D] transition-colors hover:bg-[#CBAEB1]/30 shadow-sm"
                             aria-label={t('admin.common.view')}
                             title={t('admin.common.view')}
                           >
-                            <ArrowUpRight className="h-4 w-4 text-[#DD88CF]" />
+                            <ArrowUpRight className="h-4 w-4 text-[#CBAEB1]" />
                           </Link>
                           <button
                             type="button"
@@ -258,43 +258,43 @@ export default function AdminStudents() {
               </table>
             </div>
 
-            <div className="divide-y divide-[#DD88CF]/20 md:hidden">
+            <div className="divide-y divide-[#CBAEB1]/20 md:hidden">
               {rows.map((student) => (
-                <div key={student._id} className="p-4 hover:bg-[#F5F5F5]/60 transition-colors">
+                <div key={student._id} className="p-4 hover:bg-[#FAF7F4]/60 transition-colors">
                   <div className="flex items-start gap-3.5">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F8E7F6] text-xs font-extrabold text-[#4B164C] border border-[#DD88CF]/50">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#E9D8D9] text-xs font-extrabold text-[#642D3D] border border-[#CBAEB1]/50">
                       {initials(student.name)}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <Link to={`/admin/students/${student._id}`} className="block truncate text-xs font-extrabold text-[#4B164C]">
+                      <Link to={`/admin/students/${student._id}`} className="block truncate text-xs font-extrabold text-[#642D3D]">
                         {student.name}
                       </Link>
-                      <p className="flex items-center gap-1.5 truncate text-[10px] text-[#4B164C]/70" dir="ltr">
-                        <Mail className="h-3.5 w-3.5 shrink-0 text-[#DD88CF]" /> {student.email}
+                      <p className="flex items-center gap-1.5 truncate text-[10px] text-[#642D3D]/70" dir="ltr">
+                        <Mail className="h-3.5 w-3.5 shrink-0 text-[#CBAEB1]" /> {student.email}
                       </p>
                       <div className="mt-2.5 flex flex-wrap items-center gap-2">
                         <Badge tone={student.status === 'suspended' ? 'red' : 'green'} className={student.status === 'suspended' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}>
                           {student.status === 'suspended' ? t('admin.common.suspended') : t('admin.common.active')}
                         </Badge>
-                        <Badge tone="outline" className="bg-[#F5F5F5] text-[#4B164C] border border-[#DD88CF]">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</Badge>
+                        <Badge tone="outline" className="bg-[#FAF7F4] text-[#642D3D] border border-[#CBAEB1]">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</Badge>
                       </div>
                       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-                        <div className="rounded-xl border border-[#DD88CF]/30 bg-[#F5F5F5] p-2">
-                          <p className="text-[9px] font-bold text-[#4B164C]/60">{t('admin.students.lessonsDone')}</p>
-                          <p className="text-xs font-extrabold text-[#4B164C]">{formatNumber(student.completedLessonCount || 0, i18n.language)}</p>
+                        <div className="rounded-xl border border-[#CBAEB1]/30 bg-[#FAF7F4] p-2">
+                          <p className="text-[9px] font-bold text-[#642D3D]/60">{t('admin.students.lessonsDone')}</p>
+                          <p className="text-xs font-extrabold text-[#642D3D]">{formatNumber(student.completedLessonCount || 0, i18n.language)}</p>
                         </div>
-                        <div className="rounded-xl border border-[#DD88CF]/30 bg-[#F5F5F5] p-2">
-                          <p className="text-[9px] font-bold text-[#4B164C]/60">{t('admin.students.quizzesTaken')}</p>
-                          <p className="text-xs font-extrabold text-[#4B164C]">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</p>
+                        <div className="rounded-xl border border-[#CBAEB1]/30 bg-[#FAF7F4] p-2">
+                          <p className="text-[9px] font-bold text-[#642D3D]/60">{t('admin.students.quizzesTaken')}</p>
+                          <p className="text-xs font-extrabold text-[#642D3D]">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</p>
                         </div>
-                        <div className="rounded-xl border border-[#DD88CF]/30 bg-[#F5F5F5] p-2">
-                          <p className="text-[9px] font-bold text-[#4B164C]/60">{t('admin.students.bestScore')}</p>
-                          <p className="text-xs font-extrabold text-[#4B164C]">{formatPercent(student.bestQuiz, i18n.language)}</p>
+                        <div className="rounded-xl border border-[#CBAEB1]/30 bg-[#FAF7F4] p-2">
+                          <p className="text-[9px] font-bold text-[#642D3D]/60">{t('admin.students.bestScore')}</p>
+                          <p className="text-xs font-extrabold text-[#642D3D]">{formatPercent(student.bestQuiz, i18n.language)}</p>
                         </div>
                       </div>
                       <div className="mt-3 flex gap-2">
-                        <Link to={`/admin/students/${student._id}`} className="flex-1 rounded-xl border border-[#DD88CF] bg-[#F8E7F6] py-2 text-center text-xs font-bold text-[#4B164C] hover:bg-[#DD88CF]/30 transition-colors shadow-sm flex items-center justify-center gap-1.5">
-                          <UserRound className="h-3.5 w-3.5 text-[#DD88CF]" /> {t('admin.common.view')}
+                        <Link to={`/admin/students/${student._id}`} className="flex-1 rounded-xl border border-[#CBAEB1] bg-[#E9D8D9] py-2 text-center text-xs font-bold text-[#642D3D] hover:bg-[#CBAEB1]/30 transition-colors shadow-sm flex items-center justify-center gap-1.5">
+                          <UserRound className="h-3.5 w-3.5 text-[#CBAEB1]" /> {t('admin.common.view')}
                         </Link>
                         <button
                           type="button"

@@ -1,25 +1,25 @@
 .admin-shell {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 100% 0%, rgba(249, 178, 215, 0.2), transparent 34%),
-    radial-gradient(circle at 0% 100%, rgba(207, 236, 243, 0.35), transparent 40%),
+    radial-gradient(circle at 100% 0%, rgba(181, 139, 131, 0.2), transparent 34%),
+    radial-gradient(circle at 0% 100%, rgba(203, 174, 177, 0.35), transparent 40%),
     var(--color-surface);
 }
 
 .dark .admin-shell {
   background:
-    radial-gradient(circle at 100% 0%, rgba(249, 178, 215, 0.09), transparent 34%),
-    radial-gradient(circle at 0% 100%, rgba(79, 195, 190, 0.06), transparent 40%),
+    radial-gradient(circle at 100% 0%, rgba(181, 139, 131, 0.09), transparent 34%),
+    radial-gradient(circle at 0% 100%, rgba(154, 104, 115, 0.06), transparent 40%),
     var(--color-surface);
 }
 
 .admin-sidebar {
-  background: linear-gradient(180deg, #252d36, #1b222a);
-  color: #aeb9c4;
+  background: linear-gradient(180deg, #3B3536, #2B2626);
+  color: #C6BBB7;
 }
 
 .dark .admin-sidebar {
-  background: linear-gradient(180deg, #14161f, #191c28);
+  background: linear-gradient(180deg, #211F1F, #2B2626);
 }
 
 .admin-nav-link {
@@ -35,28 +35,28 @@
 }
 
 .admin-nav-link:hover {
-  color: #f9b2d7;
+  color: #B58B83;
   background-color: rgba(255, 255, 255, 0.06);
 }
 
 .admin-nav-link-active,
 .admin-nav-link-active:hover {
-  color: #33152a;
-  background-color: #f9b2d7;
+  color: #4F2230;
+  background-color: #B58B83;
   box-shadow: 0 12px 28px -18px rgba(0, 0, 0, 0.75);
 }
 
 .dark .admin-nav-link-active,
 .dark .admin-nav-link-active:hover {
-  color: #36182c;
-  background-color: #f9b2d7;
+  color: #421B28;
+  background-color: #B58B83;
 }
 
 .admin-card {
   border-radius: 1.35rem;
   border: 1px solid var(--color-line);
   background-color: var(--color-card);
-  box-shadow: 0 1px 0 rgba(47, 58, 69, 0.03);
+  box-shadow: 0 1px 0 rgba(52, 51, 51, 0.03);
 }
 
 .admin-table {
@@ -116,18 +116,18 @@
   overflow: hidden;
   border-radius: 1.6rem;
   background:
-    radial-gradient(circle at 88% 15%, rgba(249, 178, 215, 0.4), transparent 32%),
-    radial-gradient(circle at 12% 110%, rgba(207, 236, 243, 0.32), transparent 40%),
-    linear-gradient(135deg, #a84569 0%, #a84569 55%, #943a5b 100%);
-  color: #fff7fc;
+    radial-gradient(circle at 88% 15%, rgba(181, 139, 131, 0.4), transparent 32%),
+    radial-gradient(circle at 12% 110%, rgba(203, 174, 177, 0.32), transparent 40%),
+    linear-gradient(135deg, #642D3D 0%, #642D3D 55%, #4F2230 100%);
+  color: #FAF7F4;
 }
 
 .dark .admin-hero {
   background:
-    radial-gradient(circle at 88% 15%, rgba(249, 178, 215, 0.22), transparent 32%),
-    radial-gradient(circle at 12% 110%, rgba(207, 236, 243, 0.12), transparent 40%),
-    linear-gradient(135deg, #2a2438 0%, #232031 55%, #1c1a2a 100%);
-  color: #fbeef5;
+    radial-gradient(circle at 88% 15%, rgba(181, 139, 131, 0.22), transparent 32%),
+    radial-gradient(circle at 12% 110%, rgba(203, 174, 177, 0.12), transparent 40%),
+    linear-gradient(135deg, #3A3233 0%, #322B2C 55%, #2B2626 100%);
+  color: #F1EBE8;
 }
 
 .admin-hero::after {
@@ -141,7 +141,7 @@
 }
 
 .dark .admin-hero::after {
-  background-image: radial-gradient(rgba(249, 178, 215, 0.28) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(181, 139, 131, 0.28) 1px, transparent 1px);
 }
 
 .admin-hero > * {
@@ -151,15 +151,15 @@
 
 .admin-grid-lines {
   background-image:
-    linear-gradient(to right, rgba(47, 58, 69, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(47, 58, 69, 0.07) 1px, transparent 1px);
+    linear-gradient(to right, rgba(52, 51, 51, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(52, 51, 51, 0.07) 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
 .dark .admin-grid-lines {
   background-image:
-    linear-gradient(to right, rgba(244, 242, 248, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(244, 242, 248, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(241, 235, 232, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(241, 235, 232, 0.05) 1px, transparent 1px);
 }
 
 .admin-modal-backdrop {
@@ -171,12 +171,12 @@
   justify-content: center;
   overflow-y: auto;
   padding: 1rem;
-  background-color: rgba(47, 58, 69, 0.55);
+  background-color: rgba(52, 51, 51, 0.55);
   backdrop-filter: blur(6px);
 }
 
 .dark .admin-modal-backdrop {
-  background-color: rgba(10, 12, 18, 0.68);
+  background-color: rgba(20, 18, 18, 0.68);
 }
 
 @media (min-width: 640px) {

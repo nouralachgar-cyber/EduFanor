@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <Link to="/" className="inline-flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
                 <ShieldCheck className="h-5 w-5" />
               </span>
               <span className="font-display text-lg font-semibold text-ink">{t('nav.brand')}</span>

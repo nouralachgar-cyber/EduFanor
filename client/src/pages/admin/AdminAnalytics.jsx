@@ -60,21 +60,21 @@ export default function AdminAnalytics() {
   const distribution = data?.quizDistribution || [];
 
   return (
-    <div className="space-y-6 bg-[#F5F5F5] min-h-screen p-6 text-[#4B164C]">
+    <div className="space-y-6 bg-[#FAF7F4] min-h-screen p-6 text-[#642D3D]">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.analytics.title')}
         subtitle={t('admin.analytics.subtitle')}
         actions={
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 rounded-xl border border-[#DD88CF] bg-white p-1 shadow-sm">
+            <div className="flex items-center gap-1 rounded-xl border border-[#CBAEB1] bg-white p-1 shadow-sm">
               {ranges.map((option) => (
                 <button
                   key={option}
                   type="button"
                   onClick={() => setRange(option)}
                   className={`rounded-lg px-3 py-1.5 text-[10px] font-extrabold transition-colors ${
-                    range === option ? 'bg-[#4B164C] text-[#F8E7F6]' : 'text-[#4B164C]/70 hover:bg-[#F8E7F6] hover:text-[#4B164C]'
+                    range === option ? 'bg-[#642D3D] text-[#E9D8D9]' : 'text-[#642D3D]/70 hover:bg-[#E9D8D9] hover:text-[#642D3D]'
                   }`}
                 >
                   {t('admin.overview.days', { count: option })}
@@ -84,7 +84,7 @@ export default function AdminAnalytics() {
             <button
               type="button"
               onClick={load}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#DD88CF] bg-[#F8E7F6] text-[#4B164C] transition-colors hover:bg-[#DD88CF]/30"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#CBAEB1] bg-[#E9D8D9] text-[#642D3D] transition-colors hover:bg-[#CBAEB1]/30"
               aria-label={t('admin.common.refresh')}
             >
               <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
@@ -97,7 +97,7 @@ export default function AdminAnalytics() {
         <select 
           value={course} 
           onChange={(event) => setCourse(event.target.value)} 
-          className="rounded-xl border border-[#DD88CF] bg-white px-4 py-2 text-xs text-[#4B164C] focus:outline-none focus:ring-2 focus:ring-[#4B164C] sm:w-64 shadow-sm" 
+          className="rounded-xl border border-[#CBAEB1] bg-white px-4 py-2 text-xs text-[#642D3D] focus:outline-none focus:ring-2 focus:ring-[#642D3D] sm:w-64 shadow-sm" 
           aria-label={t('admin.analytics.allCourses')}
         >
           <option value="">{t('admin.analytics.allCourses')}</option>
@@ -105,8 +105,8 @@ export default function AdminAnalytics() {
             <option key={item._id} value={item.slug}>{localize(item.title, i18n.language)}</option>
           ))}
         </select>
-        <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#4B164C]/70">
-          <BarChart3 className="h-3.5 w-3.5 text-[#DD88CF]" /> {t('admin.analytics.range')}: {t('admin.overview.days', { count: data?.range || range })}
+        <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#642D3D]/70">
+          <BarChart3 className="h-3.5 w-3.5 text-[#CBAEB1]" /> {t('admin.analytics.range')}: {t('admin.overview.days', { count: data?.range || range })}
         </span>
       </div>
 
@@ -120,23 +120,23 @@ export default function AdminAnalytics() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
-        <Panel title={t('admin.analytics.activityTrend')} className="bg-white border border-[#DD88CF]/40 rounded-2xl p-5 shadow-sm">
+        <Panel title={t('admin.analytics.activityTrend')} className="bg-white border border-[#CBAEB1]/40 rounded-2xl p-5 shadow-sm">
           <LineChart
             data={activity}
             series={[
-              { key: 'courseStarts', label: t('admin.analytics.starts'), color: '#4B164C' },
-              { key: 'courseCompletions', label: t('admin.analytics.completionsShort'), color: '#DD88CF' },
-              { key: 'quizAttempts', label: t('admin.analytics.quizAttemptsShort'), color: '#749BC2' },
+              { key: 'courseStarts', label: t('admin.analytics.starts'), color: '#642D3D' },
+              { key: 'courseCompletions', label: t('admin.analytics.completionsShort'), color: '#CBAEB1' },
+              { key: 'quizAttempts', label: t('admin.analytics.quizAttemptsShort'), color: '#9A6873' },
             ]}
             language={i18n.language}
             height={230}
           />
         </Panel>
 
-        <Panel title={t('admin.analytics.registrationTrend')} className="bg-white border border-[#DD88CF]/40 rounded-2xl p-5 shadow-sm">
+        <Panel title={t('admin.analytics.registrationTrend')} className="bg-white border border-[#CBAEB1]/40 rounded-2xl p-5 shadow-sm">
           <LineChart
             data={registrations}
-            series={[{ key: 'count', label: t('admin.analytics.registrations'), color: '#4B164C' }]}
+            series={[{ key: 'count', label: t('admin.analytics.registrations'), color: '#642D3D' }]}
             language={i18n.language}
             height={230}
           />
@@ -144,14 +144,14 @@ export default function AdminAnalytics() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
-        <Panel title={t('admin.analytics.topCourses')} noPadding className="bg-white border border-[#DD88CF]/40 rounded-2xl shadow-sm overflow-hidden">
+        <Panel title={t('admin.analytics.topCourses')} noPadding className="bg-white border border-[#CBAEB1]/40 rounded-2xl shadow-sm overflow-hidden">
           {topCourses.length === 0 ? (
             <EmptyState title={t('admin.analytics.noData')} icon={TrendingUp} />
           ) : (
             <div className="admin-scroll overflow-x-auto">
               <table className="admin-table w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#DD88CF]/30 bg-[#F8E7F6]/50 text-[11px] text-[#4B164C]">
+                  <tr className="border-b border-[#CBAEB1]/30 bg-[#E9D8D9]/50 text-[11px] text-[#642D3D]">
                     <th className="p-3">{t('admin.courses.courseTitle')}</th>
                     <th className="p-3">{t('admin.analytics.starts')}</th>
                     <th className="p-3">{t('admin.analytics.completionsShort')}</th>
@@ -159,22 +159,22 @@ export default function AdminAnalytics() {
                     <th className="p-3">{t('admin.analytics.completionRate')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#DD88CF]/20 text-xs">
+                <tbody className="divide-y divide-[#CBAEB1]/20 text-xs">
                   {topCourses.map((item) => (
-                    <tr key={item.courseKey} className="hover:bg-[#F5F5F5]/60 transition-colors">
+                    <tr key={item.courseKey} className="hover:bg-[#FAF7F4]/60 transition-colors">
                       <td className="p-3">
-                        <p className="font-bold text-[#4B164C]">{localize(item.title, i18n.language) || item.courseKey}</p>
-                        <p className="text-[10px] text-[#4B164C]/70">{item.category ? t(`admin.courses.categories.${item.category}`, { defaultValue: item.category }) : item.courseKey}</p>
+                        <p className="font-bold text-[#642D3D]">{localize(item.title, i18n.language) || item.courseKey}</p>
+                        <p className="text-[10px] text-[#642D3D]/70">{item.category ? t(`admin.courses.categories.${item.category}`, { defaultValue: item.category }) : item.courseKey}</p>
                       </td>
-                      <td className="p-3 font-bold text-[#4B164C]">{formatNumber(item.starts, i18n.language)}</td>
-                      <td className="p-3 font-bold text-[#4B164C]">{formatNumber(item.completions, i18n.language)}</td>
-                      <td className="p-3 font-bold text-[#4B164C]">{formatNumber(item.quizAttempts, i18n.language)}</td>
+                      <td className="p-3 font-bold text-[#642D3D]">{formatNumber(item.starts, i18n.language)}</td>
+                      <td className="p-3 font-bold text-[#642D3D]">{formatNumber(item.completions, i18n.language)}</td>
+                      <td className="p-3 font-bold text-[#642D3D]">{formatNumber(item.quizAttempts, i18n.language)}</td>
                       <td className="p-3">
                         <div className="flex items-center gap-2">
-                          <div className="h-1.5 w-14 overflow-hidden rounded-full bg-[#F8E7F6]">
-                            <div className="h-full rounded-full bg-[#4B164C]" style={{ width: `${item.completionRate || 0}%` }} />
+                          <div className="h-1.5 w-14 overflow-hidden rounded-full bg-[#E9D8D9]">
+                            <div className="h-full rounded-full bg-[#642D3D]" style={{ width: `${item.completionRate || 0}%` }} />
                           </div>
-                          <span className="text-[10px] font-extrabold text-[#4B164C]">{formatPercent(item.completionRate, i18n.language)}</span>
+                          <span className="text-[10px] font-extrabold text-[#642D3D]">{formatPercent(item.completionRate, i18n.language)}</span>
                         </div>
                       </td>
                     </tr>
@@ -185,25 +185,25 @@ export default function AdminAnalytics() {
           )}
         </Panel>
 
-        <Panel title={t('admin.analytics.scoreDistribution')} className="bg-white border border-[#DD88CF]/40 rounded-2xl p-5 shadow-sm">
+        <Panel title={t('admin.analytics.scoreDistribution')} className="bg-white border border-[#CBAEB1]/40 rounded-2xl p-5 shadow-sm">
           <DistributionBars data={distribution} language={i18n.language} />
         </Panel>
       </div>
 
-      <Panel title={t('admin.analytics.topLessons')} noPadding className="bg-white border border-[#DD88CF]/40 rounded-2xl shadow-sm overflow-hidden">
+      <Panel title={t('admin.analytics.topLessons')} noPadding className="bg-white border border-[#CBAEB1]/40 rounded-2xl shadow-sm overflow-hidden">
         {topLessons.length === 0 ? (
           <EmptyState title={t('admin.analytics.noTopLessons')} icon={GraduationCap} />
         ) : (
           <div className="grid gap-3 p-4 sm:grid-cols-2 xl:grid-cols-4">
             {topLessons.map((lesson, index) => (
-              <div key={lesson.lessonId} className="flex items-start gap-3 rounded-xl border border-[#DD88CF]/40 bg-[#F5F5F5] p-3.5 shadow-sm">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#F8E7F6] text-[10px] font-extrabold text-[#4B164C] border border-[#DD88CF]/50">
+              <div key={lesson.lessonId} className="flex items-start gap-3 rounded-xl border border-[#CBAEB1]/40 bg-[#FAF7F4] p-3.5 shadow-sm">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#E9D8D9] text-[10px] font-extrabold text-[#642D3D] border border-[#CBAEB1]/50">
                   {formatNumber(index + 1, i18n.language)}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="line-clamp-2 text-[11px] font-bold text-[#4B164C]">{localize(lesson.title, i18n.language) || t('admin.common.notAvailable')}</p>
-                  <p className="mt-0.5 truncate text-[9px] text-[#4B164C]/70">{localize(lesson.course?.title, i18n.language)}</p>
-                  <p className="mt-1 text-[10px] font-extrabold text-[#DD88CF]">
+                  <p className="line-clamp-2 text-[11px] font-bold text-[#642D3D]">{localize(lesson.title, i18n.language) || t('admin.common.notAvailable')}</p>
+                  <p className="mt-0.5 truncate text-[9px] text-[#642D3D]/70">{localize(lesson.course?.title, i18n.language)}</p>
+                  <p className="mt-1 text-[10px] font-extrabold text-[#CBAEB1]">
                     {formatNumber(lesson.completions, i18n.language)} {t('admin.analytics.completionsShort')}
                   </p>
                 </div>

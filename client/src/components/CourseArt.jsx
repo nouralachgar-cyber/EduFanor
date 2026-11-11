@@ -10,11 +10,11 @@ import { HeartPulse, Wind, Droplets, CheckCircle2 } from './icons';
 const VARIANTS = {
   cpr: {
     icon: HeartPulse,
-    tile: 'bg-[#F9B2D7] text-[#7A2E4C]',
+    tile: 'bg-[#E9D8D9] text-[#642D3D]',
     motif: (
       <svg
         viewBox="0 0 220 60"
-        className="absolute bottom-3 start-0 w-full text-[#A84569]/15"
+        className="absolute bottom-3 start-0 w-full text-[#642D3D]/15"
         fill="none"
         aria-hidden="true"
       >
@@ -30,11 +30,11 @@ const VARIANTS = {
   },
   choking: {
     icon: Wind,
-    tile: 'bg-[#CFECF3] text-[#1F5568] ring-1 ring-[#7FA0AC]/40',
+    tile: 'bg-[#F1EBE8] text-[#665C59] ring-1 ring-[#CBAEB1]/40',
     motif: (
       <svg
         viewBox="0 0 120 120"
-        className="absolute -end-4 -top-4 h-32 w-32 text-[#23617B]/12"
+        className="absolute -end-4 -top-4 h-32 w-32 text-[#665C59]/12"
         fill="none"
         aria-hidden="true"
       >
@@ -45,11 +45,11 @@ const VARIANTS = {
   },
   burns: {
     icon: Droplets,
-    tile: 'bg-[#DAF9DE] text-[#2F7A4E]',
+    tile: 'bg-[#E9EFE8] text-[#315B45]',
     motif: (
       <svg
         viewBox="0 0 120 120"
-        className="absolute -end-2 -top-3 h-28 w-28 text-[#63B48B]/35"
+        className="absolute -end-2 -top-3 h-28 w-28 text-[#4A7A5F]/35"
         fill="currentColor"
         aria-hidden="true"
       >
@@ -67,7 +67,7 @@ export default function CourseArt({ category, completed = false }) {
 
   return (
     <div className="relative h-36 overflow-hidden rounded-t-2xl border-b border-line bg-cream">
-      <svg className="absolute inset-0 h-full w-full text-[#2F3A45]/[0.05]" aria-hidden="true">
+      <svg className="absolute inset-0 h-full w-full text-[#343333]/[0.05]" aria-hidden="true">
         <defs>
           <pattern id={patternId} width="26" height="26" patternUnits="userSpaceOnUse">
             <path

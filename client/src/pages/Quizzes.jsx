@@ -241,7 +241,7 @@ export default function Quizzes() {
           </section>
         ) : (
           <section className="card space-y-6 p-8 text-center sm:p-10">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-pink-soft text-[#A84569] dark:text-[#F9B2D7]">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-pink-soft text-[#642D3D] dark:text-[#CBAEB1]">
               <Award className="h-8 w-8" />
             </div>
             <div>

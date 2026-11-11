@@ -78,7 +78,7 @@ export default function About() {
       <header className="sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur-xl">
         <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-12">
           <Link to="/" className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary">
               <ShieldCheck className="h-5 w-5 text-on-primary" />
             </span>
             <span>
@@ -122,7 +122,7 @@ export default function About() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-line bg-surface text-ink transition-colors hover:bg-surface-muted"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-ink transition-colors hover:bg-surface-muted"
               aria-label={t('nav.toggleTheme')}
             >
               {isDark ? <Sun className="h-4 w-4 text-accent" /> : <Moon className="h-4 w-4 text-brand-ink" />}
@@ -143,7 +143,7 @@ export default function About() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 90% 8%, rgba(249, 178, 215, 0.3), transparent 46%), radial-gradient(circle at 4% 100%, rgba(218, 249, 222, 0.55), transparent 52%)',
+                'radial-gradient(circle at 90% 8%, rgba(181, 139, 131, 0.3), transparent 46%), radial-gradient(circle at 4% 100%, rgba(233, 238, 232, 0.55), transparent 52%)',
             }}
             aria-hidden="true"
           />
@@ -200,7 +200,7 @@ export default function About() {
                     : 'In the first moments, many people may feel unsure or not know where to begin. The platform aims to help bridge that learning gap through structured lessons and short quizzes.'}
                 </p>
                 <div className="mt-6 flex items-center gap-3 border-t border-line pt-5">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-soft text-brand-ink">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-soft text-brand-ink">
                     <ShieldCheck className="h-5 w-5" />
                   </span>
                   <p className="text-xs font-bold leading-relaxed text-ink-muted">

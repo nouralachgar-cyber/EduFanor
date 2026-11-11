@@ -89,7 +89,7 @@ export default function Navbar() {
       onClick={toggleTheme}
       aria-label={t('nav.toggleTheme', 'Toggle theme')}
       title={t('nav.toggleTheme', 'Toggle theme')}
-      className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-surface text-ink transition-all hover:border-line-strong hover:bg-surface-muted"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-ink transition-all hover:border-line-strong hover:bg-surface-muted"
     >
       {isDark ? <Sun className="h-4 w-4 text-amber" /> : <Moon className="h-4 w-4 text-primary" />}
     </button>
@@ -118,7 +118,7 @@ export default function Navbar() {
         }`}
       >
         <Link to="/dashboard" className="group flex shrink-0 items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary shadow-sm transition-transform duration-300 group-hover:scale-105">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary shadow-sm transition-transform duration-300 group-hover:scale-105">
             <ShieldCheck className="h-5 w-5 text-on-primary" />
           </span>
           <span className="hidden leading-tight sm:block">
@@ -166,7 +166,7 @@ export default function Navbar() {
                 aria-haspopup="menu"
                 className="flex items-center gap-2.5 rounded-2xl border border-line bg-surface py-1.5 pe-2.5 ps-1.5 transition-all hover:border-line-strong hover:bg-surface-muted"
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary text-sm font-bold text-on-primary">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-on-primary">
                   {user?.name ? user.name.charAt(0).toUpperCase() : 'N'}
                 </span>
                 <span className="max-w-[9rem] truncate text-xs font-bold text-ink">
@@ -256,7 +256,7 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen((open) => !open)}
             aria-label={t('nav.toggleMenu', 'Toggle menu')}
             aria-expanded={mobileMenuOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-on-primary transition-colors hover:bg-primary-hover"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary transition-colors hover:bg-primary-hover"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -267,7 +267,7 @@ export default function Navbar() {
         <div className="animate-fade-in absolute inset-x-0 top-full border-t border-line bg-surface p-4 shadow-pop md:hidden">
           {user && (
             <div className="mb-3 flex items-center gap-3 rounded-2xl border border-line bg-surface-muted p-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-sm font-bold text-on-primary">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-on-primary">
                 {user?.name ? user.name.charAt(0).toUpperCase() : 'N'}
               </span>
               <div className="min-w-0">

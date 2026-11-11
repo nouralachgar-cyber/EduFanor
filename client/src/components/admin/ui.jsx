@@ -136,7 +136,7 @@ export function Pagination({ page = 1, pages = 1, total, onPage, language = 'en'
           type="button"
           onClick={() => onPage(page - 1)}
           disabled={page <= 1}
-          className="flex h-8 w-8 items-center justify-center rounded-lg border border-line bg-card text-ink transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40"
           aria-label={labels.previous || 'Previous'}
         >
           <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
@@ -148,7 +148,7 @@ export function Pagination({ page = 1, pages = 1, total, onPage, language = 'en'
           type="button"
           onClick={() => onPage(page + 1)}
           disabled={page >= pages}
-          className="flex h-8 w-8 items-center justify-center rounded-lg border border-line bg-card text-ink transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40"
           aria-label={labels.next || 'Next'}
         >
           <ChevronRight className="h-4 w-4 rtl:rotate-180" />
@@ -188,7 +188,7 @@ export function Modal({ open, onClose, title, subtitle, children, footer, size =
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink"
             aria-label="Close"
           >
             <X className="h-4 w-4" />

@@ -30,7 +30,7 @@ function ErrorFallback({ error, onReset }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-surface-muted p-4">
       <div className="card max-w-md w-full p-8 text-center space-y-6">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-danger-soft">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-danger-soft">
           <AlertTriangle className="h-8 w-8 text-danger" />
         </div>
         <div className="space-y-2">

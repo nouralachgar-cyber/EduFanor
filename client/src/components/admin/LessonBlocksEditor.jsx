@@ -763,7 +763,7 @@ function BlockEditBody({ block, index, helpers }) {
           <div key={step.id || stepIndex} className="rounded-xl border border-freshGreen/30 bg-brand-soft/40 p-2.5">
             <div className="mb-1.5 flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-[10px] font-extrabold text-ink">
-                <span className="flex h-5 w-5 items-center justify-center rounded-md bg-primary text-[9px] text-white">{stepIndex + 1}</span>
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[9px] text-white">{stepIndex + 1}</span>
                 {t('admin.courses.blocks.step')}
               </span>
               <div className="flex items-center gap-1">
