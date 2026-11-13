@@ -5,29 +5,19 @@ import {
   motion,
   AnimatePresence,
   useReducedMotion,
-  useScroll,
-  useTransform,
 } from 'framer-motion';
 import Globe from 'react-globe.gl';
 import * as THREE from 'three';
 import {
   ArrowLeft,
   ArrowRight,
-  BookOpen,
-  Brain,
-  CheckCircle2,
   ChevronDown,
-  ClipboardCheck,
   Footprints,
   HeartPulse,
   Mail,
   Menu,
   Moon,
-  ShieldAlert,
   Sun,
-  Timer,
-  TrendingUp,
-  UserRound,
   X,
 } from '../components/icons';
 import { useTheme } from '../context/ThemeContext';
@@ -310,44 +300,6 @@ function InteractiveGlobe({ isAr, reduceMotion }) {
   );
 }
 
-function OrbitVisual({ isAr }) {
-  return (
-    <div className="relative mx-auto aspect-square w-full max-w-[440px]" aria-hidden="true">
-      <div className="absolute inset-[6%] rounded-full bg-[radial-gradient(circle,rgba(181,139,131,0.28),transparent_66%)] blur-2xl" />
-      <div className="absolute inset-[2%] rounded-full border border-ink/[0.06] dark:border-white/[0.06]" />
-      <div className="absolute inset-[11%] rounded-full border border-[#C0C5CD]/25 dark:border-[#C0C5CD]/15" />
-      <div className="absolute inset-[20%] animate-spin rounded-full border border-dashed border-ink/15 dark:border-white/15 motion-reduce:animate-none [animation-duration:58s]">
-        <span className="absolute start-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#3E588F] shadow-[0_0_22px_7px_rgba(32, 53, 98,0.35)] dark:bg-[#C0C5CD] dark:shadow-[0_0_22px_7px_rgba(181,139,131,0.35)] rtl:translate-x-1/2" />
-      </div>
-      <div className="absolute inset-[31%] rounded-full border border-[#8FBFA3]/35 dark:border-[#8FBFA3]/20" />
-      <div className="absolute inset-[14%] animate-spin rounded-full border border-transparent motion-reduce:animate-none [animation-direction:reverse] [animation-duration:44s]">
-        <span className="absolute bottom-0 start-1/2 h-1.5 w-1.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-[#C0C5CD] shadow-[0_0_18px_5px_rgba(78,147,169,0.35)] dark:bg-[#E3E8F8] dark:shadow-[0_0_18px_5px_rgba(203,174,177,0.3)] rtl:translate-x-1/2" />
-      </div>
-
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="flex h-32 w-32 flex-col items-center justify-center rounded-full border border-[#C0C5CD]/40 bg-[linear-gradient(160deg,rgba(255,255,255,0.85),rgba(181,139,131,0.55))] text-center shadow-[0_30px_80px_-30px_rgba(32, 53, 98,0.35)] backdrop-blur-md dark:border-[#C0C5CD]/30 dark:bg-[linear-gradient(160deg,rgba(53,34,49,0.9),rgba(35,40,56,0.9))] sm:h-36 sm:w-36">
-          <PremiumIcon icon={HeartPulse} tone="amber" size="md" surface="dark" />
-          <p className="mt-2.5 max-w-[7rem] text-[9px] font-extrabold uppercase leading-relaxed tracking-[0.2em] text-[#3E588F]/75 dark:text-[#C0C5CD]/80">
-            {isAr ? 'درس واحد' : 'One lesson'}
-            <br />
-            {isAr ? 'استجابة أهدأ' : 'A calmer response'}
-          </p>
-        </div>
-      </div>
-
-      <span className="absolute left-1/2 top-[6%] -translate-x-1/2 text-[9px] font-bold uppercase tracking-[0.28em] text-ink/55 dark:text-[#E3E8F8]/55">
-        {isAr ? 'تعلّم' : 'Learn'}
-      </span>
-      <span className="absolute bottom-[13%] start-[6%] text-[9px] font-bold uppercase tracking-[0.28em] text-ink/35 dark:text-[#E3E8F8]/35">
-        {isAr ? 'استعد' : 'Prepare'}
-      </span>
-      <span className="absolute bottom-[13%] end-[6%] text-[9px] font-bold uppercase tracking-[0.28em] text-ink/35 dark:text-[#E3E8F8]/35">
-        {isAr ? 'استجب' : 'Respond'}
-      </span>
-    </div>
-  );
-}
-
 function LandingFooter() {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === 'ar';
@@ -409,9 +361,6 @@ function LandingFooter() {
               <a href="#platform" className="transition-colors hover:text-[#C0C5CD]">
                 {isAr ? 'المنصة' : 'Platform'}
               </a>
-              <a href="#courses" className="transition-colors hover:text-[#C0C5CD]">
-                {isAr ? 'المسارات' : 'Learning path'}
-              </a>
             </nav>
           </div>
 
@@ -463,7 +412,7 @@ function LandingFooter() {
 }
 
 export default function PublicLandingPage() {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const isAr = i18n.language === 'ar';
   const { isDark, toggleTheme } = useTheme();
   const reduceMotion = useReducedMotion();
@@ -472,18 +421,6 @@ export default function PublicLandingPage() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  });
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.14]);
-  const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '7%']);
-  const copyY = useTransform(scrollYProgress, [0, 1], [0, 90]);
-  const copyOpacity = useTransform(scrollYProgress, [0, 0.82], [1, 0.12]);
-
-  const courses = t('coursesData', { returnObjects: true });
-  const courseList = Array.isArray(courses) ? courses : [];
 
   useEffect(() => {
     const sectionIds = ['home', 'our-impact', 'platform', 'our-mission', 'courses', 'about'];
@@ -515,7 +452,6 @@ export default function PublicLandingPage() {
     { label: isAr ? 'أثرنا' : 'Impact', href: '#our-impact' },
     { label: isAr ? 'المنصة' : 'Platform', href: '#platform' },
     { label: isAr ? 'رسالتنا' : 'Mission', href: '#our-mission' },
-    { label: isAr ? 'المسارات' : 'Learning path', href: '#courses' },
     { label: isAr ? 'عن المنصة' : 'About', href: '#about' },
   ];
 
@@ -527,15 +463,6 @@ export default function PublicLandingPage() {
           whileInView: { opacity: 1, y: 0 },
           viewport: { once: true, amount },
           transition: { duration: 0.72, delay, ease: [0.16, 1, 0.3, 1] },
-        };
-
-  const heroLine = (delay = 0) =>
-    reduceMotion
-      ? {}
-      : {
-          initial: { opacity: 0, y: 28 },
-          animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] },
         };
 
   const onHero = !scrolled || mobileMenuOpen;
@@ -789,70 +716,77 @@ export default function PublicLandingPage() {
       </header>
 
       <main>
-        {/* Hero — cinematic full-bleed image; the copy parallaxes over the scene. */}
+        {/* Hero — full-bleed photographic background. */}
         <section
           id="home"
-          ref={heroRef}
-          className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-[#E3E8F8] px-5 pb-32 pt-40 text-[#203562] sm:px-8 lg:px-12"
+          style={{ '--navbar-height': '5rem', minHeight: 'calc(100svh - var(--navbar-height))' }}
+          className="relative isolate flex items-center overflow-hidden bg-[#0B1F33] px-5 py-16 text-white transition-colors duration-500 sm:px-8 lg:px-12"
         >
-          {/* Parallaxed photographic plate */}
-          <motion.div
-            className="absolute inset-0 -z-30"
-            style={{ scale: heroScale, y: heroY }}
+          {/* Full-bleed photographic plate */}
+          <div
+            className="absolute inset-0 -z-30 bg-cover bg-[center_40%] bg-no-repeat bg-[url('/heroa.jpg')]"
             aria-hidden="true"
-          >
-            <div className="absolute inset-0 bg-cover bg-center bg-no-repeat bg-[url('/heroa.jpg')]" />
-          </motion.div>
+          />
 
           {/* Midnight-to-plum color grading — layered cinematic overlays */}
           <div
-            className="absolute inset-0 -z-20 bg-[linear-gradient(105deg,rgba(227,232,248,0.85)_0%,rgba(227,232,248,0.75)_34%,rgba(62,88,143,0.12)_62%,rgba(62,88,143,0.06)_82%)]"
+            className={`absolute inset-0 -z-20 ${isAr ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-[#183B56]/78 via-[#183B56]/42 to-transparent`}
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 -z-20 bg-[#4682A9]/8 mix-blend-multiply" aria-hidden="true" />
+          <div
+            className="pointer-events-none absolute inset-0 -z-10 shadow-[inset_0_0_80px_20px_rgba(24,59,86,0.05)]"
             aria-hidden="true"
           />
           <div
-            className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,rgba(227,232,248,0.7)_0%,rgba(30,34,48,0.24)_22%,transparent_38%,rgba(62,88,143,0.1)_78%,rgba(227,232,248,0.85)_100%)]"
+            className="absolute inset-x-0 bottom-0 -z-10 h-20 bg-gradient-to-t from-[#F5F7FA]/40 to-transparent dark:from-[#183B56]/40"
             aria-hidden="true"
           />
           <div
-            className="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_78%_18%,rgba(181,139,131,0.14),transparent_55%),radial-gradient(ellipse_at_88%_78%,rgba(203,174,177,0.08),transparent_52%),radial-gradient(ellipse_at_8%_88%,rgba(62,88,143,0.08),transparent_58%)]"
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none absolute inset-0 -z-10 shadow-[inset_0_0_120px_40px_rgba(32,53,98,0.08)]"
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-[#E3E8F8] via-[#E3E8F8]/55 to-transparent"
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.06]"
+            className="pointer-events-none absolute inset-0 opacity-[0.04]"
             style={{
-              backgroundImage: 'radial-gradient(rgba(253, 247, 250, 0.4) 1px, transparent 1px)',
-              backgroundSize: '26px 26px',
+              backgroundImage: 'radial-gradient(rgba(145,200,228,0.6) 1px, transparent 1px)',
+              backgroundSize: '24px 24px',
             }}
             aria-hidden="true"
           />
 
+          <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+            <div className="absolute -top-24 -start-20 h-80 w-80 rounded-full bg-[radial-gradient(circle,#91C8E4_0%,transparent_70%)] opacity-25 blur-2xl" />
+            <div className="absolute bottom-[-6rem] -end-24 h-96 w-96 rounded-full bg-[radial-gradient(circle,#4682A9_0%,transparent_70%)] opacity-20 blur-3xl" />
+            <div className="absolute top-[16%] end-[7%] h-24 w-44 rounded-2xl border border-white/15 bg-white/5 backdrop-blur-md" />
+            <svg className="absolute bottom-[24%] start-[5%] h-16 w-52 opacity-40" viewBox="0 0 200 60" fill="none">
+              <path d="M0 30 L40 30 L55 10 L70 50 L85 20 L100 35 L120 35 L140 15 L160 45 L180 30 L200 30" stroke="#91C8E4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <div className="absolute top-[12%] start-[4%] h-20 w-20 opacity-30" style={{ backgroundImage: 'radial-gradient(rgba(145,200,228,0.8) 1px, transparent 1px)', backgroundSize: '10px 10px' }} />
+            <span className="absolute top-[32%] end-[20%] h-1.5 w-1.5 rounded-full bg-[#91C8E4] shadow-[0_0_12px_3px_rgba(145,200,228,0.6)]" />
+            <span className="absolute bottom-[36%] start-[24%] h-1 w-1 rounded-full bg-white/70 shadow-[0_0_10px_2px_rgba(255,255,255,0.5)]" />
+            <span className="absolute top-[56%] end-[32%] h-1.5 w-1.5 rounded-full bg-[#5CA6D1] shadow-[0_0_12px_3px_rgba(92,166,209,0.6)]" />
+            <div className="absolute top-0 start-1/3 h-px w-1/3 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+          </div>
+
           <div className="relative mx-auto w-full max-w-6xl">
-            <motion.div style={{ y: copyY, opacity: copyOpacity }} className="relative max-w-3xl">
+            <motion.div
+              initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="relative max-w-3xl"
+            >
               <div
                 className="pointer-events-none absolute -inset-10 -z-10 bg-[radial-gradient(ellipse_at_30%_45%,rgba(32,53,98,0.12),rgba(32,53,98,0.08)_48%,transparent_78%)] blur-2xl"
                 aria-hidden="true"
               />
               <motion.p
-                {...heroLine(0)}
-                className={`flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.32em] text-[#C0C5CD] [text-shadow:0_2px_18px_rgba(32,53,98,0.12)] ${
+                                className={`flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.32em] text-[#91C8E4] ${
                   isAr ? 'font-arabic tracking-[0.14em]' : ''
                 }`}
               >
-                <span className="h-px w-10 bg-[#E3E8F8]/80" aria-hidden="true" />
+                <span className="h-px w-10 bg-white/70" aria-hidden="true" />
                 {isAr ? 'تعلّم الإسعافات الأولية بثقة' : 'Learn first aid with confidence'}
               </motion.p>
 
               <motion.h1
-                {...heroLine(0.08)}
-                className={`mt-8 font-display font-bold [text-shadow:0_24px_66px_rgba(32,53,98,0.15),0_4px_18px_rgba(32,53,98,0.12)] ${
+                                className={`mt-8 font-display font-bold [text-shadow:0_24px_66px_rgba(32,53,98,0.15),0_4px_18px_rgba(32,53,98,0.12)] ${
                   isAr
                     ? 'text-[clamp(2.5rem,6.5vw,5rem)] font-arabic leading-[1.2] tracking-normal'
                     : 'text-[clamp(2.95rem,7.2vw,5.8rem)] leading-[0.94] tracking-[-0.045em]'
@@ -860,15 +794,15 @@ export default function PublicLandingPage() {
               >
                 {isAr ? (
                   <>
-                    <span className="block text-[#203562]">معرفة صغيرة.</span>
-                    <span className="mt-2 block bg-[linear-gradient(100deg,#3E588F_0%,#3E588F_32%,#203562_62%,#203562_100%)] bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_14px_48px_rgba(35,40,56,0.45)]">
+                    <span className="block text-white">معرفة صغيرة.</span>
+                    <span className="mt-2 block text-[#91C8E4] drop-shadow-[0_4px_18px_rgba(24,59,86,0.4)]">
                       وثقة تُحدث فرقًا.
                     </span>
                   </>
                 ) : (
                   <>
-                    <span className="block text-[#203562]">A little knowledge.</span>
-                    <span className="mt-2 block bg-[linear-gradient(100deg,#3E588F_0%,#3E588F_32%,#203562_62%,#203562_100%)] bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_14px_48px_rgba(35,40,56,0.45)]">
+                    <span className="block text-white">A little knowledge.</span>
+                    <span className="mt-2 block text-[#91C8E4] drop-shadow-[0_4px_18px_rgba(24,59,86,0.4)]">
                       The confidence to act.
                     </span>
                   </>
@@ -876,8 +810,7 @@ export default function PublicLandingPage() {
               </motion.h1>
 
               <motion.p
-                {...heroLine(0.16)}
-                className={`mt-6 max-w-[34rem] text-balance text-[clamp(0.99rem,1.35vw,1.14rem)] text-[#203562]/85 leading-[1.7] [text-shadow:0_2px_22px_rgba(32,53,98,0.15)] ${
+                                className={`mt-6 max-w-[34rem] text-balance text-[clamp(0.99rem,1.35vw,1.14rem)] text-white/90 leading-[1.7] [text-shadow:0_2px_22px_rgba(32,53,98,0.15)] ${
                   isAr ? 'font-arabic leading-[2.05]' : 'leading-[1.85] tracking-[0.005em]'
                 }`}
               >
@@ -887,12 +820,11 @@ export default function PublicLandingPage() {
               </motion.p>
 
               <motion.div
-                {...heroLine(0.24)}
-                className="mt-10 flex flex-col items-stretch gap-3.5 sm:flex-row sm:items-center"
+                                className="mt-10 flex flex-col items-stretch gap-3.5 sm:flex-row sm:items-center"
               >
                 <Link
                   to="/register"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#E3E8F8] px-8 py-4 text-[13.5px] font-extrabold tracking-[0.01em] text-[#203562] shadow-[0_24px_60px_-22px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.55)] ring-1 ring-[#C0C5CD]/50 transition-all duration-300 hover:-translate-y-1 hover:bg-[#E3E8F8] hover:shadow-[0_30px_70px_-22px_rgba(181,139,131,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C5CD]/70 sm:w-auto"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-white px-8 py-4 text-[13.5px] font-extrabold tracking-[0.01em] text-[#183B56] shadow-[0_24px_60px_-22px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.55)] ring-1 ring-[#91C8E4]/50 transition-all duration-300 hover:-translate-y-1 hover:bg-[#DCEAF3] hover:shadow-[0_30px_70px_-22px_rgba(181,139,131,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#91C8E4]/70 sm:w-auto"
                 >
                   {isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
                   {isAr ? (
@@ -903,7 +835,7 @@ export default function PublicLandingPage() {
                 </Link>
                 <a
                   href="#our-impact"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-[#C0C5CD]/30 bg-[#E3E8F8]/[0.08] px-8 py-4 text-[13.5px] font-bold text-[#C0C5CD] shadow-[0_0_44px_-18px_rgba(181,139,131,0.5)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[#C0C5CD]/60 hover:bg-[#E3E8F8]/15 hover:text-[#E3E8F8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C0C5CD]/50 sm:w-auto"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-[#91C8E4]/40 bg-white/15 px-8 py-4 text-[13.5px] font-bold text-white shadow-[0_0_44px_-18px_rgba(181,139,131,0.5)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/60 hover:bg-white/25 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:w-auto"
                 >
                   {isAr ? 'اكتشف أثرنا' : 'Explore our impact'}
                   <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -969,173 +901,142 @@ export default function PublicLandingPage() {
           </div>
         </section>
 
-        {/* The Platform — soft pastel editorial board with dot texture. */}
+        {/* The Platform — premium editorial cards */}
         <section
           id="platform"
-          className="relative overflow-hidden border-y border-[#E3E8F8]/60 bg-[#E3E8F8] py-20 transition-colors duration-500 dark:border-white/10 dark:bg-[#203562] md:py-28 lg:py-32"
+          className="relative overflow-hidden bg-[#F5F7FA] py-20 transition-colors duration-500 dark:bg-[#183B56] md:py-28 lg:py-32"
         >
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.4] dark:opacity-[0.2]"
+            className="pointer-events-none absolute inset-0 opacity-[0.35] dark:opacity-[0.15]"
             style={{
-              backgroundImage:
-                'radial-gradient(rgba(32, 53, 98, 0.16) 1px, transparent 1px)',
-              backgroundSize: '24px 24px',
+              backgroundImage: 'radial-gradient(rgba(70,130,169,0.18) 1px, transparent 1px)',
+              backgroundSize: '26px 26px',
             }}
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none absolute -top-24 start-[8%] h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(203,174,177,0.55),transparent_70%)] blur-2xl dark:bg-[radial-gradient(circle,rgba(203,174,177,0.1),transparent_70%)]"
+            className="pointer-events-none absolute -top-24 start-[10%] h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(145,200,228,0.35),transparent_70%)] blur-3xl"
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none absolute -bottom-24 end-[6%] h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(233,238,232,0.6),transparent_70%)] blur-2xl dark:bg-[radial-gradient(circle,rgba(127,205,159,0.09),transparent_70%)]"
+            className="pointer-events-none absolute -bottom-24 end-[8%] h-80 w-80 rounded-full bg-[radial-gradient(circle,rgba(70,130,169,0.2),transparent_70%)] blur-3xl"
             aria-hidden="true"
           />
-          <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-            <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-              <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
-                <motion.div {...reveal(0)}>
-                  <SectionLabel index="02">{isAr ? 'المنصة' : 'The platform'}</SectionLabel>
-                </motion.div>
+          <svg
+            className="pointer-events-none absolute bottom-[18%] start-[6%] h-16 w-48 opacity-30"
+            viewBox="0 0 200 60"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M0 30 L35 30 L50 12 L65 48 L80 22 L95 32 L115 32 L135 14 L155 46 L175 30 L200 30"
+              stroke="#91C8E4"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
 
-                <motion.h2
-                  {...reveal(0.06)}
-                  className={`mt-6 font-display font-semibold tracking-[-0.02em] text-ink ${
-                    isAr
-                      ? 'text-[clamp(1.95rem,3.6vw,2.9rem)] leading-[1.32]'
-                      : 'text-[clamp(1.95rem,3.8vw,3.1rem)] leading-[1.04]'
+          <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+            <motion.div {...reveal(0)} className="max-w-3xl">
+              <SectionLabel index="02">{isAr ? 'المنصة' : 'The platform'}</SectionLabel>
+              <h2
+                className={`mt-6 font-display font-bold tracking-[-0.02em] text-[#183B56] dark:text-white ${
+                  isAr
+                    ? 'text-[clamp(2rem,4.2vw,3.4rem)] leading-[1.25]'
+                    : 'text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.05]'
+                }`}
+              >
+                {isAr ? 'معًا نحو مجتمع أكثر وعيًا واستعدادًا.' : 'Together toward a more aware, prepared community.'}
+              </h2>
+              <p
+                className={`mt-5 max-w-2xl text-[15px] text-[#64748B] dark:text-[#DCEAF3]/80 ${
+                  isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
+                }`}
+              >
+                {isAr
+                  ? 'EduFanor منصة تعليمية رقمية تهدف إلى نشر الوعي بالإسعافات الأولية، وتزويد المتعلمين بالمعرفة والخطوات الأساسية للتصرف بثقة ومساعدة الآخرين في حالات الطوارئ إلى حين وصول فرق الإسعاف والإنقاذ.'
+                  : 'EduFanor is a digital learning platform that spreads first-aid awareness and equips learners with essential knowledge and steps to act confidently and help others in emergencies until professional responders arrive.'}
+              </p>
+            </motion.div>
+
+            <div className="mt-12 grid gap-6 lg:grid-cols-12">
+              <motion.article
+                {...reveal(0.08)}
+                className="group relative overflow-hidden rounded-3xl border border-[#91C8E4]/30 bg-[#DCEAF3] p-8 shadow-[0_30px_80px_-40px_rgba(24,59,86,0.25)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_40px_90px_-40px_rgba(24,59,86,0.35)] lg:col-span-7"
+              >
+                <div className="pointer-events-none absolute -end-12 -top-12 h-40 w-40 rounded-full bg-[#4682A9]/10 blur-2xl" />
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.24em] text-[#4682A9]">
+                  {isAr ? 'المنصة' : 'The platform'}
+                </p>
+                <h3
+                  className={`mt-4 font-display font-bold text-[#183B56] ${
+                    isAr ? 'text-[clamp(1.6rem,3vw,2.4rem)] leading-[1.3]' : 'text-[clamp(1.7rem,3.2vw,2.6rem)] leading-[1.1]'
                   }`}
                 >
-                  {isAr ? (
-                    <>
-                      طريقة أهدأ
-                      <br />
-                      لتعلّم أمر جاد.
-                    </>
-                  ) : (
-                    <>
-                      A calmer way
-                      <br />
-                      <span className="italic text-[#3E588F] dark:text-[#C0C5CD]">
-                        to learn something serious.
-                      </span>
-                    </>
-                  )}
-                </motion.h2>
-
-                <motion.p
-                  {...reveal(0.12)}
-                  className={`mt-5 max-w-sm text-[13.5px] text-ink-muted dark:text-[#E3E8F8]/75 ${
-                    isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
+                  {isAr ? 'تعلّم بوضوح. تدرّب بثقة. استجب بمسؤولية.' : 'Learn clearly. Practice confidently. Respond responsibly.'}
+                </h3>
+                <p
+                  className={`mt-4 max-w-2xl text-[15px] text-[#183B56]/80 ${
+                    isAr ? 'font-arabic leading-[1.9]' : 'leading-[1.75]'
                   }`}
                 >
                   {isAr
-                    ? 'صُممت كل تفصيلة لتُبقي التركيز على ما يهم: فهم واضح، واستعداد مسؤول، وثقة تُبنى خطوة بخطوة.'
-                    : 'Every detail is designed to keep the focus on what matters: clear understanding, responsible readiness, and confidence built step by step.'}
-                </motion.p>
+                    ? 'تجربة تعلّم نظيفة ومنظمة، تركّز على الفهم، والخطوات، والثقة، دون تشتيت.'
+                    : 'A clean, structured learning experience focused on understanding, steps, and confidence without distraction.'}
+                </p>
+              </motion.article>
 
-                <motion.div
-                  {...reveal(0.18)}
-                  className="mt-8 hidden border-t border-ink/10 pt-6 dark:border-white/10 lg:block"
+              <div className="flex flex-col gap-6 lg:col-span-5">
+                <motion.article
+                  {...reveal(0.12)}
+                  className="group relative overflow-hidden rounded-3xl border border-[#DCEAF3] bg-[#EAF1F6] p-7 shadow-[0_24px_60px_-40px_rgba(24,59,86,0.2)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_32px_70px_-40px_rgba(24,59,86,0.3)]"
                 >
-                  <p className="font-display text-lg italic leading-relaxed text-ink dark:text-[#E3E8F8]">
-                    {isAr ? '«الوضوح أولًا. الثقة تتبعه.»' : '“Clarity first. Confidence follows.”'}
-                  </p>
-                </motion.div>
-              </div>
-
-              <div className="lg:col-span-8">
-                <div className="border-t border-ink/[0.08] dark:border-white/10">
-                  {[
-                    {
-                      number: '01',
-                      icon: Timer,
-                      title: isAr ? 'دروس تحترم وقتك' : 'Lessons that respect your time',
-                      text: isAr
-                        ? 'محتوى مقسّم إلى خطوات قصيرة يسهل قراءته على الهاتف والحاسوب، دون تشتيت.'
-                        : 'Content broken into short steps that stay readable on phones and desktops, without distraction.',
-                    },
-                    {
-                      number: '02',
-                      icon: UserRound,
-                      title: isAr ? 'مساحة تعلّم خاصة بك' : 'Your own learning space',
-                      text: isAr
-                        ? 'أنشئ حسابك واحتفظ بمساراتك وتقدّمك في مكان واحد، جاهزًا للمتابعة في أي وقت.'
-                        : 'Create your account and keep your courses and progress in one place, ready to continue anytime.',
-                    },
-                    {
-                      number: '03',
-                      icon: TrendingUp,
-                      title: isAr ? 'تقدّم تراه بوضوح' : 'Progress you can see',
-                      text: isAr
-                        ? 'تعرض لوحة التعلّم الدروس المكتملة والخطوة التالية، لتعرف دائمًا من أين تبدأ.'
-                        : 'Your learning dashboard surfaces completed lessons and your next step, so you always know where to begin.',
-                    },
-                    {
-                      number: '04',
-                      icon: ClipboardCheck,
-                      title: isAr ? 'تدرّب قبل أن يهم الأمر' : 'Practice before it matters',
-                      text: isAr
-                        ? 'اختبارات قصيرة وتغذية راجعة فورية لتثبيت الفهم. ومساعد ذكي مخصص قيد التطوير.'
-                        : 'Short quizzes and instant feedback help understanding stick. A dedicated AI tutor is in development.',
-                    },
-                  ].map((item, index) => (
-                    <motion.article
-                      key={item.number}
-                      {...reveal(index * 0.04)}
-                      className="group grid gap-3 border-b border-ink/[0.08] py-7 transition-colors hover:bg-white/60 dark:border-white/10 dark:hover:bg-white/[0.02] sm:grid-cols-12 sm:items-start sm:gap-6 sm:px-3"
-                    >
-                      <div className="flex items-center gap-3 sm:col-span-2">
-                        <PremiumIcon
-                          icon={item.icon}
-                          tone={index % 2 === 0 ? 'amber' : index === 3 ? 'duo' : 'green'}
-                          size="sm"
-                          surface="light"
-                        />
-                        <span className="font-display text-sm font-semibold text-ink/40 dark:text-[#E3E8F8]/40">
-                          {item.number}
-                        </span>
-                      </div>
-                      <h3
-                        className={`font-display font-semibold leading-snug text-ink sm:col-span-4 ${
-                          isAr ? 'text-lg leading-[1.5]' : 'text-xl'
-                        }`}
-                      >
-                        {item.title}
-                      </h3>
-                      <p
-                        className={`text-[13px] leading-[1.7] text-ink-muted dark:text-[#E3E8F8]/75 sm:col-span-6 ${
-                          isAr ? 'font-arabic leading-[1.9]' : 'leading-relaxed'
-                        }`}
-                      >
-                        {item.text}
-                      </p>
-                    </motion.article>
-                  ))}
-                </div>
-
-                <motion.div
-                  {...reveal(0.1)}
-                  className="mt-8 flex gap-4 border-s-2 border-[#E3E8F8] bg-white/50 px-5 py-4 dark:border-[#C0C5CD]/40 dark:bg-white/[0.04]"
-                >
-                  <PremiumIcon
-                    icon={ShieldAlert}
-                    tone="amber"
-                    size="xs"
-                    surface="light"
-                    className="mt-0.5"
-                  />
-                  <p className="text-[12px] leading-[1.7] text-ink-muted dark:text-[#E3E8F8]/75">
+                  <div className="pointer-events-none absolute -end-8 -top-8 h-28 w-28 rounded-full bg-[#91C8E4]/30 blur-2xl" />
+                  <h3
+                    className={`font-display font-bold text-[#183B56] ${
+                      isAr ? 'text-xl leading-[1.4]' : 'text-2xl leading-[1.1]'
+                    }`}
+                  >
+                    {isAr ? 'تعلّم بخطوات واضحة' : 'Learn in clear steps'}
+                  </h3>
+                  <p
+                    className={`mt-3 text-[14px] text-[#64748B] ${
+                      isAr ? 'font-arabic leading-[1.85]' : 'leading-[1.7]'
+                    }`}
+                  >
                     {isAr
-                      ? 'المحتوى تعليمي ولا يغني عن الاتصال بخدمات الطوارئ أو التدريب المعتمد. الأولوية دائمًا لسلامة المكان وطلب المساعدة المختصة.'
-                      : 'Educational content never replaces emergency services or certified training. Scene safety and professional help always come first.'}
+                      ? 'اكتشف دروسًا تعليمية منظمة تساعدك على فهم أساسيات الإسعافات الأولية والتعامل مع المواقف الطارئة بطريقة واضحة وتدريجية.'
+                      : 'Discover structured lessons that help you understand first-aid basics and handle emergency situations clearly and progressively.'}
                   </p>
-                </motion.div>
+                </motion.article>
+
+                <motion.article
+                  {...reveal(0.16)}
+                  className="group relative overflow-hidden rounded-3xl border border-[#4682A9] bg-[#4682A9] p-7 text-white shadow-[0_24px_60px_-40px_rgba(24,59,86,0.35)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_32px_70px_-40px_rgba(24,59,86,0.45)]"
+                >
+                  <div className="pointer-events-none absolute -end-8 -top-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
+                  <h3
+                    className={`font-display font-bold text-white ${
+                      isAr ? 'text-xl leading-[1.4]' : 'text-2xl leading-[1.1]'
+                    }`}
+                  >
+                    {isAr ? 'اختبر معرفتك وطوّر مهاراتك' : 'Test your knowledge and grow'}
+                  </h3>
+                  <p
+                    className={`mt-3 text-[14px] text-white/85 ${
+                      isAr ? 'font-arabic leading-[1.85]' : 'leading-[1.7]'
+                    }`}
+                  >
+                    {isAr
+                      ? 'عزّز ما تعلمته من خلال الاختبارات التفاعلية، وتابع تقدمك التعليمي واكتشف مدى تطور معرفتك.'
+                      : 'Strengthen what you learn through interactive quizzes, track your progress, and see how your knowledge evolves.'}
+                  </p>
+                </motion.article>
               </div>
             </div>
           </div>
         </section>
-
         {/* Mission — immersive midnight editorial moment with pastel glows. */}
         <section
           id="our-mission"
@@ -1236,145 +1137,6 @@ export default function PublicLandingPage() {
                 </div>
               </div>
             </motion.div>
-          </div>
-        </section>
-
-        {/* Learning path — real course data only. */}
-        <section
-          id="courses"
-          className="relative bg-surface py-20 transition-colors duration-500 md:py-28 lg:py-32"
-        >
-          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-            <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
-              <div className="lg:col-span-8">
-                <motion.div {...reveal(0)}>
-                  <SectionLabel index="04">{isAr ? 'المسار التعليمي' : 'The learning path'}</SectionLabel>
-                </motion.div>
-                <motion.h2
-                  {...reveal(0.06)}
-                  className={`mt-6 max-w-3xl font-display font-semibold tracking-[-0.02em] text-ink ${
-                    isAr
-                      ? 'text-[clamp(1.95rem,4.2vw,3.4rem)] leading-[1.3]'
-                      : 'text-[clamp(1.9rem,4.4vw,3.6rem)] leading-[1.04]'
-                  }`}
-                >
-                  {isAr ? (
-                    <>
-                      ثلاث مهارات أساسية.
-                      <br />
-                      <span className="text-ink">بداية واعية واحدة.</span>
-                    </>
-                  ) : (
-                    <>
-                      Three essential skills.
-                      <br />
-                      <span className="italic text-ink">One considered start.</span>
-                    </>
-                  )}
-                </motion.h2>
-                <motion.p
-                  {...reveal(0.12)}
-                  className={`mt-5 max-w-2xl text-[13.5px] text-ink-muted dark:text-[#E3E8F8]/80 ${
-                    isAr ? 'font-arabic leading-[1.95]' : 'leading-[1.8]'
-                  }`}
-                >
-                  {isAr
-                    ? 'كل مسار يقسّم مهارة إلى خطوات قصيرة وسهلة القراءة، ثم ينتهي باختبار معرفي قصير. يُحفظ تقدّمك في حسابك لتعود من حيث توقفت.'
-                    : 'Each course breaks a skill into short, readable steps, then ends with a short knowledge check. Your progress is saved to your account, so you can pick up where you left off.'}
-                </motion.p>
-              </div>
-
-            </div>
-
-            <motion.div
-              {...reveal(0.1)}
-              className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-ink/[0.08] bg-ink/[0.08] dark:border-white/10 dark:bg-white/10 sm:grid-cols-3"
-            >
-              {[
-                {
-                  number: '01',
-                  icon: BookOpen,
-                  title: isAr ? 'تعلّم' : 'Learn',
-                  text: isAr ? 'دروس قصيرة ومنسّمة خطوة بخطوة.' : 'Short, structured lessons, step by step.',
-                },
-                {
-                  number: '02',
-                  icon: ClipboardCheck,
-                  title: isAr ? 'تدرّب' : 'Practice',
-                  text: isAr ? 'اختبارات معرفية بتغذية راجعة فورية.' : 'Knowledge checks with instant feedback.',
-                },
-                {
-                  number: '03',
-                  icon: TrendingUp,
-                  title: isAr ? 'تابع' : 'Track',
-                  text: isAr ? 'تقدّمك محفوظ في حسابك.' : 'Your progress saved to your account.',
-                },
-              ].map((step, index) => (
-                <div key={step.number} className="group bg-white p-5 dark:bg-[#203562] sm:p-6">
-                  <PremiumIcon
-                    icon={step.icon}
-                    tone={index % 2 === 0 ? 'amber' : 'green'}
-                    size="xs"
-                    surface="light"
-                  />
-                  <div className="mt-4 flex items-center gap-3">
-                    <span className="font-display text-sm font-semibold text-ink dark:text-[#E3E8F8]">
-                      {step.number}
-                    </span>
-                    <span className="h-px w-5 bg-ink/15 dark:bg-white/15" aria-hidden="true" />
-                    <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-ink/60 dark:text-[#E3E8F8]/50">
-                      {step.title}
-                    </p>
-                  </div>
-                  <p className="mt-3 text-[13px] leading-relaxed text-ink-muted dark:text-[#E3E8F8]/75">
-                    {step.text}
-                  </p>
-                </div>
-              ))}
-            </motion.div>
-
-            <div className="mt-12 border-t border-ink/[0.08] dark:border-white/10">
-              {courseList.map((course, index) => (
-                <motion.article
-                  key={course.id}
-                  {...reveal(index * 0.05)}
-                  className="group grid gap-4 border-b border-ink/[0.08] py-8 transition-colors hover:bg-white/70 dark:border-white/10 dark:hover:bg-white/[0.02] md:grid-cols-12 md:items-center md:gap-6 md:px-3"
-                >
-                  <div className="flex items-center gap-3 md:col-span-1">
-                    <span className="font-display text-2xl font-semibold text-ink/25 transition-colors group-hover:text-[#C0C5CD] dark:text-[#E3E8F8]/25 dark:group-hover:text-[#C0C5CD]">
-                      0{index + 1}
-                    </span>
-                  </div>
-
-                  <div className="md:col-span-5">
-                    <div className="flex flex-wrap items-center gap-2.5">
-                      <span className="rounded-full border border-ink/10 bg-white/70 px-2.5 py-1 text-[9.5px] font-bold uppercase tracking-[0.14em] text-[#3E588F] dark:border-white/15 dark:bg-white/[0.04] dark:text-[#C0C5CD]">
-                        {course.level}
-                      </span>
-                      <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-ink-muted dark:text-[#E3E8F8]/70">
-                        {course.lessons} {isAr ? 'دروس' : 'lessons'} · {course.duration}
-                      </span>
-                    </div>
-                    <h3
-                      className={`mt-2.5 font-display font-semibold leading-snug text-ink transition-colors dark:text-[#E3E8F8] ${
-                        isAr ? 'text-xl leading-[1.5]' : 'text-2xl'
-                      }`}
-                    >
-                      {course.title}
-                    </h3>
-                  </div>
-
-                  <p
-                    className={`text-[13px] text-ink-muted dark:text-[#E3E8F8]/75 md:col-span-5 ${
-                      isAr ? 'font-arabic leading-[1.9]' : 'leading-relaxed'
-                    }`}
-                  >
-                    {course.description}
-                  </p>
-
-                </motion.article>
-              ))}
-            </div>
           </div>
         </section>
 

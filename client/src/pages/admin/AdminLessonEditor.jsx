@@ -21,8 +21,13 @@ import {
   Upload,
   XCircle,
 } from '../../components/icons';
-import LessonBlocksEditor, { blankBlock, hasBlockContent, normalizeBlocks, previewBlocks, serializeBlocks } from '../../components/admin/LessonBlocksEditor';
 import LessonBlocks from '../../components/LessonBlocks';
+import LessonDocumentEditor from '../../components/admin/LessonDocumentEditor';
+import {
+  lessonBlocksForSave,
+  normalizeLessonDocument,
+} from '../../components/admin/lessonDocumentModel';
+import { blankBlock, hasBlockContent, serializeBlocks } from '../../components/admin/LessonBlocksEditor';
 import QuizEditorModal from '../../components/admin/QuizEditorModal';
 import AiModal from '../../components/ai/AiModal';
 import { aiApi, localizeAiError } from '../../lib/ai';
@@ -69,7 +74,8 @@ export default function AdminLessonEditor() {
   const [objectivesAr, setObjectivesAr] = useState('');
   const [objectivesEn, setObjectivesEn] = useState('');
   const [sourceRefsText, setSourceRefsText] = useState('');
-  const [drafts, setDrafts] = useState(() => [blankBlock('paragraph')]);
+  const [lessonBlocks, setLessonBlocks] = useState(() => [blankBlock('paragraph')]);
+  const [editorLanguage, setEditorLanguage] = useState(isAr ? 'ar' : 'en');
   const [loadedLesson, setLoadedLesson] = useState(null);
   const [lessonBusy, setLessonBusy] = useState(Boolean(lessonId));
 
@@ -135,7 +141,7 @@ export default function AdminLessonEditor() {
         setObjectivesAr((lesson.objectives?.ar || []).join('\n'));
         setObjectivesEn((lesson.objectives?.en || []).join('\n'));
         setSourceRefsText((lesson.sourceRefs || []).join('\n'));
-        setDrafts(normalizeBlocks(lesson.blocks));
+        setLessonBlocks(normalizeLessonDocument(lesson.blocks, lesson.content));
       })
       .catch((err) => setInitialError(err.status === 404 ? t('admin.editor.lessonMissing') : err.message || t('admin.errors.loadCourses')))
       .finally(() => setLessonBusy(false));
@@ -188,15 +194,16 @@ export default function AdminLessonEditor() {
   );
 
   const buildMaterial = useCallback(() => {
+    const lang = isAr ? 'ar' : 'en';
     const parts = [
       localize(form.title, isAr ? 'ar' : 'en'),
-      localize(form.content, isAr ? 'ar' : 'en'),
-      ...drafts
-        .map((draft) => localize(draft.content, isAr ? 'ar' : 'en'))
-        .filter(Boolean),
+      ...lessonBlocks.flatMap((block) => [
+        localize(block.content, lang),
+        (block.data?.items?.[lang] || []).join('\n'),
+      ]),
     ];
     return parts.filter(Boolean).join('\n').trim();
-  }, [drafts, form.content, form.title, isAr]);
+  }, [lessonBlocks, form.title, isAr]);
 
   const runAdminTask = useCallback(
     async ({ task, sourceText }) => {
@@ -234,22 +241,7 @@ export default function AdminLessonEditor() {
     }
   };
 
-  const improveBlock = async (index) => {
-    const block = drafts[index];
-    if (!block) return;
-    const source = localize(block.content, isAr ? 'ar' : 'en');
-    if (!source.trim()) return;
-    const data = await runAdminTask({ task: 'improve_text', sourceText: source });
-    if (data?.result) {
-      setAiPreview({
-        kind: 'paragraph',
-        blockId: block.id,
-        ar: data.result.ar || '',
-        en: data.result.en || '',
-        model: data.model,
-      });
-    }
-  };
+
 
   const draftQuestion = async () => {
     const material = buildMaterial();
@@ -281,8 +273,8 @@ export default function AdminLessonEditor() {
   const buildPayload = (published) => ({
     course: form.course || defaultCourse,
     title: { ar: form.title.ar.trim(), en: form.title.en.trim() },
-    content: { ar: form.content.ar.trim(), en: form.content.en.trim() },
-    blocks: serializeBlocks(drafts),
+    content: { ar: '', en: '' },
+    blocks: serializeBlocks(lessonBlocksForSave(lessonBlocks)),
     objectives: { ar: splitLines(objectivesAr), en: splitLines(objectivesEn) },
     safetyNotes: { ar: form.safetyNotes.ar.trim(), en: form.safetyNotes.en.trim() },
     images: (loadedLesson?.images || []).length ? loadedLesson.images : [],
@@ -305,8 +297,8 @@ export default function AdminLessonEditor() {
       setBanner(t('admin.editor.validationTitles'));
       return false;
     }
-    const hasIntro = form.content.ar.trim() && form.content.en.trim();
-    if (!hasIntro && !hasBlockContent(drafts)) {
+    const contentBlocks = lessonBlocksForSave(lessonBlocks);
+    if (!hasBlockContent(contentBlocks)) {
       setBanner(t('admin.editor.validationContent'));
       return false;
     }
@@ -624,28 +616,6 @@ export default function AdminLessonEditor() {
                 </Field>
               </div>
 
-              <SectionLabel>{t('admin.editor.sectionIntro')}</SectionLabel>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Field label={`${t('admin.editor.intro')} (${t('admin.common.ar')})`}>
-                  <textarea
-                    rows={3}
-                    value={form.content.ar}
-                    onChange={(event) => update((previous) => ({ content: { ...previous.content, ar: event.target.value } }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm resize-y"
-                    dir="rtl"
-                  />
-                </Field>
-                <Field label={`${t('admin.editor.intro')} (${t('admin.common.en')})`}>
-                  <textarea
-                    rows={3}
-                    value={form.content.en}
-                    onChange={(event) => update((previous) => ({ content: { ...previous.content, en: event.target.value } }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm resize-y"
-                    dir="ltr"
-                  />
-                </Field>
-              </div>
-
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label={`${t('admin.editor.objectives')} (${t('admin.common.ar')})`} hint={t('admin.editor.objectivesHint')}>
                   <textarea
@@ -734,19 +704,13 @@ export default function AdminLessonEditor() {
             </div>
           </Panel>
 
-          <Panel className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm">
-            <div className="space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <p className="text-sm font-extrabold text-[#3E588F]">{t('admin.editor.sectionBlocks')}</p>
-                  <p className="text-xs font-semibold text-[#3E588F]/70">{t('admin.editor.sectionBlocksHint')}</p>
-                </div>
-                <span className="rounded-full bg-[#E3E8F8] px-3 py-1 text-xs font-extrabold text-[#3E588F] border border-[#C0C5CD]">
-                  {formatNumber(drafts.length, i18n.language)} {t('admin.courses.blocksCount')}
-                </span>
-              </div>
-              <LessonBlocksEditor blocks={drafts} onChange={setDrafts} onImprove={improveBlock} />
-            </div>
+          <Panel className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-4 sm:p-6 shadow-sm">
+            <LessonDocumentEditor
+              blocks={lessonBlocks}
+              onChange={setLessonBlocks}
+              language={editorLanguage}
+              onLanguageChange={setEditorLanguage}
+            />
           </Panel>
 
           <Panel
@@ -864,7 +828,7 @@ export default function AdminLessonEditor() {
       <Modal open={previewOpen} onClose={() => setPreviewOpen(false)} size="lg" title={t('admin.editor.previewTitle')} subtitle={t('admin.editor.previewHint')}>
         {(() => {
           const lang = previewLang;
-          const preview = previewBlocks(drafts, lang);
+          const preview = serializeBlocks(lessonBlocksForSave(lessonBlocks))[lang];
           const objectives = splitLines(lang === 'ar' ? objectivesAr : objectivesEn);
           return (
             <div dir={lang === 'ar' ? 'rtl' : 'ltr'} className="space-y-5 text-[#3E588F]">

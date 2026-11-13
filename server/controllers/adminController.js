@@ -45,6 +45,8 @@ const LESSON_BLOCK_TYPES = new Set([
   'table',
   'attachment',
   'callout',
+  'note',
+  'divider',
 ]);
 
 const dayKey = (date) => new Date(date).toISOString().slice(0, 10);

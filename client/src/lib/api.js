@@ -1,5 +1,10 @@
 const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
 
+export function resolveAssetUrl(url) {
+  if (typeof url !== 'string' || !url.startsWith('/uploads/')) return url || '';
+  return new URL(url, API_BASE).toString();
+}
+
 export class ApiError extends Error {
   constructor(message, status, code, payload) {
     super(message);

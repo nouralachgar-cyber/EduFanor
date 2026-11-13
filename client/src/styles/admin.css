@@ -14,12 +14,12 @@
 }
 
 .admin-sidebar {
-  background: linear-gradient(180deg, #3E588F, #203562);
+  background: linear-gradient(180deg, #1B365D, #005A9C);
   color: #E3E8F8;
 }
 
 .dark .admin-sidebar {
-  background: linear-gradient(180deg, #203562, #203562);
+  background: linear-gradient(180deg, #1B365D, #1B365D);
 }
 
 .admin-nav-link {
@@ -118,7 +118,7 @@
   background:
     radial-gradient(circle at 88% 15%, rgba(62, 88, 143, 0.4), transparent 32%),
     radial-gradient(circle at 12% 110%, rgba(192, 197, 205, 0.32), transparent 40%),
-    linear-gradient(135deg, #3E588F 0%, #3E588F 55%, #203562 100%);
+    linear-gradient(135deg, #1B365D 0%, #005A9C 55%, #1B365D 100%);
   color: #E3E8F8;
 }
 
@@ -126,7 +126,7 @@
   background:
     radial-gradient(circle at 88% 15%, rgba(62, 88, 143, 0.22), transparent 32%),
     radial-gradient(circle at 12% 110%, rgba(192, 197, 205, 0.12), transparent 40%),
-    linear-gradient(135deg, #3E588F 0%, #203562 55%, #203562 100%);
+    linear-gradient(135deg, #1B365D 0%, #005A9C 55%, #1B365D 100%);
   color: #E3E8F8;
 }
 

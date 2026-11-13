@@ -1,4 +1,4 @@
-import { apiRequest } from './api';
+import { apiRequest, resolveAssetUrl } from './api';
 
 const query = (params = {}) => {
   const search = new URLSearchParams();
@@ -36,7 +36,11 @@ export const adminApi = {
   profile: () => apiRequest('/admin/profile', { auth: true }),
   updateProfile: (body) => apiRequest('/admin/profile', { method: 'PATCH', body, auth: true }),
   updatePassword: (body) => apiRequest('/admin/password', { method: 'PATCH', body, auth: true }),
-  uploadAsset: (body) => apiRequest('/admin/uploads', { method: 'POST', body, auth: true }),
+  uploadAsset: async (body) => {
+    const result = await apiRequest('/admin/uploads', { method: 'POST', body, auth: true });
+    if (typeof result?.url !== 'string') return result;
+    return { ...result, url: resolveAssetUrl(result.url) };
+  },
 };
 
 export const localize = (value, language) => {

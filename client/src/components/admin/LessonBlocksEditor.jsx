@@ -45,6 +45,7 @@ export const BLOCK_TYPES = [
   { value: 'figure', labelKey: 'figureBlock', icon: ImagePlus },
   { value: 'important', labelKey: 'importantBlock', icon: Info },
   { value: 'warning', labelKey: 'warningBlock', icon: AlertTriangle },
+  { value: 'note', labelKey: 'noteBlock', icon: Info },
   { value: 'safety', labelKey: 'safetyBlock', icon: ShieldCheck },
   { value: 'tip', labelKey: 'tipBlock', icon: Lightbulb },
   { value: 'steps', labelKey: 'stepsBlock', icon: ListChecks },
@@ -54,10 +55,10 @@ export const BLOCK_TYPES = [
   { value: 'attachment', labelKey: 'attachmentBlock', icon: Paperclip },
 ];
 
-const TEXT_TYPES = new Set(['paragraph', 'text', 'rich-text', 'heading', 'subheading', 'important', 'warning', 'safety', 'tip', 'callout']);
+const TEXT_TYPES = new Set(['paragraph', 'text', 'rich-text', 'heading', 'subheading', 'important', 'warning', 'safety', 'tip', 'callout', 'note']);
 const LIST_TYPES = new Set(['list', 'numbered-list']);
 const MEDIA_TYPES = new Set(['image', 'figure', 'gallery', 'youtube', 'video', 'attachment']);
-const CALLOUT_TYPES = new Set(['important', 'warning', 'safety', 'tip']);
+const CALLOUT_TYPES = new Set(['important', 'warning', 'safety', 'tip', 'note']);
 
 const uid = () => `block-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 
@@ -441,15 +442,45 @@ function MiniImageTab({ url }) {
   return <UrlPreview url={url} />;
 }
 
-function BilingualRow({ label, value, onChange, multiline = true, rows = 3, placeholderAr, placeholderEn }) {
+function BilingualRow({ label, value, onChange, multiline = true, rows = 3, placeholderAr, placeholderEn, enableLinks = false }) {
   const Input = multiline ? 'textarea' : 'input';
+  const arRef = useRef(null);
+  const enRef = useRef(null);
+
+  const insertLink = (lang, ref) => {
+    const textarea = ref.current;
+    const url = window.prompt('Link URL');
+    if (!url) return;
+    const text = window.prompt('Link text', url) || url;
+    const markdown = `[${text}](${url})`;
+    const current = String(value?.[lang] || '');
+    if (textarea && typeof textarea.selectionStart === 'number') {
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const next = current.slice(0, start) + markdown + current.slice(end);
+      onChange(lang, next);
+      window.setTimeout(() => {
+        textarea.focus();
+        textarea.selectionStart = textarea.selectionEnd = start + markdown.length;
+      }, 0);
+    } else {
+      onChange(lang, current + markdown);
+    }
+  };
+
   return (
     <div>
       {label && <span className="label mb-1.5">{label}</span>}
       <div className="grid gap-2 sm:grid-cols-2">
         <div>
-          <span className="mb-1 block text-[10px] font-extrabold text-ink-muted">AR</span>
+          <div className="mb-1 flex items-center justify-between">
+            <span className="text-[10px] font-extrabold text-ink-muted">AR</span>
+            {enableLinks && (
+              <button type="button" onClick={() => insertLink('ar', arRef)} className="text-[10px] font-bold text-primary hover:underline">+ Link</button>
+            )}
+          </div>
           <Input
+            ref={arRef}
             value={value?.ar || ''}
             onChange={(event) => onChange('ar', event.target.value)}
             className={`input text-xs ${multiline ? 'resize-y py-2' : 'h-9'}`}
@@ -459,8 +490,14 @@ function BilingualRow({ label, value, onChange, multiline = true, rows = 3, plac
           />
         </div>
         <div>
-          <span className="mb-1 block text-[10px] font-extrabold text-ink-muted">EN</span>
+          <div className="mb-1 flex items-center justify-between">
+            <span className="text-[10px] font-extrabold text-ink-muted">EN</span>
+            {enableLinks && (
+              <button type="button" onClick={() => insertLink('en', enRef)} className="text-[10px] font-bold text-primary hover:underline">+ Link</button>
+            )}
+          </div>
           <Input
+            ref={enRef}
             value={value?.en || ''}
             onChange={(event) => onChange('en', event.target.value)}
             className={`input text-xs ${multiline ? 'resize-y py-2' : 'h-9'}`}
@@ -525,6 +562,7 @@ function BlockEditBody({ block, index, helpers }) {
           rows={type === 'paragraph' ? 4 : 2}
           placeholderAr={isShort ? 'عنوان…' : undefined}
           placeholderEn={isShort ? 'Heading…' : undefined}
+          enableLinks
         />
         {onImprove && (
           <button
@@ -997,6 +1035,16 @@ export default function LessonBlocksEditor({ blocks = [], onChange, onImprove })
 
   return (
     <div className="space-y-2">
+      <div className="flex flex-wrap gap-2 rounded-2xl border border-line bg-surface-muted/40 p-2">
+        <button type="button" onClick={() => addBlock('paragraph')} className="inline-flex items-center rounded-lg border border-line bg-card px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:border-primary hover:text-primary">+ Add Text</button>
+        <button type="button" onClick={() => addBlock('heading')} className="inline-flex items-center rounded-lg border border-line bg-card px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:border-primary hover:text-primary">+ Add Heading</button>
+        <button type="button" onClick={() => addBlock('image')} className="inline-flex items-center rounded-lg border border-line bg-card px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:border-primary hover:text-primary">+ Add Image</button>
+        <button type="button" onClick={() => addBlock('video')} className="inline-flex items-center rounded-lg border border-line bg-card px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:border-primary hover:text-primary">+ Add Video</button>
+        <button type="button" onClick={() => addBlock('youtube')} className="inline-flex items-center rounded-lg border border-line bg-card px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:border-primary hover:text-primary">+ Embed YouTube</button>
+        <button type="button" onClick={() => addBlock('list')} className="inline-flex items-center rounded-lg border border-line bg-card px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:border-primary hover:text-primary">+ Add List</button>
+        <button type="button" onClick={() => addBlock('note')} className="inline-flex items-center rounded-lg border border-line bg-card px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:border-primary hover:text-primary">+ Add Note</button>
+        <button type="button" onClick={() => addBlock('warning')} className="inline-flex items-center rounded-lg border border-line bg-card px-3 py-1.5 text-xs font-extrabold text-ink transition-colors hover:border-primary hover:text-primary">+ Add Warning</button>
+      </div>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="icon-box h-8 w-8 bg-brand-soft text-success-ink">

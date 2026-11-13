@@ -42,13 +42,13 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="hidden w-64 shrink-0 border-e border-line bg-card/70 p-4 md:flex md:flex-col md:justify-between">
+    <aside className="hidden w-64 shrink-0 flex-col justify-between bg-[#1B365D] p-4 text-white md:flex">
       <div className="space-y-6">
         <div className="px-3 pt-2">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-ink-muted">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/70">
             {isAr ? 'مساحة التعلّم' : 'Learning space'}
           </p>
-          <p className="mt-1 font-display text-lg font-semibold leading-tight text-ink">
+          <p className="mt-1 font-display text-lg font-semibold leading-tight text-white">
             {isAr ? 'رحلتك الإسعافية' : 'Your first-aid path'}
           </p>
         </div>
@@ -63,14 +63,14 @@ export default function Sidebar() {
                 className={({ isActive }) =>
                   `group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-all ${
                     isActive
-                      ? 'bg-primary text-on-primary shadow-sm'
-                      : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
+                      ? 'bg-[#005A9C] text-white shadow-sm'
+                      : 'text-white/70 hover:bg-white/10 hover:text-white'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <Icon className={`h-4 w-4 ${isActive ? 'text-on-primary' : 'text-accent'}`} />
+                    <Icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-[#60C1E5]'}`} />
                     <span>{link.name}</span>
                   </>
                 )}
@@ -93,15 +93,15 @@ export default function Sidebar() {
           )}
         </nav>
 
-        <div className="rounded-2xl border border-line bg-surface-muted p-4">
+        <div className="rounded-2xl border border-line bg-white/10 p-4">
           <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-ink-muted">
             <span>{isAr ? 'الإنجاز الكلي' : 'Overall progress'}</span>
             <Sparkles className="h-3.5 w-3.5 text-amber" />
           </div>
           <p className="mt-2 font-display text-2xl font-semibold text-ink">{percent}%</p>
-          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-line">
+          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-primary to-sage transition-all duration-700"
+              className="h-full rounded-full bg-gradient-to-r from-[#005A9C] to-[#60C1E5] transition-all duration-700"
               style={{ width: `${percent}%` }}
             />
           </div>

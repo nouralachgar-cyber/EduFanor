@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   Play,
 } from './icons';
+import { resolveAssetUrl } from '../lib/api';
 
 export function extractYouTubeId(url) {
   if (!url) return null;
@@ -49,6 +50,22 @@ const textOf = (value, isAr) => {
   return typeof result === 'string' ? result : '';
 };
 
+const renderInlineText = (text) => {
+  const source = String(text || '');
+  const parts = source.split(/(\[[^\]]+\]\([^)]+\))/g);
+  return parts.map((part, index) => {
+    const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (match) {
+      return (
+        <a key={index} href={match[2]} target="_blank" rel="noreferrer" className="font-semibold text-primary underline underline-offset-2">
+          {match[1]}
+        </a>
+      );
+    }
+    return <React.Fragment key={index}>{part}</React.Fragment>;
+  });
+};
+
 const blockMedia = (block) => {
   const content = block?.content;
   const data = block?.data || {};
@@ -57,7 +74,7 @@ const blockMedia = (block) => {
     data.src ||
     (typeof content === 'string' ? content : content?.url || content?.src) ||
     '';
-  return typeof url === 'string' ? url : '';
+  return typeof url === 'string' ? resolveAssetUrl(url) : '';
 };
 
 const galleryItems = (block, isAr) => {
@@ -67,7 +84,7 @@ const galleryItems = (block, isAr) => {
       .map((item) => {
         if (typeof item === 'string') return { url: item, caption: '', alt: '' };
         return {
-          url: typeof item.url === 'string' ? item.url : typeof item === 'object' ? item.src || '' : '',
+          url: resolveAssetUrl(typeof item.url === 'string' ? item.url : typeof item === 'object' ? item.src || '' : ''),
           caption: textOf(item.caption, isAr),
           alt: textOf(item.alt, isAr),
         };
@@ -75,7 +92,7 @@ const galleryItems = (block, isAr) => {
       .filter((item) => item.url);
   }
   const urls = Array.isArray(data.urls) ? data.urls : Array.isArray(data.images) ? data.images : [];
-  return urls.map((url) => ({ url, caption: textOf(data.captions, isAr), alt: '' }));
+  return urls.map((url) => ({ url: resolveAssetUrl(url), caption: textOf(data.captions, isAr), alt: '' }));
 };
 
 function YouTubeEmbed({ src, title, fallbackMessage }) {
@@ -123,16 +140,54 @@ export function LessonBlockRenderer({ block, isAr }) {
   const content = block.content;
   const data = block.data || {};
 
+  if (type === 'divider') {
+    return <hr className="my-6 border-0 border-t border-line-strong" />;
+  }
+
   if (type === 'heading') {
     return (
-      <h2 className="mt-8 mb-4 font-display text-2xl font-bold text-ink sm:text-3xl">{textOf(content, isAr)}</h2>
+      <h2 className="mt-8 mb-4 font-display text-2xl font-bold text-ink sm:text-3xl">{renderInlineText(textOf(content, isAr))}</h2>
     );
   }
   if (type === 'subheading') {
-    return <h3 className="mt-6 mb-3 text-xl font-extrabold text-ink sm:text-2xl">{textOf(content, isAr)}</h3>;
+    return <h3 className="mt-6 mb-3 text-xl font-extrabold text-ink sm:text-2xl">{renderInlineText(textOf(content, isAr))}</h3>;
   }
   if (type === 'paragraph' || type === 'text' || type === 'rich-text') {
-    return <p className="mb-4 text-sm leading-relaxed text-ink sm:text-base whitespace-pre-wrap">{textOf(content, isAr)}</p>;
+    const images = Array.isArray(data.images) ? data.images.filter(Boolean).map(resolveAssetUrl) : [];
+    const videos = Array.isArray(data.videos) ? data.videos.filter(Boolean).map(resolveAssetUrl) : [];
+    return (
+      <div className="mb-4 space-y-3">
+        <p className="text-sm leading-relaxed text-ink sm:text-base whitespace-pre-wrap">{renderInlineText(textOf(content, isAr))}</p>
+        {images.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {images.map((url, index) => (
+              <img key={index} src={url} alt="" className="h-auto max-w-full rounded-2xl border border-line" loading="lazy" />
+            ))}
+          </div>
+        )}
+        {videos.length > 0 && (
+          <div className="space-y-3">
+            {videos.map((url, index) => {
+              const videoId = extractYouTubeId(url);
+              if (videoId) {
+                return (
+                  <div key={index} className="relative aspect-video w-full overflow-hidden rounded-2xl border border-line bg-black" style={{ aspectRatio: '16 / 9' }}>
+                    <iframe
+                      className="absolute inset-0 h-full w-full"
+                      src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0&playsinline=1`}
+                      title="Video"
+                      frameBorder="0"
+                      allowFullScreen
+                    />
+                  </div>
+                );
+              }
+              return <video key={index} src={url} controls className="h-auto w-full rounded-2xl border border-line" preload="metadata" />;
+            })}
+          </div>
+        )}
+      </div>
+    );
   }
   if (type === 'image' || type === 'figure') {
     const src = blockMedia(block);
@@ -207,7 +262,7 @@ export function LessonBlockRenderer({ block, isAr }) {
         <Info className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
         <div>
           <p className="mb-1 text-xs font-extrabold text-accent">{isAr ? 'معلومات مهمة' : 'Important'}</p>
-          <p className="text-sm leading-relaxed text-ink">{text}</p>
+          <p className="text-sm leading-relaxed text-ink">{renderInlineText(text)}</p>
         </div>
       </div>
     );
@@ -220,7 +275,20 @@ export function LessonBlockRenderer({ block, isAr }) {
         <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-danger" />
         <div>
           <p className="mb-1 text-xs font-extrabold text-danger">{isAr ? 'تحذير' : 'Warning'}</p>
-          <p className="text-sm leading-relaxed text-ink">{text}</p>
+          <p className="text-sm leading-relaxed text-ink">{renderInlineText(text)}</p>
+        </div>
+      </div>
+    );
+  }
+  if (type === 'note') {
+    const text = textOf(content, isAr);
+    if (!text) return null;
+    return (
+      <div className="my-6 flex items-start gap-3 rounded-2xl border border-primary/30 bg-brand-soft/40 p-4">
+        <Info className="mt-0.5 h-5 w-5 shrink-0 text-primary dark:text-brand-ink" />
+        <div>
+          <p className="mb-1 text-xs font-extrabold text-primary dark:text-brand-ink">{isAr ? 'ملاحظة' : 'Note'}</p>
+          <p className="text-sm leading-relaxed text-ink">{renderInlineText(text)}</p>
         </div>
       </div>
     );
@@ -233,7 +301,7 @@ export function LessonBlockRenderer({ block, isAr }) {
         <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary dark:text-brand-ink" />
         <div>
           <p className="mb-1 text-xs font-extrabold text-ink">{isAr ? 'معلومات السلامة' : 'Safety information'}</p>
-          <p className="text-sm leading-relaxed text-ink">{text}</p>
+          <p className="text-sm leading-relaxed text-ink">{renderInlineText(text)}</p>
         </div>
       </div>
     );
@@ -246,7 +314,7 @@ export function LessonBlockRenderer({ block, isAr }) {
         <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-elegantPink" />
         <div>
           <p className="mb-1 text-xs font-extrabold text-elegantPink">{isAr ? 'نصيحة' : 'Tip'}</p>
-          <p className="text-sm leading-relaxed text-ink">{text}</p>
+          <p className="text-sm leading-relaxed text-ink">{renderInlineText(text)}</p>
         </div>
       </div>
     );
@@ -257,7 +325,7 @@ export function LessonBlockRenderer({ block, isAr }) {
       <ul className="my-4 space-y-2 list-disc ps-6">
         {items.map((item, index) => (
           <li key={index} className="text-sm leading-relaxed text-ink sm:text-base">
-            {textOf(item, isAr)}
+            {renderInlineText(textOf(item, isAr))}
           </li>
         ))}
       </ul>
@@ -269,7 +337,7 @@ export function LessonBlockRenderer({ block, isAr }) {
       <ol className="my-4 space-y-2 list-decimal ps-6">
         {items.map((item, index) => (
           <li key={index} className="text-sm leading-relaxed text-ink sm:text-base">
-            {textOf(item, isAr)}
+            {renderInlineText(textOf(item, isAr))}
           </li>
         ))}
       </ol>
@@ -282,7 +350,7 @@ export function LessonBlockRenderer({ block, isAr }) {
         {steps.map((step, index) => {
           const title = textOf(step.title, isAr);
           const body = textOf(step.content ?? step.text, isAr);
-          const image = step.image || step.src;
+          const image = resolveAssetUrl(step.image || step.src || '');
           return (
             <div key={index} className="relative flex gap-4 rounded-2xl border border-line bg-card p-4">
               <div className="flex flex-col items-center gap-2">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowUpRight,
@@ -27,6 +27,7 @@ import Toast from '../../components/Toast';
 
 export default function AdminCourses() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -63,11 +64,14 @@ export default function AdminCourses() {
     setFormOpen(true);
   };
 
-  const onCourseSaved = () => {
+  const onCourseSaved = (savedCourse, isEdit) => {
     setFormOpen(false);
     setEditingCourse(null);
     setToast({ type: 'success', message: t('admin.courseEditor.savedToast') });
     load();
+    if (!isEdit && savedCourse?._id) {
+      navigate(`/admin/courses/${savedCourse._id}`);
+    }
   };
 
   const removeCourse = async () => {

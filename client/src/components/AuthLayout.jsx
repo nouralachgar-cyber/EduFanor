@@ -15,15 +15,15 @@ export default function AuthLayout({ children }) {
     <div className="min-h-screen bg-surface text-ink">
       <div className="grid min-h-screen lg:grid-cols-2">
         <aside
-          className="relative hidden overflow-hidden bg-[#203562] bg-cover bg-center px-10 py-10 text-[#E3E8F8] lg:flex lg:flex-col lg:justify-between"
+          className="relative hidden overflow-hidden bg-[#183B56] bg-cover bg-[center_35%] px-10 py-10 text-white lg:flex lg:flex-col lg:justify-between"
           style={{ backgroundImage: "url('/heroa.jpg')" }}
         >
           <div
-            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(35,40,56,0.88),rgba(72,31,53,0.92))]"
+            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(24,59,86,0.78),rgba(70,130,169,0.45))]"
             aria-hidden="true"
           />
           <div
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_18%,rgba(181,139,131,0.16),transparent_52%),radial-gradient(ellipse_at_18%_85%,rgba(127,205,159,0.12),transparent_46%)]"
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_18%,rgba(145,200,228,0.18),transparent_52%),radial-gradient(ellipse_at_18%_85%,rgba(70,130,169,0.14),transparent_46%)]"
             aria-hidden="true"
           />
           <div
@@ -48,7 +48,7 @@ export default function AuthLayout({ children }) {
           </div>
 
           <div className="relative z-10 max-w-md">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#C0C5CD]">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#91C8E4]">
               {isAr ? 'تعلّم بثقة ووضوح' : 'Learn with clarity and confidence'}
             </p>
             <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight">
@@ -56,17 +56,17 @@ export default function AuthLayout({ children }) {
                 <>
                   معرفة صغيرة.
                   <br />
-                  <span className="italic text-[#C0C5CD]">استعداد أكبر.</span>
+                  <span className="italic text-[#91C8E4]">استعداد أكبر.</span>
                 </>
               ) : (
                 <>
                   A little knowledge.
                   <br />
-                  <span className="italic text-[#C0C5CD]">A calmer response.</span>
+                  <span className="italic text-[#91C8E4]">A calmer response.</span>
                 </>
               )}
             </h2>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#E3E8F8]/75">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/75">
               {isAr
                 ? 'دروس منظمة، اختبارات قصيرة، وتقدّم محفوظ — مساحة تعلّم هادئة للإسعافات الأولية.'
                 : 'Structured lessons, short quizzes, and saved progress — a calm first-aid learning space.'}
@@ -74,15 +74,15 @@ export default function AuthLayout({ children }) {
 
             <ul className="mt-8 space-y-3">
               {points.map((point) => (
-                <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-[#E3E8F8]/85">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#C0C5CD]" />
+                <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-white/85">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#91C8E4]" />
                   <span className="leading-relaxed">{point}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <p className="relative z-10 max-w-sm text-[10px] leading-relaxed text-[#E3E8F8]/50">
+          <p className="relative z-10 max-w-sm text-[10px] leading-relaxed text-white/60">
             {isAr
               ? 'المحتوى تعليمي فقط. في الطوارئ، اتصل بخدمات الإسعاف المحلية أولاً.'
               : 'Educational content only. In an emergency, contact local emergency services first.'}
