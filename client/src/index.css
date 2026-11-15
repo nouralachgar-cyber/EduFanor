@@ -2,73 +2,70 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ============================================================
-   EduFanor — Warm Burgundy × Soft Rose palette (test palette)
-   ============================================================ */
+/* EduFanor official palette */
 :root {
-  /* Brand */
-  --primary: #203562;
-  --primary-hover: #3E588F;
-  --primary-active: #203562;
-  --secondary: #3E588F;
-  --accent: #3E588F;
+  --palette-beige: #F6F5F2;
+  --palette-lavender: #C5B0CD;
+  --palette-slate: #415E72;
+  --palette-navy: #17313E;
 
-  /* Backgrounds */
-  --bg-main: #E3E8F8;
-  --bg-secondary: #C0C5CD;
-  --bg-card: #FFFFFF;
-  --bg-highlight: #C0C5CD;
-  --bg-dark: #203562;
+  --primary: var(--palette-slate);
+  --primary-hover: var(--palette-navy);
+  --primary-active: var(--palette-navy);
+  --secondary: var(--palette-lavender);
+  --accent: var(--palette-lavender);
 
-  /* Text */
-  --text-primary: #203562;
-  --text-secondary: #3E588F;
-  --text-muted: #3E588F;
-  --text-inverse: #E3E8F8;
+  --bg-main: var(--palette-beige);
+  --bg-secondary: var(--palette-lavender);
+  --bg-card: var(--palette-beige);
+  --bg-highlight: var(--palette-lavender);
+  --bg-dark: var(--palette-navy);
 
-  /* Borders and interactions */
-  --border: #C0C5CD;
-  --border-hover: #3E588F;
-  --focus-ring: #3E588F;
+  --text-primary: var(--palette-navy);
+  --text-secondary: var(--palette-slate);
+  --text-muted: var(--palette-slate);
+  --text-inverse: var(--palette-beige);
 
-  /* Learning status */
-  --success: #315B45;
-  --success-bg: #E9EFE8;
-  --warning: #805C27;
-  --warning-bg: #F7EEDB;
-  --error: #A33D37;
-  --error-bg: #FBE7E5;
+  --border: var(--palette-lavender);
+  --border-hover: var(--palette-slate);
+  --focus-ring: var(--palette-slate);
+
+  --success: var(--palette-slate);
+  --success-bg: var(--palette-beige);
+  --warning: var(--palette-navy);
+  --warning-bg: var(--palette-lavender);
+  --error: var(--palette-navy);
+  --error-bg: var(--palette-lavender);
 }
 
-/* Dark theme: warm dark surfaces derived from the same palette hues */
 .dark {
-  --primary: #E3E8F8;
-  --primary-hover: #C0C5CD;
-  --primary-active: #E3E8F8;
-  --secondary: #C0C5CD;
-  --accent: #C0C5CD;
+  --primary: var(--palette-lavender);
+  --primary-hover: var(--palette-beige);
+  --primary-active: var(--palette-beige);
+  --secondary: var(--palette-beige);
+  --accent: var(--palette-lavender);
 
-  --bg-main: #203562;
-  --bg-secondary: #3E588F;
-  --bg-card: #3E588F;
-  --bg-highlight: #3E588F;
-  --bg-dark: #203562;
+  --bg-main: var(--palette-navy);
+  --bg-secondary: var(--palette-slate);
+  --bg-card: var(--palette-slate);
+  --bg-highlight: var(--palette-slate);
+  --bg-dark: var(--palette-navy);
 
-  --text-primary: #E3E8F8;
-  --text-secondary: #C0C5CD;
-  --text-muted: #C0C5CD;
-  --text-inverse: #203562;
+  --text-primary: var(--palette-beige);
+  --text-secondary: var(--palette-lavender);
+  --text-muted: var(--palette-lavender);
+  --text-inverse: var(--palette-navy);
 
-  --border: #3E588F;
-  --border-hover: #C0C5CD;
-  --focus-ring: #C0C5CD;
+  --border: var(--palette-lavender);
+  --border-hover: var(--palette-beige);
+  --focus-ring: var(--palette-lavender);
 
-  --success: #BFE0C9;
-  --success-bg: #263A2E;
-  --warning: #E3CFA5;
-  --warning-bg: #3B3222;
-  --error: #E8A09B;
-  --error-bg: #4A2826;
+  --success: var(--palette-beige);
+  --success-bg: var(--palette-slate);
+  --warning: var(--palette-lavender);
+  --warning-bg: var(--palette-slate);
+  --error: var(--palette-beige);
+  --error-bg: var(--palette-slate);
 }
 
 @theme {
@@ -89,7 +86,7 @@
   --color-amber: var(--warning);
   --color-amber-soft: var(--warning-bg);
 
-  /* Pastel slots remapped to the palette */
+  /* Brand and status utility aliases use only official palette colors. */
   --color-pink: var(--bg-highlight);
   --color-pink-soft: var(--bg-secondary);
   --color-pink-ink: var(--primary);
@@ -145,8 +142,25 @@
   --color-panel-soft: var(--bg-highlight);
   --color-panel-strong: var(--border-hover);
 
-  --shadow-pop: 0 18px 50px -28px rgba(32, 53, 98, 0.32);
-  --shadow-lift: 0 30px 70px -34px rgba(32, 53, 98, 0.38);
+  --shadow-pop: 0 18px 50px -28px rgba(23, 49, 62, 0.32);
+  --shadow-lift: 0 30px 70px -34px rgba(23, 49, 62, 0.38);
+
+  --color-red-50: var(--palette-beige);
+  --color-red-100: var(--palette-beige);
+  --color-red-200: var(--palette-lavender);
+  --color-red-600: var(--palette-navy);
+  --color-red-700: var(--palette-navy);
+  --color-red-900: var(--palette-navy);
+  --color-white: var(--palette-beige);
+  --color-black: var(--palette-navy);
+  --color-emerald-50: var(--palette-beige);
+  --color-emerald-100: var(--palette-beige);
+  --color-emerald-200: var(--palette-lavender);
+  --color-emerald-700: var(--palette-slate);
+  --color-emerald-800: var(--palette-slate);
+  --color-amber-50: var(--palette-beige);
+  --color-amber-200: var(--palette-lavender);
+  --color-amber-800: var(--palette-slate);
 }
 
 @layer base {
@@ -192,7 +206,7 @@
   }
 
   ::selection {
-    background: rgba(32, 53, 98, 0.24);
+    background: rgba(23, 49, 62, 0.24);
     color: inherit;
   }
 
@@ -242,7 +256,7 @@
     border-radius: 1.5rem;
     border: 1px solid var(--color-line);
     background-color: var(--color-card);
-    box-shadow: 0 1px 0 rgba(32, 53, 98, 0.04);
+    box-shadow: 0 1px 0 rgba(23, 49, 62, 0.04);
   }
 
   .card-hover {
@@ -279,7 +293,7 @@
   .btn-primary {
     background-color: var(--color-primary);
     color: var(--color-on-primary);
-    box-shadow: 0 12px 26px -14px rgba(32, 53, 98, 0.45);
+    box-shadow: 0 12px 26px -14px rgba(23, 49, 62, 0.45);
   }
 
   .btn-primary:hover {
@@ -367,7 +381,7 @@
 
   .input:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(62, 88, 143, 0.22);
+    box-shadow: 0 0 0 4px rgba(65, 94, 114, 0.22);
   }
 
   .input:disabled {
@@ -442,8 +456,8 @@
   .app-shell {
     min-height: 100vh;
     background:
-      radial-gradient(circle at 100% 0%, rgba(181, 139, 131, 0.2), transparent 38%),
-      radial-gradient(circle at 0% 100%, rgba(233, 216, 217, 0.4), transparent 42%),
+      radial-gradient(circle at 100% 0%, rgba(197, 176, 205, 0.2), transparent 38%),
+      radial-gradient(circle at 0% 100%, rgba(246, 245, 242, 0.4), transparent 42%),
       var(--color-surface);
   }
 }
@@ -510,7 +524,7 @@
       to bottom,
       transparent 0,
       transparent 31px,
-      rgba(32, 53, 98, 0.1) 32px
+      rgba(23, 49, 62, 0.1) 32px
     );
     background-size: 100% 32px;
   }

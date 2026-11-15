@@ -41,8 +41,8 @@ export function Hero10({ id, isAr = false }) {
   return (
     <section id={id} className="bg-surface relative isolate w-full overflow-hidden py-20 transition-colors duration-500 md:py-28">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-24 start-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-[#3E588F]/10 blur-3xl" />
-        <div className="absolute bottom-0 end-0 h-64 w-64 rounded-full bg-[#C0C5CD]/20 blur-3xl" />
+        <div className="absolute -top-24 start-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-[#415E72]/10 blur-3xl" />
+        <div className="absolute bottom-0 end-0 h-64 w-64 rounded-full bg-[#C5B0CD]/20 blur-3xl" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 text-center">
@@ -53,13 +53,13 @@ export function Hero10({ id, isAr = false }) {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto max-w-3xl"
         >
-          <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#3E588F] dark:text-[#C0C5CD]">
+          <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#415E72] dark:text-[#C5B0CD]">
             {isAr ? 'من نحن' : 'About EduFanor'}
           </p>
           <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl md:text-5xl">
             {heading}
             <br />
-            <span className="text-[#3E588F] dark:text-[#C0C5CD]">{highlight}</span>
+            <span className="text-[#415E72] dark:text-[#C5B0CD]">{highlight}</span>
           </h2>
           <p className="mt-5 text-sm leading-relaxed text-ink-muted sm:text-base">{description}</p>
           <p className="mt-4 font-display text-base italic text-ink sm:text-lg">{supporting}</p>

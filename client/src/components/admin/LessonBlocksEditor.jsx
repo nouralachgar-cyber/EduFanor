@@ -122,7 +122,12 @@ const galleryItemsOf = (value) => {
   const list = Array.isArray(value) ? value : [];
   return list.map((item) => {
     if (typeof item === 'string') return { id: uid(), url: item, caption: { ar: '', en: '' } };
-    return { id: item.id || uid(), url: String(item.url || ''), caption: bilingual(item.caption) };
+    return {
+      ...item,
+      id: item.id || uid(),
+      url: String(item.url || ''),
+      caption: bilingual(item.caption),
+    };
   });
 };
 
@@ -134,16 +139,19 @@ export function normalizeBlocks(blocks) {
     const ar = arBlocks[index] || {};
     const en = enBlocks[index] || ar;
     const type = ar.type || en.type || 'paragraph';
-    const draft = blankBlock(type);
+    const draft = { ...ar, ...en, ...blankBlock(type), type };
     draft.content = {
       ar: typeof ar.content === 'string' ? ar.content : bilingual(ar.content).ar,
       en: typeof en.content === 'string' ? en.content : bilingual(en.content).en,
     };
     const arData = ar.data || {};
     const enData = en.data || {};
+    const sharedData = { ...arData, ...enData };
+    draft.data = sharedData;
 
     if (type === 'image' || type === 'figure') {
       draft.data = {
+        ...sharedData,
         url: arData.url || arData.src || enData.url || enData.src || '',
         alt: { ar: arData.alt || '', en: enData.alt || '' },
         caption: {
@@ -155,7 +163,10 @@ export function normalizeBlocks(blocks) {
       const arItems = galleryItemsOf(arData.images ?? arData.urls);
       const enItems = galleryItemsOf(enData.images ?? enData.urls);
       draft.data = {
+        ...sharedData,
         images: Array.from({ length: Math.max(arItems.length, enItems.length) }).map((_, itemIndex) => ({
+          ...arItems[itemIndex],
+          ...enItems[itemIndex],
           id: arItems[itemIndex]?.id || enItems[itemIndex]?.id || uid(),
           url: arItems[itemIndex]?.url || enItems[itemIndex]?.url || '',
           caption: {
@@ -166,6 +177,7 @@ export function normalizeBlocks(blocks) {
       };
     } else if (type === 'youtube' || type === 'video') {
       draft.data = {
+        ...sharedData,
         url: arData.url || arData.src || enData.url || enData.src || '',
         title: {
           ar: typeof arData.title === 'string' ? arData.title : bilingual(arData.title).ar,
@@ -174,6 +186,7 @@ export function normalizeBlocks(blocks) {
       };
     } else if (LIST_TYPES.has(type)) {
       draft.data = {
+        ...sharedData,
         items: {
           ar: lines(arData.items ?? ar.content),
           en: lines(enData.items ?? en.content),
@@ -184,10 +197,13 @@ export function normalizeBlocks(blocks) {
       const enSteps = Array.isArray(enData.steps) ? enData.steps : [];
       const stepCount = Math.max(arSteps.length, enSteps.length, 1);
       draft.data = {
+        ...sharedData,
         steps: Array.from({ length: stepCount }).map((_, stepIndex) => {
           const arStep = arSteps[stepIndex] || {};
           const enStep = enSteps[stepIndex] || arStep;
           return {
+            ...arStep,
+            ...enStep,
             id: uid(),
             title: {
               ar: typeof arStep.title === 'string' ? arStep.title : bilingual(arStep.title).ar,
@@ -203,6 +219,7 @@ export function normalizeBlocks(blocks) {
       };
     } else if (type === 'table') {
       draft.data = {
+        ...sharedData,
         headers: {
           ar: lines(arData.headers ?? ar.content?.headers),
           en: lines(enData.headers ?? en.content?.headers),
@@ -214,6 +231,7 @@ export function normalizeBlocks(blocks) {
       };
     } else if (type === 'attachment') {
       draft.data = {
+        ...sharedData,
         url: arData.url || arData.src || enData.url || enData.src || '',
         name: {
           ar: typeof arData.name === 'string' ? arData.name : bilingual(arData.name).ar,
@@ -226,6 +244,7 @@ export function normalizeBlocks(blocks) {
 }
 
 const localizedStep = (step, lang) => ({
+  ...step,
   title: String(step.title?.[lang] || ''),
   content: String(step.content?.[lang] || ''),
   image: String(step.image || ''),
@@ -234,25 +253,34 @@ const localizedStep = (step, lang) => ({
 export function localizeBlock(block, lang) {
   const type = block.type;
   const content = String(block.content?.[lang] || '');
+  const extra = Object.fromEntries(
+    Object.entries(block).filter(([key]) => !['id', '_id', '__v', 'type', 'content', 'data', 'order'].includes(key))
+  );
+  const data = block.data || {};
   if (type === 'image' || type === 'figure') {
     return {
+      ...extra,
       type,
       content,
       data: {
-        url: block.data.url,
-        alt: String(block.data.alt?.[lang] || ''),
-        caption: String(block.data.caption?.[lang] || ''),
+        ...data,
+        url: data.url,
+        alt: String(data.alt?.[lang] || ''),
+        caption: String(data.caption?.[lang] || ''),
       },
     };
   }
   if (type === 'gallery') {
     return {
+      ...extra,
       type,
       content,
       data: {
-        images: (block.data.images || [])
+        ...data,
+        images: (data.images || [])
           .filter((item) => item.url)
           .map((item) => ({
+            ...item,
             url: item.url,
             caption: String(item.caption?.[lang] || ''),
           })),
@@ -261,35 +289,39 @@ export function localizeBlock(block, lang) {
   }
   if (type === 'youtube' || type === 'video') {
     return {
+      ...extra,
       type,
       content,
-      data: { url: block.data.url, title: String(block.data.title?.[lang] || '') },
+      data: { ...data, url: data.url, title: String(data.title?.[lang] || '') },
     };
   }
   if (LIST_TYPES.has(type)) {
-    return { type, content, data: { items: [...(block.data.items?.[lang] || [])] } };
+    return { ...extra, type, content, data: { ...data, items: [...(data.items?.[lang] || [])] } };
   }
   if (type === 'steps') {
     return {
+      ...extra,
       type,
       content,
-      data: { steps: (block.data.steps || []).map((step) => localizedStep(step, lang)) },
+      data: { ...data, steps: (data.steps || []).map((step) => localizedStep(step, lang)) },
     };
   }
   if (type === 'table') {
     return {
+      ...extra,
       type,
       content,
       data: {
-        headers: [...(block.data.headers?.[lang] || [])],
-        rows: (block.data.rows?.[lang] || []).map((row) => [...row]),
+        ...data,
+        headers: [...(data.headers?.[lang] || [])],
+        rows: (data.rows?.[lang] || []).map((row) => [...row]),
       },
     };
   }
   if (type === 'attachment') {
-    return { type, content, data: { url: block.data.url, name: String(block.data.name?.[lang] || '') } };
+    return { ...extra, type, content, data: { ...data, url: data.url, name: String(data.name?.[lang] || '') } };
   }
-  return { type, content };
+  return { ...extra, type, content, data };
 }
 
 export function serializeBlocks(blocks) {

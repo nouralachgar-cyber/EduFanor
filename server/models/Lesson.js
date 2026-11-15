@@ -9,7 +9,7 @@ const blockSchema = new mongoose.Schema({
   content: { type: mongoose.Schema.Types.Mixed },
   data: { type: mongoose.Schema.Types.Mixed },
   order: { type: Number, default: 0 }
-}, { _id: true });
+}, { _id: true, strict: false });
 
 const lessonSchema = new mongoose.Schema({
   course: {

@@ -31,7 +31,7 @@ export default function AiModal({ open, onClose, title, subtitle, icon, badge, c
           transition={{ duration: 0.18 }}
         >
           <div
-            className="absolute inset-0 bg-[#3E588F]/55 backdrop-blur-sm dark:bg-[#203562]/70"
+            className="absolute inset-0 bg-[#415E72]/55 backdrop-blur-sm dark:bg-[#17313E]/70"
             onClick={onClose}
             aria-hidden="true"
           />
@@ -50,14 +50,14 @@ export default function AiModal({ open, onClose, title, subtitle, icon, badge, c
             <div
               className="pointer-events-none absolute inset-x-0 top-0 h-1"
               style={{
-                background: 'linear-gradient(90deg, #C0C5CD, #E3E8F8, #E9EFE8)',
+                background: 'linear-gradient(90deg, #C5B0CD, #F6F5F2, #F6F5F2)',
               }}
               aria-hidden="true"
             />
             <header className="flex items-start justify-between gap-3 border-b border-line px-5 pb-3.5 pt-4 sm:px-6">
               <div className="flex min-w-0 items-start gap-3">
                 {icon && (
-                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#3E588F,#203562)] text-white shadow-[0_10px_24px_-10px_rgba(100,45,61,0.6)] dark:bg-[linear-gradient(135deg,#C0C5CD,#E3E8F8)] dark:text-[#203562]">
+                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#415E72,#17313E)] text-white shadow-[0_10px_24px_-10px_rgba(100,45,61,0.6)] dark:bg-[linear-gradient(135deg,#C5B0CD,#F6F5F2)] dark:text-[#17313E]">
                     {icon}
                   </span>
                 )}

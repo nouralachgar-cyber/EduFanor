@@ -15,22 +15,22 @@ export default function AuthLayout({ children }) {
     <div className="min-h-screen bg-surface text-ink">
       <div className="grid min-h-screen lg:grid-cols-2">
         <aside
-          className="relative hidden overflow-hidden bg-[#183B56] bg-cover bg-[center_35%] px-10 py-10 text-white lg:flex lg:flex-col lg:justify-between"
+          className="relative hidden overflow-hidden bg-[#17313E] bg-cover bg-[center_35%] px-10 py-10 text-white lg:flex lg:flex-col lg:justify-between"
           style={{ backgroundImage: "url('/heroa.jpg')" }}
         >
           <div
-            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(24,59,86,0.78),rgba(70,130,169,0.45))]"
+            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(23, 49, 62,0.78),rgba(65, 94, 114,0.45))]"
             aria-hidden="true"
           />
           <div
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_18%,rgba(145,200,228,0.18),transparent_52%),radial-gradient(ellipse_at_18%_85%,rgba(70,130,169,0.14),transparent_46%)]"
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_18%,rgba(197, 176, 205,0.18),transparent_52%),radial-gradient(ellipse_at_18%_85%,rgba(65, 94, 114,0.14),transparent_46%)]"
             aria-hidden="true"
           />
           <div
             className="absolute inset-0 opacity-[0.16]"
             style={{
               backgroundImage:
-                'radial-gradient(rgba(253, 247, 250, 0.35) 1px, transparent 1px)',
+                'radial-gradient(rgba(246, 245, 242, 0.35) 1px, transparent 1px)',
               backgroundSize: '22px 22px',
             }}
             aria-hidden="true"
@@ -48,7 +48,7 @@ export default function AuthLayout({ children }) {
           </div>
 
           <div className="relative z-10 max-w-md">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#91C8E4]">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#C5B0CD]">
               {isAr ? 'تعلّم بثقة ووضوح' : 'Learn with clarity and confidence'}
             </p>
             <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight">
@@ -56,13 +56,13 @@ export default function AuthLayout({ children }) {
                 <>
                   معرفة صغيرة.
                   <br />
-                  <span className="italic text-[#91C8E4]">استعداد أكبر.</span>
+                  <span className="italic text-[#C5B0CD]">استعداد أكبر.</span>
                 </>
               ) : (
                 <>
                   A little knowledge.
                   <br />
-                  <span className="italic text-[#91C8E4]">A calmer response.</span>
+                  <span className="italic text-[#C5B0CD]">A calmer response.</span>
                 </>
               )}
             </h2>
@@ -75,7 +75,7 @@ export default function AuthLayout({ children }) {
             <ul className="mt-8 space-y-3">
               {points.map((point) => (
                 <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-white/85">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#91C8E4]" />
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#C5B0CD]" />
                   <span className="leading-relaxed">{point}</span>
                 </li>
               ))}

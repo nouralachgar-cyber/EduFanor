@@ -179,7 +179,7 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
           <SectionLabel>{t('admin.courseEditor.sectionBasic')}</SectionLabel>
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <Field label={`${t('admin.courseEditor.titleAr')} (${t('admin.common.ar')})`} required>
+            <Field label={t('admin.courseEditor.titleAr')} required>
               <input
                 value={form.title.ar}
                 onChange={(event) => update((previous) => ({ title: { ...previous.title, ar: event.target.value } }))}
@@ -188,7 +188,7 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
                 placeholder={t('admin.courseEditor.titleArPlaceholder')}
               />
             </Field>
-            <Field label={`${t('admin.courseEditor.titleEn')} (${t('admin.common.en')})`} required>
+            <Field label={t('admin.courseEditor.titleEn')} required>
               <input
                 value={form.title.en}
                 onChange={(event) => {
@@ -216,7 +216,7 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
           </Field>
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <Field label={`${t('admin.courseEditor.descAr')}`} required>
+            <Field label={t('admin.courseEditor.descAr')} required>
               <textarea
                 rows={3}
                 value={form.description.ar}
@@ -225,7 +225,7 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
                 dir="rtl"
               />
             </Field>
-            <Field label={`${t('admin.courseEditor.descEn')}`} required>
+            <Field label={t('admin.courseEditor.descEn')} required>
               <textarea
                 rows={3}
                 value={form.description.en}
@@ -257,7 +257,7 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
                 ))}
               </select>
             </Field>
-            <Field label={t('admin.courses.estimatedMinutes')}>
+            <Field label={t('admin.courseEditor.estimatedMinutes')}>
               <input
                 type="number"
                 min="1"
@@ -282,13 +282,15 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
                 )}
               </div>
               <div className="min-w-0 flex-1 space-y-2">
-                <input
-                  value={form.image}
-                  onChange={(event) => update((previous) => ({ image: event.target.value }))}
-                  className="input h-9 text-xs"
-                  dir="ltr"
-                  placeholder={t('admin.courseEditor.imagePlaceholder')}
-                />
+                <Field label={t('admin.courseEditor.imageUrl')}>
+                  <input
+                    value={form.image}
+                    onChange={(event) => update((previous) => ({ image: event.target.value }))}
+                    className="input h-9 text-xs"
+                    dir="ltr"
+                    placeholder={t('admin.courseEditor.imagePlaceholder')}
+                  />
+                </Field>
                 <div className="flex flex-wrap items-center gap-2">
                   <label className="btn-secondary inline-flex h-8 cursor-pointer items-center gap-1.5 px-3 text-[10px]">
                     {imageBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}

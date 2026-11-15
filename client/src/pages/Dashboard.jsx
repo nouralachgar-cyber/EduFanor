@@ -185,7 +185,7 @@ export default function Dashboard() {
       icon: Flame,
       label: t('dashboard.stats.learningStreak'),
       value: `${streak} ${t('dashboard.stats.days')}`,
-      color: 'bg-pink-soft text-[#3E588F] dark:text-[#C0C5CD]',
+      color: 'bg-pink-soft text-[#415E72] dark:text-[#C5B0CD]',
     },
   ];
 
@@ -197,7 +197,7 @@ export default function Dashboard() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 88% 12%, rgba(181, 139, 131,0.32), transparent 46%), radial-gradient(circle at 6% 96%, rgba(203, 174, 177,0.5), transparent 52%)',
+                'radial-gradient(circle at 88% 12%, rgba(197, 176, 205,0.32), transparent 46%), radial-gradient(circle at 6% 96%, rgba(197, 176, 205,0.5), transparent 52%)',
             }}
             aria-hidden="true"
           />

@@ -105,7 +105,7 @@ export default function AITutor() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 88% 10%, rgba(181, 139, 131, 0.32), transparent 46%), radial-gradient(circle at 4% 100%, rgba(203, 174, 177, 0.5), transparent 52%)',
+                'radial-gradient(circle at 88% 10%, rgba(197, 176, 205, 0.32), transparent 46%), radial-gradient(circle at 4% 100%, rgba(197, 176, 205, 0.5), transparent 52%)',
             }}
             aria-hidden="true"
           />
@@ -115,7 +115,7 @@ export default function AITutor() {
                 <Sparkles className="h-3.5 w-3.5" />
                 {t('aiTutorPage.badge')}
               </span>
-              <span className="chip bg-pink-soft text-[#3E588F] dark:text-[#C0C5CD]">
+              <span className="chip bg-pink-soft text-[#415E72] dark:text-[#C5B0CD]">
                 <Zap className="h-3 w-3" />
                 {t('aiTutorPage.statusChip')}
               </span>
@@ -144,7 +144,7 @@ export default function AITutor() {
                 onClick={() => switchTab(item.key)}
                 className={`inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[11px] font-extrabold transition-all sm:text-xs ${
                   active
-                    ? 'bg-[linear-gradient(135deg,#3E588F,#203562)] text-white shadow-[0_10px_26px_-12px_rgba(100,45,61,0.55)] dark:bg-[linear-gradient(135deg,#C0C5CD,#E3E8F8)] dark:text-[#203562]'
+                    ? 'bg-[linear-gradient(135deg,#415E72,#17313E)] text-white shadow-[0_10px_26px_-12px_rgba(100,45,61,0.55)] dark:bg-[linear-gradient(135deg,#C5B0CD,#F6F5F2)] dark:text-[#17313E]'
                     : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
                 }`}
               >
@@ -161,7 +161,7 @@ export default function AITutor() {
 
         <section className="card space-y-4 p-5 sm:p-6">
           <div className="flex items-center gap-3">
-            <span className="icon-box h-10 w-10 bg-pink-soft text-[#3E588F] dark:text-[#C0C5CD]">
+            <span className="icon-box h-10 w-10 bg-pink-soft text-[#415E72] dark:text-[#C5B0CD]">
               <Zap className="h-5 w-5" />
             </span>
             <div>
@@ -300,7 +300,7 @@ function ChatPanel({ isAr, lang, t }) {
     <section className="card flex flex-col overflow-hidden" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3 sm:px-6">
         <span className="inline-flex items-center gap-2 text-[11px] font-extrabold text-ink-muted">
-          <Bot className="h-4 w-4 text-primary dark:text-[#C0C5CD]" />
+          <Bot className="h-4 w-4 text-primary dark:text-[#C5B0CD]" />
           {t('ai.chat.panelTitle')}
         </span>
         <button
@@ -325,7 +325,7 @@ function ChatPanel({ isAr, lang, t }) {
                   className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl shadow-sm ${
                     isUser
                       ? 'bg-ink/[0.07] text-ink-muted'
-                      : 'bg-[linear-gradient(135deg,#3E588F,#203562)] text-white dark:bg-[linear-gradient(135deg,#C0C5CD,#E3E8F8)] dark:text-[#203562]'
+                      : 'bg-[linear-gradient(135deg,#415E72,#17313E)] text-white dark:bg-[linear-gradient(135deg,#C5B0CD,#F6F5F2)] dark:text-[#17313E]'
                   }`}
                 >
                   {isUser ? <UserRound className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
@@ -334,7 +334,7 @@ function ChatPanel({ isAr, lang, t }) {
                   <div
                     className={`rounded-2xl border px-4 py-3 ${
                       isUser
-                        ? 'rounded-ss-sm border-transparent bg-primary text-white shadow-[0_10px_26px_-14px_rgba(100,45,61,0.5)] dark:bg-[#C0C5CD] dark:text-[#203562]'
+                        ? 'rounded-ss-sm border-transparent bg-primary text-white shadow-[0_10px_26px_-14px_rgba(100,45,61,0.5)] dark:bg-[#C5B0CD] dark:text-[#17313E]'
                         : message.error
                         ? 'border-danger/30 bg-danger-soft'
                         : 'rounded-ss-sm border-line bg-surface-muted'
@@ -431,7 +431,7 @@ function PendingBubble({ isAr }) {
   return (
     <div className="flex justify-start">
       <div className="flex items-start gap-2.5">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#3E588F,#203562)] text-white shadow-sm dark:bg-[linear-gradient(135deg,#C0C5CD,#E3E8F8)] dark:text-[#203562]">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#415E72,#17313E)] text-white shadow-sm dark:bg-[linear-gradient(135deg,#C5B0CD,#F6F5F2)] dark:text-[#17313E]">
           <Bot className="h-4 w-4" />
         </span>
         <div className="flex items-center gap-2 rounded-2xl border border-line bg-surface-muted px-4 py-3">
@@ -522,7 +522,7 @@ function ScenarioPanel({ isAr, lang, t }) {
                   onClick={() => setTopic(item.key)}
                   className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-[11px] font-bold transition-colors ${
                     active
-                      ? 'border-transparent bg-primary text-on-primary dark:bg-[#C0C5CD] dark:text-[#203562]'
+                      ? 'border-transparent bg-primary text-on-primary dark:bg-[#C5B0CD] dark:text-[#17313E]'
                       : 'border-line bg-card text-ink-muted hover:border-primary/40'
                   }`}
                 >
@@ -546,7 +546,7 @@ function ScenarioPanel({ isAr, lang, t }) {
                 onClick={() => setDifficulty(level)}
                 className={`rounded-xl border px-3 py-2 text-[11px] font-bold transition-colors ${
                   difficulty === level
-                    ? 'border-transparent bg-primary text-on-primary dark:bg-[#C0C5CD] dark:text-[#203562]'
+                    ? 'border-transparent bg-primary text-on-primary dark:bg-[#C5B0CD] dark:text-[#17313E]'
                     : 'border-line bg-card text-ink-muted hover:border-primary/40'
                 }`}
               >
@@ -785,7 +785,7 @@ function PlanResults({ plan, isAr, t }) {
           <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">{t('ai.plan.nextLabel')}</p>
           {plan.nextSteps.map((step, index) => (
             <div key={index} className="flex items-start gap-3 rounded-xl border border-line bg-surface-muted/50 p-3">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-white dark:bg-[#C0C5CD] dark:text-[#203562]">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-white dark:bg-[#C5B0CD] dark:text-[#17313E]">
                 {index + 1}
               </span>
               <div className="min-w-0">
@@ -819,7 +819,7 @@ function PlanResults({ plan, isAr, t }) {
           </p>
           {plan.sevenDayPlan.map((session, index) => (
             <div key={index} className="flex items-start gap-3 rounded-xl border border-line bg-surface-muted/50 p-3">
-              <span className="chip shrink-0 bg-pink-soft text-[#3E588F] dark:text-[#C0C5CD]">
+              <span className="chip shrink-0 bg-pink-soft text-[#415E72] dark:text-[#C5B0CD]">
                 {isAr ? 'يوم' : 'Day'} {session.day}
               </span>
               <div className="min-w-0">

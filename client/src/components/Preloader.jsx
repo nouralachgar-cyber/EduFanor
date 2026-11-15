@@ -58,7 +58,7 @@ export default function Preloader({ onDone }) {
             duration: reduceMotion ? 0.15 : 0.55,
             ease: [0.76, 0, 0.24, 1],
           }}
-          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[#E3E8F8] dark:bg-[#203562]"
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[#F6F5F2] dark:bg-[#17313E]"
           role="dialog"
           aria-label="EduFanor"
         >
@@ -68,7 +68,7 @@ export default function Preloader({ onDone }) {
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 0.55, scale: 1 }}
               transition={{ duration: 1.2, ease: 'easeOut' }}
-              className="pointer-events-none absolute h-64 w-64 rounded-full bg-[#E3E8F8]/50 blur-[100px] dark:bg-[#C0C5CD]/15"
+              className="pointer-events-none absolute h-64 w-64 rounded-full bg-[#F6F5F2]/50 blur-[100px] dark:bg-[#C5B0CD]/15"
             />
           )}
 
@@ -104,7 +104,7 @@ export default function Preloader({ onDone }) {
                     delay: reduceMotion ? 0 : index * 0.085,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="inline-block bg-gradient-to-r from-[#C0C5CD] via-[#C0C5CD] to-[#C0C5CD] bg-clip-text text-transparent dark:from-[#C0C5CD] dark:via-[#E3E8F8] dark:to-[#E9EFE8]"
+                  className="inline-block bg-gradient-to-r from-[#C5B0CD] via-[#C5B0CD] to-[#C5B0CD] bg-clip-text text-transparent dark:from-[#C5B0CD] dark:via-[#F6F5F2] dark:to-[#F6F5F2]"
                 >
                   {letter}
                 </motion.span>

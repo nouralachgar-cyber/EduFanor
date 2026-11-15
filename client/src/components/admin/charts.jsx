@@ -1,7 +1,7 @@
 import React from 'react';
 import { formatNumber } from '../../lib/admin';
 
-const palette = ['#3E588F', '#3E588F', '#315B45', '#A33D37'];
+const palette = ['#415E72', '#415E72', '#415E72', '#17313E'];
 
 export function LineChart({
   data = [],
@@ -214,7 +214,7 @@ export function DistributionBars({ data = [], language = 'en' }) {
   );
 }
 
-export function Donut({ value, label, sublabel, tone = '#3E588F' }) {
+export function Donut({ value, label, sublabel, tone = '#415E72' }) {
   const safe = Math.max(0, Math.min(100, Number(value) || 0));
   return (
     <div

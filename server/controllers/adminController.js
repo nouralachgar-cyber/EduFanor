@@ -659,30 +659,45 @@ const listLessons = async (req, res) => {
   }
 };
 
-const sanitizeBlocks = (blocks) => {
-  if (!Array.isArray(blocks)) return [];
-  return blocks
-    .map((block, index) => {
-      if (!block || typeof block !== 'object') return null;
-      const type = String(block.type || '').trim();
-      if (!LESSON_BLOCK_TYPES.has(type)) return null;
-      return {
-        type,
-        content: block.content === undefined ? '' : block.content,
-        data: block.data && typeof block.data === 'object' ? block.data : {},
-        order: index,
-      };
-    })
-    .filter(Boolean);
+const invalidLessonPayload = (message) => Object.assign(new Error(message), { status: 400 });
+
+const sanitizeBlocks = (blocks, language) => {
+  if (blocks === undefined) return [];
+  if (!Array.isArray(blocks)) {
+    throw invalidLessonPayload(`Lesson blocks for ${language} must be an array`);
+  }
+  return blocks.map((block, index) => {
+    if (!block || typeof block !== 'object' || Array.isArray(block)) {
+      throw invalidLessonPayload(`Lesson block ${index + 1} for ${language} must be an object`);
+    }
+    const type = String(block.type || '').trim();
+    if (!LESSON_BLOCK_TYPES.has(type)) {
+      throw invalidLessonPayload(`Lesson block ${index + 1} for ${language} has an unsupported type`);
+    }
+    if (block.data !== undefined && (!block.data || typeof block.data !== 'object' || Array.isArray(block.data))) {
+      throw invalidLessonPayload(`Lesson block ${index + 1} for ${language} has invalid data`);
+    }
+    return {
+      ...block,
+      type,
+      content: block.content === undefined ? '' : block.content,
+      data: block.data || {},
+      order: index,
+    };
+  });
 };
 
-const lessonPayload = (body) => ({
+const lessonPayload = (body) => {
+  if (body.blocks !== undefined && (!body.blocks || typeof body.blocks !== 'object' || Array.isArray(body.blocks))) {
+    throw invalidLessonPayload('Lesson blocks must contain Arabic and English block arrays');
+  }
+  return ({
   course: body.course,
   title: { ar: String(body.title?.ar || '').trim(), en: String(body.title?.en || '').trim() },
   content: { ar: String(body.content?.ar || '').trim(), en: String(body.content?.en || '').trim() },
   blocks: {
-    ar: sanitizeBlocks(body.blocks?.ar),
-    en: sanitizeBlocks(body.blocks?.en),
+    ar: sanitizeBlocks(body.blocks?.ar, 'Arabic'),
+    en: sanitizeBlocks(body.blocks?.en, 'English'),
   },
   objectives: {
     ar: Array.isArray(body.objectives?.ar) ? body.objectives.ar.map(String).filter(Boolean) : [],
@@ -701,7 +716,8 @@ const lessonPayload = (body) => ({
   reviewStatus: ['unreviewed', 'in_review', 'reviewed'].includes(body.reviewStatus) ? body.reviewStatus : 'unreviewed',
   published: Boolean(body.published),
   order: Number(body.order) || 0,
-});
+  });
+};
 
 const createLesson = async (req, res) => {
   try {
@@ -721,7 +737,7 @@ const createLesson = async (req, res) => {
     await audit(req.user, 'lesson.create', 'lesson', lesson._id, lesson.title.en, `Created lesson in ${course.slug}.`);
     return res.status(201).json({ lesson: await lesson.populate('course', 'title slug category') });
   } catch (error) {
-    return res.status(500).json({ message: 'Unable to create lesson: ' + error.message });
+    return res.status(error.status || 500).json({ message: 'Unable to create lesson: ' + error.message });
   }
 };
 
@@ -741,7 +757,29 @@ const updateLesson = async (req, res) => {
     const lesson = await Lesson.findById(req.params.id);
     if (!lesson) return res.status(404).json({ message: 'Lesson not found' });
 
-    const payload = lessonPayload(req.body);
+    const existing = lesson.toObject();
+    const body = req.body;
+    const mergeBilingual = (current = {}, incoming) => ({
+      ar: incoming?.ar === undefined ? current.ar : incoming.ar,
+      en: incoming?.en === undefined ? current.en : incoming.en,
+    });
+    const merged = {
+      ...existing,
+      ...body,
+      title: mergeBilingual(existing.title, body.title),
+      content: mergeBilingual(existing.content, body.content),
+      safetyNotes: mergeBilingual(existing.safetyNotes, body.safetyNotes),
+      objectives: mergeBilingual(existing.objectives, body.objectives),
+      blocks: body.blocks === undefined
+        ? existing.blocks
+        : body.blocks && typeof body.blocks === 'object' && !Array.isArray(body.blocks)
+          ? {
+              ar: body.blocks.ar === undefined ? existing.blocks?.ar : body.blocks.ar,
+              en: body.blocks.en === undefined ? existing.blocks?.en : body.blocks.en,
+            }
+          : body.blocks,
+    };
+    const payload = lessonPayload(merged);
     if (!mongoose.isValidObjectId(payload.course)) return res.status(400).json({ message: 'A valid course is required' });
     if (!bilingualRequired(payload.title)) {
       return res.status(400).json({ message: 'Arabic/English lesson titles are required' });
@@ -759,7 +797,7 @@ const updateLesson = async (req, res) => {
 
     return res.json({ lesson: await lesson.populate('course', 'title slug category') });
   } catch (error) {
-    return res.status(500).json({ message: 'Unable to update lesson: ' + error.message });
+    return res.status(error.status || 500).json({ message: 'Unable to update lesson: ' + error.message });
   }
 };
 

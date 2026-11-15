@@ -403,7 +403,7 @@ export default function AdminLessonEditor() {
 
   if (lessonBusy || coursesLoading) {
     return (
-      <div className="space-y-6 bg-[#E3E8F8] min-h-screen p-6 text-[#3E588F]">
+      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
         <LoadingState label={t('admin.common.loading')} />
       </div>
     );
@@ -411,7 +411,7 @@ export default function AdminLessonEditor() {
 
   if (initialError) {
     return (
-      <div className="space-y-6 bg-[#E3E8F8] min-h-screen p-6 text-[#3E588F]">
+      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
         <ErrorState
           title={t('admin.editor.loadFailedTitle')}
           message={initialError}
@@ -423,39 +423,39 @@ export default function AdminLessonEditor() {
   }
 
   return (
-    <div className="space-y-6 bg-[#E3E8F8] min-h-screen p-6 text-[#3E588F] pb-16">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72] pb-16">
       <div>
         <button
           type="button"
           onClick={() => navigate(routeCourseId ? `/admin/courses/${routeCourseId}` : lessonId ? '/admin/lessons' : '/admin/courses')}
-          className="mb-3 inline-flex items-center gap-1.5 text-xs font-extrabold text-[#3E588F]/70 transition-colors hover:text-[#3E588F]"
+          className="mb-3 inline-flex items-center gap-1.5 text-xs font-extrabold text-[#415E72]/70 transition-colors hover:text-[#415E72]"
         >
-          <ArrowLeft className="h-3.5 w-3.5 rtl:rotate-180 text-[#C0C5CD]" />
+          <ArrowLeft className="h-3.5 w-3.5 rtl:rotate-180 text-[#C5B0CD]" />
           {t(routeCourseId ? 'admin.courses.title' : 'admin.lessonsPage.title')}
         </button>
 
-        <div className="rounded-3xl border border-[#C0C5CD]/40 bg-white p-5 shadow-sm flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="rounded-3xl border border-[#C5B0CD]/40 bg-white p-5 shadow-sm flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex min-w-0 items-start gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#3E588F] text-[#E3E8F8] border border-[#C0C5CD]/50 shadow-sm">
-              {lessonId ? <Layers className="h-6 w-6 text-[#C0C5CD]" /> : <FileText className="h-6 w-6 text-[#C0C5CD]" />}
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#415E72] text-[#F6F5F2] border border-[#C5B0CD]/50 shadow-sm">
+              {lessonId ? <Layers className="h-6 w-6 text-[#C5B0CD]" /> : <FileText className="h-6 w-6 text-[#C5B0CD]" />}
             </span>
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="font-display text-xl font-bold tracking-tight text-[#3E588F] sm:text-2xl">
+                <h1 className="font-display text-xl font-bold tracking-tight text-[#415E72] sm:text-2xl">
                   {lessonId ? localize(loadedLesson?.title, i18n.language) || t('admin.editor.title') : t('admin.editor.newTitle')}
                 </h1>
                 {loadedLesson ? (
-                  <Badge tone={statusTone} className="bg-[#E3E8F8] text-[#3E588F] border border-[#C0C5CD]">{loadedLesson.published ? t('admin.common.published') : t('admin.common.draft')}</Badge>
+                  <Badge tone={statusTone} className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]">{loadedLesson.published ? t('admin.common.published') : t('admin.common.draft')}</Badge>
                 ) : (
-                  <Badge tone="amber" className="bg-[#E3E8F8] text-[#3E588F] border border-[#C0C5CD]">{t('admin.common.draft')}</Badge>
+                  <Badge tone="amber" className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]">{t('admin.common.draft')}</Badge>
                 )}
                 {loadedLesson && (
-                  <Badge tone={loadedLesson.reviewStatus === 'reviewed' ? 'green' : loadedLesson.reviewStatus === 'in_review' ? 'amber' : 'outline'} className="bg-[#E3E8F8] text-[#3E588F] border border-[#C0C5CD]">
+                  <Badge tone={loadedLesson.reviewStatus === 'reviewed' ? 'green' : loadedLesson.reviewStatus === 'in_review' ? 'amber' : 'outline'} className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]">
                     {t(`admin.courses.${loadedLesson.reviewStatus || 'unreviewed'}`)}
                   </Badge>
                 )}
               </div>
-              <p className="mt-1 text-xs leading-relaxed text-[#3E588F]/70">{t('admin.editor.subtitle')}</p>
+              <p className="mt-1 text-xs leading-relaxed text-[#415E72]/70">{t('admin.editor.subtitle')}</p>
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-3 self-start">
@@ -465,9 +465,9 @@ export default function AdminLessonEditor() {
                 setPreviewLang(isAr ? 'ar' : 'en');
                 setPreviewOpen(true);
               }}
-              className="flex items-center gap-1.5 rounded-xl bg-[#E3E8F8] px-4 py-2 text-xs font-extrabold text-[#3E588F] border border-[#C0C5CD] hover:bg-[#C0C5CD]/30 transition-colors shadow-sm"
+              className="flex items-center gap-1.5 rounded-xl bg-[#F6F5F2] px-4 py-2 text-xs font-extrabold text-[#415E72] border border-[#C5B0CD] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm"
             >
-              <Eye className="h-3.5 w-3.5 text-[#C0C5CD]" /> {t('admin.editor.preview')}
+              <Eye className="h-3.5 w-3.5 text-[#C5B0CD]" /> {t('admin.editor.preview')}
             </button>
             {lessonId && (
               <button
@@ -504,26 +504,26 @@ export default function AdminLessonEditor() {
       )}
 
       {courses.length === 0 && !lessonBusy ? (
-        <Panel noPadding className="bg-white border border-[#C0C5CD]/40 rounded-2xl shadow-sm overflow-hidden">
+        <Panel noPadding className="bg-white border border-[#C5B0CD]/40 rounded-2xl shadow-sm overflow-hidden">
           <div className="flex flex-col items-center gap-3 p-10 text-center">
-            <BookOpen className="h-8 w-8 text-[#C0C5CD]" />
-            <p className="text-sm font-extrabold text-[#3E588F]">{t('admin.editor.noCoursesTitle')}</p>
-            <p className="max-w-md text-xs font-semibold text-[#3E588F]/70">{t('admin.editor.noCoursesHint')}</p>
-            <Link to="/admin/courses" className="flex items-center gap-1.5 rounded-xl bg-[#3E588F] px-4 py-2.5 text-xs font-extrabold text-[#F8H7F6] text-[#E3E8F8] shadow-sm">
+            <BookOpen className="h-8 w-8 text-[#C5B0CD]" />
+            <p className="text-sm font-extrabold text-[#415E72]">{t('admin.editor.noCoursesTitle')}</p>
+            <p className="max-w-md text-xs font-semibold text-[#415E72]/70">{t('admin.editor.noCoursesHint')}</p>
+            <Link to="/admin/courses" className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F8H7F6] text-[#F6F5F2] shadow-sm">
               {t('admin.courses.newCourse')}
             </Link>
           </div>
         </Panel>
       ) : (
         <>
-          <Panel title={t('admin.editor.sectionMeta')} subtitle={t('admin.editor.sectionMetaHint')} className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm">
+          <Panel title={t('admin.editor.sectionMeta')} subtitle={t('admin.editor.sectionMetaHint')} className="bg-white border border-[#C5B0CD]/40 rounded-2xl p-6 shadow-sm">
             <div className="space-y-5">
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label={`${t('admin.editor.titleAr')} (${t('admin.common.ar')})`} required>
                   <input
                     value={form.title.ar}
                     onChange={(event) => update((previous) => ({ title: { ...previous.title, ar: event.target.value } }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                     dir="rtl"
                     placeholder={t('admin.courseEditor.titleArPlaceholder')}
                   />
@@ -532,7 +532,7 @@ export default function AdminLessonEditor() {
                   <input
                     value={form.title.en}
                     onChange={(event) => update((previous) => ({ title: { ...previous.title, en: event.target.value } }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                     dir="ltr"
                     placeholder={t('admin.courseEditor.titleEnPlaceholder')}
                   />
@@ -543,9 +543,9 @@ export default function AdminLessonEditor() {
                 type="button"
                 onClick={suggestTitles}
                 disabled={aiBusy}
-                className="inline-flex items-center gap-2 rounded-xl border border-[#C0C5CD] bg-[#E3E8F8] px-4 py-2.5 text-xs font-bold text-[#3E588F] transition-colors hover:bg-[#C0C5CD]/30 disabled:opacity-50 shadow-sm"
+                className="inline-flex items-center gap-2 rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-4 py-2.5 text-xs font-bold text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 disabled:opacity-50 shadow-sm"
               >
-                {aiBusy ? <Loader2 className="h-4 w-4 animate-spin text-[#C0C5CD]" /> : <Sparkles className="h-4 w-4 text-[#C0C5CD]" />}
+                {aiBusy ? <Loader2 className="h-4 w-4 animate-spin text-[#C5B0CD]" /> : <Sparkles className="h-4 w-4 text-[#C5B0CD]" />}
                 {t('admin.editor.aiSuggestTitle')}
               </button>
 
@@ -554,7 +554,7 @@ export default function AdminLessonEditor() {
                   <select
                     value={form.course || defaultCourse}
                     onChange={(event) => update(() => ({ course: event.target.value }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                     disabled={Boolean(lessonId)}
                   >
                     <option value="">{t('admin.editor.courseSelect')}</option>
@@ -566,7 +566,7 @@ export default function AdminLessonEditor() {
                   </select>
                 </Field>
                 <Field label={t('admin.editor.difficultyLabel')}>
-                  <select value={form.difficulty} onChange={(event) => update(() => ({ difficulty: event.target.value }))} className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm">
+                  <select value={form.difficulty} onChange={(event) => update(() => ({ difficulty: event.target.value }))} className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm">
                     {DIFFICULTIES.map((difficulty) => (
                       <option key={difficulty} value={difficulty}>
                         {t(`admin.courses.difficulties.${difficulty}`)}
@@ -575,7 +575,7 @@ export default function AdminLessonEditor() {
                   </select>
                 </Field>
                 <Field label={t('admin.editor.reviewLabel')}>
-                  <select value={form.reviewStatus} onChange={(event) => update(() => ({ reviewStatus: event.target.value }))} className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm">
+                  <select value={form.reviewStatus} onChange={(event) => update(() => ({ reviewStatus: event.target.value }))} className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm">
                     {REVIEW_STATES.map((state) => (
                       <option key={state} value={state}>
                         {t(`admin.courses.${state}`)}
@@ -592,7 +592,7 @@ export default function AdminLessonEditor() {
                     min="0"
                     value={form.order}
                     onChange={(event) => update(() => ({ order: event.target.value }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                   />
                 </Field>
                 <Field label={t('admin.editor.minutesLabel')}>
@@ -601,7 +601,7 @@ export default function AdminLessonEditor() {
                     min="1"
                     value={form.estimatedMinutes}
                     onChange={(event) => update(() => ({ estimatedMinutes: event.target.value }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                   />
                 </Field>
                 <Field label={t('admin.editor.videoLabel')} hint={t('admin.editor.videoHint')}>
@@ -609,7 +609,7 @@ export default function AdminLessonEditor() {
                     type="url"
                     value={form.videoUrl}
                     onChange={(event) => update(() => ({ videoUrl: event.target.value }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                     dir="ltr"
                     placeholder="https://www.youtube.com/watch?v=…"
                   />
@@ -622,7 +622,7 @@ export default function AdminLessonEditor() {
                     rows={4}
                     value={objectivesAr}
                     onChange={(event) => setObjectivesAr(event.target.value)}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm resize-y"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm resize-y"
                     dir="rtl"
                   />
                 </Field>
@@ -631,7 +631,7 @@ export default function AdminLessonEditor() {
                     rows={4}
                     value={objectivesEn}
                     onChange={(event) => setObjectivesEn(event.target.value)}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm resize-y"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm resize-y"
                     dir="ltr"
                   />
                 </Field>
@@ -643,7 +643,7 @@ export default function AdminLessonEditor() {
                     rows={2}
                     value={form.safetyNotes.ar}
                     onChange={(event) => update((previous) => ({ safetyNotes: { ...previous.safetyNotes, ar: event.target.value } }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm resize-y"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm resize-y"
                     dir="rtl"
                   />
                 </Field>
@@ -652,20 +652,20 @@ export default function AdminLessonEditor() {
                     rows={2}
                     value={form.safetyNotes.en}
                     onChange={(event) => update((previous) => ({ safetyNotes: { ...previous.safetyNotes, en: event.target.value } }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm resize-y"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm resize-y"
                     dir="ltr"
                   />
                 </Field>
               </div>
 
               <SectionLabel>{t('admin.editor.sectionMedia')}</SectionLabel>
-              <div className="flex flex-col gap-3 rounded-2xl border border-[#C0C5CD]/40 bg-[#E3E8F8] p-4 sm:flex-row sm:items-center">
-                <div className="h-20 w-28 shrink-0 overflow-hidden rounded-xl border border-[#C0C5CD] bg-white">
+              <div className="flex flex-col gap-3 rounded-2xl border border-[#C5B0CD]/40 bg-[#F6F5F2] p-4 sm:flex-row sm:items-center">
+                <div className="h-20 w-28 shrink-0 overflow-hidden rounded-xl border border-[#C5B0CD] bg-white">
                   {form.coverImage ? (
                     <img src={form.coverImage} alt="" className="h-full w-full object-cover" />
                   ) : (
-                    <span className="flex h-full items-center justify-center text-[#3E588F]/50">
-                      <ImageIcon className="h-6 w-6 text-[#C0C5CD]" />
+                    <span className="flex h-full items-center justify-center text-[#415E72]/50">
+                      <ImageIcon className="h-6 w-6 text-[#C5B0CD]" />
                     </span>
                   )}
                 </div>
@@ -673,12 +673,12 @@ export default function AdminLessonEditor() {
                   <input
                     value={form.coverImage}
                     onChange={(event) => update(() => ({ coverImage: event.target.value }))}
-                    className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm"
+                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                     dir="ltr"
                     placeholder={t('admin.editor.coverPlaceholder')}
                   />
-                  <label className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-xl bg-[#E3E8F8] px-4 text-xs font-extrabold text-[#3E588F] border border-[#C0C5CD] hover:bg-[#C0C5CD]/30 transition-colors shadow-sm">
-                    {coverBusy ? <Loader2 className="h-4 w-4 animate-spin text-[#C0C5CD]" /> : <Upload className="h-4 w-4 text-[#C0C5CD]" />}
+                  <label className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-xl bg-[#F6F5F2] px-4 text-xs font-extrabold text-[#415E72] border border-[#C5B0CD] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm">
+                    {coverBusy ? <Loader2 className="h-4 w-4 animate-spin text-[#C5B0CD]" /> : <Upload className="h-4 w-4 text-[#C5B0CD]" />}
                     {coverBusy ? t('admin.courseEditor.imageUploading') : t('admin.courseEditor.imageFromPc')}
                     <input
                       ref={fileRef}
@@ -696,7 +696,7 @@ export default function AdminLessonEditor() {
                   rows={2}
                   value={sourceRefsText}
                   onChange={(event) => setSourceRefsText(event.target.value)}
-                  className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm resize-y"
+                  className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm resize-y"
                   dir="ltr"
                   placeholder="https://cpr.example/source-1"
                 />
@@ -704,7 +704,7 @@ export default function AdminLessonEditor() {
             </div>
           </Panel>
 
-          <Panel className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-4 sm:p-6 shadow-sm">
+          <Panel className="bg-white border border-[#C5B0CD]/40 rounded-2xl p-4 sm:p-6 shadow-sm">
             <LessonDocumentEditor
               blocks={lessonBlocks}
               onChange={setLessonBlocks}
@@ -716,16 +716,16 @@ export default function AdminLessonEditor() {
           <Panel
             title={t('admin.editor.sectionQuizzes')}
             subtitle={t('admin.editor.sectionQuizzesHint')}
-            className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm"
+            className="bg-white border border-[#C5B0CD]/40 rounded-2xl p-6 shadow-sm"
             actions={
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={draftQuestion}
                   disabled={aiBusy}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-[#C0C5CD] bg-[#E3E8F8] px-3.5 py-2 text-xs font-bold text-[#3E588F] transition-colors hover:bg-[#C0C5CD]/30 disabled:opacity-50 shadow-sm"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-3.5 py-2 text-xs font-bold text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 disabled:opacity-50 shadow-sm"
                 >
-                  {aiBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin text-[#C0C5CD]" /> : <Sparkles className="h-3.5 w-3.5 text-[#C0C5CD]" />}
+                  {aiBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin text-[#C5B0CD]" /> : <Sparkles className="h-3.5 w-3.5 text-[#C5B0CD]" />}
                   {t('admin.quizzesPage.aiDraft')}
                 </button>
                 <button
@@ -735,29 +735,29 @@ export default function AdminLessonEditor() {
                     setQuizPrefill(null);
                     setQuizModalOpen(true);
                   }}
-                  className="flex items-center gap-1.5 rounded-xl bg-[#3E588F] px-3.5 py-2 text-xs font-extrabold text-[#E3E8F8] hover:bg-[#3E588F]/90 shadow-sm"
+                  className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-3.5 py-2 text-xs font-extrabold text-[#F6F5F2] hover:bg-[#415E72]/90 shadow-sm"
                 >
-                  <Plus className="h-3.5 w-3.5 text-[#C0C5CD]" /> {t('admin.quizzesPage.newQuiz')}
+                  <Plus className="h-3.5 w-3.5 text-[#C5B0CD]" /> {t('admin.quizzesPage.newQuiz')}
                 </button>
               </div>
             }
           >
             {lessonId ? (
               quizList.length === 0 ? (
-                <p className="rounded-xl border border-dashed border-[#C0C5CD] px-4 py-6 text-center text-xs font-semibold text-[#3E588F]/70 bg-[#E3E8F8]">
+                <p className="rounded-xl border border-dashed border-[#C5B0CD] px-4 py-6 text-center text-xs font-semibold text-[#415E72]/70 bg-[#F6F5F2]">
                   {t('admin.quizzesPage.noQuizzes')}
                 </p>
               ) : (
-                <div className="divide-y divide-[#C0C5CD]/20">
+                <div className="divide-y divide-[#C5B0CD]/20">
                   {quizList.map((quiz) => (
                     <div key={quiz._id} className="flex flex-wrap items-center justify-between gap-2 py-3.5">
                       <div className="flex min-w-0 items-center gap-3">
-                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#E3E8F8] text-[#3E588F] border border-[#C0C5CD]">
-                          <ClipboardCheck className="h-4 w-4 text-[#C0C5CD]" />
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]">
+                          <ClipboardCheck className="h-4 w-4 text-[#C5B0CD]" />
                         </span>
                         <div className="min-w-0">
-                          <p className="truncate text-xs font-extrabold text-[#3E588F]">{localize(quiz.title, i18n.language)}</p>
-                          <p className="text-[10px] text-[#3E588F]/70">
+                          <p className="truncate text-xs font-extrabold text-[#415E72]">{localize(quiz.title, i18n.language)}</p>
+                          <p className="text-[10px] text-[#415E72]/70">
                             {t('admin.courses.questionsCount')}: {formatNumber(quiz.questions?.length || 0, i18n.language)} · {t('admin.common.status')}: {quiz.published ? t('admin.common.published') : t('admin.common.draft')}
                           </p>
                         </div>
@@ -770,7 +770,7 @@ export default function AdminLessonEditor() {
                             setQuizPrefill(null);
                             setQuizModalOpen(true);
                           }}
-                          className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C0C5CD] bg-[#E3E8F8] text-[#3E588F] transition-colors hover:bg-[#C0C5CD]/30 shadow-sm"
+                          className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
                           aria-label={t('admin.common.edit')}
                           title={t('admin.common.edit')}
                         >
@@ -791,32 +791,32 @@ export default function AdminLessonEditor() {
                 </div>
               )
             ) : (
-              <p className="rounded-xl border border-dashed border-[#C0C5CD] px-4 py-6 text-center text-xs font-semibold text-[#3E588F]/70 bg-[#E3E8F8]">
+              <p className="rounded-xl border border-dashed border-[#C5B0CD] px-4 py-6 text-center text-xs font-semibold text-[#415E72]/70 bg-[#F6F5F2]">
                 {t('admin.editor.quizzesAfterSave')}
               </p>
             )}
           </Panel>
 
           <div className="sticky bottom-6 z-20">
-            <div className="rounded-2xl border border-[#C0C5CD]/60 bg-white/95 p-4 shadow-xl backdrop-blur flex flex-wrap items-center justify-between gap-3">
-              <p className="max-w-[60%] text-xs font-bold text-[#3E588F]/70">{t('admin.editor.saveHint')}</p>
+            <div className="rounded-2xl border border-[#C5B0CD]/60 bg-white/95 p-4 shadow-xl backdrop-blur flex flex-wrap items-center justify-between gap-3">
+              <p className="max-w-[60%] text-xs font-bold text-[#415E72]/70">{t('admin.editor.saveHint')}</p>
               <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => save(false)}
                   disabled={Boolean(savingMode)}
-                  className="flex items-center gap-1.5 rounded-xl bg-[#E3E8F8] px-4 py-2.5 text-xs font-bold text-[#3E588F] border border-[#C0C5CD] hover:bg-[#C0C5CD]/30 transition-colors shadow-sm disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-[#F6F5F2] px-4 py-2.5 text-xs font-bold text-[#415E72] border border-[#C5B0CD] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm disabled:opacity-50"
                 >
-                  <Save className="h-4 w-4 text-[#C0C5CD]" />
+                  <Save className="h-4 w-4 text-[#C5B0CD]" />
                   {savingMode === 'draft' ? t('admin.common.saving') : t('admin.editor.saveDraft')}
                 </button>
                 <button
                   type="button"
                   onClick={() => save(true)}
                   disabled={Boolean(savingMode)}
-                  className="flex items-center gap-1.5 rounded-xl bg-[#3E588F] px-5 py-2.5 text-xs font-extrabold text-[#F8H7F6] text-[#E3E8F8] hover:bg-[#3E588F]/90 shadow-md disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-5 py-2.5 text-xs font-extrabold text-[#F8H7F6] text-[#F6F5F2] hover:bg-[#415E72]/90 shadow-md disabled:opacity-50"
                 >
-                  <ShieldCheck className="h-4 w-4 text-[#C0C5CD]" />
+                  <ShieldCheck className="h-4 w-4 text-[#C5B0CD]" />
                   {savingMode === 'publish' ? t('admin.common.saving') : t('admin.editor.publish')}
                 </button>
               </div>
@@ -831,18 +831,18 @@ export default function AdminLessonEditor() {
           const preview = serializeBlocks(lessonBlocksForSave(lessonBlocks))[lang];
           const objectives = splitLines(lang === 'ar' ? objectivesAr : objectivesEn);
           return (
-            <div dir={lang === 'ar' ? 'rtl' : 'ltr'} className="space-y-5 text-[#3E588F]">
+            <div dir={lang === 'ar' ? 'rtl' : 'ltr'} className="space-y-5 text-[#415E72]">
               <div>
-                <p className="font-display text-lg font-bold text-[#3E588F]">{form.title[lang] || localize(form.title, lang)}</p>
-                {form.content[lang] && <p className="mt-2 text-xs leading-relaxed text-[#3E588F]/80">{form.content[lang]}</p>}
+                <p className="font-display text-lg font-bold text-[#415E72]">{form.title[lang] || localize(form.title, lang)}</p>
+                {form.content[lang] && <p className="mt-2 text-xs leading-relaxed text-[#415E72]/80">{form.content[lang]}</p>}
               </div>
               {objectives.length > 0 && (
-                <div className="rounded-xl border border-[#C0C5CD]/40 bg-[#E3E8F8] p-4">
-                  <p className="mb-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#3E588F]/60">{t('admin.editor.objectives')}</p>
+                <div className="rounded-xl border border-[#C5B0CD]/40 bg-[#F6F5F2] p-4">
+                  <p className="mb-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#415E72]/60">{t('admin.editor.objectives')}</p>
                   <ul className="space-y-1.5">
                     {objectives.map((objective, index) => (
-                      <li key={index} className="flex items-start gap-2 text-xs leading-relaxed text-[#3E588F]">
-                        <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C0C5CD]" />
+                      <li key={index} className="flex items-start gap-2 text-xs leading-relaxed text-[#415E72]">
+                        <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#C5B0CD]" />
                         {objective}
                       </li>
                     ))}
@@ -851,21 +851,21 @@ export default function AdminLessonEditor() {
               )}
               <LessonBlocks blocks={preview} isAr={lang === 'ar'} />
               {form.safetyNotes[lang] && (
-                <div className="flex items-start gap-2.5 rounded-xl border border-[#C0C5CD]/40 bg-[#E3E8F8] p-3.5 text-xs font-bold text-[#3E588F]">
-                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#C0C5CD]" />
+                <div className="flex items-start gap-2.5 rounded-xl border border-[#C5B0CD]/40 bg-[#F6F5F2] p-3.5 text-xs font-bold text-[#415E72]">
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#C5B0CD]" />
                   {form.safetyNotes[lang]}
                 </div>
               )}
             </div>
           );
         })()}
-        <div className="mt-4 flex justify-center gap-1 rounded-xl bg-[#E3E8F8] p-1 border border-[#C0C5CD]/30">
+        <div className="mt-4 flex justify-center gap-1 rounded-xl bg-[#F6F5F2] p-1 border border-[#C5B0CD]/30">
           {['ar', 'en'].map((lang) => (
             <button
               key={lang}
               type="button"
               onClick={() => setPreviewLang(lang)}
-              className={`rounded-lg px-4 py-1.5 text-xs font-extrabold transition-colors ${previewLang === lang ? 'bg-[#3E588F] text-[#E3E8F8] shadow-sm' : 'text-[#3E588F]/70 hover:text-[#3E588F]'}`}
+              className={`rounded-lg px-4 py-1.5 text-xs font-extrabold transition-colors ${previewLang === lang ? 'bg-[#415E72] text-[#F6F5F2] shadow-sm' : 'text-[#415E72]/70 hover:text-[#415E72]'}`}
             >
               {t(lang === 'ar' ? 'admin.common.ar' : 'admin.common.en')}
             </button>
@@ -893,7 +893,7 @@ export default function AdminLessonEditor() {
         wide
         title={aiPreview?.kind === 'titles' ? t('admin.editor.aiTitlesTitle') : t('admin.editor.aiParagraphTitle')}
         subtitle={aiPreview?.model ? `Grok · ${aiPreview.model}` : 'Grok'}
-        icon={<Sparkles className="h-4 w-4 text-[#C0C5CD]" />}
+        icon={<Sparkles className="h-4 w-4 text-[#C5B0CD]" />}
       >
         {aiPreview?.kind === 'titles' && (
           <div className="max-h-[60vh] space-y-2.5 overflow-y-auto" dir={isAr ? 'rtl' : 'ltr'}>
@@ -904,14 +904,14 @@ export default function AdminLessonEditor() {
                   key={index}
                   type="button"
                   onClick={() => applyTitles(titleAr, titleEn)}
-                  className="flex w-full items-center gap-3 rounded-2xl border border-[#C0C5CD]/40 bg-[#E3E8F8] px-4 py-3.5 text-start transition-colors hover:border-[#3E588F]"
+                  className="flex w-full items-center gap-3 rounded-2xl border border-[#C5B0CD]/40 bg-[#F6F5F2] px-4 py-3.5 text-start transition-colors hover:border-[#415E72]"
                 >
                   <div className="flex-1 space-y-1">
-                    <p dir="rtl" className="text-xs font-extrabold text-[#3E588F]">{titleAr}</p>
-                    <p dir="ltr" className="text-xs text-[#3E588F]/70">{titleEn}</p>
+                    <p dir="rtl" className="text-xs font-extrabold text-[#415E72]">{titleAr}</p>
+                    <p dir="ltr" className="text-xs text-[#415E72]/70">{titleEn}</p>
                   </div>
-                  <span className="flex items-center gap-1.5 rounded-xl bg-[#3E588F] px-3 py-1.5 text-xs font-extrabold text-[#E3E8F8]">
-                    <Check className="h-3.5 w-3.5 text-[#C0C5CD]" /> {t('admin.editor.aiApply')}
+                  <span className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-3 py-1.5 text-xs font-extrabold text-[#F6F5F2]">
+                    <Check className="h-3.5 w-3.5 text-[#C5B0CD]" /> {t('admin.editor.aiApply')}
                   </span>
                 </button>
               );
@@ -920,14 +920,14 @@ export default function AdminLessonEditor() {
         )}
 
         {aiPreview?.kind === 'paragraph' && (
-          <div className="space-y-4 text-[#3E588F]" dir={isAr ? 'rtl' : 'ltr'}>
+          <div className="space-y-4 text-[#415E72]" dir={isAr ? 'rtl' : 'ltr'}>
             <div>
-              <p className="mb-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#3E588F]/60">{t('admin.common.ar')}</p>
-              <p dir="rtl" className="whitespace-pre-wrap rounded-2xl border border-[#C0C5CD]/40 bg-[#E3E8F8] p-4 text-xs leading-relaxed text-[#3E588F]">{aiPreview.ar}</p>
+              <p className="mb-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#415E72]/60">{t('admin.common.ar')}</p>
+              <p dir="rtl" className="whitespace-pre-wrap rounded-2xl border border-[#C5B0CD]/40 bg-[#F6F5F2] p-4 text-xs leading-relaxed text-[#415E72]">{aiPreview.ar}</p>
             </div>
             <div>
-              <p className="mb-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#3E588F]/60">{t('admin.common.en')}</p>
-              <p dir="ltr" className="whitespace-pre-wrap rounded-2xl border border-[#C0C5CD]/40 bg-[#E3E8F8] p-4 text-xs leading-relaxed text-[#3E588F]">{aiPreview.en}</p>
+              <p className="mb-1.5 text-[10px] font-extrabold uppercase tracking-wider text-[#415E72]/60">{t('admin.common.en')}</p>
+              <p dir="ltr" className="whitespace-pre-wrap rounded-2xl border border-[#C5B0CD]/40 bg-[#F6F5F2] p-4 text-xs leading-relaxed text-[#415E72]">{aiPreview.en}</p>
             </div>
             <div className="flex gap-3">
               <button
@@ -942,14 +942,14 @@ export default function AdminLessonEditor() {
                   );
                   setAiPreview(null);
                 }}
-                className="flex-1 rounded-xl bg-[#3E588F] py-3 text-center text-xs font-extrabold text-[#E3E8F8] transition-all hover:bg-[#3E588F]/90 shadow-sm"
+                className="flex-1 rounded-xl bg-[#415E72] py-3 text-center text-xs font-extrabold text-[#F6F5F2] transition-all hover:bg-[#415E72]/90 shadow-sm"
               >
                 {t('admin.editor.aiApply')}
               </button>
               <button
                 type="button"
                 onClick={() => setAiPreview(null)}
-                className="rounded-xl border border-[#C0C5CD] px-4 py-3 text-xs font-bold text-[#3E588F] bg-[#E3E8F8] hover:bg-[#C0C5CD]/30 transition-colors"
+                className="rounded-xl border border-[#C5B0CD] px-4 py-3 text-xs font-bold text-[#415E72] bg-[#F6F5F2] hover:bg-[#C5B0CD]/30 transition-colors"
               >
                 {t('admin.editor.aiDiscard')}
               </button>
@@ -959,8 +959,8 @@ export default function AdminLessonEditor() {
       </AiModal>
 
       {aiBusy && (
-        <div className="fixed bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full bg-[#3E588F] px-5 py-2.5 text-xs font-bold text-[#E3E8F8] shadow-xl border border-[#C0C5CD]/50">
-          <Loader2 className="h-4 w-4 animate-spin text-[#C0C5CD]" />
+        <div className="fixed bottom-6 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full bg-[#415E72] px-5 py-2.5 text-xs font-bold text-[#F6F5F2] shadow-xl border border-[#C5B0CD]/50">
+          <Loader2 className="h-4 w-4 animate-spin text-[#C5B0CD]" />
           <span>{t('admin.editor.aiBusy')}</span>
         </div>
       )}

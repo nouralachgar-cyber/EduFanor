@@ -38,20 +38,20 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E3E8F8] text-[#3E588F] flex font-sans" dir={isAr ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-[#F6F5F2] text-[#415E72] flex font-sans" dir={isAr ? 'rtl' : 'ltr'}>
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-[#3E588F]/50 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-[#415E72]/50 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 z-50 flex w-72 flex-col border-e border-[#C0C5CD]/40 bg-white shadow-xl transition-transform duration-300 lg:static lg:translate-x-0 ${
+      <aside className={`fixed inset-y-0 z-50 flex w-72 flex-col border-e border-[#C5B0CD]/40 bg-white shadow-xl transition-transform duration-300 lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : isAr ? 'translate-x-full lg:translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
-        <div className="flex h-20 items-center justify-between border-b border-[#C0C5CD]/30 px-6 bg-[#E3E8F8]/50">
+        <div className="flex h-20 items-center justify-between border-b border-[#C5B0CD]/30 px-6 bg-[#F6F5F2]/50">
           <div className="flex items-center gap-3">
             <img
               src="/edufanor.png"
@@ -59,21 +59,21 @@ export default function AdminLayout() {
               className="h-10 w-auto object-contain transition-transform duration-300 hover:scale-105"
             />
             <div>
-              <p className="font-display text-sm font-extrabold text-[#3E588F]">EduFanor Admin</p>
-              <p className="text-[10px] font-bold text-[#3E588F]/60">Management Console</p>
+              <p className="font-display text-sm font-extrabold text-[#415E72]">EduFanor Admin</p>
+              <p className="text-[10px] font-bold text-[#415E72]/60">Management Console</p>
             </div>
           </div>
           <button 
             type="button" 
             onClick={() => setSidebarOpen(false)} 
-            className="rounded-xl p-2 text-[#3E588F]/70 hover:bg-[#C0C5CD]/20 lg:hidden"
+            className="rounded-xl p-2 text-[#415E72]/70 hover:bg-[#C5B0CD]/20 lg:hidden"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-4 py-6 space-y-1.5">
-          <p className="px-3 pb-2 text-[10px] font-extrabold uppercase tracking-wider text-[#3E588F]/50">
+          <p className="px-3 pb-2 text-[10px] font-extrabold uppercase tracking-wider text-[#415E72]/50">
             {t('admin.shell.navigation', 'Navigation')}
           </p>
           {navItems.map((item) => {
@@ -86,25 +86,25 @@ export default function AdminLayout() {
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3.5 rounded-2xl px-4 py-3 text-xs font-extrabold transition-all ${
                   active 
-                    ? 'bg-[#3E588F] text-[#E3E8F8] shadow-md shadow-[#3E588F]/15' 
-                    : 'text-[#3E588F]/80 hover:bg-[#E3E8F8] hover:text-[#3E588F]'
+                    ? 'bg-[#415E72] text-[#F6F5F2] shadow-md shadow-[#415E72]/15'
+                    : 'text-[#415E72]/80 hover:bg-[#F6F5F2] hover:text-[#415E72]'
                 }`}
               >
-                <Icon className={`h-4 w-4 ${active ? 'text-[#C0C5CD]' : 'text-[#3E588F]/60'}`} />
+                <Icon className={`h-4 w-4 ${active ? 'text-[#C5B0CD]' : 'text-[#415E72]/60'}`} />
                 {item.label}
               </Link>
             );
           })}
         </div>
 
-        <div className="border-t border-[#C0C5CD]/30 p-4 bg-[#E3E8F8]/30">
-          <div className="flex items-center gap-3 rounded-2xl border border-[#C0C5CD]/40 bg-white p-3.5 shadow-sm">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#3E588F] text-xs font-extrabold text-[#E3E8F8]">
+        <div className="border-t border-[#C5B0CD]/30 p-4 bg-[#F6F5F2]/30">
+          <div className="flex items-center gap-3 rounded-2xl border border-[#C5B0CD]/40 bg-white p-3.5 shadow-sm">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#415E72] text-xs font-extrabold text-[#F6F5F2]">
               {user?.name?.[0] || 'A'}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-extrabold text-[#3E588F]">{user?.name || 'Administrator'}</p>
-              <p className="truncate text-[10px] text-[#3E588F]/60" dir="ltr">{user?.email || 'admin@edufanor.com'}</p>
+              <p className="truncate text-xs font-extrabold text-[#415E72]">{user?.name || 'Administrator'}</p>
+              <p className="truncate text-[10px] text-[#415E72]/60" dir="ltr">{user?.email || 'admin@edufanor.com'}</p>
             </div>
             <button
               type="button"
@@ -124,18 +124,18 @@ export default function AdminLayout() {
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
         {/* Top Header */}
-        <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-[#C0C5CD]/40 bg-white/95 px-6 backdrop-blur-md shadow-xs">
+        <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-[#C5B0CD]/40 bg-white/95 px-6 backdrop-blur-md shadow-xs">
           <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={() => setSidebarOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C0C5CD] bg-[#E3E8F8] text-[#3E588F] lg:hidden shadow-sm"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] lg:hidden shadow-sm"
             >
-              <Menu className="h-5 w-5 text-[#C0C5CD]" />
+              <Menu className="h-5 w-5 text-[#C5B0CD]" />
             </button>
             <div className="hidden sm:flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#C0C5CD]/50 bg-[#E3E8F8] px-3 py-1 text-xs font-extrabold text-[#3E588F]">
-                <Sparkles className="h-3.5 w-3.5 text-[#C0C5CD]" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#C5B0CD]/50 bg-[#F6F5F2] px-3 py-1 text-xs font-extrabold text-[#415E72]">
+                <Sparkles className="h-3.5 w-3.5 text-[#C5B0CD]" />
                 EduFanor Control Panel
               </span>
             </div>
@@ -145,7 +145,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
-              className="rounded-xl border border-[#C0C5CD] bg-[#E3E8F8] px-3.5 py-2 text-xs font-extrabold text-[#3E588F] hover:bg-[#C0C5CD]/30 transition-colors shadow-sm"
+              className="rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-3.5 py-2 text-xs font-extrabold text-[#415E72] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm"
             >
               {isAr ? 'English' : 'العربية'}
             </button>

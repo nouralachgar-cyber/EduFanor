@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import {
   AlertTriangle,
   ChevronDown,
@@ -37,139 +37,14 @@ const TEXT_BLOCK_TYPES = new Set([
   'safety',
 ]);
 const LIST_BLOCK_TYPES = new Set(['list', 'numbered-list']);
+const MEDIA_BLOCK_TYPES = new Set(['image', 'video', 'youtube']);
 const MAX_FILE_BYTES = 7.5 * 1024 * 1024;
 const IMAGE_TYPES = 'image/png,image/jpeg,image/webp,image/gif';
 const VIDEO_TYPES = 'video/mp4,video/webm,video/ogg';
 
 const textOf = (value) => (typeof value === 'string' ? value : '');
 
-function elementForNode(node) {
-  if (!node) return null;
-  return node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
-}
-
-function offsetAtRange(element, range, point = 'start') {
-  const measure = document.createRange();
-  measure.selectNodeContents(element);
-  if (point === 'start') {
-    measure.setEnd(range.startContainer, range.startOffset);
-  } else {
-    measure.setEnd(range.endContainer, range.endOffset);
-  }
-  return measure.toString().length;
-}
-
-function EditableText({
-  block,
-  language,
-  placeholder,
-  className,
-  tagName = 'div',
-  onChange,
-  onEnter,
-  onFocus,
-  onSelect,
-}) {
-  const ref = useRef(null);
-  const value = textOf(block.content?.[language]);
-
-  useLayoutEffect(() => {
-    const element = ref.current;
-    if (element && element.innerText.replace(/\r/g, '') !== value) {
-      element.textContent = value;
-    }
-  }, [block.id, language, value]);
-
-  return (
-    <div className="relative">
-      {React.createElement(tagName, {
-        ref,
-        contentEditable: true,
-        suppressContentEditableWarning: true,
-        role: 'textbox',
-        'aria-multiline': true,
-        'data-editable-content': 'true',
-        'data-block-id': block.id,
-        dir: language === 'ar' ? 'rtl' : 'ltr',
-        className,
-        onInput: (event) => {
-          onChange(block.id, event.currentTarget.innerText.replace(/\r/g, ''));
-          onSelect(event.currentTarget);
-        },
-        onKeyDown: (event) => onEnter(event, block, event.currentTarget),
-        onFocus: (event) => onFocus(block.id, event.currentTarget),
-        onMouseUp: (event) => onSelect(event.currentTarget),
-        onKeyUp: (event) => onSelect(event.currentTarget),
-        onPaste: (event) => {
-          event.preventDefault();
-          const text = event.clipboardData.getData('text/plain');
-          document.execCommand('insertText', false, text);
-        },
-      })}
-      {!value && (
-        <span className="pointer-events-none absolute inset-inline-0 top-0 select-none text-ink-muted/60">
-          {placeholder}
-        </span>
-      )}
-    </div>
-  );
-}
-
-function EditableList({
-  block,
-  language,
-  placeholder,
-  onChange,
-  onEnter,
-  onFocus,
-  onSelect,
-}) {
-  const ref = useRef(null);
-  const values = block.data?.items?.[language];
-  const displayValues = useMemo(
-    () => (Array.isArray(values) && values.length ? values : ['']),
-    [values]
-  );
-
-  useLayoutEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-    const current = Array.from(element.children).map((item) => item.innerText.replace(/\r/g, ''));
-    if (current.length !== displayValues.length || current.some((item, index) => item !== displayValues[index])) {
-      element.innerHTML = displayValues
-        .map((item) => `<li>${item.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`)
-        .join('');
-    }
-  }, [block.id, displayValues, language]);
-
-  const Tag = block.type === 'numbered-list' ? 'ol' : 'ul';
-  return React.createElement(Tag, {
-    ref,
-    contentEditable: true,
-    suppressContentEditableWarning: true,
-    role: 'list',
-    'data-editable-content': 'true',
-    'data-block-id': block.id,
-    dir: language === 'ar' ? 'rtl' : 'ltr',
-    className: 'min-h-8 list-inside space-y-1 ps-8 text-base leading-8 text-ink outline-none marker:text-primary',
-    onInput: (event) => {
-      const items = Array.from(event.currentTarget.children).map((item) => item.innerText.replace(/\r/g, ''));
-      onChange(block.id, items);
-      onSelect(event.currentTarget);
-    },
-    onKeyDown: (event) => onEnter(event, block, event.currentTarget),
-    onFocus: () => onFocus(block.id),
-    onMouseUp: (event) => onSelect(event.currentTarget),
-    onKeyUp: (event) => onSelect(event.currentTarget),
-    onPaste: (event) => {
-      event.preventDefault();
-      document.execCommand('insertText', false, event.clipboardData.getData('text/plain'));
-    },
-    'aria-label': placeholder,
-  });
-}
-
-function ToolbarButton({ icon: Icon, children, onClick, onMouseDown, title, disabled = false }) {
+function EditorButton({ icon: Icon, children, onClick, onMouseDown, title, disabled = false, className = '' }) {
   return (
     <button
       type="button"
@@ -181,7 +56,7 @@ function ToolbarButton({ icon: Icon, children, onClick, onMouseDown, title, disa
         onMouseDown?.();
       }}
       onClick={onClick}
-      className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-line bg-card px-2.5 text-xs font-bold text-ink transition-colors hover:border-primary/50 hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-50"
+      className={`inline-flex min-h-9 items-center justify-center gap-2 rounded-lg border border-line bg-card px-3 py-2 text-xs font-bold text-ink transition-colors hover:border-primary/50 hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     >
       {Icon && <Icon className="h-4 w-4 shrink-0 text-primary dark:text-brand-ink" />}
       <span>{children}</span>
@@ -189,32 +64,27 @@ function ToolbarButton({ icon: Icon, children, onClick, onMouseDown, title, disa
   );
 }
 
-export default function LessonDocumentEditor({
-  blocks,
-  onChange,
-  language,
-  onLanguageChange,
-}) {
+export default function LessonDocumentEditor({ blocks, onChange, language, onLanguageChange }) {
   const isAr = language === 'ar';
   const editorRef = useRef(null);
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
   const blocksRef = useRef(blocks);
-  const activeBlockRef = useRef(null);
-  const selectionRef = useRef(null);
+  const insertionRef = useRef({ index: null, blockId: null, start: 0, end: 0 });
   const focusAfterRenderRef = useRef(null);
   const replaceMediaRef = useRef(null);
   const [activeBlockId, setActiveBlockId] = useState(null);
-  const [focusedBlockId, setFocusedBlockId] = useState(null);
+  const [insertMenuAt, setInsertMenuAt] = useState(null);
   const [videoPanelOpen, setVideoPanelOpen] = useState(false);
   const [videoUrl, setVideoUrl] = useState('');
-  const [editingMediaId, setEditingMediaId] = useState(null);
   const [uploading, setUploading] = useState('');
   const [error, setError] = useState('');
 
   useLayoutEffect(() => {
     blocksRef.current = blocks;
   }, [blocks]);
+
+  const label = (english, arabic) => (isAr ? arabic : english);
 
   const changeBlocks = (nextOrUpdater) => {
     const current = blocksRef.current;
@@ -231,7 +101,8 @@ export default function LessonDocumentEditor({
     );
   };
 
-  const changeList = (blockId, values) => {
+  const changeList = (blockId, value) => {
+    const items = value.split('\n');
     changeBlocks((current) =>
       current.map((block) =>
         block.id === blockId
@@ -239,7 +110,7 @@ export default function LessonDocumentEditor({
               ...block,
               data: {
                 ...block.data,
-                items: { ...(block.data?.items || { ar: [], en: [] }), [language]: values },
+                items: { ...(block.data?.items || { ar: [], en: [] }), [language]: items },
               },
             }
           : block
@@ -247,268 +118,221 @@ export default function LessonDocumentEditor({
     );
   };
 
-  const changeMediaUrl = (blockId, url) => {
+  const changeMedia = (blockId, patch) => {
     changeBlocks((current) =>
       current.map((block) =>
-        block.id === blockId ? { ...block, data: { ...block.data, url } } : block
+        block.id === blockId ? { ...block, data: { ...block.data, ...patch } } : block
       )
     );
   };
 
-  const getSelection = (body) => {
-    const selection = window.getSelection();
-    if (!selection || !selection.rangeCount) return null;
-    const range = selection.getRangeAt(0);
-    if (!body.contains(range.startContainer) || !body.contains(range.endContainer)) return null;
-    const blockId = body.dataset.blockId;
-    let start = offsetAtRange(body, range, 'start');
-    let end = offsetAtRange(body, range, 'end');
-    let listIndex = null;
-    if (LIST_BLOCK_TYPES.has(blocksRef.current.find((block) => block.id === blockId)?.type)) {
-      const startElement = elementForNode(range.startContainer);
-      const listItem = startElement?.closest('li');
-      if (listItem && body.contains(listItem)) {
-        const items = Array.from(body.children);
-        listIndex = items.indexOf(listItem);
-        start = offsetAtRange(listItem, range, 'start');
-        end = offsetAtRange(listItem, range, 'end');
-      }
-    }
-    return { blockId, start, end, listIndex };
+  const rememberCaret = (block, element) => {
+    if (!element) return;
+    setActiveBlockId(block.id);
+    insertionRef.current = {
+      index: null,
+      blockId: block.id,
+      start: element.selectionStart ?? 0,
+      end: element.selectionEnd ?? element.selectionStart ?? 0,
+    };
   };
 
-  const saveSelection = (body) => {
-    if (!body) return;
-    activeBlockRef.current = body.dataset.blockId;
-    const saved = getSelection(body);
-    if (saved) selectionRef.current = saved;
-  };
-
-  const saveSelectionFromWindow = () => {
-    const selection = window.getSelection();
-    if (!selection || !selection.rangeCount || !editorRef.current) return;
-    let element = elementForNode(selection.getRangeAt(0).startContainer);
-    while (element && editorRef.current.contains(element) && !element.hasAttribute('data-editable-content')) {
-      element = element.parentElement;
-    }
-    if (element?.hasAttribute('data-editable-content')) saveSelection(element);
-  };
-
-  const selectionOffsetsForBlock = (block, anchor) => {
-    if (!anchor || anchor.blockId !== block.id) return null;
-    const start = Math.max(0, anchor.start || 0);
-    const end = Math.max(start, anchor.end || start);
-    return { start, end };
-  };
-
-  const insertAtPosition = (type, data = {}) => {
-    const current = blocksRef.current;
-    const anchor = selectionRef.current;
-    const activeId = activeBlockRef.current;
-    const anchorMatchesActive = anchor && anchor.blockId === activeId;
-    const insertionAnchor = anchorMatchesActive ? anchor : null;
-    const anchorIndex = current.findIndex((block) => block.id === (insertionAnchor?.blockId || activeId));
-    const inserted = blankBlock(type);
-    inserted.data = { ...inserted.data, ...data };
-    let next;
-    let focusId = inserted.id;
-    let focusOffset = 0;
-
-    if (anchorIndex >= 0 && insertionAnchor && LIST_BLOCK_TYPES.has(current[anchorIndex].type)) {
-      const original = current[anchorIndex];
-      const items = Array.isArray(original.data?.items?.[language]) ? original.data.items[language] : [];
-      const listIndex = Math.max(0, Math.min(insertionAnchor.listIndex ?? items.length - 1, items.length - 1));
-      const flatText = items.join('\n');
-      const start = items.slice(0, listIndex).reduce((total, item) => total + item.length + 1, 0) + Math.max(0, insertionAnchor.start || 0);
-      const end = items.slice(0, listIndex).reduce((total, item) => total + item.length + 1, 0) + Math.max(insertionAnchor.start || 0, insertionAnchor.end || 0);
-      const before = flatText.slice(0, Math.min(start, flatText.length));
-      const after = flatText.slice(Math.min(end, flatText.length));
-      const prefix = {
-        ...original,
-        data: {
-          ...original.data,
-          items: { ...(original.data?.items || { ar: [], en: [] }), [language]: before ? before.split('\n') : [] },
-        },
-      };
-      const continuation = blankBlock(original.type);
-      continuation.data.items[language] = after ? after.split('\n') : [];
-      const tail = after ? [continuation] : !TEXT_BLOCK_TYPES.has(type) ? [blankBlock('paragraph')] : [];
-      focusId = TEXT_BLOCK_TYPES.has(type) || LIST_BLOCK_TYPES.has(type) ? inserted.id : tail[0]?.id || inserted.id;
-      next = [
-        ...current.slice(0, anchorIndex),
-        prefix,
-        inserted,
-        ...tail,
-        ...current.slice(anchorIndex + 1),
-      ];
-    } else if (anchorIndex >= 0 && insertionAnchor && TEXT_BLOCK_TYPES.has(current[anchorIndex].type)) {
-      const original = current[anchorIndex];
-      const originalText = textOf(original.content?.[language]);
-      const { start, end } = selectionOffsetsForBlock(original, insertionAnchor);
-      const before = originalText.slice(0, Math.min(start, originalText.length));
-      const after = originalText.slice(Math.min(end, originalText.length));
-      const atStart = !before;
-      const updatedOriginal = {
-        ...original,
-        content: { ...original.content, [language]: before },
-      };
-      const prefix = atStart ? [] : [updatedOriginal];
-      const continuation = blankBlock('paragraph');
-      continuation.content = { ...continuation.content, [language]: after };
-      const wantsContinuation = Boolean(after) || !TEXT_BLOCK_TYPES.has(type);
-      const tail = wantsContinuation ? [continuation] : [];
-      focusId = TEXT_BLOCK_TYPES.has(type) || LIST_BLOCK_TYPES.has(type) ? inserted.id : (tail[0]?.id || inserted.id);
-      next = [
-        ...current.slice(0, anchorIndex),
-        ...prefix,
-        inserted,
-        ...tail,
-        ...current.slice(anchorIndex + 1),
-      ];
-    } else {
-      const index = anchorIndex >= 0 ? anchorIndex + 1 : current.length;
-      const continuation = blankBlock('paragraph');
-      const needsContinuation = !TEXT_BLOCK_TYPES.has(type);
-      next = [
-        ...current.slice(0, index),
-        inserted,
-        ...(needsContinuation ? [continuation] : []),
-        ...current.slice(index),
-      ];
-      if (needsContinuation) focusId = continuation.id;
-    }
-
-    if (!next.length) {
-      const paragraph = blankBlock('paragraph');
-      next = [paragraph];
-      focusId = paragraph.id;
-    }
-    focusAfterRenderRef.current = { blockId: focusId, offset: focusOffset };
-    activeBlockRef.current = focusId;
-    selectionRef.current = null;
-    changeBlocks(next);
-  };
-
-  const updateTextAndInsertParagraph = (block, body) => {
-    const saved = getSelection(body);
-    const text = body.innerText.replace(/\r/g, '');
-    const start = Math.min(saved?.start ?? text.length, text.length);
-    const end = Math.min(saved?.end ?? start, text.length);
-    const before = text.slice(0, start);
-    const after = text.slice(end);
-    const nextParagraph = blankBlock('paragraph');
-    nextParagraph.content = { ...nextParagraph.content, [language]: after };
-    const current = blocksRef.current;
-    const index = current.findIndex((item) => item.id === block.id);
-    if (index < 0) return;
-    const next = [...current];
-    next[index] = { ...block, content: { ...block.content, [language]: before } };
-    next.splice(index + 1, 0, nextParagraph);
-    focusAfterRenderRef.current = { blockId: nextParagraph.id, offset: 0 };
-    activeBlockRef.current = nextParagraph.id;
-    selectionRef.current = null;
-    changeBlocks(next);
-  };
-
-  const splitListAtCaret = (event, block, body) => {
-    const saved = getSelection(body);
-    const items = Array.from(body.children).map((item) => item.innerText.replace(/\r/g, ''));
-    const listIndex = Math.max(0, Math.min(saved?.listIndex ?? items.length - 1, items.length - 1));
-    const item = items[listIndex] || '';
-    const start = Math.min(saved?.start ?? item.length, item.length);
-    const end = Math.min(saved?.end ?? start, item.length);
-    const before = item.slice(0, start);
-    const after = item.slice(end);
-    const nextItems = [...items];
-    nextItems.splice(listIndex, 1, before, after);
-    event.preventDefault();
-    changeBlocks((current) =>
-      current.map((draft) =>
-        draft.id === block.id
-          ? {
-              ...draft,
-              data: {
-                ...draft.data,
-                items: { ...(draft.data?.items || { ar: [], en: [] }), [language]: nextItems },
-              },
-            }
-          : draft
-      )
+  const focusBlock = (blockId, offset = 0) => {
+    const field = Array.from(editorRef.current?.querySelectorAll('[data-editable-id]') || []).find(
+      (element) => element.dataset.editableId === blockId
     );
-    focusAfterRenderRef.current = { blockId: block.id, listIndex: listIndex + 1, offset: 0 };
-  };
-
-  const handleEditableKeyDown = (event, block, body) => {
-    if (event.key !== 'Enter' || event.shiftKey) return;
-    if (LIST_BLOCK_TYPES.has(block.type)) {
-      splitListAtCaret(event, block, body);
-      return;
-    }
-    event.preventDefault();
-    updateTextAndInsertParagraph(block, body);
-  };
-
-  const focusDocumentPosition = (position) => {
-    const wrapper = Array.from(editorRef.current?.querySelectorAll('[data-block-id]') || []).find(
-      (element) => element.dataset.blockId === position.blockId
-    );
-    const body = wrapper?.querySelector('[data-editable-content]');
-    if (!body) return;
-    body.focus();
-    let target = body;
-    if (Number.isInteger(position.listIndex)) {
-      target = body.children[position.listIndex] || body.children[body.children.length - 1] || body;
-    }
-    if (!target.firstChild) target.appendChild(document.createTextNode(''));
-    const range = document.createRange();
-    const textNode = target.firstChild;
-    const offset = Math.min(position.offset || 0, textNode.textContent?.length || 0);
-    range.setStart(textNode, offset);
-    range.collapse(true);
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-    saveSelection(body);
+    if (!field) return;
+    field.focus();
+    const caret = Math.min(offset, field.value.length);
+    field.setSelectionRange(caret, caret);
+    const block = blocksRef.current.find((item) => item.id === blockId);
+    if (block) rememberCaret(block, field);
   };
 
   useLayoutEffect(() => {
     const position = focusAfterRenderRef.current;
     if (!position || !editorRef.current) return;
     focusAfterRenderRef.current = null;
-    window.requestAnimationFrame(() => focusDocumentPosition(position));
+    window.requestAnimationFrame(() => focusBlock(position.blockId, position.offset));
   }, [blocks]);
 
-  const insertToolbarBlock = (type) => {
-    saveSelectionFromWindow();
-    insertAtPosition(type);
+  const insertBlock = (type, data = {}, explicitIndex = null) => {
+    const current = blocksRef.current;
+    const anchor = insertionRef.current;
+    const anchorIndex =
+      explicitIndex !== null
+        ? explicitIndex
+        : anchor.blockId
+          ? current.findIndex((block) => block.id === anchor.blockId)
+          : Number.isInteger(anchor.index)
+            ? anchor.index
+            : current.length;
+    const inserted = blankBlock(type);
+    inserted.data = { ...inserted.data, ...data };
+    const isMedia = MEDIA_BLOCK_TYPES.has(type);
+    let next;
+    let focusId = inserted.id;
+    let focusOffset = 0;
+
+    if (explicitIndex === null && anchorIndex >= 0 && anchor.blockId) {
+      const original = current[anchorIndex];
+      const isList = LIST_BLOCK_TYPES.has(original.type);
+      if (TEXT_BLOCK_TYPES.has(original.type) || isList) {
+        const source = isList
+          ? (Array.isArray(original.data?.items?.[language]) ? original.data.items[language] : []).join('\n')
+          : textOf(original.content?.[language]);
+        const start = Math.min(Math.max(0, anchor.start), source.length);
+        const end = Math.min(Math.max(start, anchor.end), source.length);
+        const before = source.slice(0, start);
+        const after = source.slice(end);
+        const prefix = isList
+          ? {
+              ...original,
+              data: {
+                ...original.data,
+                items: {
+                  ...(original.data?.items || { ar: [], en: [] }),
+                  [language]: before ? before.split('\n') : [],
+                },
+              },
+            }
+          : { ...original, content: { ...original.content, [language]: before } };
+
+        if (isMedia) {
+          const continuation = blankBlock('paragraph');
+          continuation.content = { ...continuation.content, [language]: isList ? '' : after };
+          const remainder = isList && after
+            ? [{
+                ...blankBlock(original.type),
+                data: {
+                  ...original.data,
+                  items: {
+                    ...(original.data?.items || { ar: [], en: [] }),
+                    [language]: after.split('\n'),
+                  },
+                },
+              }]
+            : [];
+          next = [
+            ...current.slice(0, anchorIndex),
+            prefix,
+            inserted,
+            continuation,
+            ...remainder,
+            ...current.slice(anchorIndex + 1),
+          ];
+          focusId = continuation.id;
+        } else {
+          const continuation = blankBlock(isList ? original.type : 'paragraph');
+          if (isList) {
+            continuation.data.items[language] = after ? after.split('\n') : [];
+          } else {
+            continuation.content = { ...continuation.content, [language]: after };
+          }
+          next = [
+            ...current.slice(0, anchorIndex),
+            prefix,
+            inserted,
+            ...(after ? [continuation] : []),
+            ...current.slice(anchorIndex + 1),
+          ];
+          if (after) focusId = continuation.id;
+        }
+      } else {
+        const index = anchorIndex + 1;
+        const continuation = isMedia ? blankBlock('paragraph') : null;
+        next = [
+          ...current.slice(0, index),
+          inserted,
+          ...(continuation ? [continuation] : []),
+          ...current.slice(index),
+        ];
+        if (continuation) focusId = continuation.id;
+      }
+    } else {
+      const index = Math.max(0, Math.min(explicitIndex ?? anchorIndex, current.length));
+      const continuation = isMedia ? blankBlock('paragraph') : null;
+      next = [
+        ...current.slice(0, index),
+        inserted,
+        ...(continuation ? [continuation] : []),
+        ...current.slice(index),
+      ];
+      if (continuation) focusId = continuation.id;
+    }
+
+    if (!next.length) next = [blankBlock('paragraph')];
+    insertionRef.current = { index: null, blockId: focusId, start: focusOffset, end: focusOffset };
+    focusAfterRenderRef.current = { blockId: focusId, offset: focusOffset };
+    setActiveBlockId(focusId);
+    setInsertMenuAt(null);
+    changeBlocks(next);
+  };
+
+  const setInsertionPoint = (index) => {
+    insertionRef.current = { index, blockId: null, start: 0, end: 0 };
+    setInsertMenuAt((current) => (current === index ? null : index));
+  };
+
+  const switchLanguage = (nextLanguage) => {
+    const activeIndex = blocksRef.current.findIndex((block) => block.id === activeBlockId);
+    insertionRef.current = {
+      index: activeIndex >= 0 ? activeIndex + 1 : null,
+      blockId: null,
+      start: 0,
+      end: 0,
+    };
+    setActiveBlockId(null);
+    onLanguageChange(nextLanguage);
+  };
+
+  const openImagePicker = (index = null, replaceId = null) => {
+    replaceMediaRef.current = replaceId;
+    if (Number.isInteger(index)) insertionRef.current = { index, blockId: null, start: 0, end: 0 };
+    imageInputRef.current?.click();
+  };
+
+  const openVideoPanel = (index = null, replaceId = null) => {
+    replaceMediaRef.current = replaceId;
+    if (Number.isInteger(index)) insertionRef.current = { index, blockId: null, start: 0, end: 0 };
+    setVideoPanelOpen(true);
+    setInsertMenuAt(null);
+    setError('');
   };
 
   const handleUpload = async (file, kind) => {
     if (!file) return;
-    if (file.size > MAX_FILE_BYTES) {
-      setError(t('admin.courses.blocks.fileTooLarge'));
+    const allowedTypes = kind === 'image' ? IMAGE_TYPES : VIDEO_TYPES;
+    if (!allowedTypes.split(',').includes(file.type)) {
+      setError(label('Choose a supported image or video file.', 'اختر ملف صورة أو فيديو مدعوماً.'));
       return;
     }
+    if (file.size > MAX_FILE_BYTES) {
+      setError(label('Media must be 7.5 MB or smaller.', 'يجب ألا يتجاوز حجم الوسائط 7.5 ميغابايت.'));
+      return;
+    }
+
     setUploading(kind);
     setError('');
     try {
       const reader = new FileReader();
       const dataUrl = await new Promise((resolve, reject) => {
         reader.onload = () => resolve(String(reader.result || ''));
-        reader.onerror = () => reject(new Error(t('admin.courses.blocks.uploadFailed')));
+        reader.onerror = () => reject(new Error(label('The selected file could not be read.', 'تعذرت قراءة الملف المحدد.')));
         reader.readAsDataURL(file);
       });
       const result = await adminApi.uploadAsset({ dataUrl, name: file.name });
-      if (!result?.url) throw new Error(t('admin.courses.blocks.uploadFailed'));
+      if (!result?.url) throw new Error(label('The media upload did not return a URL.', 'لم يُرجع رفع الوسائط رابطاً.'));
+
       const replaceId = replaceMediaRef.current;
       if (replaceId) {
-        changeMediaUrl(replaceId, result.url);
+        changeMedia(replaceId, { url: result.url });
         replaceMediaRef.current = null;
       } else {
-        insertAtPosition(kind === 'image' ? 'image' : 'video', { url: result.url });
+        insertBlock(kind === 'image' ? 'image' : 'video', { url: result.url });
       }
     } catch (uploadError) {
-      setError(uploadError.message || t('admin.courses.blocks.uploadFailed'));
+      setError(uploadError.message || label('Media upload failed.', 'تعذر رفع الوسائط.'));
     } finally {
       setUploading('');
       if (kind === 'image' && imageInputRef.current) imageInputRef.current.value = '';
@@ -519,10 +343,10 @@ export default function LessonDocumentEditor({
   const addYouTube = () => {
     const url = videoUrl.trim();
     if (!extractYouTubeId(url)) {
-      setError(isAr ? 'أدخل رابط يوتيوب صالحاً.' : 'Enter a valid YouTube URL.');
+      setError(label('Enter a valid YouTube URL.', 'أدخل رابط يوتيوب صالحاً.'));
       return;
     }
-    insertAtPosition('youtube', { url });
+    insertBlock('youtube', { url });
     setVideoUrl('');
     setVideoPanelOpen(false);
     setError('');
@@ -540,256 +364,246 @@ export default function LessonDocumentEditor({
   };
 
   const removeBlock = (blockId) => {
-    const current = blocksRef.current;
-    const next = current.filter((block) => block.id !== blockId);
+    const next = blocksRef.current.filter((block) => block.id !== blockId);
     if (!next.length) next.push(blankBlock('paragraph'));
-    activeBlockRef.current = null;
-    selectionRef.current = null;
+    insertionRef.current = { index: null, blockId: null, start: 0, end: 0 };
+    setActiveBlockId(null);
     changeBlocks(next);
   };
 
-  const editSource = (block) => {
-    if (block.type === 'image') {
-      setEditingMediaId((current) => (current === block.id ? null : block.id));
-      return;
-    }
-    setEditingMediaId((current) => (current === block.id ? null : block.id));
-  };
-
-  const startReplaceMedia = (blockId, kind) => {
-    replaceMediaRef.current = blockId;
-    if (kind === 'image') imageInputRef.current?.click();
-    else videoInputRef.current?.click();
-  };
-
-  const toolbarMouseDown = () => saveSelectionFromWindow();
-  const toolbarLabel = (english, arabic) => (isAr ? arabic : english);
-  const toolbarButtonClass = 'inline-flex items-center gap-1.5 rounded-lg border border-line bg-card px-2.5 py-2 text-xs font-bold text-ink transition-colors hover:border-primary/50 hover:bg-brand-soft';
-
-  const renderActions = (block, index) => (
+  const insertMenu = (index) => (
     <div
-      className="absolute end-1 top-1 z-10 flex items-center gap-0.5 rounded-lg border border-line bg-card/95 p-0.5 opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
-      contentEditable={false}
+      className="my-2 flex flex-wrap items-center gap-2 rounded-xl border border-primary/20 bg-brand-soft/60 p-2"
+      dir={isAr ? 'rtl' : 'ltr'}
     >
-      {block.type === 'image' && (
-        <button
-          type="button"
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={() => startReplaceMedia(block.id, 'image')}
-          className="rounded-md p-1 text-ink-muted hover:bg-surface-muted hover:text-ink"
-          title={toolbarLabel('Replace image', 'استبدال الصورة')}
-        >
-          <Upload className="h-3.5 w-3.5" />
-        </button>
-      )}
-      {['video', 'youtube'].includes(block.type) && (
-        <button
-          type="button"
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={() => editSource(block)}
-          className="rounded-md p-1 text-ink-muted hover:bg-surface-muted hover:text-ink"
-          title={toolbarLabel('Edit video URL', 'تعديل رابط الفيديو')}
-        >
-          <Link2 className="h-3.5 w-3.5" />
-        </button>
-      )}
-      {block.type === 'video' && (
-        <button
-          type="button"
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={() => startReplaceMedia(block.id, 'video')}
-          className="rounded-md p-1 text-ink-muted hover:bg-surface-muted hover:text-ink"
-          title={toolbarLabel('Replace video', 'استبدال الفيديو')}
-        >
-          <Upload className="h-3.5 w-3.5" />
-        </button>
-      )}
-      <button
-        type="button"
-        onMouseDown={(event) => event.preventDefault()}
-        onClick={() => moveBlock(block.id, -1)}
-        disabled={index === 0}
-        className="rounded-md p-1 text-ink-muted hover:bg-surface-muted hover:text-ink disabled:opacity-30"
-        title={toolbarLabel('Move up', 'تحريك لأعلى')}
-      >
-        <ChevronUp className="h-3.5 w-3.5" />
-      </button>
-      <button
-        type="button"
-        onMouseDown={(event) => event.preventDefault()}
-        onClick={() => moveBlock(block.id, 1)}
-        disabled={index === blocks.length - 1}
-        className="rounded-md p-1 text-ink-muted hover:bg-surface-muted hover:text-ink disabled:opacity-30"
-        title={toolbarLabel('Move down', 'تحريك لأسفل')}
-      >
-        <ChevronDown className="h-3.5 w-3.5" />
-      </button>
-      <button
-        type="button"
-        onMouseDown={(event) => event.preventDefault()}
-        onClick={() => removeBlock(block.id)}
-        className="rounded-md p-1 text-danger hover:bg-danger-soft"
-        title={toolbarLabel('Delete block', 'حذف الكتلة')}
-      >
-        <Trash2 className="h-3.5 w-3.5" />
-      </button>
+      <EditorButton icon={Type} onClick={() => insertBlock('paragraph', {}, index)}>{label('Text', 'نص')}</EditorButton>
+      <EditorButton icon={Heading} onClick={() => insertBlock('heading', {}, index)}>{label('Heading', 'عنوان')}</EditorButton>
+      <EditorButton icon={Heading2} onClick={() => insertBlock('subheading', {}, index)}>{label('Subheading', 'عنوان فرعي')}</EditorButton>
+      <EditorButton icon={List} onClick={() => insertBlock('list', {}, index)}>{label('List', 'قائمة')}</EditorButton>
+      <EditorButton icon={Info} onClick={() => insertBlock('note', {}, index)}>{label('Note', 'ملاحظة')}</EditorButton>
+      <EditorButton icon={Lightbulb} onClick={() => insertBlock('tip', {}, index)}>{label('Tip', 'نصيحة')}</EditorButton>
+      <EditorButton icon={AlertTriangle} onClick={() => insertBlock('warning', {}, index)}>{label('Warning', 'تحذير')}</EditorButton>
+      <EditorButton icon={ImageIcon} onClick={() => openImagePicker(index)}>{label('Image', 'صورة')}</EditorButton>
+      <EditorButton icon={Video} onClick={() => openVideoPanel(index)}>{label('Video', 'فيديو')}</EditorButton>
     </div>
   );
 
-  const renderBlockBody = (block) => {
-    if (TEXT_BLOCK_TYPES.has(block.type)) {
-      const classNames = {
-        heading: 'min-h-10 ps-8 pe-16 text-2xl font-extrabold leading-tight text-ink outline-none',
-        subheading: 'min-h-9 ps-8 pe-16 text-xl font-bold leading-tight text-ink outline-none',
-        warning: 'min-h-8 ps-8 pe-12 text-sm font-semibold leading-7 text-ink outline-none',
-        note: 'min-h-8 ps-8 pe-12 text-sm leading-7 text-ink outline-none',
-        tip: 'min-h-8 ps-8 pe-12 text-sm leading-7 text-ink outline-none',
-        paragraph: 'min-h-8 ps-8 pe-16 text-base leading-8 text-ink outline-none',
-        'rich-text': 'min-h-8 ps-8 pe-16 text-base leading-8 text-ink outline-none',
-        text: 'min-h-8 ps-8 pe-16 text-base leading-8 text-ink outline-none',
-        important: 'min-h-8 ps-8 pe-12 text-sm leading-7 text-ink outline-none',
-        callout: 'min-h-8 ps-8 pe-12 text-sm leading-7 text-ink outline-none',
-        safety: 'min-h-8 ps-8 pe-12 text-sm leading-7 text-ink outline-none',
-      };
-      const tagName = block.type === 'heading' ? 'h2' : block.type === 'subheading' ? 'h3' : 'div';
-      const editable = (
-        <EditableText
-          block={block}
-          language={language}
-          tagName={tagName}
-          placeholder={
-            block.type === 'heading'
-              ? toolbarLabel('Heading', 'عنوان')
-              : block.type === 'subheading'
-                ? toolbarLabel('Subheading', 'عنوان فرعي')
-                : block.type === 'warning'
-                  ? toolbarLabel('Write a warning or emergency alert…', 'اكتب تحذيراً أو تنبيهاً طارئاً…')
-                  : block.type === 'note' || block.type === 'tip'
-                    ? toolbarLabel('Write a note…', 'اكتب ملاحظة…')
-                    : toolbarLabel('Start writing…', 'ابدأ الكتابة…')
-          }
-          className={`${classNames[block.type] || classNames.paragraph} whitespace-pre-wrap`}
-          onChange={changeText}
-          onEnter={handleEditableKeyDown}
-          onFocus={(id, body) => {
-            activeBlockRef.current = id;
-            setActiveBlockId(id);
-            setFocusedBlockId(id);
-            saveSelection(body);
+  const renderTextBlock = (block) => {
+    const value = textOf(block.content?.[language]);
+    const heading = block.type === 'heading' || block.type === 'subheading';
+    const callout = ['note', 'tip', 'warning', 'important', 'callout', 'safety'].includes(block.type);
+    const placeholder =
+      block.type === 'heading'
+        ? label('Lesson heading', 'عنوان الدرس')
+        : block.type === 'subheading'
+          ? label('Section heading', 'عنوان القسم')
+          : block.type === 'warning'
+            ? label('Write a warning or important safety message…', 'اكتب تحذيراً أو رسالة سلامة مهمة…')
+            : block.type === 'note' || block.type === 'tip'
+              ? label('Write a note…', 'اكتب ملاحظة…')
+              : label('Write your lesson here. Press Enter to start another paragraph.', 'اكتب محتوى الدرس هنا. اضغط Enter لبدء فقرة جديدة.');
+    const className =
+      block.type === 'heading'
+        ? 'min-h-12 text-2xl font-extrabold leading-tight'
+        : block.type === 'subheading'
+          ? 'min-h-10 text-xl font-bold leading-tight'
+          : 'min-h-[5rem] text-base leading-8';
+    return (
+      <div className={callout ? `rounded-xl border p-4 ${block.type === 'warning' || block.type === 'safety' ? 'border-danger/30 bg-danger-soft/60' : block.type === 'tip' ? 'border-accent/30 bg-amber-soft/20' : 'border-primary/25 bg-brand-soft/40'}` : ''}>
+        <textarea
+          data-editable-id={block.id}
+          aria-label={placeholder}
+          dir={isAr ? 'rtl' : 'ltr'}
+          value={value}
+          rows={heading ? 1 : Math.max(2, value.split('\n').length + 1)}
+          placeholder={placeholder}
+          onFocus={(event) => rememberCaret(block, event.currentTarget)}
+          onClick={(event) => rememberCaret(block, event.currentTarget)}
+          onKeyUp={(event) => rememberCaret(block, event.currentTarget)}
+          onSelect={(event) => rememberCaret(block, event.currentTarget)}
+          onChange={(event) => {
+            rememberCaret(block, event.currentTarget);
+            changeText(block.id, event.target.value);
           }}
-          onSelect={saveSelection}
+          className={`block w-full resize-y border-0 bg-transparent px-1 py-1 text-ink outline-none placeholder:text-ink-muted/55 focus:ring-0 ${className}`}
         />
-      );
-      if (block.type === 'warning') {
-        return <div className="rounded-xl border border-danger/30 bg-danger-soft p-4">{editable}</div>;
-      }
-      if (block.type === 'note' || block.type === 'important' || block.type === 'callout') {
-        return <div className="rounded-xl border border-primary/25 bg-brand-soft/50 p-4">{editable}</div>;
-      }
-      if (block.type === 'tip') {
-        return <div className="rounded-xl border border-accent/30 bg-amber-soft/20 p-4">{editable}</div>;
-      }
-      return editable;
-    }
+      </div>
+    );
+  };
 
-    if (LIST_BLOCK_TYPES.has(block.type)) {
-      return (
-        <EditableList
-          block={block}
-          language={language}
-          placeholder={toolbarLabel('List item', 'عنصر القائمة')}
-          onChange={changeList}
-          onEnter={handleEditableKeyDown}
-          onFocus={(id) => {
-            activeBlockRef.current = id;
-            setActiveBlockId(id);
-            setFocusedBlockId(id);
+  const renderListBlock = (block) => {
+    const values = Array.isArray(block.data?.items?.[language]) ? block.data.items[language] : [];
+    const value = values.join('\n');
+    const placeholder = label('Enter one list item per line…', 'أدخل كل عنصر في سطر…');
+    return (
+      <div className="relative">
+        <span className="pointer-events-none absolute start-1 top-2 text-primary">
+          {block.type === 'numbered-list' ? <ListOrdered className="h-4 w-4" /> : <List className="h-4 w-4" />}
+        </span>
+        <textarea
+          data-editable-id={block.id}
+          aria-label={placeholder}
+          dir={isAr ? 'rtl' : 'ltr'}
+          value={value}
+          rows={Math.max(2, values.length + 1)}
+          placeholder={placeholder}
+          onFocus={(event) => rememberCaret(block, event.currentTarget)}
+          onClick={(event) => rememberCaret(block, event.currentTarget)}
+          onKeyUp={(event) => rememberCaret(block, event.currentTarget)}
+          onSelect={(event) => rememberCaret(block, event.currentTarget)}
+          onChange={(event) => {
+            rememberCaret(block, event.currentTarget);
+            changeList(block.id, event.target.value);
           }}
-          onSelect={saveSelection}
+          className="block min-h-16 w-full resize-y border-0 bg-transparent py-1 ps-8 pe-2 text-base leading-8 text-ink outline-none placeholder:text-ink-muted/55 focus:ring-0"
         />
-      );
-    }
+      </div>
+    );
+  };
 
-    if (block.type === 'divider') {
-      return <hr className="my-4 border-0 border-t border-line-strong" />;
-    }
-
+  const renderMediaBlock = (block) => {
+    const url = block.data?.url || '';
+    const youtubeId = extractYouTubeId(url);
     if (block.type === 'image') {
-      const src = resolveAssetUrl(block.data?.url || '');
+      const caption = block.data?.caption?.[language] || '';
       return (
-        <figure className="my-2 space-y-2">
-          {src ? (
-            <img src={src} alt={block.data?.alt?.[language] || ''} className="max-h-[34rem] w-auto max-w-full rounded-xl object-contain" />
+        <figure className="space-y-3 rounded-xl border border-line bg-surface-muted/40 p-3 sm:p-4">
+          {url ? (
+            <img src={resolveAssetUrl(url)} alt={block.data?.alt?.[language] || ''} className="mx-auto max-h-[34rem] w-auto max-w-full rounded-lg object-contain" />
           ) : (
-            <div className="flex h-40 items-center justify-center rounded-xl border border-dashed border-line-strong bg-surface-muted text-sm text-ink-muted">
-              {toolbarLabel('Choose an image from your computer', 'اختر صورة من جهازك')}
+            <div className="flex min-h-40 items-center justify-center rounded-lg border border-dashed border-line-strong bg-card text-sm text-ink-muted">
+              {label('Choose an image from your computer', 'اختر صورة من جهازك')}
             </div>
           )}
-          {block.data?.caption?.[language] && (
-            <figcaption className="text-center text-xs text-ink-muted">{block.data.caption[language]}</figcaption>
-          )}
+          <figcaption className="space-y-2">
+            <textarea
+              value={caption}
+              onChange={(event) => changeMedia(block.id, { caption: { ...(block.data?.caption || { ar: '', en: '' }), [language]: event.target.value } })}
+              rows={1}
+              dir={isAr ? 'rtl' : 'ltr'}
+              placeholder={label('Add an image caption (optional)', 'أضف وصفاً للصورة (اختياري)')}
+              className="block w-full resize-y rounded-lg border border-line bg-card px-3 py-2 text-center text-xs text-ink outline-none focus:border-primary"
+            />
+            <div className="flex gap-2">
+              <input value={url} onChange={(event) => changeMedia(block.id, { url: event.target.value })} dir="ltr" aria-label={label('Image URL', 'رابط الصورة')} placeholder="https://…" className="input h-9 min-w-0 flex-1 text-xs" />
+              <EditorButton icon={Upload} onClick={() => openImagePicker(null, block.id)}>{label('Replace', 'استبدال')}</EditorButton>
+            </div>
+          </figcaption>
         </figure>
       );
     }
 
-    if (block.type === 'video' || block.type === 'youtube') {
-      const url = block.data?.url || '';
-      const videoId = extractYouTubeId(url);
-      return (
-        <div className="my-2 w-full overflow-hidden rounded-xl border border-line bg-black">
-          {videoId ? (
+    return (
+      <div className="space-y-2 rounded-xl border border-line bg-surface-muted/40 p-3 sm:p-4">
+        <div className="overflow-hidden rounded-lg border border-line bg-black">
+          {block.type === 'youtube' && youtubeId ? (
             <div className="relative aspect-video w-full">
               <iframe
                 className="absolute inset-0 h-full w-full"
-                src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0&playsinline=1`}
-                title={toolbarLabel('Lesson video', 'فيديو الدرس')}
+                src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0&playsinline=1`}
+                title={label('Lesson video', 'فيديو الدرس')}
                 referrerPolicy="strict-origin-when-cross-origin"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               />
             </div>
-          ) : url ? (
-            <video src={resolveAssetUrl(url)} controls className="h-auto w-full" preload="metadata" />
+          ) : block.type === 'video' && url ? (
+            <video src={resolveAssetUrl(url)} controls className="h-auto max-h-[34rem] w-full" preload="metadata" />
           ) : (
             <div className="flex h-44 items-center justify-center text-sm text-white/70">
-              {toolbarLabel('Select or upload a video', 'اختر فيديو أو ارفعه')}
+              {label('Enter a YouTube URL or upload a video', 'أدخل رابط يوتيوب أو ارفع فيديو')}
             </div>
           )}
         </div>
-      );
-    }
-
-    return (
-      <div className="rounded-xl border border-line bg-surface-muted p-3 text-xs text-ink-muted">
-        {block.type}
+        <div className="flex flex-wrap gap-2">
+          <input value={url} onChange={(event) => changeMedia(block.id, { url: event.target.value })} dir="ltr" aria-label={label('Video URL', 'رابط الفيديو')} placeholder="https://…" className="input h-9 min-w-0 flex-1 text-xs" />
+          {block.type === 'video' && (
+            <EditorButton icon={Upload} onClick={() => openVideoPanel(null, block.id)}>{label('Replace video', 'استبدال الفيديو')}</EditorButton>
+          )}
+        </div>
       </div>
     );
   };
 
+  const renderBlock = (block, index) => {
+    const title = block.type.replace('-', ' ');
+    return (
+      <article
+        key={block.id}
+        data-block-id={block.id}
+        onFocusCapture={() => setActiveBlockId(block.id)}
+        className={`group relative rounded-2xl border p-3 transition-colors sm:p-5 ${
+          activeBlockId === block.id ? 'border-primary/35 bg-primary/[0.025]' : 'border-transparent hover:border-line hover:bg-surface-muted/20'
+        }`}
+      >
+        <div className="mb-2 flex min-h-7 items-center justify-between gap-3">
+          <span className="rounded-full bg-surface-muted px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide text-ink-muted">
+            {label(title, ({ paragraph: 'فقرة', text: 'فقرة', 'rich text': 'نص', heading: 'عنوان', subheading: 'عنوان فرعي', list: 'قائمة', 'numbered list': 'قائمة مرقمة', note: 'ملاحظة', tip: 'نصيحة', warning: 'تحذير', image: 'صورة', video: 'فيديو', youtube: 'يوتيوب', divider: 'فاصل' })[title] || title)}
+          </span>
+          <div className="flex items-center gap-1 opacity-100 transition-opacity sm:opacity-60 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
+            <button type="button" onClick={() => moveBlock(block.id, -1)} disabled={index === 0} title={label('Move up', 'تحريك لأعلى')} aria-label={label('Move up', 'تحريك لأعلى')} className="rounded-md p-1.5 text-ink-muted hover:bg-card hover:text-ink disabled:opacity-30">
+              <ChevronUp className="h-4 w-4" />
+            </button>
+            <button type="button" onClick={() => moveBlock(block.id, 1)} disabled={index === blocks.length - 1} title={label('Move down', 'تحريك لأسفل')} aria-label={label('Move down', 'تحريك لأسفل')} className="rounded-md p-1.5 text-ink-muted hover:bg-card hover:text-ink disabled:opacity-30">
+              <ChevronDown className="h-4 w-4" />
+            </button>
+            <button type="button" onClick={() => removeBlock(block.id)} title={label('Delete block', 'حذف الكتلة')} aria-label={label('Delete block', 'حذف الكتلة')} className="rounded-md p-1.5 text-danger hover:bg-danger-soft">
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+        {TEXT_BLOCK_TYPES.has(block.type)
+          ? renderTextBlock(block)
+          : LIST_BLOCK_TYPES.has(block.type)
+            ? renderListBlock(block)
+            : MEDIA_BLOCK_TYPES.has(block.type)
+              ? renderMediaBlock(block)
+              : block.type === 'divider'
+                ? <hr className="my-4 border-0 border-t border-line-strong" />
+                : <div className="rounded-lg border border-line bg-surface-muted p-3 text-xs text-ink-muted">{title}</div>}
+      </article>
+    );
+  };
+
+  const insertPoint = (index) => (
+    <div key={`insert-${index}`} className="relative flex min-h-8 items-center justify-center py-1">
+      <div className="absolute inset-x-0 top-1/2 border-t border-dashed border-line" />
+      <button
+        type="button"
+        onMouseDown={(event) => event.preventDefault()}
+        onClick={() => setInsertionPoint(index)}
+        aria-label={label(`Insert a block at position ${index + 1}`, `إدراج كتلة في الموضع ${index + 1}`)}
+        className="relative z-10 inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-3 py-1.5 text-[11px] font-bold text-ink-muted shadow-sm transition-colors hover:border-primary/50 hover:bg-brand-soft hover:text-primary"
+      >
+        <Plus className="h-3.5 w-3.5" />
+        {label('Add block here', 'أضف كتلة هنا')}
+      </button>
+    </div>
+  );
+
   return (
-    <section className="space-y-3">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <section className="space-y-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-sm font-extrabold text-ink">{toolbarLabel('Lesson content', 'محتوى الدرس')}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-base font-extrabold text-ink">{label('Lesson document', 'مستند الدرس')}</h2>
+            <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[10px] font-bold text-ink-muted">
+              {blocks.length} {label('blocks', 'كتل')}
+            </span>
+          </div>
           <p className="mt-1 text-xs text-ink-muted">
-            {toolbarLabel('Write naturally, then insert media or blocks where you need them.', 'اكتب بشكل طبيعي، ثم أدرج الوسائط أو الكتل في موضعها.')}
+            {label('Write the lesson from top to bottom. Add a block between any two sections to place media exactly where it belongs.', 'اكتب الدرس من الأعلى إلى الأسفل. أضف كتلة بين أي قسمين لوضع الوسائط في موضعها.')}
           </p>
         </div>
-        <div className="inline-flex rounded-xl border border-line bg-surface-muted p-1" role="group" aria-label={toolbarLabel('Editing language', 'لغة التحرير')}>
+        <div className="inline-flex w-fit rounded-xl border border-line bg-surface-muted p-1" role="group" aria-label={label('Editing language', 'لغة التحرير')}>
           {['ar', 'en'].map((lang) => (
             <button
               key={lang}
               type="button"
-              onClick={() => {
-                selectionRef.current = null;
-                activeBlockRef.current = null;
-                setActiveBlockId(null);
-                setFocusedBlockId(null);
-                onLanguageChange(lang);
-              }}
+              onClick={() => switchLanguage(lang)}
               aria-pressed={language === lang}
-              className={`rounded-lg px-3 py-1.5 text-xs font-extrabold transition-colors ${
-                language === lang ? 'bg-primary text-on-primary' : 'text-ink-muted hover:text-ink'
+              className={`rounded-lg px-3.5 py-2 text-xs font-extrabold transition-colors ${
+                language === lang ? 'bg-primary text-on-primary shadow-sm' : 'text-ink-muted hover:text-ink'
               }`}
             >
               {lang === 'ar' ? 'العربية' : 'English'}
@@ -798,126 +612,42 @@ export default function LessonDocumentEditor({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-line bg-surface-muted/40 p-2 sm:p-3">
-        <div className="flex flex-wrap gap-1.5 border-b border-line p-2" role="toolbar" aria-label={toolbarLabel('Insert lesson content', 'إدراج محتوى الدرس')}>
-          <ToolbarButton icon={Type} onMouseDown={toolbarMouseDown} onClick={() => insertToolbarBlock('paragraph')}>
-            {toolbarLabel('Text', 'نص')}
-          </ToolbarButton>
-          <ToolbarButton icon={Heading} onMouseDown={toolbarMouseDown} onClick={() => insertToolbarBlock('heading')}>
-            {toolbarLabel('Heading', 'عنوان')}
-          </ToolbarButton>
-          <ToolbarButton icon={Heading2} onMouseDown={toolbarMouseDown} onClick={() => insertToolbarBlock('subheading')}>
-            {toolbarLabel('Subheading', 'عنوان فرعي')}
-          </ToolbarButton>
-          <ToolbarButton
-            icon={ImageIcon}
-            onMouseDown={toolbarMouseDown}
-            onClick={() => imageInputRef.current?.click()}
-            disabled={Boolean(uploading)}
-          >
-            {toolbarLabel('Image', 'صورة')}
-          </ToolbarButton>
-          <ToolbarButton
-            icon={Video}
-            onMouseDown={toolbarMouseDown}
-            onClick={() => setVideoPanelOpen((open) => !open)}
-            disabled={Boolean(uploading)}
-          >
-            {toolbarLabel('Video', 'فيديو')}
-          </ToolbarButton>
-          <ToolbarButton
-            icon={Link2}
-            onMouseDown={toolbarMouseDown}
-            onClick={() => {
-              setVideoPanelOpen(true);
-              setError('');
-            }}
-          >
-            {toolbarLabel('YouTube link', 'رابط يوتيوب')}
-          </ToolbarButton>
-          <ToolbarButton icon={List} onMouseDown={toolbarMouseDown} onClick={() => insertToolbarBlock('list')}>
-            {toolbarLabel('List', 'قائمة')}
-          </ToolbarButton>
-          <ToolbarButton icon={ListOrdered} onMouseDown={toolbarMouseDown} onClick={() => insertToolbarBlock('numbered-list')}>
-            {toolbarLabel('Numbered list', 'قائمة مرقمة')}
-          </ToolbarButton>
-          <ToolbarButton icon={Info} onMouseDown={toolbarMouseDown} onClick={() => insertToolbarBlock('note')}>
-            {toolbarLabel('Note', 'ملاحظة')}
-          </ToolbarButton>
-          <ToolbarButton icon={Lightbulb} onMouseDown={toolbarMouseDown} onClick={() => insertToolbarBlock('tip')}>
-            {toolbarLabel('Tip', 'نصيحة')}
-          </ToolbarButton>
-          <ToolbarButton icon={AlertTriangle} onMouseDown={toolbarMouseDown} onClick={() => insertToolbarBlock('warning')}>
-            {toolbarLabel('Warning', 'تحذير')}
-          </ToolbarButton>
-          <ToolbarButton onMouseDown={toolbarMouseDown} onClick={() => insertToolbarBlock('divider')}>
-            {toolbarLabel('Divider', 'فاصل')}
-          </ToolbarButton>
+      <div className="overflow-hidden rounded-2xl border border-line bg-surface-muted/50">
+        <div className="flex flex-wrap items-center gap-2 border-b border-line bg-card p-3" role="toolbar" aria-label={label('Lesson document tools', 'أدوات مستند الدرس')}>
+          <EditorButton icon={Type} onClick={() => insertBlock('paragraph')}>{label('Text', 'نص')}</EditorButton>
+          <EditorButton icon={Heading} onClick={() => insertBlock('heading')}>{label('Heading', 'عنوان')}</EditorButton>
+          <EditorButton icon={Heading2} onClick={() => insertBlock('subheading')}>{label('Subheading', 'عنوان فرعي')}</EditorButton>
+          <span className="mx-1 hidden h-6 border-s border-line sm:block" />
+          <EditorButton icon={List} onClick={() => insertBlock('list')}>{label('Bulleted list', 'قائمة نقطية')}</EditorButton>
+          <EditorButton icon={ListOrdered} onClick={() => insertBlock('numbered-list')}>{label('Numbered list', 'قائمة مرقمة')}</EditorButton>
+          <EditorButton icon={Info} onClick={() => insertBlock('note')}>{label('Note', 'ملاحظة')}</EditorButton>
+          <EditorButton icon={Lightbulb} onClick={() => insertBlock('tip')}>{label('Tip', 'نصيحة')}</EditorButton>
+          <EditorButton icon={AlertTriangle} onClick={() => insertBlock('warning')}>{label('Warning', 'تحذير')}</EditorButton>
+          <span className="mx-1 hidden h-6 border-s border-line sm:block" />
+          <EditorButton icon={ImageIcon} onClick={() => openImagePicker()} disabled={Boolean(uploading)}>{label('Image', 'صورة')}</EditorButton>
+          <EditorButton icon={Video} onClick={() => openVideoPanel()} disabled={Boolean(uploading)}>{label('Video', 'فيديو')}</EditorButton>
         </div>
 
-        <input
-          ref={imageInputRef}
-          type="file"
-          accept={IMAGE_TYPES}
-          className="hidden"
-          onChange={(event) => handleUpload(event.target.files?.[0], 'image')}
-        />
-        <input
-          ref={videoInputRef}
-          type="file"
-          accept={VIDEO_TYPES}
-          className="hidden"
-          onChange={(event) => handleUpload(event.target.files?.[0], 'video')}
-        />
+        <input ref={imageInputRef} type="file" accept={IMAGE_TYPES} className="hidden" onChange={(event) => handleUpload(event.target.files?.[0], 'image')} />
+        <input ref={videoInputRef} type="file" accept={VIDEO_TYPES} className="hidden" onChange={(event) => handleUpload(event.target.files?.[0], 'video')} />
 
         {videoPanelOpen && (
-          <div className="flex flex-col gap-2 border-b border-line bg-card p-3 sm:flex-row sm:items-center">
-            <button
-              type="button"
-              disabled={Boolean(uploading)}
-              onMouseDown={(event) => {
-                event.preventDefault();
-                toolbarMouseDown();
-              }}
-              onClick={() => videoInputRef.current?.click()}
-              className={toolbarButtonClass}
-            >
-              {uploading === 'video' ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-              {toolbarLabel('Upload video', 'رفع فيديو')}
-            </button>
+          <div className="flex flex-col gap-3 border-b border-line bg-card p-3 sm:flex-row sm:items-center" dir={isAr ? 'rtl' : 'ltr'}>
+            <EditorButton icon={uploading === 'video' ? Loader2 : Upload} onClick={() => videoInputRef.current?.click()} disabled={Boolean(uploading)}>
+              {uploading === 'video' ? label('Uploading…', 'جارٍ الرفع…') : label('Upload video', 'رفع فيديو')}
+            </EditorButton>
             <div className="flex min-w-0 flex-1 gap-2">
-              <input
-                type="url"
-                value={videoUrl}
-                onChange={(event) => setVideoUrl(event.target.value)}
-                onKeyDown={(event) => event.key === 'Enter' && addYouTube()}
-                dir="ltr"
-                placeholder="https://youtube.com/watch?v=…"
-                className="input h-9 min-w-0 flex-1 text-xs"
-                aria-label={toolbarLabel('YouTube video URL', 'رابط فيديو يوتيوب')}
-              />
-              <button type="button" onMouseDown={(event) => { event.preventDefault(); toolbarMouseDown(); }} onClick={addYouTube} className={toolbarButtonClass}>
-                <Link2 className="h-4 w-4" /> {toolbarLabel('Insert YouTube', 'إدراج يوتيوب')}
-              </button>
+              <input type="url" value={videoUrl} onChange={(event) => setVideoUrl(event.target.value)} onKeyDown={(event) => event.key === 'Enter' && addYouTube()} dir="ltr" placeholder="https://youtube.com/watch?v=…" aria-label={label('YouTube video URL', 'رابط فيديو يوتيوب')} className="input h-9 min-w-0 flex-1 text-xs" />
+              <EditorButton icon={Link2} onClick={addYouTube}>{label('Insert YouTube', 'إدراج يوتيوب')}</EditorButton>
             </div>
-            <button
-              type="button"
-              onMouseDown={(event) => event.preventDefault()}
-              onClick={() => {
-                setVideoPanelOpen(false);
-                setVideoUrl('');
-              }}
-              className="text-xs font-bold text-ink-muted hover:text-ink"
-            >
-              {toolbarLabel('Close', 'إغلاق')}
-            </button>
+            <button type="button" onClick={() => { setVideoPanelOpen(false); setVideoUrl(''); replaceMediaRef.current = null; }} className="px-2 py-1 text-xs font-bold text-ink-muted hover:text-ink">{label('Close', 'إغلاق')}</button>
           </div>
         )}
 
         {uploading && (
-          <p className="flex items-center gap-2 px-3 pt-3 text-xs font-semibold text-ink-muted">
+          <p className="flex items-center gap-2 border-b border-line px-4 py-2 text-xs font-semibold text-ink-muted">
             <Loader2 className="h-4 w-4 animate-spin text-primary" />
-            {toolbarLabel('Uploading media…', 'جارٍ رفع الوسائط…')}
+            {label('Uploading media…', 'جارٍ رفع الوسائط…')}
           </p>
         )}
         {error && (
@@ -926,94 +656,35 @@ export default function LessonDocumentEditor({
           </p>
         )}
 
-        <div
-          ref={editorRef}
-          dir={isAr ? 'rtl' : 'ltr'}
-          className="min-h-[28rem] space-y-3 bg-card px-3 py-5 sm:px-6 sm:py-7"
-          onMouseUp={saveSelectionFromWindow}
-          onKeyUp={saveSelectionFromWindow}
-          onClick={(event) => {
-            const wrapper = event.target.closest('[data-block-id]');
-            if (wrapper && editorRef.current.contains(wrapper)) {
-              activeBlockRef.current = wrapper.dataset.blockId;
-              setActiveBlockId(wrapper.dataset.blockId);
-            }
-          }}
-        >
-          {blocks.map((block, index) => (
-            <div
-              key={block.id}
-              data-block-id={block.id}
-              data-block-type={block.type}
-              onFocusCapture={() => {
-                activeBlockRef.current = block.id;
-                setActiveBlockId(block.id);
-              }}
-              className={`group relative rounded-lg px-2 py-1 transition-colors ${
-                activeBlockId === block.id || focusedBlockId === block.id ? 'bg-surface-muted/40' : 'hover:bg-surface-muted/30'
-              }`}
-            >
-              {renderActions(block, index)}
-              {LIST_BLOCK_TYPES.has(block.type) && <div className="absolute top-2 start-2 text-primary">{block.type === 'numbered-list' ? <ListOrdered className="h-4 w-4" /> : <List className="h-4 w-4" />}</div>}
-              {TEXT_BLOCK_TYPES.has(block.type) && (
-                <span className="absolute start-2 top-1 text-primary">
-                  {block.type === 'heading' ? <Heading className="h-4 w-4" /> : block.type === 'subheading' ? <Heading2 className="h-4 w-4" /> : block.type === 'warning' ? <AlertTriangle className="h-4 w-4" /> : null}
-                </span>
-              )}
-              {LIST_BLOCK_TYPES.has(block.type) ? (
-                <EditableList
-                  block={block}
-                  language={language}
-                  placeholder={toolbarLabel('List item', 'عنصر القائمة')}
-                  onChange={changeList}
-                  onEnter={handleEditableKeyDown}
-                  onFocus={(id) => {
-                    activeBlockRef.current = id;
-                    setActiveBlockId(id);
-                    setFocusedBlockId(id);
-                  }}
-                  onSelect={saveSelection}
-                />
-              ) : TEXT_BLOCK_TYPES.has(block.type) ? (
-                renderBlockBody(block)
-              ) : (
-                <div
-                  className="min-h-8 pe-10"
-                  onClick={() => {
-                    activeBlockRef.current = block.id;
-                    setActiveBlockId(block.id);
-                  }}
-                >
-                  {renderBlockBody(block)}
-                </div>
-              )}
-              {editingMediaId === block.id && ['image', 'video', 'youtube'].includes(block.type) && (
-                <div className="mt-2 flex gap-2" contentEditable={false}>
-                  <input
-                    type="url"
-                    value={block.data?.url || ''}
-                    onChange={(event) => changeMediaUrl(block.id, event.target.value)}
-                    dir="ltr"
-                    className="input h-8 flex-1 text-xs"
-                    placeholder={toolbarLabel('Media URL', 'رابط الوسائط')}
-                  />
-                  <button type="button" onClick={() => setEditingMediaId(null)} className="rounded-lg border border-line px-2 text-xs font-bold text-ink-muted">
-                    {toolbarLabel('Done', 'تم')}
-                  </button>
-                </div>
-              )}
+        <div ref={editorRef} dir={isAr ? 'rtl' : 'ltr'} className="mx-auto min-h-[30rem] max-w-4xl bg-card px-3 py-5 sm:px-8 sm:py-8">
+          {blocks.length === 0 ? (
+            <div className="flex min-h-80 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-line p-8 text-center">
+              <Type className="mb-3 h-8 w-8 text-primary/70" />
+              <p className="font-bold text-ink">{label('Start your lesson document', 'ابدأ مستند الدرس')}</p>
+              <p className="mt-1 max-w-md text-xs leading-6 text-ink-muted">{label('Write your first paragraph, then add headings, lists, notes, warnings, images, or videos wherever needed.', 'اكتب فقرتك الأولى، ثم أضف العناوين والقوائم والملاحظات والتحذيرات والصور أو الفيديو عند الحاجة.')}</p>
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                <EditorButton icon={Type} onClick={() => insertBlock('paragraph')}>{label('Add first paragraph', 'أضف الفقرة الأولى')}</EditorButton>
+                <EditorButton icon={Heading} onClick={() => insertBlock('heading')}>{label('Add heading', 'أضف عنواناً')}</EditorButton>
+              </div>
             </div>
-          ))}
+          ) : (
+            <>
+              {insertPoint(0)}
+              {blocks.map((block, index) => (
+                <React.Fragment key={block.id}>
+                  {renderBlock(block, index)}
+                  {insertPoint(index + 1)}
+                  {insertMenuAt === index + 1 && insertMenu(index + 1)}
+                </React.Fragment>
+              ))}
+              {insertMenuAt === 0 && insertMenu(0)}
+            </>
+          )}
         </div>
       </div>
-      <p className="text-[11px] text-ink-muted">
-        {toolbarLabel('Enter starts a new paragraph. Use the toolbar to insert content at the caret.', 'اضغط Enter لبدء فقرة جديدة، واستخدم شريط الأدوات لإدراج المحتوى عند المؤشر.')}
+      <p className="text-[11px] leading-5 text-ink-muted">
+        {label('Enter creates a new line in a text block. Use “Add block here” to place a new section or media precisely between existing content.', 'ينشئ Enter سطراً جديداً داخل كتلة النص. استخدم «أضف كتلة هنا» لوضع قسم أو وسيط بين المحتوى الحالي بدقة.')}
       </p>
-      {blocks.length === 0 && (
-        <button type="button" onClick={() => insertToolbarBlock('paragraph')} className="inline-flex items-center gap-1 text-xs font-bold text-primary">
-          <Plus className="h-3.5 w-3.5" /> {toolbarLabel('Start writing', 'ابدأ الكتابة')}
-        </button>
-      )}
     </section>
   );
 }

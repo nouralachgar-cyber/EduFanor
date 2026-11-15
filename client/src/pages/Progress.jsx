@@ -154,7 +154,7 @@ export default function Progress() {
         <section className="grid gap-4 lg:grid-cols-12">
           <div className="card p-6 lg:col-span-7">
             <div className="flex items-center gap-3">
-              <span className="icon-box h-10 w-10 bg-pink-soft text-[#3E588F] dark:text-[#C0C5CD]">
+              <span className="icon-box h-10 w-10 bg-pink-soft text-[#415E72] dark:text-[#C5B0CD]">
                 <Award className="h-5 w-5" />
               </span>
               <div>

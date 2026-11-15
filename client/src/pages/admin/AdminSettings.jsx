@@ -114,7 +114,7 @@ export default function AdminSettings() {
 
   if (loading && !data) {
     return (
-      <div className="space-y-6 bg-[#E3E8F8] min-h-screen p-6 text-[#3E588F]">
+      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
         <LoadingState label={t('admin.common.loading')} />
       </div>
     );
@@ -122,7 +122,7 @@ export default function AdminSettings() {
 
   if (error && !data) {
     return (
-      <div className="space-y-6 bg-[#E3E8F8] min-h-screen p-6 text-[#3E588F]">
+      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
         <ErrorState title={t('admin.errors.loadProfile')} message={error} onRetry={load} retryLabel={t('admin.common.retry')} />
       </div>
     );
@@ -132,7 +132,7 @@ export default function AdminSettings() {
   const recentActions = data.recentActions || [];
 
   return (
-    <div className="space-y-6 bg-[#E3E8F8] min-h-screen p-6 text-[#3E588F]">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
       <PageHeader
         eyebrow={t('admin.shell.system')}
         title={t('admin.settings.title')}
@@ -141,7 +141,7 @@ export default function AdminSettings() {
           <button
             type="button"
             onClick={load}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C0C5CD] bg-[#E3E8F8] text-[#3E588F] transition-colors hover:bg-[#C0C5CD]/30 shadow-sm"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
             aria-label={t('admin.common.refresh')}
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -150,22 +150,22 @@ export default function AdminSettings() {
       />
 
       <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
-        <Panel title={t('admin.settings.profile')} subtitle={t('admin.settings.profileDesc')} className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm">
+        <Panel title={t('admin.settings.profile')} subtitle={t('admin.settings.profileDesc')} className="bg-white border border-[#C5B0CD]/40 rounded-2xl p-6 shadow-sm">
           <form onSubmit={saveProfile} className="space-y-4">
             <div className="mb-4 flex items-center gap-3.5">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#3E588F] text-sm font-extrabold text-[#E3E8F8] shadow-sm">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#415E72] text-sm font-extrabold text-[#F6F5F2] shadow-sm">
                 {initials(profile.name)}
               </span>
               <div>
-                <p className="text-sm font-extrabold text-[#3E588F]">{profile.name || t('admin.shell.adminAccount')}</p>
-                <Badge tone="green" className="bg-[#E3E8F8] text-[#3E588F] border border-[#C0C5CD]"><ShieldCheck className="h-3.5 w-3.5 text-[#C0C5CD]" /> {t('admin.settings.adminRole')}</Badge>
+                <p className="text-sm font-extrabold text-[#415E72]">{profile.name || t('admin.shell.adminAccount')}</p>
+                <Badge tone="green" className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]"><ShieldCheck className="h-3.5 w-3.5 text-[#C5B0CD]" /> {t('admin.settings.adminRole')}</Badge>
               </div>
             </div>
             <Field label={t('admin.settings.name')} required>
               <input 
                 value={profile.name} 
                 onChange={(event) => setProfile((previous) => ({ ...previous, name: event.target.value }))} 
-                className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm" 
+                className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
               />
             </Field>
             <Field label={t('admin.settings.email')} required>
@@ -173,28 +173,28 @@ export default function AdminSettings() {
                 type="email" 
                 value={profile.email} 
                 onChange={(event) => setProfile((previous) => ({ ...previous, email: event.target.value }))} 
-                className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm" 
+                className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                 dir="ltr" 
               />
             </Field>
             <button 
               type="submit" 
               disabled={savingProfile} 
-              className="rounded-xl bg-[#3E588F] px-5 py-2.5 text-xs font-extrabold text-[#E3E8F8] shadow-sm hover:bg-[#3E588F]/90 disabled:opacity-50"
+              className="rounded-xl bg-[#415E72] px-5 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90 disabled:opacity-50"
             >
               {savingProfile ? t('admin.common.saving') : t('admin.common.save')}
             </button>
           </form>
         </Panel>
 
-        <Panel title={t('admin.settings.password')} subtitle={t('admin.settings.passwordDesc')} className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm">
+        <Panel title={t('admin.settings.password')} subtitle={t('admin.settings.passwordDesc')} className="bg-white border border-[#C5B0CD]/40 rounded-2xl p-6 shadow-sm">
           <form onSubmit={savePassword} className="space-y-4">
             <Field label={t('admin.settings.currentPassword')} required>
               <input 
                 type="password" 
                 value={password.currentPassword} 
                 onChange={(event) => setPassword((previous) => ({ ...previous, currentPassword: event.target.value }))} 
-                className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm" 
+                className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                 autoComplete="current-password" 
               />
             </Field>
@@ -203,7 +203,7 @@ export default function AdminSettings() {
                 type="password" 
                 value={password.newPassword} 
                 onChange={(event) => setPassword((previous) => ({ ...previous, newPassword: event.target.value }))} 
-                className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm" 
+                className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                 autoComplete="new-password" 
                 minLength={8} 
               />
@@ -213,7 +213,7 @@ export default function AdminSettings() {
                 type="password" 
                 value={password.confirmPassword} 
                 onChange={(event) => setPassword((previous) => ({ ...previous, confirmPassword: event.target.value }))} 
-                className="w-full rounded-xl border border-[#C0C5CD] bg-white px-4 py-2.5 text-xs text-[#3E588F] focus:outline-none focus:ring-2 focus:ring-[#3E588F] shadow-sm" 
+                className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                 autoComplete="new-password" 
                 minLength={8} 
               />
@@ -221,35 +221,35 @@ export default function AdminSettings() {
             <button 
               type="submit" 
               disabled={savingPassword} 
-              className="flex items-center gap-1.5 rounded-xl bg-[#3E588F] px-5 py-2.5 text-xs font-extrabold text-[#E3E8F8] shadow-sm hover:bg-[#3E588F]/90 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-5 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90 disabled:opacity-50"
             >
-              <KeyRound className="h-4 w-4 text-[#C0C5CD]" /> {savingPassword ? t('admin.common.saving') : t('admin.common.save')}
+              <KeyRound className="h-4 w-4 text-[#C5B0CD]" /> {savingPassword ? t('admin.common.saving') : t('admin.common.save')}
             </button>
           </form>
         </Panel>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
-        <Panel title={t('admin.settings.account')} className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm">
+        <Panel title={t('admin.settings.account')} className="bg-white border border-[#C5B0CD]/40 rounded-2xl p-6 shadow-sm">
           <div className="space-y-3">
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C0C5CD]/30 bg-[#E3E8F8] px-4 py-3">
-              <span className="text-xs font-semibold text-[#3E588F]/70">{t('admin.settings.role')}</span>
-              <span className="text-xs font-extrabold text-[#3E588F]">{t('admin.settings.adminRole')}</span>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] px-4 py-3">
+              <span className="text-xs font-semibold text-[#415E72]/70">{t('admin.settings.role')}</span>
+              <span className="text-xs font-extrabold text-[#415E72]">{t('admin.settings.adminRole')}</span>
             </div>
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C0C5CD]/30 bg-[#E3E8F8] px-4 py-3">
-              <span className="text-xs font-semibold text-[#3E588F]/70">{t('admin.settings.createdAt')}</span>
-              <span className="text-xs font-bold text-[#3E588F]">{formatDate(account.createdAt, i18n.language)}</span>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] px-4 py-3">
+              <span className="text-xs font-semibold text-[#415E72]/70">{t('admin.settings.createdAt')}</span>
+              <span className="text-xs font-bold text-[#415E72]">{formatDate(account.createdAt, i18n.language)}</span>
             </div>
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C0C5CD]/30 bg-[#E3E8F8] px-4 py-3">
-              <span className="text-xs font-semibold text-[#3E588F]/70">{t('admin.settings.lastLogin')}</span>
-              <span className="text-xs font-bold text-[#3E588F]">{account.lastLoginAt ? formatDateTime(account.lastLoginAt, i18n.language) : t('admin.common.notAvailable')}</span>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] px-4 py-3">
+              <span className="text-xs font-semibold text-[#415E72]/70">{t('admin.settings.lastLogin')}</span>
+              <span className="text-xs font-bold text-[#415E72]">{account.lastLoginAt ? formatDateTime(account.lastLoginAt, i18n.language) : t('admin.common.notAvailable')}</span>
             </div>
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C0C5CD]/30 bg-[#E3E8F8] px-4 py-3">
-              <span className="text-xs font-semibold text-[#3E588F]/70">{t('admin.settings.actionsCount')}</span>
-              <span className="text-xs font-extrabold text-[#3E588F]">{formatNumber(data.actionCount, i18n.language)}</span>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] px-4 py-3">
+              <span className="text-xs font-semibold text-[#415E72]/70">{t('admin.settings.actionsCount')}</span>
+              <span className="text-xs font-extrabold text-[#415E72]">{formatNumber(data.actionCount, i18n.language)}</span>
             </div>
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C0C5CD]/30 bg-[#E3E8F8] px-4 py-3">
-              <span className="text-xs font-semibold text-[#3E588F]/70">{t('admin.settings.serverStatus')}</span>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] px-4 py-3">
+              <span className="text-xs font-semibold text-[#415E72]/70">{t('admin.settings.serverStatus')}</span>
               <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700">
                 <Wifi className="h-4 w-4" /> {t('admin.settings.connected')}
               </span>
@@ -257,23 +257,23 @@ export default function AdminSettings() {
           </div>
         </Panel>
 
-        <Panel title={t('admin.settings.preferences')} subtitle={t('admin.settings.preferencesDesc')} className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm">
+        <Panel title={t('admin.settings.preferences')} subtitle={t('admin.settings.preferencesDesc')} className="bg-white border border-[#C5B0CD]/40 rounded-2xl p-6 shadow-sm">
           <div className="space-y-3">
             <button 
               type="button" 
               onClick={toggleTheme} 
-              className="flex w-full items-center justify-between gap-3 rounded-xl border border-[#C0C5CD]/30 bg-[#E3E8F8] p-3 text-start transition-colors hover:bg-[#E3E8F8]"
+              className="flex w-full items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] p-3 text-start transition-colors hover:bg-[#F6F5F2]"
             >
               <span className="flex items-center gap-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#E3E8F8] text-[#3E588F] border border-[#C0C5CD]">
-                  {isDark ? <Moon className="h-4 w-4 text-[#C0C5CD]" /> : <Sun className="h-4 w-4 text-[#C0C5CD]" />}
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]">
+                  {isDark ? <Moon className="h-4 w-4 text-[#C5B0CD]" /> : <Sun className="h-4 w-4 text-[#C5B0CD]" />}
                 </span>
                 <span>
-                  <span className="block text-xs font-extrabold text-[#3E588F]">{t('admin.settings.appearance')}</span>
-                  <span className="block text-[10px] text-[#3E588F]/70">{isDark ? t('admin.common.no') : t('admin.common.yes')} / {isDark ? 'Dark' : 'Light'}</span>
+                  <span className="block text-xs font-extrabold text-[#415E72]">{t('admin.settings.appearance')}</span>
+                  <span className="block text-[10px] text-[#415E72]/70">{isDark ? t('admin.common.no') : t('admin.common.yes')} / {isDark ? 'Dark' : 'Light'}</span>
                 </span>
               </span>
-              <span className={`relative h-6 w-10 rounded-full transition-colors ${isDark ? 'bg-[#3E588F]' : 'bg-[#C0C5CD]'}`}>
+              <span className={`relative h-6 w-10 rounded-full transition-colors ${isDark ? 'bg-[#415E72]' : 'bg-[#C5B0CD]'}`}>
                 <span className={`absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-all ${isDark ? 'start-5' : 'start-1'}`} />
               </span>
             </button>
@@ -281,38 +281,38 @@ export default function AdminSettings() {
             <button 
               type="button" 
               onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')} 
-              className="flex w-full items-center justify-between gap-3 rounded-xl border border-[#C0C5CD]/30 bg-[#E3E8F8] p-3 text-start transition-colors hover:bg-[#E3E8F8]"
+              className="flex w-full items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] p-3 text-start transition-colors hover:bg-[#F6F5F2]"
             >
               <span className="flex items-center gap-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#E3E8F8] text-[#3E588F] border border-[#C0C5CD]">
-                  <Globe className="h-4 w-4 text-[#C0C5CD]" />
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]">
+                  <Globe className="h-4 w-4 text-[#C5B0CD]" />
                 </span>
                 <span>
-                  <span className="block text-xs font-extrabold text-[#3E588F]">{t('admin.settings.language')}</span>
-                  <span className="block text-[10px] text-[#3E588F]/70">{isAr ? t('admin.common.ar') : t('admin.common.en')}</span>
+                  <span className="block text-xs font-extrabold text-[#415E72]">{t('admin.settings.language')}</span>
+                  <span className="block text-[10px] text-[#415E72]/70">{isAr ? t('admin.common.ar') : t('admin.common.en')}</span>
                 </span>
               </span>
-              <Badge tone="outline" className="bg-white text-[#3E588F] border border-[#C0C5CD]">{isAr ? 'العربية' : 'English'}</Badge>
+              <Badge tone="outline" className="bg-white text-[#415E72] border border-[#C5B0CD]">{isAr ? 'العربية' : 'English'}</Badge>
             </button>
           </div>
         </Panel>
       </div>
 
-      <Panel title={t('admin.settings.aiTitle')} subtitle={t('admin.settings.aiDesc')} className="bg-white border border-[#C0C5CD]/40 rounded-2xl p-6 shadow-sm">
+      <Panel title={t('admin.settings.aiTitle')} subtitle={t('admin.settings.aiDesc')} className="bg-white border border-[#C5B0CD]/40 rounded-2xl p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-start gap-3.5">
-            <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border ${aiStatus.checked && aiStatus.ok ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-[#E3E8F8] text-[#3E588F] border-[#C0C5CD]'}`}>
-              <Sparkles className="h-5 w-5 text-[#C0C5CD]" />
+            <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border ${aiStatus.checked && aiStatus.ok ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-[#F6F5F2] text-[#415E72] border-[#C5B0CD]'}`}>
+              <Sparkles className="h-5 w-5 text-[#C5B0CD]" />
             </span>
             <div>
-              <p className="text-xs font-extrabold text-[#3E588F]">
+              <p className="text-xs font-extrabold text-[#415E72]">
                 {aiStatus.checked
                   ? aiStatus.ok
                     ? t('admin.settings.aiReady')
                     : t('admin.settings.aiOff')
                   : t('admin.settings.aiUnknown')}
               </p>
-              <p className="mt-1 text-[10px] leading-relaxed text-[#3E588F]/70">
+              <p className="mt-1 text-[10px] leading-relaxed text-[#415E72]/70">
                 {aiStatus.checked
                   ? aiStatus.ok
                     ? `${t('admin.settings.aiModel')}: Grok · ${aiStatus.model}`
@@ -325,29 +325,29 @@ export default function AdminSettings() {
             type="button"
             onClick={checkAi}
             disabled={aiStatus.busy}
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-[#C0C5CD] bg-[#E3E8F8] px-4 text-xs font-bold text-[#3E588F] transition-colors hover:bg-[#C0C5CD]/30 disabled:opacity-60 shadow-sm"
+            className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-4 text-xs font-bold text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 disabled:opacity-60 shadow-sm"
           >
-            <RefreshCw className={`h-3.5 w-3.5 text-[#C0C5CD] ${aiStatus.busy ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-3.5 w-3.5 text-[#C5B0CD] ${aiStatus.busy ? 'animate-spin' : ''}`} />
             {aiStatus.busy ? t('admin.settings.aiChecking') : t('admin.settings.aiCheck')}
           </button>
         </div>
       </Panel>
 
-      <Panel title={t('admin.settings.recentActions')} noPadding className="bg-white border border-[#C0C5CD]/40 rounded-2xl shadow-sm overflow-hidden">
+      <Panel title={t('admin.settings.recentActions')} noPadding className="bg-white border border-[#C5B0CD]/40 rounded-2xl shadow-sm overflow-hidden">
         {recentActions.length === 0 ? (
-          <div className="px-4 py-8 text-center text-xs font-semibold text-[#3E588F]/70">{t('admin.audit.noLogs')}</div>
+          <div className="px-4 py-8 text-center text-xs font-semibold text-[#415E72]/70">{t('admin.audit.noLogs')}</div>
         ) : (
-          <div className="divide-y divide-[#C0C5CD]/20">
+          <div className="divide-y divide-[#C5B0CD]/20">
             {recentActions.map((log) => (
-              <div key={log._id} className="flex items-start justify-between gap-3 px-4 py-3.5 hover:bg-[#E3E8F8]/60 transition-colors">
+              <div key={log._id} className="flex items-start justify-between gap-3 px-4 py-3.5 hover:bg-[#F6F5F2]/60 transition-colors">
                 <div className="flex min-w-0 items-start gap-3">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#C0C5CD]" />
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#C5B0CD]" />
                   <div className="min-w-0">
-                    <p className="text-xs font-extrabold text-[#3E588F]">{t(`admin.audit.actions.${log.action}`, { defaultValue: log.action })}</p>
-                    <p className="truncate text-[10px] text-[#3E588F]/70">{log.details || log.targetLabel}</p>
+                    <p className="text-xs font-extrabold text-[#415E72]">{t(`admin.audit.actions.${log.action}`, { defaultValue: log.action })}</p>
+                    <p className="truncate text-[10px] text-[#415E72]/70">{log.details || log.targetLabel}</p>
                   </div>
                 </div>
-                <span className="shrink-0 text-[10px] font-semibold text-[#3E588F]/60">{relativeTime(log.createdAt, i18n.language)}</span>
+                <span className="shrink-0 text-[10px] font-semibold text-[#415E72]/60">{relativeTime(log.createdAt, i18n.language)}</span>
               </div>
             ))}
           </div>
