@@ -16,50 +16,40 @@ export default function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // قائمة الإيميلات المعتمدة للأدمن (الرسمي + الاحتياطي)
-  const ADMIN_EMAILS = ['noura@edufanor.com', 'nlachgar12@gmail.com'];
-
   const handleLogin = async (event) => {
     event.preventDefault();
     setErrorMsg('');
     setLoading(true);
 
-    const cleanEmail = email.trim().toLowerCase();
-
     try {
-      // 1. محاولة تسجيل الدخول عبر الـ Backend العادي
       const result = await login(email, password);
-      setLoading(false);
-
-      if (result && result.success) {
-        const userObj = result.user || {};
-        const isAdmin = userObj.role === 'admin' || ADMIN_EMAILS.includes(cleanEmail);
-
-        if (isAdmin) {
-          navigate('/admin', { replace: true });
+      if (!result?.success) {
+        if (result?.code === 'INVALID_CREDENTIALS' || result?.status === 401) {
+          setErrorMsg(t('auth.invalidCredentials'));
+        } else if (result?.code === 'ACCOUNT_SUSPENDED') {
+          setErrorMsg(t('auth.accountSuspended'));
+        } else if (result?.code === 'API_NOT_CONFIGURED') {
+          setErrorMsg(t('auth.serviceUnavailable'));
+        } else if (result?.code === 'NETWORK_ERROR') {
+          setErrorMsg(t('auth.networkError'));
+        } else if (result?.code === 'INVALID_AUTH_RESPONSE') {
+          setErrorMsg(t('auth.loginFailed'));
+        } else if (result?.status >= 500) {
+          setErrorMsg(t('auth.serverError'));
         } else {
-          navigate('/dashboard', { replace: true });
+          setErrorMsg(result?.message || t('auth.loginFailed'));
         }
         return;
       }
-    } catch (err) {
-      console.warn("Backend login failed, using presentation fallback...", err);
+
+      navigate(result.user.role === 'admin' ? '/admin' : '/dashboard', {
+        replace: true,
+      });
+    } catch {
+      setErrorMsg(t('auth.loginFailed'));
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
-
-    // 2. خطة الأمان للبريزونطاسيو (إذا كان السيرفر متوقف):
-    if (ADMIN_EMAILS.includes(cleanEmail)) {
-      localStorage.setItem('user', JSON.stringify({ 
-        name: 'Noura Lachgar', 
-        email: cleanEmail, 
-        role: 'admin' 
-      }));
-      navigate('/admin', { replace: true });
-      return;
-    }
-
-    setErrorMsg(t('auth.invalidCredentials', 'Invalid email or password. Please try again.'));
   };
 
   return (
@@ -77,7 +67,10 @@ export default function Login() {
         </div>
 
         {errorMsg && (
-          <div className="mb-5 flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft p-3.5 text-xs font-bold text-danger">
+          <div
+            role="alert"
+            className="mb-5 flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft p-3.5 text-xs font-bold text-danger"
+          >
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -131,7 +124,12 @@ export default function Login() {
             </div>
           </div>
 
-          <button type="submit" disabled={loading} className="btn-primary w-full">
+          <button
+            type="submit"
+            disabled={loading}
+            aria-busy={loading}
+            className="btn-primary w-full"
+          >
             {loading ? (
               <span className="flex items-center gap-2">
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />

@@ -5,9 +5,6 @@ import { AuthContext } from '../context/AuthContext';
 export default function ProtectedRoute({ children, requireAdmin }) {
   const { user, loading } = useContext(AuthContext);
 
-  // قائمة الإيميلات المعتمدة كـ Admin
-  const ADMIN_EMAILS = ['noura@edufanor.com', 'nlachgar12@gmail.com'];
-
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#F6F5F2]">
@@ -23,11 +20,7 @@ export default function ProtectedRoute({ children, requireAdmin }) {
 
   // تحقق حماية الأدمن
   if (requireAdmin) {
-    const isAdmin = user.role === 'admin' || ADMIN_EMAILS.includes(user?.email?.toLowerCase());
-
-    if (isAdmin) {
-      return children;
-    }
+    if (user.role === 'admin') return children;
 
     // إذا لم يكن أدمن، يتم توجيهه لداشبورد الطلبة
     return <Navigate to="/dashboard" replace />;

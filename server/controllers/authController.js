@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const AdminAuditLog = require('../models/AdminAuditLog');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -132,7 +131,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// @desc    Admin login with a one-time bootstrap for the legacy administrator identity
+// @desc    Admin login for an existing administrator account
 // @route   POST /api/auth/admin-login
 // @access  Public (email restricted, role enforced server-side)
 const adminLogin = async (req, res) => {
@@ -150,86 +149,28 @@ const adminLogin = async (req, res) => {
     }
 
     const cleanEmail = String(email).trim().toLowerCase();
-    const adminEmail = getAdminEmail();
-    let user = await User.findOne({ email: cleanEmail });
+    const user = await User.findOne({ email: cleanEmail });
 
-    if (user) {
-      if (user.role !== 'admin') {
-        if (cleanEmail === adminEmail) {
-          // Upgrade existing account to administrator role
-          if (String(password).length < 8) {
-            return res.status(400).json({
-              message: 'Choose an administrator password with at least 8 characters.',
-              code: 'WEAK_PASSWORD',
-            });
-          }
-          const salt = await bcrypt.genSalt(10);
-          const hashedPassword = await bcrypt.hash(password, salt);
-          user.password = hashedPassword;
-          user.role = 'admin';
-          await user.save();
-          // Log the role upgrade
-          await AdminAuditLog.create({
-            actor: user._id,
-            action: 'admin.role-upgrade',
-            targetType: 'admin',
-            targetId: String(user._id),
-            targetLabel: user.email,
-            details: 'Administrator account upgraded from student to admin role via admin-login.',
-          });
-        } else {
-          recordFailedAttempt(key);
-          return res.status(403).json({ message: 'This account is not an administrator', code: 'NOT_ADMIN' });
-        }
-      }
-
-      if (user.status === 'suspended') {
-        return res.status(403).json({ message: 'This administrator account is suspended', code: 'ACCOUNT_SUSPENDED' });
-      }
-
-      if (!(await bcrypt.compare(password, user.password))) {
-        recordFailedAttempt(key);
-        return res.status(401).json({ message: 'Incorrect administrator credentials', code: 'INVALID_CREDENTIALS' });
-      }
-    } else {
-      if (cleanEmail !== adminEmail) {
-        recordFailedAttempt(key);
-        return res.status(403).json({ message: 'This account is not an administrator', code: 'NO_ACCOUNT' });
-      }
-
-      const existingAdmin = await User.exists({ role: 'admin' });
-      if (existingAdmin) {
-        recordFailedAttempt(key);
-        return res.status(403).json({
-          message: 'An administrator account already exists. Use its registered email to sign in.',
-          code: 'ADMIN_EXISTS',
-        });
-      }
-
-      if (String(password).length < 8) {
-        return res.status(400).json({
-          message: 'Choose an administrator password with at least 8 characters.',
-          code: 'WEAK_PASSWORD',
-        });
-      }
-
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-      user = await User.create({
-        name: 'Noura (Admin)',
-        email: cleanEmail,
-        password: hashedPassword,
-        role: 'admin',
-        status: 'active',
+    if (!user || user.role !== 'admin') {
+      recordFailedAttempt(key);
+      return res.status(403).json({
+        message: 'This account is not an administrator',
+        code: 'NOT_ADMIN',
       });
+    }
 
-      await AdminAuditLog.create({
-        actor: user._id,
-        action: 'admin.bootstrap',
-        targetType: 'admin',
-        targetId: String(user._id),
-        targetLabel: user.email,
-        details: 'Legacy administrator identity upgraded to a server-authenticated account.',
+    if (user.status === 'suspended') {
+      return res.status(403).json({
+        message: 'This administrator account is suspended',
+        code: 'ACCOUNT_SUSPENDED',
+      });
+    }
+
+    if (!(await bcrypt.compare(password, user.password))) {
+      recordFailedAttempt(key);
+      return res.status(401).json({
+        message: 'Incorrect administrator credentials',
+        code: 'INVALID_CREDENTIALS',
       });
     }
 

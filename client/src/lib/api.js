@@ -1,7 +1,11 @@
-const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+const configuredApiBase = import.meta.env.VITE_API_URL?.trim();
+const API_BASE = (
+  configuredApiBase || (import.meta.env.DEV ? 'http://localhost:5000/api' : '')
+).replace(/\/$/, '');
 
 export function resolveAssetUrl(url) {
   if (typeof url !== 'string' || !url.startsWith('/uploads/')) return url || '';
+  if (!API_BASE) return url;
   return new URL(url, API_BASE).toString();
 }
 
@@ -34,6 +38,15 @@ export function setStoredToken(token) {
 
 export async function apiRequest(path, options = {}) {
   const { method = 'GET', body, auth = false, signal, headers = {} } = options;
+  if (!API_BASE) {
+    throw new ApiError(
+      'The authentication service is not configured.',
+      0,
+      'API_NOT_CONFIGURED',
+      null
+    );
+  }
+
   const token = getStoredToken();
   const requestHeaders = { Accept: 'application/json', ...headers };
   if (body !== undefined) requestHeaders['Content-Type'] = 'application/json';

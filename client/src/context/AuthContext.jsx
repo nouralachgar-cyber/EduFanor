@@ -82,17 +82,6 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('edu:unauthorized', handleUnauthorized);
   }, [clearSession]);
 
-  const legacyLogin = (cleanEmail) => {
-    const legacyUser = {
-      name: cleanEmail ? cleanEmail.split('@')[0] : 'Student',
-      email: cleanEmail || 'student@edufanor.com',
-      role: 'student',
-      legacy: true,
-    };
-    persistSession(legacyUser, '');
-    return { success: true, user: legacyUser };
-  };
-
   const login = async (email, password) => {
     const cleanEmail = String(email || '').trim().toLowerCase();
 
@@ -101,49 +90,28 @@ export const AuthProvider = ({ children }) => {
         method: 'POST',
         body: { email: cleanEmail, password },
       });
-      // If login succeeded but user role is 'student', try admin-login
-      // to properly authenticate as admin and fix the role if appropriate.
-      // The server-side adminLogin handles email verification and role upgrade.
-      if (data?.user?.role === 'student') {
-        try {
-          const adminData = await apiRequest('/auth/admin-login', {
-            method: 'POST',
-            body: { email: cleanEmail, password },
-          });
-          persistSession(adminData, adminData.token);
-          return { success: true, user: adminData };
-        } catch (adminError) {
-          // If admin-login fails (e.g., not an admin account),
-          // persist the original login data (user remains student)
-          persistSession(data, data.token);
-          return { success: true, user: data };
-        }
+      const authenticatedUser = data?.user || data;
+      if (
+        !data?.token ||
+        !authenticatedUser ||
+        !['admin', 'student'].includes(authenticatedUser.role)
+      ) {
+        return {
+          success: false,
+          code: 'INVALID_AUTH_RESPONSE',
+          status: 0,
+        };
       }
-      persistSession(data, data.token);
-      return { success: true, user: data };
+
+      persistSession(authenticatedUser, data.token);
+      return { success: true, user: authenticatedUser };
     } catch (loginError) {
-      if (loginError.status === 403 && loginError.code === 'ACCOUNT_SUSPENDED') {
-        return { success: false, message: loginError.message };
-      }
-
-      if (loginError.status === 401) {
-        try {
-          const adminData = await apiRequest('/auth/admin-login', {
-            method: 'POST',
-            body: { email: cleanEmail, password },
-          });
-          persistSession(adminData, adminData.token);
-          return { success: true, user: adminData };
-        } catch (adminError) {
-          return { success: false, message: adminError.message };
-        }
-      }
-
-      if (loginError.status === 0) {
-        return { success: false, message: 'Unable to reach the server.' };
-      }
-
-      return { success: false, message: loginError.message };
+      return {
+        success: false,
+        message: loginError.message,
+        code: loginError.code,
+        status: loginError.status,
+      };
     }
   };
 

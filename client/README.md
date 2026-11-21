@@ -1,5 +1,13 @@
 # React + Vite
 
+## API configuration
+
+Set `VITE_API_URL` to the public backend API base URL (including `/api`) when
+building the production client, for example `https://api.example.com/api`.
+Local development defaults to `http://localhost:5000/api`. Production builds
+without this setting fail API requests with a configuration error instead of
+trying to connect to each visitor's `localhost`.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:
