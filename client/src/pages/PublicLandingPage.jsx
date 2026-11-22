@@ -68,8 +68,8 @@ const GLOBE_ARCS = [
 function SectionLabel({ index, children, tone = 'light' }) {
   const textTone =
     tone === 'dark'
-      ? 'text-[#C5B0CD]/90'
-      : 'text-ink-muted dark:text-[#C5B0CD]/80';
+      ? 'text-[#C5B0CD]'
+      : 'text-[#415E72] dark:text-[#C5B0CD]';
   const numberTone =
     tone === 'dark'
       ? 'text-[#C5B0CD]'
@@ -314,7 +314,7 @@ function LandingFooter() {
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-12">
         <div className="lg:col-span-5">
           <Link to="/" className="group inline-flex items-center">
-            <EduFanorWordmark className="w-36 text-[#FCFAFF] transition-transform duration-300 group-hover:scale-[1.015]" />
+            <EduFanorWordmark className="w-36 text-[#F6F5F2] transition-transform duration-300 group-hover:scale-[1.015]" />
           </Link>
 
           <p className="mt-6 max-w-sm text-[13.5px] leading-relaxed text-[#F6F5F2]/80">
@@ -458,7 +458,7 @@ export default function PublicLandingPage() {
 
   const wordmarkTone = onHero
     ? 'text-[#FCFAFF]'
-    : 'text-[#34233F] dark:text-[#FCFAFF]';
+    : 'text-[#17313E] dark:text-[#F6F5F2]';
   const navIdle = onHero
     ? 'text-[#F6F5F2]/85 hover:bg-white/[0.08] hover:text-[#F6F5F2]'
     : 'text-ink/75 hover:bg-ink/[0.05] hover:text-ink dark:text-[#F6F5F2]/80 dark:hover:bg-white/[0.06] dark:hover:text-[#F6F5F2]';
@@ -857,7 +857,7 @@ export default function PublicLandingPage() {
               </motion.div>
               <motion.h2
                 {...reveal(0.06)}
-                className={`mt-6 max-w-2xl font-display font-bold tracking-[-0.025em] text-ink ${
+                className={`mt-6 max-w-2xl font-display font-bold tracking-[-0.025em] text-[#765D78] dark:text-[#C5B0CD] ${
                   isAr
                     ? 'text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.25]'
                     : 'text-[clamp(2rem,4.6vw,3.8rem)] leading-[1.02]'
@@ -867,13 +867,13 @@ export default function PublicLandingPage() {
                   <>
                     الطوارئ قد تحدث في كل مكان،
                     <br />
-                    <span className="text-ink">ومعارفك تُحدث فرقًا.</span>
+                    <span className="text-[#765D78] dark:text-[#C5B0CD]">ومعارفك تُحدث فرقًا.</span>
                   </>
                 ) : (
                   <>
                     Emergencies happen everywhere.
                     <br />
-                    <span className="italic text-ink">Your knowledge can make a difference.</span>
+                    <span className="italic text-[#765D78] dark:text-[#C5B0CD]">Your knowledge can make a difference.</span>
                   </>
                 )}
               </motion.h2>
@@ -937,7 +937,7 @@ export default function PublicLandingPage() {
             <motion.div {...reveal(0)} className="max-w-3xl">
               <SectionLabel index="02">{isAr ? 'المنصة' : 'The platform'}</SectionLabel>
               <h2
-                className={`mt-6 font-display font-bold tracking-[-0.02em] text-[#17313E] dark:text-white ${
+                className={`mt-6 font-display font-bold tracking-[-0.02em] text-[#765D78] dark:text-[#C5B0CD] ${
                   isAr
                     ? 'text-[clamp(2rem,4.2vw,3.4rem)] leading-[1.25]'
                     : 'text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.05]'
@@ -1013,7 +1013,7 @@ export default function PublicLandingPage() {
                 >
                   <div className="pointer-events-none absolute -end-8 -top-8 h-28 w-28 rounded-full bg-white/10 blur-2xl" />
                   <h3
-                    className={`font-display font-bold text-white ${
+                    className={`font-display font-bold text-[#F6F5F2] ${
                       isAr ? 'text-xl leading-[1.4]' : 'text-2xl leading-[1.1]'
                     }`}
                   >
@@ -1060,7 +1060,7 @@ export default function PublicLandingPage() {
 
               <motion.h2
                 {...reveal(0.06)}
-                className={`mt-7 max-w-3xl font-display font-semibold tracking-[-0.02em] text-[#F6F5F2] ${
+                className={`mt-7 max-w-3xl font-display font-semibold tracking-[-0.02em] text-[#C5B0CD] ${
                   isAr
                     ? 'font-arabic text-[clamp(2rem,5vw,4.1rem)] leading-[1.32]'
                     : 'text-[clamp(1.85rem,5.2vw,4.4rem)] leading-[1.04]'
@@ -1161,7 +1161,7 @@ export default function PublicLandingPage() {
               </motion.div>
               <motion.h2
                 {...reveal(0.06)}
-                className={`mt-5 max-w-2xl font-display font-semibold tracking-[-0.02em] ${
+                className={`mt-5 max-w-2xl font-display font-semibold tracking-[-0.02em] text-[#C5B0CD] ${
                   isAr
                     ? 'font-arabic text-[clamp(1.95rem,4.6vw,3.6rem)] leading-[1.32]'
                     : 'text-[clamp(1.9rem,4.8vw,3.8rem)] leading-[1.04]'

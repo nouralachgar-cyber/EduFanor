@@ -57,7 +57,7 @@ export default function AchievementPanel({
           />
         ) : achievement ? (
           <div className="grid gap-5 lg:grid-cols-12 lg:items-center">
-            <div className="overflow-hidden rounded-xl border border-line bg-[#f8f5ee] lg:col-span-8">
+            <div className="overflow-hidden rounded-xl border border-line bg-surface lg:col-span-8">
               <AchievementGraphic
                 svgRef={svgRef}
                 name={studentName}

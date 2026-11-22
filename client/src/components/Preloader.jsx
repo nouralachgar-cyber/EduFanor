@@ -86,7 +86,7 @@ export default function Preloader({ onDone }) {
           >
             <EduFanorWordmark
               animated={!reduceMotion}
-              className="w-full text-[#34233F] dark:text-[#FCFAFF]"
+              className="w-full text-[#17313E] dark:text-[#F6F5F2]"
             />
           </motion.div>
         </motion.div>

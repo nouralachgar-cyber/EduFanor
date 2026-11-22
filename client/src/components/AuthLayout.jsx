@@ -39,7 +39,7 @@ export default function AuthLayout({ children }) {
 
           <div className="relative z-10">
             <Link to="/" className="inline-flex items-center">
-              <EduFanorWordmark className="w-36 text-[#FCFAFF]" />
+              <EduFanorWordmark className="w-36 text-[#F6F5F2]" />
             </Link>
           </div>
 
@@ -116,7 +116,7 @@ export default function AuthLayout({ children }) {
           <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6">
             <div className="w-full max-w-md">
               <div className="mb-6 flex items-center lg:hidden">
-                <EduFanorWordmark className="w-32 text-[#34233F] dark:text-[#FCFAFF]" />
+                <EduFanorWordmark className="w-32 text-[#17313E] dark:text-[#F6F5F2]" />
               </div>
               {children}
             </div>

@@ -1,10 +1,16 @@
 const configuredApiBase = import.meta.env.VITE_API_URL?.trim();
 const defaultApiBase = import.meta.env.DEV
   ? `${window.location.protocol}//${window.location.hostname}:5000/api`
-  : `${window.location.origin}/api`;
-const API_BASE = new URL(configuredApiBase || defaultApiBase, window.location.origin)
-  .toString()
-  .replace(/\/$/, '');
+  : '';
+const configuredApiUrl = configuredApiBase
+  ? new URL(configuredApiBase, window.location.origin)
+  : null;
+const useConfiguredApi =
+  configuredApiUrl &&
+  ['http:', 'https:'].includes(configuredApiUrl.protocol) &&
+  configuredApiUrl.pathname.replace(/\/+$/, '').endsWith('/api') &&
+  (import.meta.env.DEV || configuredApiUrl.origin !== window.location.origin);
+const API_BASE = (useConfiguredApi ? configuredApiUrl.toString() : defaultApiBase).replace(/\/$/, '');
 
 export function resolveAssetUrl(url) {
   if (typeof url !== 'string' || !url.startsWith('/uploads/')) return url || '';

@@ -4,9 +4,12 @@
 
 Set `VITE_API_URL` to the public backend API base URL (including `/api`) when
 building the production client, for example `https://api.example.com/api`.
-Local development defaults to `http://localhost:5000/api`. Production builds
-without this setting fail API requests with a configuration error instead of
-trying to connect to each visitor's `localhost`.
+For Vercel, set this in the project's Environment Variables for every deployment
+environment you use, then redeploy. Do not set it to the frontend's Vercel URL:
+the SPA rewrite serves `index.html` for frontend routes and is not an API proxy.
+Production builds without a valid external backend URL fail API requests with a
+configuration error rather than sending them to the frontend rewrite.
+Local development defaults to `http://localhost:5000/api`.
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 

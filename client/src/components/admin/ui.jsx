@@ -14,15 +14,15 @@ export function PageHeader({ eyebrow, title, subtitle, actions, children }) {
     <div className="admin-rise flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div className="min-w-0">
         {eyebrow && (
-          <span className="mb-1.5 block text-[10px] font-extrabold uppercase tracking-[0.2em] text-ink-muted">
+          <span className="mb-1.5 block text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">
             {eyebrow}
           </span>
         )}
-        <h1 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-[1.75rem]">{title}</h1>
+        <h1 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">{title}</h1>
         {subtitle && <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-ink-muted">{subtitle}</p>}
         {children}
       </div>
-      {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
+      {actions && <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">{actions}</div>}
     </div>
   );
 }
@@ -31,7 +31,7 @@ export function Panel({ title, subtitle, actions, children, className = '', body
   return (
     <section className={`admin-card ${className}`}>
       {(title || actions) && (
-        <div className="flex flex-col gap-3 border-b border-line px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+        <div className="flex flex-col gap-3 border-b border-line px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
           <div className="min-w-0">
             {title && <h2 className="text-sm font-extrabold text-ink">{title}</h2>}
             {subtitle && <p className="mt-0.5 text-xs text-ink-muted">{subtitle}</p>}

@@ -42,7 +42,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="hidden w-64 shrink-0 flex-col justify-between bg-[#17313E] p-4 text-white md:flex">
+    <aside className="hidden w-64 shrink-0 flex-col justify-between bg-[#17313E] p-4 text-[#F6F5F2] md:flex">
       <div className="space-y-6">
         <div className="px-3 pt-2">
           <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/70">
@@ -63,14 +63,14 @@ export default function Sidebar() {
                 className={({ isActive }) =>
                   `group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-all ${
                     isActive
-                      ? 'bg-[#17313E] text-white shadow-sm'
-                      : 'text-white/70 hover:bg-white/10 hover:text-white'
+                      ? 'bg-[#C5B0CD] text-[#17313E] shadow-sm'
+                      : 'text-[#F6F5F2]/75 hover:bg-white/10 hover:text-[#F6F5F2]'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
-                    <Icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-[#415E72]'}`} />
+                    <Icon className={`h-4 w-4 ${isActive ? 'text-[#17313E]' : 'text-[#C5B0CD]/80'}`} />
                     <span>{link.name}</span>
                   </>
                 )}
@@ -83,8 +83,8 @@ export default function Sidebar() {
               to="/admin"
               className={`mt-2 flex items-center gap-3 rounded-xl border border-amber/30 px-3.5 py-2.5 text-xs font-bold transition-all ${
                 location.pathname === '/admin'
-                  ? 'bg-accent text-white dark:text-[#17313E]'
-                  : 'bg-amber/10 text-ink hover:bg-amber/20'
+                  ? 'bg-[#C5B0CD] text-[#17313E]'
+                  : 'bg-white/[0.06] text-[#F6F5F2]/75 hover:bg-white/[0.12] hover:text-[#F6F5F2]'
               }`}
             >
               <ShieldCheck className="h-4 w-4" />
@@ -93,19 +93,19 @@ export default function Sidebar() {
           )}
         </nav>
 
-        <div className="rounded-2xl border border-line bg-white/10 p-4">
-          <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-ink-muted">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
+          <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-[#F6F5F2]/70">
             <span>{isAr ? 'الإنجاز الكلي' : 'Overall progress'}</span>
             <Sparkles className="h-3.5 w-3.5 text-amber" />
           </div>
-          <p className="mt-2 font-display text-2xl font-semibold text-ink">{percent}%</p>
+          <p className="mt-2 font-display text-2xl font-semibold text-[#F6F5F2]">{percent}%</p>
           <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-[#17313E] to-[#415E72] transition-all duration-700"
+              className="h-full rounded-full bg-[#C5B0CD] transition-all duration-700"
               style={{ width: `${percent}%` }}
             />
           </div>
-          <p className="mt-2 text-[10px] font-semibold text-ink-muted">
+          <p className="mt-2 text-[10px] font-semibold text-[#F6F5F2]/65">
             {isAr
               ? `${completed} من ${courseList.length} مساقات مكتملة`
               : `${completed} of ${courseList.length} courses completed`}
@@ -116,16 +116,16 @@ export default function Sidebar() {
       <div className="space-y-1 border-t border-line pt-4">
         <NavLink
           to="/profile"
-          className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink"
+          className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#F6F5F2]/75 transition-colors hover:bg-white/10 hover:text-[#F6F5F2]"
         >
-          <Settings className="h-4 w-4 text-accent" />
+          <Settings className="h-4 w-4 text-[#C5B0CD]" />
           <span>{t('nav.settings')}</span>
         </NavLink>
 
         <button
           onClick={handleLogout}
           type="button"
-          className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold text-danger transition-colors hover:bg-danger-soft"
+          className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#C5B0CD] transition-colors hover:bg-[#C5B0CD]/15"
         >
           <LogOut className="h-4 w-4" />
           <span>{t('nav.logout')}</span>

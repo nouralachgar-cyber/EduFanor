@@ -13,7 +13,7 @@ export default function Footer() {
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <Link to="/" className="group inline-flex items-center">
-              <EduFanorWordmark className="w-36 text-[#34233F] transition-transform duration-300 group-hover:scale-[1.015] dark:text-[#FCFAFF]" />
+              <EduFanorWordmark className="w-36 text-[#17313E] transition-transform duration-300 group-hover:scale-[1.015] dark:text-[#F6F5F2]" />
             </Link>
             <p className="mt-3 text-xs leading-relaxed text-ink-muted">{t('footer.desc')}</p>
             <p className="mt-3 flex items-center gap-2 text-[11px] font-semibold text-ink-muted">

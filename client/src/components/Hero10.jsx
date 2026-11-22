@@ -56,10 +56,10 @@ export function Hero10({ id, isAr = false }) {
           <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#415E72] dark:text-[#C5B0CD]">
             {isAr ? 'من نحن' : 'About EduFanor'}
           </p>
-          <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl md:text-5xl">
+          <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-[#765D78] dark:text-[#C5B0CD] sm:text-4xl md:text-5xl">
             {heading}
             <br />
-            <span className="text-[#415E72] dark:text-[#C5B0CD]">{highlight}</span>
+            <span className="text-[#765D78] dark:text-[#C5B0CD]">{highlight}</span>
           </h2>
           <p className="mt-5 text-sm leading-relaxed text-ink-muted sm:text-base">{description}</p>
           <p className="mt-4 font-display text-base italic text-ink sm:text-lg">{supporting}</p>

@@ -66,7 +66,7 @@ function SidebarContent({ onNavigate }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex flex-col items-start gap-2 px-5 pt-6 pb-5">
-        <EduFanorWordmark className="w-36 text-[#FCFAFF]" />
+        <EduFanorWordmark className="w-36 text-[#F6F5F2]" />
         <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/55">
           {t('admin.shell.subtitle')}
         </p>
@@ -295,7 +295,7 @@ export default function AdminLayout() {
           </div>
         </header>
 
-        <main className="mx-auto w-full">
+        <main className="admin-main mx-auto w-full">
           <Outlet />
         </main>
       </div>

@@ -124,7 +124,7 @@ export default function Navbar() {
           dir="ltr"
           style={{ unicodeBidi: 'isolate' }}
         >
-          <EduFanorWordmark className="w-[8.25rem] text-[#34233F] transition-transform duration-300 group-hover:scale-[1.015] dark:text-[#FCFAFF] sm:w-[9rem]" />
+          <EduFanorWordmark className="w-[8.25rem] text-[#17313E] transition-transform duration-300 group-hover:scale-[1.015] dark:text-[#F6F5F2] sm:w-[9rem]" />
         </Link>
 
         <nav className="hidden items-center gap-1 rounded-2xl border border-line bg-surface-muted p-1 lg:flex">

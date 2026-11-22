@@ -139,6 +139,7 @@ export function LessonBlockRenderer({ block, isAr }) {
   const type = block.type || 'text';
   const content = block.content;
   const data = block.data || {};
+  const bodyLeading = isAr ? 'leading-[1.85]' : 'leading-relaxed';
 
   if (type === 'divider') {
     return <hr className="my-6 border-0 border-t border-line-strong" />;
@@ -146,18 +147,18 @@ export function LessonBlockRenderer({ block, isAr }) {
 
   if (type === 'heading') {
     return (
-      <h2 className="mt-8 mb-4 font-display text-2xl font-bold text-ink sm:text-3xl">{renderInlineText(textOf(content, isAr))}</h2>
+      <h2 className="mt-8 mb-4 font-display text-2xl font-bold leading-[1.45] text-ink sm:text-3xl">{renderInlineText(textOf(content, isAr))}</h2>
     );
   }
   if (type === 'subheading') {
-    return <h3 className="mt-6 mb-3 text-xl font-extrabold text-ink sm:text-2xl">{renderInlineText(textOf(content, isAr))}</h3>;
+    return <h3 className="mt-6 mb-3 text-xl font-extrabold leading-[1.45] text-ink sm:text-2xl">{renderInlineText(textOf(content, isAr))}</h3>;
   }
   if (type === 'paragraph' || type === 'text' || type === 'rich-text') {
     const images = Array.isArray(data.images) ? data.images.filter(Boolean).map(resolveAssetUrl) : [];
     const videos = Array.isArray(data.videos) ? data.videos.filter(Boolean).map(resolveAssetUrl) : [];
     return (
       <div className="mb-4 space-y-3">
-        <p className="text-sm leading-relaxed text-ink sm:text-base whitespace-pre-wrap">{renderInlineText(textOf(content, isAr))}</p>
+        <p className={`whitespace-pre-wrap text-sm ${bodyLeading} text-ink sm:text-base`}>{renderInlineText(textOf(content, isAr))}</p>
         {images.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {images.map((url, index) => (
@@ -262,7 +263,7 @@ export function LessonBlockRenderer({ block, isAr }) {
         <Info className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
         <div>
           <p className="mb-1 text-xs font-extrabold text-accent">{isAr ? 'معلومات مهمة' : 'Important'}</p>
-          <p className="text-sm leading-relaxed text-ink">{renderInlineText(text)}</p>
+          <p className={`text-sm ${bodyLeading} text-ink`}>{renderInlineText(text)}</p>
         </div>
       </div>
     );
@@ -275,7 +276,7 @@ export function LessonBlockRenderer({ block, isAr }) {
         <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-danger" />
         <div>
           <p className="mb-1 text-xs font-extrabold text-danger">{isAr ? 'تحذير' : 'Warning'}</p>
-          <p className="text-sm leading-relaxed text-ink">{renderInlineText(text)}</p>
+          <p className={`text-sm ${bodyLeading} text-ink`}>{renderInlineText(text)}</p>
         </div>
       </div>
     );
@@ -288,7 +289,7 @@ export function LessonBlockRenderer({ block, isAr }) {
         <Info className="mt-0.5 h-5 w-5 shrink-0 text-primary dark:text-brand-ink" />
         <div>
           <p className="mb-1 text-xs font-extrabold text-primary dark:text-brand-ink">{isAr ? 'ملاحظة' : 'Note'}</p>
-          <p className="text-sm leading-relaxed text-ink">{renderInlineText(text)}</p>
+          <p className={`text-sm ${bodyLeading} text-ink`}>{renderInlineText(text)}</p>
         </div>
       </div>
     );
@@ -301,7 +302,7 @@ export function LessonBlockRenderer({ block, isAr }) {
         <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary dark:text-brand-ink" />
         <div>
           <p className="mb-1 text-xs font-extrabold text-ink">{isAr ? 'معلومات السلامة' : 'Safety information'}</p>
-          <p className="text-sm leading-relaxed text-ink">{renderInlineText(text)}</p>
+          <p className={`text-sm ${bodyLeading} text-ink`}>{renderInlineText(text)}</p>
         </div>
       </div>
     );
@@ -324,7 +325,7 @@ export function LessonBlockRenderer({ block, isAr }) {
     return (
       <ul className="my-4 space-y-2 list-disc ps-6">
         {items.map((item, index) => (
-          <li key={index} className="text-sm leading-relaxed text-ink sm:text-base">
+          <li key={index} className={`text-sm ${bodyLeading} text-ink sm:text-base`}>
             {renderInlineText(textOf(item, isAr))}
           </li>
         ))}
@@ -336,7 +337,7 @@ export function LessonBlockRenderer({ block, isAr }) {
     return (
       <ol className="my-4 space-y-2 list-decimal ps-6">
         {items.map((item, index) => (
-          <li key={index} className="text-sm leading-relaxed text-ink sm:text-base">
+          <li key={index} className={`text-sm ${bodyLeading} text-ink sm:text-base`}>
             {renderInlineText(textOf(item, isAr))}
           </li>
         ))}
@@ -361,7 +362,7 @@ export function LessonBlockRenderer({ block, isAr }) {
               </div>
               <div className="min-w-0 flex-1">
                 {title && <h4 className="mb-2 font-extrabold text-ink">{title}</h4>}
-                {body && <p className="text-sm leading-relaxed text-ink-muted">{body}</p>}
+                {body && <p className={`text-sm ${bodyLeading} text-ink-muted`}>{body}</p>}
                 {image && (
                   <img
                     src={image}
@@ -406,7 +407,7 @@ export function LessonBlockRenderer({ block, isAr }) {
               return (
                 <tr key={rowIndex} className="border-b border-line last:border-0">
                   {Array.from({ length: columns }).map((_, cellIndex) => (
-                    <td key={cellIndex} className="px-4 py-3 align-top leading-relaxed text-ink-muted">
+                    <td key={cellIndex} className={`px-4 py-3 align-top ${bodyLeading} text-ink-muted`}>
                       {textOf(cells[cellIndex], isAr)}
                     </td>
                   ))}
