@@ -116,7 +116,7 @@ export default function AdminStudents() {
   );
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.students.title')}
@@ -125,7 +125,7 @@ export default function AdminStudents() {
           <button
             type="button"
             onClick={load}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
             aria-label={t('admin.common.refresh')}
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -149,22 +149,22 @@ export default function AdminStudents() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.students.searchPlaceholder')}
-              className="w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+              className="min-h-11 w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-            <select value={status} onChange={(event) => setStatus(event.target.value)} className="rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm" aria-label={t('admin.common.status')}>
+            <select value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm" aria-label={t('admin.common.status')}>
               <option value="">{t('admin.students.allStatuses')}</option>
               <option value="active">{t('admin.common.active')}</option>
               <option value="suspended">{t('admin.common.suspended')}</option>
             </select>
-            <select value={activity} onChange={(event) => setActivity(event.target.value)} className="rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm" aria-label={t('admin.common.filter')}>
+            <select value={activity} onChange={(event) => setActivity(event.target.value)} className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm" aria-label={t('admin.common.filter')}>
               <option value="">{t('admin.students.allActivity')}</option>
               <option value="active">{t('admin.students.onlyActive')}</option>
               <option value="inactive">{t('admin.students.onlyInactive')}</option>
             </select>
-            <select value={sort} onChange={(event) => setSort(event.target.value)} className="rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] col-span-2 sm:col-span-1 shadow-sm" aria-label={t('admin.common.filter')}>
+            <select value={sort} onChange={(event) => setSort(event.target.value)} className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] col-span-2 sm:col-span-1 shadow-sm" aria-label={t('admin.common.filter')}>
               {sorts.map((option) => (
                 <option key={option} value={option}>
                   {t(`admin.students.sort${option.charAt(0).toUpperCase()}${option.slice(1)}`, { defaultValue: option })}
@@ -226,7 +226,7 @@ export default function AdminStudents() {
                         <div className="flex items-center gap-2">
                           <Link
                             to={`/admin/students/${student._id}`}
-                            className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
+                            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-8 xl:w-8"
                             aria-label={t('admin.common.view')}
                             title={t('admin.common.view')}
                           >
@@ -240,7 +240,7 @@ export default function AdminStudents() {
                                 status: student.status === 'suspended' ? 'active' : 'suspended',
                               })
                             }
-                            className={`flex h-8 w-8 items-center justify-center rounded-xl border transition-colors shadow-sm ${
+                            className={`flex h-11 w-11 items-center justify-center rounded-xl border transition-colors shadow-sm xl:h-8 xl:w-8 ${
                               student.status === 'suspended'
                                 ? 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
                                 : 'border-red-200 bg-red-50 text-red-600 hover:bg-red-100'
@@ -293,7 +293,7 @@ export default function AdminStudents() {
                         </div>
                       </div>
                       <div className="mt-3 flex gap-2">
-                        <Link to={`/admin/students/${student._id}`} className="flex-1 rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] py-2 text-center text-xs font-bold text-[#415E72] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm flex items-center justify-center gap-1.5">
+                        <Link to={`/admin/students/${student._id}`} className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] py-2 text-center text-xs font-bold text-[#415E72] shadow-sm transition-colors hover:bg-[#C5B0CD]/30">
                           <UserRound className="h-3.5 w-3.5 text-[#C5B0CD]" /> {t('admin.common.view')}
                         </Link>
                         <button
@@ -304,7 +304,7 @@ export default function AdminStudents() {
                               status: student.status === 'suspended' ? 'active' : 'suspended',
                             })
                           }
-                          className={`rounded-xl px-4 py-2 text-xs font-bold shadow-sm flex items-center justify-center gap-1.5 ${
+                          className={`flex min-h-11 items-center justify-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold shadow-sm ${
                             student.status === 'suspended'
                               ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                               : 'bg-red-50 text-red-600 border border-red-200'

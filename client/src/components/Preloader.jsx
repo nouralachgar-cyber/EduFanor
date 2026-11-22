@@ -1,10 +1,10 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+import EduFanorWordmark from './EduFanorWordmark';
 
 const INTRO_DURATION_MS = 2600;
-
-const letters = 'EduFanor'.split('');
 
 function prefersReducedMotion() {
   try {
@@ -17,6 +17,8 @@ function prefersReducedMotion() {
 }
 
 export default function Preloader({ onDone }) {
+  const { pathname } = useLocation();
+  const isLoginRoute = pathname === '/login';
   const reduceMotion = useRef(prefersReducedMotion()).current;
   const [visible, setVisible] = useState(true);
   const doneRef = useRef(false);
@@ -30,22 +32,31 @@ export default function Preloader({ onDone }) {
   }, [onDone]);
 
   useEffect(() => {
+    if (isLoginRoute) {
+      finish();
+      return undefined;
+    }
+
     const timer = window.setTimeout(
       finish,
       reduceMotion ? 300 : INTRO_DURATION_MS
     );
 
     return () => window.clearTimeout(timer);
-  }, [finish]); // reduceMotion is stable per mount
+  }, [finish, isLoginRoute]); // reduceMotion is stable per mount
 
   useEffect(() => {
+    if (isLoginRoute) return undefined;
+
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     return () => {
       document.body.style.overflow = previousOverflow;
     };
-  }, []);
+  }, [isLoginRoute]);
+
+  if (isLoginRoute) return null;
 
   return (
     <AnimatePresence>
@@ -62,68 +73,21 @@ export default function Preloader({ onDone }) {
           role="dialog"
           aria-label="EduFanor"
         >
-          {/* Subtle background glow */}
-          {!reduceMotion && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 0.55, scale: 1 }}
-              transition={{ duration: 1.2, ease: 'easeOut' }}
-              className="pointer-events-none absolute h-64 w-64 rounded-full bg-[#F6F5F2]/50 blur-[100px] dark:bg-[#C5B0CD]/15"
-            />
-          )}
-
-          {/* Animated Brand Name */}
           <motion.div
-            className="relative flex items-center justify-center"
-            initial={reduceMotion ? false : { scale: 0.92 }}
-            animate={{ scale: 1 }}
+            className="relative flex w-[min(76vw,22rem)] items-center justify-center"
+            dir="ltr"
+            style={{ unicodeBidi: 'isolate' }}
+            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{
-              duration: 0.8,
+              duration: reduceMotion ? 0 : 0.7,
               ease: [0.16, 1, 0.3, 1],
             }}
           >
-            <h1
-              className="relative flex items-center text-[clamp(2.8rem,9vw,5.5rem)] font-black tracking-[-0.065em]"
-              aria-label="EduFanor"
-            >
-              {letters.map((letter, index) => (
-                <motion.span
-                  key={`${letter}-${index}`}
-                  initial={
-                    reduceMotion
-                      ? false
-                      : { opacity: 0, y: 35, filter: 'blur(10px)' }
-                  }
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    filter: 'blur(0px)',
-                  }}
-                  transition={{
-                    duration: 0.55,
-                    delay: reduceMotion ? 0 : index * 0.085,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="inline-block bg-gradient-to-r from-[#C5B0CD] via-[#C5B0CD] to-[#C5B0CD] bg-clip-text text-transparent dark:from-[#C5B0CD] dark:via-[#F6F5F2] dark:to-[#F6F5F2]"
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </h1>
-
-            {/* Light sweep */}
-            {!reduceMotion && (
-              <motion.div
-                initial={{ x: '-120%', opacity: 0 }}
-                animate={{ x: '120%', opacity: [0, 0.8, 0] }}
-                transition={{
-                  delay: 0.9,
-                  duration: 0.85,
-                  ease: 'easeInOut',
-                }}
-                className="pointer-events-none absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/70 to-transparent blur-sm"
-              />
-            )}
+            <EduFanorWordmark
+              animated={!reduceMotion}
+              className="w-full text-[#34233F] dark:text-[#FCFAFF]"
+            />
           </motion.div>
         </motion.div>
       )}

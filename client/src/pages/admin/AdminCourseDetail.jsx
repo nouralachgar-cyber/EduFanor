@@ -41,7 +41,7 @@ export default function AdminCourseDetail() {
   if (!course) return <EmptyState title={t('admin.courses.noCourses')} icon={BookOpen} />;
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen space-y-6 bg-[#F6F5F2] p-4 text-[#415E72] sm:p-6">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={localize(course.title, i18n.language)}
@@ -51,14 +51,14 @@ export default function AdminCourseDetail() {
             <button
               type="button"
               onClick={load}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted xl:h-10 xl:w-10"
               aria-label={t('admin.common.refresh')}
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
             <Link
               to={`/admin/courses/${id}/lessons/new`}
-              className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-white shadow-sm hover:bg-primary-hover"
+              className="flex min-h-11 items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-white shadow-sm hover:bg-primary-hover"
             >
               <Plus className="h-4 w-4" /> {t('admin.lessonsPage.newLesson')}
             </Link>
@@ -72,7 +72,7 @@ export default function AdminCourseDetail() {
             title={t('admin.lessonsPage.noLessons')}
             icon={BookOpen}
             action={
-              <Link to={`/admin/courses/${id}/lessons/new`} className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-white">
+              <Link to={`/admin/courses/${id}/lessons/new`} className="flex min-h-11 items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-white">
                 <Plus className="h-4 w-4" /> {t('admin.lessonsPage.newLesson')}
               </Link>
             }
@@ -90,7 +90,7 @@ export default function AdminCourseDetail() {
                 </div>
                 <Link
                   to={`/admin/courses/${id}/lessons/${lesson._id}`}
-                  className="inline-flex items-center gap-1 text-xs font-extrabold text-primary hover:text-primary-hover"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-xs font-extrabold text-primary hover:text-primary-hover"
                 >
                   {t('admin.common.edit')} <Edit3 className="h-3.5 w-3.5" />
                 </Link>

@@ -34,7 +34,7 @@ export default function AdminAudit() {
   const pagination = data?.pagination || { page: 1, pages: 1, total: 0 };
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
       <PageHeader
         eyebrow={t('admin.shell.operations')}
         title={t('admin.audit.title')}
@@ -43,7 +43,7 @@ export default function AdminAudit() {
           <button
             type="button"
             onClick={load}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
             aria-label={t('admin.common.refresh')}
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />

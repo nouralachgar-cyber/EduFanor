@@ -44,6 +44,22 @@ export function recordCourseStart(courseId) {
   syncEvent({ type: 'course_start', courseKey: courseId });
 }
 
+export function startVerifiedLesson(lessonId) {
+  if (!lessonId) return Promise.reject(new Error('A published lesson ID is required.'));
+  return apiRequest(`/progress/lessons/${encodeURIComponent(lessonId)}/start`, {
+    method: 'POST',
+    auth: true,
+  });
+}
+
+export function completeVerifiedLesson(lessonId) {
+  if (!lessonId) return Promise.reject(new Error('A published lesson ID is required.'));
+  return apiRequest(`/progress/lessons/${encodeURIComponent(lessonId)}/complete`, {
+    method: 'POST',
+    auth: true,
+  });
+}
+
 export function markCourseCompleted(courseId) {
   if (!courseId) return;
   try {
@@ -111,14 +127,16 @@ export function saveQuizResult(score, total, meta = {}) {
   }
 
   recordActivity();
-  syncEvent({
-    type: 'quiz_attempt',
-    courseKey: meta.courseKey,
-    lessonId: meta.lessonId,
-    score: percent,
-    total: 100,
-    percent,
-  });
+  if (!meta.serverRecorded) {
+    syncEvent({
+      type: 'quiz_attempt',
+      courseKey: meta.courseKey,
+      lessonId: meta.lessonId,
+      score: percent,
+      total: 100,
+      percent,
+    });
+  }
   return next;
 }
 

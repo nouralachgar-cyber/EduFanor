@@ -72,6 +72,8 @@
   --font-sans: "Plus Jakarta Sans", "Tajawal", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Fraunces", "Tajawal", ui-serif, Georgia, "Times New Roman", serif;
   --font-arabic: "Tajawal", "Plus Jakarta Sans", ui-sans-serif, sans-serif;
+  --font-editorial: "DM Serif Display", "Fraunces", "Tajawal", ui-serif, Georgia, "Times New Roman", serif;
+  --font-copy: "Manrope", "Tajawal", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Brand */
   --color-primary: var(--primary);

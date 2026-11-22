@@ -625,7 +625,14 @@ const deleteCourse = async (req, res) => {
     await Promise.all([
       Quiz.deleteMany({ lesson: { $in: lessonIds } }),
       Lesson.deleteMany({ course: course._id }),
-      Progress.updateMany({}, { $pull: { completedLessons: { $in: lessonIds } } }),
+      Progress.updateMany({}, {
+        $pull: {
+          completedLessons: { $in: lessonIds },
+          verifiedCompletedLessons: { $in: lessonIds },
+          lessonStarts: { lesson: { $in: lessonIds } },
+          quizAttempts: { lesson: { $in: lessonIds } }
+        }
+      }),
       ActivityEvent.deleteMany({ $or: [{ courseKey: course.slug }, { lesson: { $in: lessonIds } }] }),
     ]);
     await course.deleteOne();
@@ -808,7 +815,14 @@ const deleteLesson = async (req, res) => {
 
     await Promise.all([
       Quiz.deleteMany({ lesson: lesson._id }),
-      Progress.updateMany({}, { $pull: { completedLessons: lesson._id } }),
+      Progress.updateMany({}, {
+        $pull: {
+          completedLessons: lesson._id,
+          verifiedCompletedLessons: lesson._id,
+          lessonStarts: { lesson: lesson._id },
+          quizAttempts: { lesson: lesson._id }
+        }
+      }),
       ActivityEvent.deleteMany({ lesson: lesson._id }),
     ]);
     await lesson.deleteOne();

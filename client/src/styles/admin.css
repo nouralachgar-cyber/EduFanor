@@ -27,6 +27,7 @@
   align-items: center;
   gap: 0.75rem;
   border-radius: 0.9rem;
+  min-height: 2.75rem;
   padding: 0.7rem 0.85rem;
   font-size: 0.8125rem;
   font-weight: 700;
@@ -173,6 +174,24 @@
   padding: 1rem;
   background-color: rgba(23, 49, 62, 0.55);
   backdrop-filter: blur(6px);
+}
+
+.admin-modal-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 2rem);
+}
+
+.admin-modal-content {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+@supports (height: 100dvh) {
+  .admin-modal-dialog {
+    max-height: calc(100dvh - 2rem);
+  }
 }
 
 .dark .admin-modal-backdrop {

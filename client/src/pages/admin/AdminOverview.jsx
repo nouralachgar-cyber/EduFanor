@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   ArrowUpRight,
@@ -10,6 +10,7 @@ import {
   Clock,
   GraduationCap,
   Layers,
+  Plus,
   RefreshCw,
   ShieldAlert,
   Sparkles,
@@ -23,13 +24,16 @@ import { AuthContext } from '../../context/AuthContext';
 import { adminApi, formatDateTime, formatNumber, formatPercent, initials, localize, relativeTime } from '../../lib/admin';
 import { PageHeader, Panel, StatCard, Badge, LoadingState, ErrorState, EmptyState } from '../../components/admin/ui';
 import { ActivityBars, Donut, LineChart } from '../../components/admin/charts';
+import CourseFormModal from '../../components/admin/CourseFormModal';
 
 const ranges = [7, 30, 90, 365];
 
 export default function AdminOverview() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const isAr = i18n.language === 'ar';
+  const [courseFormOpen, setCourseFormOpen] = useState(false);
   const [range, setRange] = useState(30);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -51,7 +55,7 @@ export default function AdminOverview() {
 
   if (loading && !data) {
     return (
-      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 sm:p-6 text-[#415E72]">
         <LoadingState label={t('admin.common.loading')} />
       </div>
     );
@@ -59,7 +63,7 @@ export default function AdminOverview() {
 
   if (error && !data) {
     return (
-      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 sm:p-6 text-[#415E72]">
         <ErrorState
           title={t('admin.errors.loadOverview')}
           message={error}
@@ -91,7 +95,7 @@ export default function AdminOverview() {
   const greeting = isAr ? `مرحباً، ${user?.name?.split(' ')[0] || ''}` : `Welcome back, Admin, ${user?.name?.split(' ')[0] || ''}`;
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 sm:p-6 text-[#415E72]">
       <PageHeader
         eyebrow={t('admin.shell.title')}
         title={t('admin.overview.title')}
@@ -104,7 +108,7 @@ export default function AdminOverview() {
                   key={option}
                   type="button"
                   onClick={() => setRange(option)}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-extrabold transition-colors ${
+                  className={`min-h-11 rounded-lg px-3 py-1.5 text-xs font-extrabold transition-colors xl:min-h-0 ${
                     range === option
                       ? 'bg-[#415E72] text-[#F6F5F2]'
                       : 'text-[#415E72]/70 hover:bg-[#F6F5F2] hover:text-[#415E72]'
@@ -117,7 +121,7 @@ export default function AdminOverview() {
             <button
               type="button"
               onClick={load}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
               aria-label={t('admin.common.refresh')}
               title={t('admin.common.refresh')}
             >
@@ -125,6 +129,35 @@ export default function AdminOverview() {
             </button>
           </div>
         }
+      />
+
+      <div className="grid gap-2 sm:grid-cols-2">
+        <button
+          type="button"
+          onClick={() => setCourseFormOpen(true)}
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-white shadow-sm transition-colors hover:bg-[#415E72]/90"
+        >
+          <Plus className="h-4 w-4 text-[#C5B0CD]" />
+          {t('admin.courses.newCourse')}
+        </button>
+        <Link
+          to="/admin/lessons/new"
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs font-extrabold text-[#415E72] shadow-sm transition-colors hover:bg-[#F6F5F2]"
+        >
+          <Plus className="h-4 w-4 text-[#C5B0CD]" />
+          {t('admin.lessonsPage.newLesson')}
+        </Link>
+      </div>
+
+      <CourseFormModal
+        open={courseFormOpen}
+        course={null}
+        onClose={() => setCourseFormOpen(false)}
+        onSaved={(course) => {
+          setCourseFormOpen(false);
+          if (course?._id) navigate(`/admin/courses/${course._id}`);
+          else load();
+        }}
       />
 
       <section className="rounded-3xl border border-[#C5B0CD]/50 bg-[#415E72] p-6 text-white shadow-lg flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">

@@ -101,7 +101,7 @@ export function ErrorState({ title, message, onRetry, retryLabel }) {
         {message && <p className="mt-1 max-w-md text-xs leading-relaxed text-ink-muted">{message}</p>}
       </div>
       {onRetry && (
-        <button type="button" onClick={onRetry} className="btn-secondary h-9 px-4 text-xs">
+        <button type="button" onClick={onRetry}         className="btn-secondary min-h-11 px-4 text-xs xl:h-9 xl:min-h-0">
           {retryLabel}
         </button>
       )}
@@ -136,7 +136,7 @@ export function Pagination({ page = 1, pages = 1, total, onPage, language = 'en'
           type="button"
           onClick={() => onPage(page - 1)}
           disabled={page <= 1}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40 xl:h-8 xl:w-8"
           aria-label={labels.previous || 'Previous'}
         >
           <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
@@ -148,7 +148,7 @@ export function Pagination({ page = 1, pages = 1, total, onPage, language = 'en'
           type="button"
           onClick={() => onPage(page + 1)}
           disabled={page >= pages}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40 xl:h-8 xl:w-8"
           aria-label={labels.next || 'Next'}
         >
           <ChevronRight className="h-4 w-4 rtl:rotate-180" />
@@ -179,8 +179,8 @@ export function Modal({ open, onClose, title, subtitle, children, footer, size =
 
   return (
     <div className="admin-modal-backdrop admin-fade" onMouseDown={(event) => event.target === event.currentTarget && onClose?.()}>
-      <div className={`admin-rise w-full ${widths[size] || widths.md} rounded-2xl border border-line bg-card shadow-lift`}>
-        <div className="flex items-start justify-between gap-4 border-b border-line px-5 py-4">
+      <div className={`admin-modal-dialog admin-rise w-full ${widths[size] || widths.md} rounded-2xl border border-line bg-card shadow-lift`}>
+        <div className="flex shrink-0 items-start justify-between gap-4 border-b border-line px-5 py-4">
           <div className="min-w-0">
             <h2 className="text-base font-extrabold text-ink">{title}</h2>
             {subtitle && <p className="mt-0.5 text-xs leading-relaxed text-ink-muted">{subtitle}</p>}
@@ -188,14 +188,14 @@ export function Modal({ open, onClose, title, subtitle, children, footer, size =
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink xl:h-8 xl:w-8"
             aria-label="Close"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
-        <div className="admin-scroll max-h-[calc(100vh-14rem)] overflow-y-auto px-5 py-4">{children}</div>
-        {footer && <div className="flex flex-wrap items-center justify-end gap-2 border-t border-line px-5 py-3.5">{footer}</div>}
+        <div className="admin-scroll admin-modal-content px-5 py-4">{children}</div>
+        {footer && <div className="flex shrink-0 flex-wrap items-center justify-end gap-2 border-t border-line px-5 py-3.5">{footer}</div>}
       </div>
     </div>
   );

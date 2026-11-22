@@ -60,7 +60,7 @@ export default function AdminAnalytics() {
   const distribution = data?.quizDistribution || [];
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.analytics.title')}
@@ -73,7 +73,7 @@ export default function AdminAnalytics() {
                   key={option}
                   type="button"
                   onClick={() => setRange(option)}
-                  className={`rounded-lg px-3 py-1.5 text-[10px] font-extrabold transition-colors ${
+                  className={`min-h-11 rounded-lg px-3 py-1.5 text-[10px] font-extrabold transition-colors xl:min-h-0 ${
                     range === option ? 'bg-[#415E72] text-[#F6F5F2]' : 'text-[#415E72]/70 hover:bg-[#F6F5F2] hover:text-[#415E72]'
                   }`}
                 >
@@ -84,7 +84,7 @@ export default function AdminAnalytics() {
             <button
               type="button"
               onClick={load}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 xl:h-9 xl:w-9"
               aria-label={t('admin.common.refresh')}
             >
               <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />

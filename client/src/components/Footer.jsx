@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail } from './icons';
+import EduFanorWordmark from './EduFanorWordmark';
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -11,13 +12,8 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
-            <Link to="/" className="inline-flex items-center gap-3">
-              <img
-                src="/edufanor.png"
-                alt="EduFanor Logo"
-                className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-              />
-              <span className="font-display text-lg font-semibold text-ink">{t('nav.brand')}</span>
+            <Link to="/" className="group inline-flex items-center">
+              <EduFanorWordmark className="w-36 text-[#34233F] transition-transform duration-300 group-hover:scale-[1.015] dark:text-[#FCFAFF]" />
             </Link>
             <p className="mt-3 text-xs leading-relaxed text-ink-muted">{t('footer.desc')}</p>
             <p className="mt-3 flex items-center gap-2 text-[11px] font-semibold text-ink-muted">

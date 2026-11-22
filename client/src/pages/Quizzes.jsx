@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   HelpCircle,
   CheckCircle2,
@@ -13,44 +13,92 @@ import {
 } from '../components/icons';
 import { getQuizBest, saveQuizResult } from '../lib/progress';
 import { apiRequest } from '../lib/api';
+import AchievementCelebration from '../components/achievement/AchievementCelebration';
 
 export default function Quizzes() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [searchParams] = useSearchParams();
   const isAr = i18n.language === 'ar';
+  const lessonIdParam = searchParams.get('lesson') || '';
+  const quizIdParam = searchParams.get('quiz') || '';
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [answers, setAnswers] = useState([]);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [best, setBest] = useState(() => getQuizBest());
   const [databaseQuiz, setDatabaseQuiz] = useState(null);
+  const [loadedQuizQuery, setLoadedQuizQuery] = useState('');
+  const [quizLoadError, setQuizLoadError] = useState('');
+  const [submitError, setSubmitError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [assessmentPassed, setAssessmentPassed] = useState(null);
+  const [earnedAchievement, setEarnedAchievement] = useState(null);
+  const quizQueryKey = `${isAr ? 'ar' : 'en'}:${lessonIdParam}:${quizIdParam}`;
+  const quizLoading = loadedQuizQuery !== quizQueryKey;
 
   useEffect(() => {
     let cancelled = false;
-    apiRequest('/quizzes')
+    const query = lessonIdParam ? `?lesson=${encodeURIComponent(lessonIdParam)}` : '';
+    apiRequest(`/quizzes${query}`)
       .then((data) => {
         if (cancelled) return;
-        const quiz = Array.isArray(data?.quizzes) ? data.quizzes[0] : null;
+        const quizzes = Array.isArray(data?.quizzes) ? data.quizzes : [];
+        const quiz =
+          quizzes.find((item) => String(item._id) === quizIdParam) ||
+          quizzes[0] ||
+          null;
         if (quiz?.questions?.length) {
           setDatabaseQuiz({
+            id: String(quiz._id),
+            title: quiz.title?.[isAr ? 'ar' : 'en'] || quiz.title?.en || '',
             lessonId: quiz.lesson?._id,
             courseKey: quiz.lesson?.course?.slug,
+            passingScore: Number.isFinite(quiz.passingScore) ? quiz.passingScore : 70,
             questions: quiz.questions.map((question) => ({
               question: question.question?.[isAr ? 'ar' : 'en'] || question.question?.en || '',
               options: question.options?.[isAr ? 'ar' : 'en'] || question.options?.en || [],
-              correct: question.correctAnswer,
               explanation: question.explanation?.[isAr ? 'ar' : 'en'] || question.explanation?.en || '',
             })),
           });
+          setQuizLoadError('');
+        } else if (lessonIdParam) {
+          setDatabaseQuiz(null);
+          setQuizLoadError(t('achievement.assessmentNotFound'));
+        } else {
+          setDatabaseQuiz(null);
+          setQuizLoadError('');
         }
+        setCurrentQuestion(0);
+        setSelectedOption(null);
+        setAnswers([]);
+        setScore(0);
+        setShowResult(false);
+        setAssessmentPassed(null);
+        setSubmitError('');
+        setEarnedAchievement(null);
       })
       .catch(() => {
-        /* Keep the existing local quiz as a fallback. */
+        if (cancelled) return;
+        setDatabaseQuiz(null);
+        setQuizLoadError(lessonIdParam ? t('achievement.assessmentLoadError') : '');
+        setCurrentQuestion(0);
+        setSelectedOption(null);
+        setAnswers([]);
+        setScore(0);
+        setShowResult(false);
+        setAssessmentPassed(null);
+        setSubmitError('');
+        setEarnedAchievement(null);
+      })
+      .finally(() => {
+        if (!cancelled) setLoadedQuizQuery(quizQueryKey);
       });
     return () => {
       cancelled = true;
     };
-  }, [isAr]);
+  }, [isAr, lessonIdParam, quizIdParam, quizQueryKey, t]);
 
   const fallbackQuestions = [
     {
@@ -93,21 +141,79 @@ export default function Quizzes() {
   const active = questions[currentQuestion];
   const isAnswered = selectedOption !== null;
   const progressPercent = Math.round(((currentQuestion + 1) / questions.length) * 100);
+  const hasAnswerKey = Number.isInteger(active?.correct);
+  const answerFeedback = hasAnswerKey
+    ? selectedOption === active.correct
+      ? isAr ? 'إجابة صحيحة.' : 'Correct answer.'
+      : isAr ? 'الإجابة الصحيحة موضّحة بالأعلى.' : 'The correct answer is highlighted above.'
+    : t('achievement.answerRecorded');
+  const nextButtonLabel = submitting
+    ? t('achievement.verifyingAssessment')
+    : currentQuestion < questions.length - 1
+      ? isAr ? 'السؤال التالي' : 'Next question'
+      : isAr ? 'إرسال التقييم' : 'Submit assessment';
 
   const handleSelectOption = (index) => {
     if (isAnswered) return;
     setSelectedOption(index);
-    if (index === active.correct) {
+    if (databaseQuiz) {
+      setAnswers((previous) => {
+        const next = [...previous];
+        next[currentQuestion] = index;
+        return next;
+      });
+    } else if (index === active.correct) {
       setScore((previous) => previous + 1);
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion((previous) => previous + 1);
       setSelectedOption(null);
       return;
     }
+
+    if (databaseQuiz?.id) {
+      setSubmitting(true);
+      setSubmitError('');
+      try {
+        const result = await apiRequest(`/quizzes/${encodeURIComponent(databaseQuiz.id)}/attempt`, {
+          method: 'POST',
+          body: { answers },
+          auth: true,
+        });
+        const serverScore = result?.score;
+        if (!serverScore || typeof serverScore.correct !== 'number') {
+          throw new Error('Invalid assessment response.');
+        }
+        setScore(serverScore.correct);
+        setAssessmentPassed(Boolean(serverScore.passed));
+        saveQuizResult(serverScore.correct, serverScore.total, {
+          courseKey: databaseQuiz.courseKey,
+          lessonId: databaseQuiz.lessonId,
+          serverRecorded: true,
+        });
+        setBest(getQuizBest());
+        setShowResult(true);
+        if (result.achievement?.newlyCreated && result.achievement.record) {
+          setEarnedAchievement({
+            record: result.achievement.record,
+            studentName: result.achievement.studentName,
+          });
+        }
+      } catch (error) {
+        setSubmitError(
+          error.code === 'NETWORK_ERROR' || error.status === 0
+            ? t('achievement.assessmentNetworkError')
+            : t('achievement.assessmentSubmitError')
+        );
+      } finally {
+        setSubmitting(false);
+      }
+      return;
+    }
+
     saveQuizResult(score, questions.length, {
       courseKey: databaseQuiz?.courseKey,
       lessonId: databaseQuiz?.lessonId,
@@ -119,8 +225,12 @@ export default function Quizzes() {
   const handleRestart = () => {
     setCurrentQuestion(0);
     setSelectedOption(null);
+    setAnswers([]);
     setScore(0);
     setShowResult(false);
+    setAssessmentPassed(null);
+    setSubmitError('');
+    setEarnedAchievement(null);
   };
 
   const finalPercent = Math.round((score / questions.length) * 100);
@@ -135,7 +245,7 @@ export default function Quizzes() {
               {isAr ? 'تدرّب على المعرفة' : 'Practice your knowledge'}
             </span>
             <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-              {isAr ? 'اختبار الإسعافات الأولية' : 'First Aid Knowledge Quiz'}
+              {databaseQuiz?.title || (isAr ? 'اختبار الإسعافات الأولية' : 'First Aid Knowledge Quiz')}
             </h1>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-muted">
               {isAr
@@ -155,7 +265,15 @@ export default function Quizzes() {
           </div>
         </header>
 
-        {!showResult ? (
+        {quizLoading ? (
+          <section className="card p-6 text-sm font-semibold text-ink-muted" role="status">
+            {t('achievement.loadingAssessment')}
+          </section>
+        ) : quizLoadError ? (
+          <section className="card p-6 text-sm font-semibold text-danger" role="alert">
+            {quizLoadError}
+          </section>
+        ) : !showResult ? (
           <section className="card space-y-6 p-6 sm:p-8">
             <div className="space-y-2">
               <div className="flex items-center justify-between text-[11px] font-extrabold text-ink-muted">
@@ -178,13 +296,15 @@ export default function Quizzes() {
 
             <div className="space-y-3">
               {active.options.map((option, index) => {
-                const isCorrect = index === active.correct;
+                const isCorrect = hasAnswerKey && index === active.correct;
                 const isSelected = index === selectedOption;
                 let style = 'border-line bg-surface-muted text-ink hover:border-primary/40';
                 if (isAnswered && isCorrect) {
                   style = 'border-success-ink/40 bg-success-soft text-success-ink';
-                } else if (isAnswered && isSelected) {
+                } else if (isAnswered && isSelected && hasAnswerKey) {
                   style = 'border-danger/40 bg-danger-soft text-danger';
+                } else if (isAnswered && isSelected) {
+                  style = 'border-primary/40 bg-brand-soft text-brand-ink';
                 }
 
                 return (
@@ -199,41 +319,31 @@ export default function Quizzes() {
                       {index + 1}
                     </span>
                     <span className="flex-1 leading-relaxed">{option}</span>
-                    {isAnswered && isCorrect && <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />}
-                    {isAnswered && isSelected && !isCorrect && <XCircle className="mt-0.5 h-4 w-4 shrink-0" />}
+                      {isAnswered && hasAnswerKey && isCorrect && <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />}
+                      {isAnswered && hasAnswerKey && isSelected && !isCorrect && <XCircle className="mt-0.5 h-4 w-4 shrink-0" />}
                   </button>
                 );
               })}
             </div>
 
+            {submitError && (
+              <p role="alert" className="rounded-xl border border-danger/20 bg-danger-soft p-3 text-xs font-semibold text-danger">
+                {submitError}
+              </p>
+            )}
+
             {isAnswered && (
               <div className="flex animate-fade-in flex-col gap-3 border-t border-line pt-5 sm:flex-row sm:items-center sm:justify-between">
-                <p
-                  className={`flex items-center gap-2 text-xs font-bold ${
-                    selectedOption === active.correct ? 'text-success-ink' : 'text-danger'
-                  }`}
-                >
-                  {selectedOption === active.correct ? (
-                    <CheckCircle2 className="h-4 w-4" />
-                  ) : (
-                    <XCircle className="h-4 w-4" />
-                  )}
-                  {selectedOption === active.correct
-                    ? isAr
-                      ? 'إجابة صحيحة.'
-                      : 'Correct answer.'
-                    : isAr
-                    ? 'الإجابة الصحيحة موضّحة بالأعلى.'
-                    : 'The correct answer is highlighted above.'}
+                <p className={`flex items-center gap-2 text-xs font-bold ${hasAnswerKey && selectedOption === active.correct ? 'text-success-ink' : 'text-ink-muted'}`}>
+                  {answerFeedback}
                 </p>
-                <button type="button" onClick={handleNext} className="btn-primary px-6 text-xs">
-                  {currentQuestion < questions.length - 1
-                    ? isAr
-                      ? 'السؤال التالي'
-                      : 'Next question'
-                    : isAr
-                    ? 'عرض النتيجة'
-                    : 'See results'}
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  disabled={submitting}
+                  className="btn-primary px-6 text-xs disabled:cursor-wait disabled:opacity-60"
+                >
+                  {nextButtonLabel}
                   {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
                 </button>
               </div>
@@ -253,6 +363,13 @@ export default function Quizzes() {
                   ? `حصلت على ${score} من أصل ${questions.length} إجابات صحيحة.`
                   : `You scored ${score} out of ${questions.length}.`}
               </p>
+              {databaseQuiz && assessmentPassed !== null && (
+                <p className={`mt-2 text-sm font-bold ${assessmentPassed ? 'text-success-ink' : 'text-danger'}`}>
+                  {assessmentPassed
+                    ? t('achievement.assessmentPassed')
+                    : t('achievement.assessmentPassingScore', { score: databaseQuiz.passingScore })}
+                </p>
+              )}
             </div>
 
             <div className="mx-auto flex max-w-sm flex-col gap-3">
@@ -267,7 +384,11 @@ export default function Quizzes() {
                 />
               </div>
               <p className="text-[11px] leading-relaxed text-ink-muted">
-                {isAr
+                {databaseQuiz
+                  ? isAr
+                    ? 'تم التحقق من نتيجتك وحفظها في حسابك.'
+                    : 'Your result was verified and saved to your account.'
+                  : isAr
                   ? 'يُحفظ أفضل نتيجة لك في هذا المتصفح ويمكنك مراجعتها من صفحة التقدّم.'
                   : 'Your best score is saved in this browser and can be reviewed on the progress page.'}
               </p>
@@ -278,6 +399,11 @@ export default function Quizzes() {
                 <RefreshCw className="h-4 w-4" />
                 {isAr ? 'إعادة الاختبار' : 'Retake quiz'}
               </button>
+              {databaseQuiz && assessmentPassed && databaseQuiz.courseKey && (
+                <Link to={`/lesson?id=${encodeURIComponent(databaseQuiz.courseKey)}`} className="btn-secondary px-6 text-xs">
+                  {t('achievement.returnToLesson')}
+                </Link>
+              )}
               <Link to="/progress" className="btn-secondary px-6 text-xs">
                 <HelpCircle className="h-4 w-4" />
                 {isAr ? 'عرض التقدّم' : 'View progress'}
@@ -292,6 +418,12 @@ export default function Quizzes() {
             : 'This quiz is educational and does not replace certified training or emergency services.'}
         </p>
       </div>
+      <AchievementCelebration
+        open={!quizLoading && Boolean(earnedAchievement)}
+        onClose={() => setEarnedAchievement(null)}
+        achievement={earnedAchievement?.record}
+        studentName={earnedAchievement?.studentName}
+      />
     </div>
   );
 }

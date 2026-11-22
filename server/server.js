@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes.js');
 const courseRoutes = require('./routes/courseRoutes.js');
 const quizRoutes = require('./routes/quizRoutes.js');
 const progressRoutes = require('./routes/progressRoutes.js');
+const achievementRoutes = require('./routes/achievementRoutes.js');
 const adminRoutes = require('./routes/adminRoutes.js');
 const aiRoutes = require('./routes/aiRoutes.js');
 
@@ -23,6 +24,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/progress', progressRoutes);
+app.use('/api/achievements', achievementRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/ai', aiRoutes);
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import {
   ArrowRight,
   ArrowLeft,
@@ -17,15 +17,27 @@ import Toast from '../components/Toast';
 import LessonBlocks from '../components/LessonBlocks';
 import AiLessonTools, { stepContentText } from '../components/ai/AiLessonTools';
 import { useCatalog } from '../context/CatalogContext';
-import { markCourseCompleted, isCourseCompleted, recordActivity, recordCourseStart } from '../lib/progress';
+import {
+  completeVerifiedLesson,
+  isCourseCompleted,
+  markCourseCompleted,
+  recordActivity,
+  recordCourseStart,
+  startVerifiedLesson,
+} from '../lib/progress';
+import { getStoredToken } from '../lib/api';
 
 export default function Lesson() {
   const { t, i18n } = useTranslation();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const courseId = searchParams.get('id') || 'cpr';
   const [currentStep, setCurrentStep] = useState(0);
   const [maxUnlockedStep, setMaxUnlockedStep] = useState(0); // نظام قفل الدروس (Progress Lock)
   const [toastMsg, setToastMsg] = useState('');
+  const [toastType, setToastType] = useState('success');
+  const [completionPending, setCompletionPending] = useState(false);
+  const [assessmentRequired, setAssessmentRequired] = useState('');
   const [completed, setCompleted] = useState(() => isCourseCompleted(courseId));
   
   // حالات الاختبار التابع للدرس (Quiz)
@@ -89,32 +101,101 @@ export default function Lesson() {
     setQuizPassed(false);
   }, [currentStep]);
 
+  useEffect(() => {
+    if (!activeStep?.id || !getStoredToken()) return undefined;
+    let cancelled = false;
+    startVerifiedLesson(activeStep.id).catch((error) => {
+      if (cancelled) return;
+      setToastType('error');
+      setToastMsg(
+        error.code === 'PREVIOUS_LESSONS_REQUIRED'
+          ? t('achievement.previousLessonRequired')
+          : t('achievement.lessonStartError')
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [activeStep?.id, t]);
+
   if (!course) return null;
 
   const handleQuizAnswer = (optIdx, correctIdx) => {
     setSelectedQuizOpt(optIdx);
     if (optIdx === correctIdx) {
       setQuizPassed(true);
+      setToastType('success');
       setToastMsg(isAr ? 'ممتاز! تم اجتياز اختبار الخطوة بنجاح 🚀' : 'Great! Step quiz passed successfully 🚀');
       // فتح الخطوة الموالية تلقائياً
       if (currentStep >= maxUnlockedStep) {
         setMaxUnlockedStep(currentStep + 1);
       }
     } else {
+      setToastType('error');
       setToastMsg(isAr ? 'إجابة خاطئة، حاول مرة أخرى.' : 'Incorrect answer, try again.');
     }
   };
 
-  const handleFinishCourse = () => {
+  const completeActiveLesson = async () => {
+    if (!activeStep?.id || !getStoredToken()) return { localOnly: true };
+
+    setCompletionPending(true);
+    setAssessmentRequired('');
+    try {
+      await startVerifiedLesson(activeStep.id);
+      return await completeVerifiedLesson(activeStep.id);
+    } catch (error) {
+      setToastType('error');
+      if (error.code === 'ASSESSMENT_REQUIRED') {
+        setAssessmentRequired(error.payload?.quizId || '');
+        setToastMsg(t('achievement.assessmentRequired'));
+      } else if (error.code === 'PREVIOUS_LESSONS_REQUIRED') {
+        setToastMsg(t('achievement.previousLessonRequired'));
+      } else if (error.code === 'NETWORK_ERROR' || error.code === 'API_NOT_CONFIGURED') {
+        setToastMsg(t('achievement.serverConnectionError'));
+      } else {
+        setToastMsg(t('achievement.lessonCompleteError'));
+      }
+      return null;
+    } finally {
+      setCompletionPending(false);
+    }
+  };
+
+  const handleAdvance = async () => {
+    const result = await completeActiveLesson();
+    if (!result) return;
+    if (result.achievementCreated) {
+      navigate('/dashboard', { state: { celebrateAchievement: true } });
+      return;
+    }
+    const nextIdx = currentStep + 1;
+    setMaxUnlockedStep((previous) => Math.max(previous, nextIdx));
+    setCurrentStep(nextIdx);
+  };
+
+  const handleFinishCourse = async () => {
+    const result = await completeActiveLesson();
+    if (!result) return;
     markCourseCompleted(courseId);
     setCompleted(true);
-    setToastMsg(t('lessonPage.completedToast'));
+    if (result.achievementCreated) {
+      navigate('/dashboard', { state: { celebrateAchievement: true } });
+      return;
+    }
+    navigate('/dashboard');
   };
 
   return (
     <div className="page-container">
       <div className="page-content mx-auto max-w-5xl space-y-6">
-        {toastMsg && <Toast message={toastMsg} type="success" onClose={() => setToastMsg('')} />}
+        {toastMsg && (
+          <Toast
+            message={toastMsg}
+            type={toastType}
+            onClose={() => setToastMsg('')}
+          />
+        )}
 
         <div className="flex flex-col justify-between gap-3 border-b border-line pb-4 sm:flex-row sm:items-center">
           <Link
@@ -340,26 +421,55 @@ export default function Lesson() {
           {currentStep < steps.length - 1 ? (
             <button
               type="button"
-              disabled={currentStep >= maxUnlockedStep && activeStep?.quiz && !quizPassed}
-              onClick={() => {
-                if (currentStep < steps.length - 1) {
-                  const nextIdx = currentStep + 1;
-                  if (nextIdx > maxUnlockedStep) setMaxUnlockedStep(nextIdx);
-                  setCurrentStep(nextIdx);
-                }
-              }}
-              className={`btn-primary px-5 ${currentStep >= maxUnlockedStep && activeStep?.quiz && !quizPassed ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={
+                completionPending ||
+                (currentStep >= maxUnlockedStep && activeStep?.quiz && !quizPassed)
+              }
+              onClick={handleAdvance}
+              className={`btn-primary px-5 ${
+                completionPending ||
+                (currentStep >= maxUnlockedStep && activeStep?.quiz && !quizPassed)
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
+              }`}
             >
-              <span>{t('lessonPage.nextStep')}</span>
+              <span>
+                {completionPending
+                  ? t('achievement.savingProgress')
+                  : t('lessonPage.nextStep')}
+              </span>
               {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
             </button>
           ) : (
-            <Link to="/dashboard" onClick={handleFinishCourse} className="btn-primary px-5">
+            <button
+              type="button"
+              onClick={handleFinishCourse}
+              disabled={completionPending}
+              className={`btn-primary px-5 ${completionPending ? 'cursor-wait opacity-60' : ''}`}
+            >
               <CheckCircle2 className="h-4 w-4" />
-              <span>{t('lessonPage.startQuiz')}</span>
-            </Link>
+              <span>
+                {completionPending
+                  ? t('achievement.savingProgress')
+                  : t('lessonPage.startQuiz')}
+              </span>
+            </button>
           )}
         </div>
+
+        {assessmentRequired && (
+          <div className="flex flex-col gap-3 rounded-xl border border-amber/30 bg-amber/10 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs font-semibold leading-relaxed text-ink">
+              {t('achievement.assessmentRequired')}
+            </p>
+            <Link
+              to={`/quizzes?lesson=${encodeURIComponent(activeStep.id)}&quiz=${encodeURIComponent(assessmentRequired)}`}
+              className="btn-secondary shrink-0 justify-center px-4 text-xs"
+            >
+              {t('achievement.goToAssessment')}
+            </Link>
+          </div>
+        )}
 
         <p className="text-center text-[10px] leading-relaxed text-ink-muted">
           {t('lessonPage.finishHint')}

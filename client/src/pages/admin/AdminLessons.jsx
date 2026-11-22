@@ -116,7 +116,7 @@ export default function AdminLessons() {
   };
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 sm:p-6 text-[#415E72]">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.lessonsPage.title')}
@@ -126,7 +126,7 @@ export default function AdminLessons() {
             <button
               type="button"
               onClick={loadLessons}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
               aria-label={t('admin.common.refresh')}
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -134,7 +134,7 @@ export default function AdminLessons() {
             <button 
               type="button" 
               onClick={() => navigate('/admin/lessons/new')} 
-              className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90"
+              className="flex min-h-11 items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90"
             >
               <Plus className="h-4 w-4 text-[#C5B0CD]" /> {t('admin.lessonsPage.newLesson')}
             </button>
@@ -156,14 +156,14 @@ export default function AdminLessons() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.lessonsPage.searchPlaceholder')}
-              className="w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+              className="min-h-11 w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
           <select 
             value={courseFilter} 
             onChange={(event) => setCourseFilter(event.target.value)} 
-            className="rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-52 shadow-sm"
+            className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-52 shadow-sm"
             aria-label={t('admin.lessonsPage.filterCourse')}
           >
             <option value="">{t('admin.lessonsPage.allCourses')}</option>
@@ -176,7 +176,7 @@ export default function AdminLessons() {
           <select 
             value={statusFilter} 
             onChange={(event) => setStatusFilter(event.target.value)} 
-            className="rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-40 shadow-sm"
+            className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-40 shadow-sm"
             aria-label={t('admin.common.status')}
           >
             <option value="">{t('admin.courses.allStatuses')}</option>
@@ -194,7 +194,7 @@ export default function AdminLessons() {
             title={t('admin.lessonsPage.noLessons')}
             icon={FileText}
             action={
-              <button type="button" onClick={() => navigate('/admin/lessons/new')} className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90">
+              <button type="button" onClick={() => navigate('/admin/lessons/new')} className="flex min-h-11 items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90">
                 <Plus className="h-4 w-4 text-[#C5B0CD]" /> {t('admin.lessonsPage.newLesson')}
               </button>
             }
@@ -234,7 +234,7 @@ export default function AdminLessons() {
                       type="button"
                       onClick={() => togglePublish(lesson)}
                       disabled={togglingId === lesson._id}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm disabled:opacity-40"
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm disabled:opacity-40 xl:h-8 xl:w-8"
                       aria-label={lesson.published ? t('admin.lessonsPage.unpublish') : t('admin.lessonsPage.publishNow')}
                       title={lesson.published ? t('admin.lessonsPage.unpublish') : t('admin.lessonsPage.publishNow')}
                     >
@@ -249,7 +249,7 @@ export default function AdminLessons() {
                     <button
                       type="button"
                       onClick={() => navigate(`/admin/lessons/${lesson._id}`)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-8 xl:w-8"
                       aria-label={t('admin.common.edit')}
                       title={t('admin.common.edit')}
                     >
@@ -258,7 +258,7 @@ export default function AdminLessons() {
                     <button
                       type="button"
                       onClick={() => setDeleting(lesson)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 transition-colors hover:bg-red-100 shadow-sm"
+                      className="flex h-11 w-11 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 transition-colors hover:bg-red-100 shadow-sm xl:h-8 xl:w-8"
                       aria-label={t('admin.common.delete')}
                       title={t('admin.common.delete')}
                     >

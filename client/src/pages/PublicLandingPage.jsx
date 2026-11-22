@@ -22,6 +22,7 @@ import {
 } from '../components/icons';
 import { useTheme } from '../context/ThemeContext';
 import { Hero10 } from '../components/Hero10';
+import EduFanorWordmark from '../components/EduFanorWordmark';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -312,20 +313,8 @@ function LandingFooter() {
       />
       <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:px-12">
         <div className="lg:col-span-5">
-          <Link to="/" className="group inline-flex items-center gap-3">
-            <img
-              src="/edufanor.png"
-              alt="EduFanor Logo"
-              className="h-10 w-auto object-contain transition-transform duration-500 group-hover:-translate-y-1"
-            />
-            <span className="flex flex-col leading-none">
-              <span className="font-display text-xl font-semibold tracking-tight text-[#F6F5F2]">
-                EduFanor
-              </span>
-              <span className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.3em] text-[#C5B0CD]/80">
-                {isAr ? 'تعلّم · استعد · استجب' : 'Learn · Prepare · Respond'}
-              </span>
-            </span>
+          <Link to="/" className="group inline-flex items-center">
+            <EduFanorWordmark className="w-36 text-[#FCFAFF] transition-transform duration-300 group-hover:scale-[1.015]" />
           </Link>
 
           <p className="mt-6 max-w-sm text-[13.5px] leading-relaxed text-[#F6F5F2]/80">
@@ -467,8 +456,9 @@ export default function PublicLandingPage() {
 
   const onHero = !scrolled || mobileMenuOpen;
 
-  const wordmarkTone = onHero ? 'text-[#F6F5F2]' : 'text-ink dark:text-[#F6F5F2]';
-  const subwordTone = onHero ? 'text-[#F6F5F2]/70' : 'text-[#C5B0CD] dark:text-[#C5B0CD]';
+  const wordmarkTone = onHero
+    ? 'text-[#FCFAFF]'
+    : 'text-[#34233F] dark:text-[#FCFAFF]';
   const navIdle = onHero
     ? 'text-[#F6F5F2]/85 hover:bg-white/[0.08] hover:text-[#F6F5F2]'
     : 'text-ink/75 hover:bg-ink/[0.05] hover:text-ink dark:text-[#F6F5F2]/80 dark:hover:bg-white/[0.06] dark:hover:text-[#F6F5F2]';
@@ -509,31 +499,24 @@ export default function PublicLandingPage() {
         {isAr ? 'انتقل إلى المحتوى' : 'Skip to content'}
       </a>
 
-      <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${headerTone}`}>
+      <header className={`fixed inset-x-0 top-0 z-50 font-copy transition-all duration-500 ${headerTone}`}>
         <div
-          className={`mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-5 transition-all duration-500 sm:px-8 lg:px-12 ${
+          className={`mx-auto flex max-w-[1440px] items-center justify-between gap-2 px-4 transition-all duration-500 sm:gap-4 sm:px-8 lg:px-12 ${
             scrolled && !mobileMenuOpen ? 'h-[4.25rem]' : 'h-[5rem]'
           }`}
         >
-          <Link to="/" className="group flex shrink-0 items-center gap-3">
-            <img
-              src="/edufanor.png"
-              alt="EduFanor Logo"
-              className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          <Link
+            to="/"
+            className="group flex shrink-0 items-center"
+            dir="ltr"
+            style={{ unicodeBidi: 'isolate' }}
+          >
+            <EduFanorWordmark
+              className={`w-[clamp(9.5rem,48vw,11.75rem)] transition-transform duration-300 group-hover:scale-[1.015] sm:w-[12rem] xl:w-[12.5rem] ${wordmarkTone}`}
             />
-            <span className="flex flex-col leading-none">
-              <span className={`font-display text-[1.28rem] font-semibold tracking-tight ${wordmarkTone}`}>
-                EduFanor
-              </span>
-              <span
-                className={`mt-1.5 hidden text-[9px] font-bold uppercase leading-tight tracking-[0.3em] sm:block ${subwordTone}`}
-              >
-                {isAr ? 'تعلّم · استعد · استجب' : 'Learn · Prepare · Respond'}
-              </span>
-            </span>
           </Link>
 
-          <nav className="hidden items-center gap-0.5 lg:flex" aria-label={isAr ? 'التنقل الرئيسي' : 'Main navigation'}>
+          <nav className="hidden items-center gap-1 xl:flex" aria-label={isAr ? 'التنقل الرئيسي' : 'Main navigation'}>
             {navItems.map((item) => {
               const active = activeSection === item.href.replace('#', '');
               return (
@@ -541,7 +524,7 @@ export default function PublicLandingPage() {
                   key={item.href}
                   href={item.href}
                   aria-current={active ? 'true' : undefined}
-                  className={`rounded-full px-3 py-2 text-[12.5px] font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/50 ${
+                  className={`rounded-full px-3.5 py-2.5 text-[15px] font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/50 ${
                     active ? navActive : navIdle
                   }`}
                 >
@@ -561,7 +544,7 @@ export default function PublicLandingPage() {
                 type="button"
                 onClick={() => i18n.changeLanguage('ar')}
                 aria-pressed={isAr}
-                className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold tracking-[0.08em] transition-colors ${
+                className={`rounded-full px-3.5 py-1.5 text-[11px] font-extrabold tracking-[0.08em] transition-colors ${
                   isAr ? segActiveTone : segIdleTone
                 }`}
               >
@@ -571,7 +554,7 @@ export default function PublicLandingPage() {
                 type="button"
                 onClick={() => i18n.changeLanguage('en')}
                 aria-pressed={!isAr}
-                className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold tracking-[0.08em] transition-colors ${
+                className={`rounded-full px-3.5 py-1.5 text-[11px] font-extrabold tracking-[0.08em] transition-colors ${
                   !isAr ? segActiveTone : segIdleTone
                 }`}
               >
@@ -584,25 +567,25 @@ export default function PublicLandingPage() {
               onClick={toggleTheme}
               aria-label={isAr ? 'تبديل المظهر' : 'Toggle theme'}
               title={isAr ? 'تبديل المظهر' : 'Toggle theme'}
-              className={`group flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/50 ${controlTone}`}
+              className={`group flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/50 ${controlTone}`}
             >
               {isDark ? (
-                <Sun className="h-4 w-4 text-[#C5B0CD] drop-shadow-[0_0_9px_rgba(181,139,131,0.6)] transition-transform duration-500 group-hover:rotate-45" />
+                <Sun className="h-[1.125rem] w-[1.125rem] text-[#C5B0CD] drop-shadow-[0_0_9px_rgba(181,139,131,0.6)] transition-transform duration-500 group-hover:rotate-45" />
               ) : (
-                <Moon className="h-4 w-4 text-[#C5B0CD] transition-transform duration-500 group-hover:-rotate-12 dark:text-[#C5B0CD]" />
+                <Moon className="h-[1.125rem] w-[1.125rem] text-[#C5B0CD] transition-transform duration-500 group-hover:-rotate-12 dark:text-[#C5B0CD]" />
               )}
             </button>
 
             <Link
               to="/login"
-              className={`hidden rounded-full px-4 py-2 text-[12.5px] font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/50 lg:inline-flex ${loginTone}`}
+              className={`hidden min-h-11 items-center rounded-full px-4 py-2.5 text-[15px] font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/50 xl:inline-flex ${loginTone}`}
             >
               {isAr ? 'تسجيل الدخول' : 'Log in'}
             </Link>
 
             <Link
               to="/register"
-              className={`group hidden items-center gap-2 rounded-full px-5 py-2.5 text-[12.5px] font-extrabold tracking-[0.02em] transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/50 lg:inline-flex ${ctaTone}`}
+              className={`group hidden min-h-11 items-center gap-2.5 rounded-full px-5.5 py-3 text-[15px] font-extrabold tracking-[0.02em] transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/50 xl:inline-flex ${ctaTone}`}
             >
               {isAr ? 'إنشاء حساب' : 'Sign up'}
               {isAr ? (
@@ -617,9 +600,9 @@ export default function PublicLandingPage() {
               onClick={() => setMobileMenuOpen((open) => !open)}
               aria-label={isAr ? 'القائمة' : 'Menu'}
               aria-expanded={mobileMenuOpen}
-              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/50 lg:hidden ${controlTone}`}
+              className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/50 xl:hidden ${controlTone}`}
             >
-              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {mobileMenuOpen ? <X className="h-[1.375rem] w-[1.375rem]" /> : <Menu className="h-[1.375rem] w-[1.375rem]" />}
             </button>
           </div>
         </div>
@@ -645,7 +628,7 @@ export default function PublicLandingPage() {
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       aria-current={active ? 'true' : undefined}
-                      className={`flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition-colors ${
+                      className={`flex items-center justify-between rounded-2xl px-4 py-3 text-[15px] font-medium transition-colors ${
                         active
                           ? 'bg-white/[0.08] text-[#F6F5F2]'
                           : 'text-[#F6F5F2]/80 hover:bg-white/[0.05] hover:text-[#F6F5F2]'
@@ -674,7 +657,7 @@ export default function PublicLandingPage() {
                       type="button"
                       onClick={() => i18n.changeLanguage('ar')}
                       aria-pressed={isAr}
-                      className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold transition-colors ${
+                      className={`rounded-full px-3.5 py-1.5 text-[11px] font-extrabold transition-colors ${
                         isAr ? 'bg-[#F6F5F2] text-[#17313E]' : 'text-[#F6F5F2]/60'
                       }`}
                     >
@@ -684,7 +667,7 @@ export default function PublicLandingPage() {
                       type="button"
                       onClick={() => i18n.changeLanguage('en')}
                       aria-pressed={!isAr}
-                      className={`rounded-full px-3 py-1.5 text-[10px] font-extrabold transition-colors ${
+                      className={`rounded-full px-3.5 py-1.5 text-[11px] font-extrabold transition-colors ${
                         !isAr ? 'bg-[#F6F5F2] text-[#17313E]' : 'text-[#F6F5F2]/60'
                       }`}
                     >
@@ -697,14 +680,14 @@ export default function PublicLandingPage() {
                   <Link
                     to="/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-full border border-white/20 py-3 text-center text-[13px] font-semibold text-[#F6F5F2] transition-colors hover:bg-white/[0.08]"
+                    className="min-h-11 rounded-full border border-white/20 py-3 text-center text-sm font-semibold text-[#F6F5F2] transition-colors hover:bg-white/[0.08]"
                   >
                     {isAr ? 'تسجيل الدخول' : 'Log in'}
                   </Link>
                   <Link
                     to="/register"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-full bg-[#F6F5F2] py-3 text-center text-[13px] font-extrabold text-[#17313E] transition-colors hover:bg-[#F6F5F2]"
+                    className="min-h-11 rounded-full bg-[#F6F5F2] py-3 text-center text-sm font-extrabold text-[#17313E] transition-colors hover:bg-[#F6F5F2]"
                   >
                     {isAr ? 'إنشاء حساب' : 'Sign up'}
                   </Link>
@@ -719,12 +702,11 @@ export default function PublicLandingPage() {
         {/* Hero — full-bleed photographic background. */}
         <section
           id="home"
-          style={{ '--navbar-height': '5rem', minHeight: 'calc(100svh - var(--navbar-height))' }}
-          className="relative isolate flex items-center overflow-hidden bg-[#17313E] px-5 py-16 text-white transition-colors duration-500 sm:px-8 lg:px-12"
+          className="relative isolate flex min-h-[calc(100svh_-_5rem)] items-center overflow-hidden bg-[#17313E] px-5 py-16 text-white transition-colors duration-500 sm:px-8 lg:px-12 xl:min-h-[110svh] 2xl:min-h-[120svh]"
         >
           {/* Full-bleed photographic plate */}
           <div
-            className="absolute inset-0 -z-30 bg-cover bg-[center_40%] bg-no-repeat bg-[url('/heroa.jpg')]"
+            className="absolute inset-0 -z-30 bg-cover bg-[position:75%_40%] bg-no-repeat bg-[url('/heroa.jpg')] sm:bg-[position:62%_40%] lg:bg-[center_40%]"
             aria-hidden="true"
           />
 
@@ -754,10 +736,6 @@ export default function PublicLandingPage() {
           <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
             <div className="absolute -top-24 -start-20 h-80 w-80 rounded-full bg-[radial-gradient(circle,#91C8E4_0%,transparent_70%)] opacity-25 blur-2xl" />
             <div className="absolute bottom-[-6rem] -end-24 h-96 w-96 rounded-full bg-[radial-gradient(circle,#4682A9_0%,transparent_70%)] opacity-20 blur-3xl" />
-            <div className="absolute top-[16%] end-[7%] h-24 w-44 rounded-2xl border border-white/15 bg-white/5 backdrop-blur-md" />
-            <svg className="absolute bottom-[24%] start-[5%] h-16 w-52 opacity-40" viewBox="0 0 200 60" fill="none">
-              <path d="M0 30 L40 30 L55 10 L70 50 L85 20 L100 35 L120 35 L140 15 L160 45 L180 30 L200 30" stroke="#C5B0CD" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
             <div className="absolute top-[12%] start-[4%] h-20 w-20 opacity-30" style={{ backgroundImage: 'radial-gradient(rgba(197, 176, 205,0.8) 1px, transparent 1px)', backgroundSize: '10px 10px' }} />
             <span className="absolute top-[32%] end-[20%] h-1.5 w-1.5 rounded-full bg-[#C5B0CD] shadow-[0_0_12px_3px_rgba(145,200,228,0.6)]" />
             <span className="absolute bottom-[36%] start-[24%] h-1 w-1 rounded-full bg-white/70 shadow-[0_0_10px_2px_rgba(255,255,255,0.5)]" />
@@ -770,39 +748,30 @@ export default function PublicLandingPage() {
               initial={reduceMotion ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="relative max-w-3xl"
+              className="relative max-w-4xl"
             >
               <div
                 className="pointer-events-none absolute -inset-10 -z-10 bg-[radial-gradient(ellipse_at_30%_45%,rgba(23, 49, 62,0.12),rgba(23, 49, 62,0.08)_48%,transparent_78%)] blur-2xl"
                 aria-hidden="true"
               />
-              <motion.p
-                                className={`flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.32em] text-[#C5B0CD] ${
-                  isAr ? 'font-arabic tracking-[0.14em]' : ''
-                }`}
-              >
-                <span className="h-px w-10 bg-white/70" aria-hidden="true" />
-                {isAr ? 'تعلّم الإسعافات الأولية بثقة' : 'Learn first aid with confidence'}
-              </motion.p>
-
               <motion.h1
-                                className={`mt-8 font-display font-bold [text-shadow:0_24px_66px_rgba(32,53,98,0.15),0_4px_18px_rgba(32,53,98,0.12)] ${
+                className={`[text-shadow:0_24px_66px_rgba(32,53,98,0.15),0_4px_18px_rgba(32,53,98,0.12)] ${
                   isAr
-                    ? 'text-[clamp(2.5rem,6.5vw,5rem)] font-arabic leading-[1.2] tracking-normal'
-                    : 'text-[clamp(2.95rem,7.2vw,5.8rem)] leading-[0.94] tracking-[-0.045em]'
+                    ? 'font-arabic text-[clamp(2.35rem,6.5vw,5rem)] font-extrabold leading-[1.2] tracking-normal'
+                    : 'font-editorial text-[clamp(1.7rem,7.5vw,5.75rem)] font-normal leading-[1.02] tracking-[-0.035em]'
                 }`}
               >
                 {isAr ? (
                   <>
                     <span className="block text-white">معرفة صغيرة.</span>
-                    <span className="mt-2 block text-[#C5B0CD] drop-shadow-[0_4px_18px_rgba(24,59,86,0.4)]">
+                    <span className="mt-[0.12em] block text-[#C5B0CD] drop-shadow-[0_4px_18px_rgba(24,59,86,0.4)]">
                       وثقة تُحدث فرقًا.
                     </span>
                   </>
                 ) : (
                   <>
                     <span className="block text-white">A little knowledge.</span>
-                    <span className="mt-2 block text-[#C5B0CD] drop-shadow-[0_4px_18px_rgba(24,59,86,0.4)]">
+                    <span className="mt-[0.12em] block text-[#C5B0CD] italic drop-shadow-[0_4px_18px_rgba(24,59,86,0.4)]">
                       The confidence to act.
                     </span>
                   </>
@@ -810,8 +779,8 @@ export default function PublicLandingPage() {
               </motion.h1>
 
               <motion.p
-                                className={`mt-6 max-w-[34rem] text-balance text-[clamp(0.99rem,1.35vw,1.14rem)] text-white/90 leading-[1.7] [text-shadow:0_2px_22px_rgba(32,53,98,0.15)] ${
-                  isAr ? 'font-arabic leading-[2.05]' : 'leading-[1.85] tracking-[0.005em]'
+                className={`mt-6 max-w-[37rem] text-balance text-[clamp(0.98rem,1.3vw,1.1rem)] text-white/90 [text-shadow:0_2px_22px_rgba(32,53,98,0.15)] ${
+                  isAr ? 'font-arabic leading-[2.05]' : 'font-copy leading-[1.8] tracking-[0.01em]'
                 }`}
               >
                 {isAr
@@ -820,11 +789,36 @@ export default function PublicLandingPage() {
               </motion.p>
 
               <motion.div
-                                className="mt-10 flex flex-col items-stretch gap-3.5 sm:flex-row sm:items-center"
+                className="relative mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4"
               >
+                <motion.svg
+                  viewBox="0 0 320 56"
+                  preserveAspectRatio="none"
+                  fill="none"
+                  aria-hidden="true"
+                  className={`pointer-events-none absolute z-10 -top-6 h-6 w-28 sm:-top-7 sm:h-7 sm:w-44 xl:top-1/2 xl:-translate-y-1/2 xl:h-12 ${
+                    isAr
+                      ? 'right-0 xl:right-[calc(36rem_-_50vw)] xl:w-[calc(50vw_-_36rem_-_0.75rem)]'
+                      : 'left-0 xl:left-[calc(36rem_-_50vw_+_0.3125rem)] xl:w-[calc(50vw_-_36rem_-_0.75rem)]'
+                  }`}
+                >
+                  <motion.path
+                    d="M0 28H84C94 28 101 27 107 17C114 5 119 4 124 22L131 43C134 54 140 54 144 42L156 12C161 0 166 0 171 13C176 26 180 28 190 28H320"
+                    stroke="#C5B0CD"
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    vectorEffect="non-scaling-stroke"
+                    initial={reduceMotion ? false : { pathLength: 0, opacity: 0.65 }}
+                    animate={{ pathLength: 1, opacity: 0.9 }}
+                    transition={{ duration: 1.5, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  />
+                </motion.svg>
                 <Link
                   to="/register"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-white px-8 py-4 text-[13.5px] font-extrabold tracking-[0.01em] text-[#17313E] shadow-[0_24px_60px_-22px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.55)] ring-1 ring-[#C5B0CD]/50 transition-all duration-300 hover:-translate-y-1 hover:bg-[#C5B0CD] hover:shadow-[0_30px_70px_-22px_rgba(181,139,131,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/70 sm:w-auto"
+                  className={`group inline-flex min-h-14 items-center justify-center gap-2.5 rounded-full bg-white px-6 py-3.5 text-[13px] font-bold tracking-[0.015em] text-[#17313E] shadow-[0_24px_60px_-22px_rgba(181,139,131,0.5),inset_0_1px_0_rgba(255,255,255,0.55)] ring-1 ring-[#C5B0CD]/50 transition-all duration-300 hover:-translate-y-1 hover:bg-[#C5B0CD] hover:shadow-[0_30px_70px_-22px_rgba(181,139,131,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5B0CD]/70 sm:w-auto ${
+                    isAr ? 'font-arabic' : 'font-copy'
+                  }`}
                 >
                   {isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
                   {isAr ? (
@@ -835,7 +829,9 @@ export default function PublicLandingPage() {
                 </Link>
                 <a
                   href="#our-impact"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-[#C5B0CD]/40 bg-white/15 px-8 py-4 text-[13.5px] font-bold text-white shadow-[0_0_44px_-18px_rgba(181,139,131,0.5)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/60 hover:bg-white/25 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:w-auto"
+                  className={`group inline-flex min-h-14 items-center justify-center gap-2.5 rounded-full border border-[#C5B0CD]/40 bg-white/15 px-6 py-3.5 text-[13px] font-semibold tracking-[0.015em] text-white shadow-[0_0_44px_-18px_rgba(181,139,131,0.5)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/60 hover:bg-white/25 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:w-auto ${
+                    isAr ? 'font-arabic' : 'font-copy'
+                  }`}
                 >
                   {isAr ? 'اكتشف أثرنا' : 'Explore our impact'}
                   <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />

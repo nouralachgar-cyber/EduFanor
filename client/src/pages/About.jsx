@@ -17,6 +17,7 @@ import {
   Users,
 } from '../components/icons';
 import { useTheme } from '../context/ThemeContext';
+import EduFanorWordmark from '../components/EduFanorWordmark';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -78,15 +79,8 @@ export default function About() {
       <header className="sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur-xl">
         <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-12">
           <Link to="/" className="flex items-center gap-3">
-            <img
-              src="/edufanor.png"
-              alt="EduFanor Logo"
-              className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-            />
+            <EduFanorWordmark className="w-32 text-[#34233F] dark:text-[#FCFAFF] sm:w-36" />
             <span>
-              <span className="block font-display text-lg font-semibold leading-none tracking-tight text-ink">
-                EduFanor
-              </span>
               <span className="mt-1 hidden text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted sm:block">
                 {isAr ? 'عن المنصة' : 'About the platform'}
               </span>

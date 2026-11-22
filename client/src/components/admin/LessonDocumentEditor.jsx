@@ -56,7 +56,7 @@ function EditorButton({ icon: Icon, children, onClick, onMouseDown, title, disab
         onMouseDown?.();
       }}
       onClick={onClick}
-      className={`inline-flex min-h-9 items-center justify-center gap-2 rounded-lg border border-line bg-card px-3 py-2 text-xs font-bold text-ink transition-colors hover:border-primary/50 hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-line bg-card px-3 py-2 text-xs font-bold text-ink transition-colors hover:border-primary/50 hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-50 xl:min-h-9 ${className}`}
     >
       {Icon && <Icon className="h-4 w-4 shrink-0 text-primary dark:text-brand-ink" />}
       <span>{children}</span>
@@ -541,13 +541,13 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
             {label(title, ({ paragraph: 'فقرة', text: 'فقرة', 'rich text': 'نص', heading: 'عنوان', subheading: 'عنوان فرعي', list: 'قائمة', 'numbered list': 'قائمة مرقمة', note: 'ملاحظة', tip: 'نصيحة', warning: 'تحذير', image: 'صورة', video: 'فيديو', youtube: 'يوتيوب', divider: 'فاصل' })[title] || title)}
           </span>
           <div className="flex items-center gap-1 opacity-100 transition-opacity sm:opacity-60 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
-            <button type="button" onClick={() => moveBlock(block.id, -1)} disabled={index === 0} title={label('Move up', 'تحريك لأعلى')} aria-label={label('Move up', 'تحريك لأعلى')} className="rounded-md p-1.5 text-ink-muted hover:bg-card hover:text-ink disabled:opacity-30">
+            <button type="button" onClick={() => moveBlock(block.id, -1)} disabled={index === 0} title={label('Move up', 'تحريك لأعلى')} aria-label={label('Move up', 'تحريك لأعلى')} className="flex min-h-11 min-w-11 items-center justify-center rounded-md text-ink-muted hover:bg-card hover:text-ink disabled:opacity-30 xl:min-h-0 xl:min-w-0">
               <ChevronUp className="h-4 w-4" />
             </button>
-            <button type="button" onClick={() => moveBlock(block.id, 1)} disabled={index === blocks.length - 1} title={label('Move down', 'تحريك لأسفل')} aria-label={label('Move down', 'تحريك لأسفل')} className="rounded-md p-1.5 text-ink-muted hover:bg-card hover:text-ink disabled:opacity-30">
+            <button type="button" onClick={() => moveBlock(block.id, 1)} disabled={index === blocks.length - 1} title={label('Move down', 'تحريك لأسفل')} aria-label={label('Move down', 'تحريك لأسفل')} className="flex min-h-11 min-w-11 items-center justify-center rounded-md text-ink-muted hover:bg-card hover:text-ink disabled:opacity-30 xl:min-h-0 xl:min-w-0">
               <ChevronDown className="h-4 w-4" />
             </button>
-            <button type="button" onClick={() => removeBlock(block.id)} title={label('Delete block', 'حذف الكتلة')} aria-label={label('Delete block', 'حذف الكتلة')} className="rounded-md p-1.5 text-danger hover:bg-danger-soft">
+            <button type="button" onClick={() => removeBlock(block.id)} title={label('Delete block', 'حذف الكتلة')} aria-label={label('Delete block', 'حذف الكتلة')} className="flex min-h-11 min-w-11 items-center justify-center rounded-md text-danger hover:bg-danger-soft xl:min-h-0 xl:min-w-0">
               <Trash2 className="h-4 w-4" />
             </button>
           </div>

@@ -1,15 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import EduFanorWordmark from './EduFanorWordmark';
 
 export default function Logo({ className = "" }) {
   return (
-    <Link to="/" className={`flex items-center gap-3 group cursor-pointer ${className}`}>
-      {/* عرض اللوجو الحقيقي من مجلد public مباشرة */}
-      <img
-        src="/edufanor.png"
-        alt="EduFanor Logo"
-        className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-      />
+    <Link to="/" className={`group flex cursor-pointer items-center ${className}`}>
+      <EduFanorWordmark className="w-36 text-[#34233F] transition-transform duration-300 group-hover:scale-[1.015] dark:text-[#FCFAFF]" />
     </Link>
   );
 }

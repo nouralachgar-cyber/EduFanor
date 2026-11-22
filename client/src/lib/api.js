@@ -1,7 +1,10 @@
 const configuredApiBase = import.meta.env.VITE_API_URL?.trim();
-const API_BASE = (
-  configuredApiBase || (import.meta.env.DEV ? 'http://localhost:5000/api' : '')
-).replace(/\/$/, '');
+const defaultApiBase = import.meta.env.DEV
+  ? `${window.location.protocol}//${window.location.hostname}:5000/api`
+  : `${window.location.origin}/api`;
+const API_BASE = new URL(configuredApiBase || defaultApiBase, window.location.origin)
+  .toString()
+  .replace(/\/$/, '');
 
 export function resolveAssetUrl(url) {
   if (typeof url !== 'string' || !url.startsWith('/uploads/')) return url || '';

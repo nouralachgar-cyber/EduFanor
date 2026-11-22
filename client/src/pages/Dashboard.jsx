@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { useCatalog } from '../context/CatalogContext';
 import {
@@ -31,6 +31,7 @@ import {
   isCourseCompleted,
 } from '../lib/progress';
 import { apiRequest, getStoredToken } from '../lib/api';
+import AchievementPanel from '../components/achievement/AchievementPanel';
 
 const categoryIcons = {
   cpr: HeartPulse,
@@ -60,14 +61,23 @@ function streakFromDates(dates) {
 export default function Dashboard() {
   const { t, i18n } = useTranslation();
   const { user } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
   const isAr = i18n.language === 'ar';
 
   const [guideModalOpen, setGuideModalOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [remote, setRemote] = useState(null);
+  const [achievementResponse, setAchievementResponse] = useState(null);
 
   const { courses } = useCatalog();
   const courseList = Array.isArray(courses) ? courses : [];
+  const achievementUserId = String(user?._id || user?.id || user?.email || '');
+  const currentAchievementResponse =
+    achievementResponse?.userId === achievementUserId ? achievementResponse : null;
+  const achievementData = currentAchievementResponse?.data || null;
+  const achievementLoading = Boolean(achievementUserId && !currentAchievementResponse);
+  const achievementError = Boolean(currentAchievementResponse?.error);
 
   useEffect(() => {
     if (!getStoredToken()) return undefined;
@@ -83,6 +93,31 @@ export default function Dashboard() {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (user?.role !== 'student' || !getStoredToken()) return undefined;
+    let cancelled = false;
+    apiRequest('/achievements/me', { auth: true })
+      .then((data) => {
+        if (!cancelled) {
+          setAchievementResponse({ userId: achievementUserId, data, error: false });
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setAchievementResponse({ userId: achievementUserId, data: null, error: true });
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [achievementUserId, user?.role]);
+
+  useEffect(() => {
+    if (location.state?.celebrateAchievement) {
+      navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location.pathname, location.state, navigate]);
 
   const remoteCompletedIds = useMemo(
     () =>
@@ -297,6 +332,18 @@ export default function Dashboard() {
             {t('nav.profile')}
           </Link>
         </section>
+
+        {user?.role === 'student' && getStoredToken() && (
+          <AchievementPanel
+            achievement={achievementData?.achievement}
+            progress={achievementData?.progress}
+            studentName={achievementData?.studentName || user?.name || ''}
+            newlyCreated={achievementData?.newlyCreated}
+            celebrateOnLoad={Boolean(location.state?.celebrateAchievement)}
+            loading={achievementLoading}
+            error={achievementError}
+          />
+        )}
 
         <section className="space-y-5">
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">

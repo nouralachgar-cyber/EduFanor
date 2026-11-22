@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Sun, Moon, CheckCircle2, Globe } from './icons';
 import { useTheme } from '../context/ThemeContext';
+import EduFanorWordmark from './EduFanorWordmark';
 
 export default function AuthLayout({ children }) {
   const { t, i18n } = useTranslation();
@@ -37,13 +38,8 @@ export default function AuthLayout({ children }) {
           />
 
           <div className="relative z-10">
-            <Link to="/" className="inline-flex items-center gap-3">
-              <img
-                src="/edufanor.png"
-                alt="EduFanor Logo"
-                className="h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-              />
-              <span className="font-display text-xl font-semibold tracking-tight">EduFanor</span>
+            <Link to="/" className="inline-flex items-center">
+              <EduFanorWordmark className="w-36 text-[#FCFAFF]" />
             </Link>
           </div>
 
@@ -119,13 +115,8 @@ export default function AuthLayout({ children }) {
 
           <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6">
             <div className="w-full max-w-md">
-              <div className="mb-6 flex items-center gap-3 lg:hidden">
-                <img
-                  src="/edufanor.png"
-                  alt="EduFanor Logo"
-                  className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                />
-                <span className="font-display text-lg font-semibold tracking-tight text-ink">EduFanor</span>
+              <div className="mb-6 flex items-center lg:hidden">
+                <EduFanorWordmark className="w-32 text-[#34233F] dark:text-[#FCFAFF]" />
               </div>
               {children}
             </div>

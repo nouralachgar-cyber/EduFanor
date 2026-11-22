@@ -24,6 +24,7 @@ import {
 import { AuthContext } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { initials } from '../../lib/admin';
+import EduFanorWordmark from '../EduFanorWordmark';
 import '../../styles/admin.css';
 
 const navGroups = [
@@ -64,20 +65,11 @@ function SidebarContent({ onNavigate }) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-3 px-5 pt-6 pb-5">
-        <img
-          src="/edufanor.png"
-          alt="EduFanor Logo"
-          className="h-10 w-auto object-contain transition-transform duration-300 hover:scale-105"
-        />
-        <div className="min-w-0">
-          <p className="font-display text-base font-semibold leading-tight tracking-tight text-white">
-            {t('admin.shell.brand')}
-          </p>
-          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/55">
-            {t('admin.shell.subtitle')}
-          </p>
-        </div>
+      <div className="flex flex-col items-start gap-2 px-5 pt-6 pb-5">
+        <EduFanorWordmark className="w-36 text-[#FCFAFF]" />
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/55">
+          {t('admin.shell.subtitle')}
+        </p>
       </div>
 
       <div className="mx-3 mb-4 rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2">
@@ -145,7 +137,7 @@ function SidebarContent({ onNavigate }) {
         <div className="flex items-center gap-1.5">
           <Link
             to="/"
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/10 px-2 py-2 text-[10px] font-bold text-white/65 transition-colors hover:bg-white/[0.08] hover:text-white"
+            className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/10 px-2 py-2 text-[10px] font-bold text-white/65 transition-colors hover:bg-white/[0.08] hover:text-white"
           >
             <ChevronLeft className={`h-3 w-3 ${isAr ? 'rotate-180' : ''}`} />
             {t('admin.shell.backToSite')}
@@ -153,7 +145,7 @@ function SidebarContent({ onNavigate }) {
           <button
             type="button"
             onClick={handleLogout}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-white/65 transition-colors hover:bg-danger/20 hover:text-white"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/65 transition-colors hover:bg-danger/20 hover:text-white xl:h-8 xl:w-8"
             aria-label={t('admin.shell.logout')}
             title={t('admin.shell.logout')}
           >
@@ -227,7 +219,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => setMobileOpen(false)}
-              className="absolute end-3 top-4 flex h-8 w-8 items-center justify-center rounded-full text-white/70 hover:bg-white/10 hover:text-white"
+              className="absolute end-3 top-4 flex h-11 w-11 items-center justify-center rounded-full text-white/70 hover:bg-white/10 hover:text-white"
               aria-label={t('admin.shell.closeMenu')}
             >
               <X className="h-4 w-4" />
@@ -243,7 +235,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-card text-ink lg:hidden"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line bg-card text-ink lg:hidden"
               aria-label={t('admin.shell.openMenu')}
             >
               <Menu className="h-4 w-4" />
@@ -273,7 +265,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted xl:h-9 xl:w-9"
               aria-label={t('admin.shell.theme')}
               title={t('admin.shell.theme')}
             >
@@ -283,7 +275,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
-              className="flex h-9 items-center gap-1.5 rounded-xl border border-line bg-card px-2.5 text-[10px] font-extrabold text-ink transition-colors hover:bg-surface-muted"
+              className="flex h-11 items-center gap-1.5 rounded-xl border border-line bg-card px-2.5 text-[10px] font-extrabold text-ink transition-colors hover:bg-surface-muted xl:h-9"
               aria-label={t('admin.shell.language')}
               title={t('admin.shell.language')}
             >

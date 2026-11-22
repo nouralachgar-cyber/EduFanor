@@ -35,4 +35,11 @@ const adminOnly = (req, res, next) => {
   return next();
 };
 
-module.exports = { protect, adminOnly };
+const studentOnly = (req, res, next) => {
+  if (!req.user || req.user.role !== 'student') {
+    return res.status(403).json({ message: 'Student access required', code: 'STUDENT_ONLY' });
+  }
+  return next();
+};
+
+module.exports = { protect, adminOnly, studentOnly };

@@ -21,6 +21,7 @@ import {
 } from './icons';
 import { AuthContext } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import EduFanorWordmark from './EduFanorWordmark';
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
@@ -117,20 +118,13 @@ export default function Navbar() {
           scrolled ? 'h-16' : 'h-[4.5rem]'
         }`}
       >
-        <Link to="/dashboard" className="group flex shrink-0 items-center gap-3">
-          <img
-            src="/edufanor.png"
-            alt="EduFanor Logo"
-            className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-          />
-          <span className="hidden leading-tight sm:block">
-            <span className="block font-display text-lg font-semibold tracking-tight text-ink">
-              {t('nav.brand')}
-            </span>
-            <span className="block text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted">
-              {t('nav.tagline')}
-            </span>
-          </span>
+        <Link
+          to="/dashboard"
+          className="group flex shrink-0 items-center"
+          dir="ltr"
+          style={{ unicodeBidi: 'isolate' }}
+        >
+          <EduFanorWordmark className="w-[8.25rem] text-[#34233F] transition-transform duration-300 group-hover:scale-[1.015] dark:text-[#FCFAFF] sm:w-[9rem]" />
         </Link>
 
         <nav className="hidden items-center gap-1 rounded-2xl border border-line bg-surface-muted p-1 lg:flex">

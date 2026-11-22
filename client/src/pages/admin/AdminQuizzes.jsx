@@ -109,7 +109,7 @@ export default function AdminQuizzes() {
   );
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.quizzesPage.title')}
@@ -119,7 +119,7 @@ export default function AdminQuizzes() {
             <button
               type="button"
               onClick={loadQuizzes}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
               aria-label={t('admin.common.refresh')}
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -128,7 +128,7 @@ export default function AdminQuizzes() {
               type="button" 
               onClick={openCreate} 
               disabled={lessons.length === 0} 
-              className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90 disabled:opacity-50"
+              className="flex min-h-11 items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90 disabled:opacity-50"
             >
               <Plus className="h-4 w-4 text-[#C5B0CD]" /> {t('admin.quizzesPage.newQuiz')}
             </button>
@@ -151,14 +151,14 @@ export default function AdminQuizzes() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.quizzesPage.searchPlaceholder')}
-              className="w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+              className="min-h-11 w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
           <select 
             value={lessonFilter} 
             onChange={(event) => setLessonFilter(event.target.value)} 
-            className="rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-60 shadow-sm"
+            className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-60 shadow-sm"
             aria-label={t('admin.quizzesPage.filterLesson')}
           >
             <option value="">{t('admin.quizzesPage.allLessons')}</option>
@@ -179,7 +179,7 @@ export default function AdminQuizzes() {
             title={t('admin.quizzesPage.noQuizzes')}
             icon={ClipboardCheck}
             action={
-              <button type="button" onClick={openCreate} disabled={lessons.length === 0} className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90 disabled:opacity-50">
+              <button type="button" onClick={openCreate} disabled={lessons.length === 0} className="flex min-h-11 items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90 disabled:opacity-50">
                 <Plus className="h-4 w-4 text-[#C5B0CD]" /> {t('admin.quizzesPage.newQuiz')}
               </button>
             }
@@ -216,7 +216,7 @@ export default function AdminQuizzes() {
                     type="button"
                     onClick={() => togglePublish(quiz)}
                     disabled={togglingId === quiz._id}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm disabled:opacity-40"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm disabled:opacity-40 xl:h-8 xl:w-8"
                     aria-label={quiz.published ? t('admin.quizzesPage.unpublish') : t('admin.quizzesPage.publishNow')}
                     title={quiz.published ? t('admin.quizzesPage.unpublish') : t('admin.quizzesPage.publishNow')}
                   >
@@ -231,7 +231,7 @@ export default function AdminQuizzes() {
                   <button
                     type="button"
                     onClick={() => openEdit(quiz)}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-8 xl:w-8"
                     aria-label={t('admin.common.edit')}
                     title={t('admin.common.edit')}
                   >
@@ -240,7 +240,7 @@ export default function AdminQuizzes() {
                   <button
                     type="button"
                     onClick={() => setDeleting(quiz)}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 transition-colors hover:bg-red-100 shadow-sm"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 transition-colors hover:bg-red-100 shadow-sm xl:h-8 xl:w-8"
                     aria-label={t('admin.common.delete')}
                     title={t('admin.common.delete')}
                   >

@@ -66,7 +66,7 @@ export default function AdminStudentDetail() {
 
   if (loading && !data) {
     return (
-      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
         <LoadingState label={t('admin.common.loading')} />
       </div>
     );
@@ -74,7 +74,7 @@ export default function AdminStudentDetail() {
 
   if (error && !data) {
     return (
-      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
         <ErrorState title={t('admin.errors.loadStudent')} message={error} onRetry={load} retryLabel={t('admin.common.retry')} />
       </div>
     );
@@ -111,17 +111,17 @@ export default function AdminStudentDetail() {
   };
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
       <div>
         <button
           type="button"
           onClick={() => navigate('/admin/students')}
-          className="mb-4 inline-flex items-center gap-1.5 text-xs font-extrabold text-[#415E72]/70 transition-colors hover:text-[#415E72]"
+          className="mb-4 inline-flex min-h-11 items-center gap-1.5 text-xs font-extrabold text-[#415E72]/70 transition-colors hover:text-[#415E72]"
         >
           <ArrowLeft className="h-4 w-4 rtl:rotate-180 text-[#C5B0CD]" /> {t('admin.students.title')}
         </button>
 
-        <div className="rounded-3xl border border-[#C5B0CD]/40 bg-white p-6 shadow-sm flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="rounded-3xl border border-[#C5B0CD]/40 bg-white p-4 shadow-sm flex flex-col gap-4 sm:p-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex min-w-0 items-start gap-4">
             <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#415E72] text-lg font-extrabold text-[#F6F5F2] shadow-sm">
               {initials(student.name)}
@@ -142,13 +142,13 @@ export default function AdminStudentDetail() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <Link to="/admin/students" className="rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-4 py-2 text-xs font-bold text-[#415E72] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm">
+            <Link to="/admin/students" className="inline-flex min-h-11 items-center rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-4 py-2 text-xs font-bold text-[#415E72] shadow-sm transition-colors hover:bg-[#C5B0CD]/30">
               {t('admin.common.back')}
             </Link>
             <button
               type="button"
               onClick={() => setConfirm(true)}
-              className={`inline-flex h-9 items-center gap-1.5 rounded-xl px-4 text-xs font-bold text-white transition-opacity hover:opacity-90 shadow-sm ${
+              className={`inline-flex min-h-11 items-center gap-1.5 rounded-xl px-4 text-xs font-bold text-white shadow-sm transition-opacity hover:opacity-90 ${
                 suspended ? 'bg-[#415E72]' : 'bg-red-600'
               }`}
             >

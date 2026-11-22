@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from '../../components/icons';
 import { AuthContext } from '../../context/AuthContext';
+import EduFanorWordmark from '../../components/EduFanorWordmark';
 
 export default function AdminLayout() {
   const { t, i18n } = useTranslation();
@@ -52,14 +53,10 @@ export default function AdminLayout() {
         sidebarOpen ? 'translate-x-0' : isAr ? 'translate-x-full lg:translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         <div className="flex h-20 items-center justify-between border-b border-[#C5B0CD]/30 px-6 bg-[#F6F5F2]/50">
-          <div className="flex items-center gap-3">
-            <img
-              src="/edufanor.png"
-              alt="EduFanor Logo"
-              className="h-10 w-auto object-contain transition-transform duration-300 hover:scale-105"
-            />
+          <div className="flex min-w-0 items-center gap-3">
+            <EduFanorWordmark className="w-32 text-[#34233F]" />
             <div>
-              <p className="font-display text-sm font-extrabold text-[#415E72]">EduFanor Admin</p>
+              <p className="font-display text-sm font-extrabold text-[#415E72]">Admin</p>
               <p className="text-[10px] font-bold text-[#415E72]/60">Management Console</p>
             </div>
           </div>

@@ -32,6 +32,7 @@ const slugify = (value) =>
 
 export default function CourseFormModal({ open, course, onClose, onSaved }) {
   const { t } = useTranslation();
+  const courseId = course?._id || course?.id || course?.data?._id || course?.data?.id;
   const [form, setForm] = useState(emptyForm());
   const [saving, setSaving] = useState(false);
   const [loadingCourse, setLoadingCourse] = useState(false);
@@ -62,10 +63,15 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
 
   useEffect(() => {
     if (!open || !course) return undefined;
+    if (!courseId) {
+      setError(t('admin.errors.loadCourse'));
+      return undefined;
+    }
+
     let cancelled = false;
     setLoadingCourse(true);
     adminApi
-      .course(course.id)
+      .course(courseId)
       .then((data) => {
         if (!cancelled && data?.course) {
           setForm({
@@ -87,7 +93,7 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
     return () => {
       cancelled = true;
     };
-  }, [open, course, t]);
+  }, [open, course, courseId, t]);
 
   const update = (patch) =>
     setForm((previous) => ({ ...previous, ...(typeof patch === 'function' ? patch(previous) : patch) }));
@@ -142,7 +148,7 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
         published: Boolean(form.published),
       };
       const saved = course
-        ? await adminApi.updateCourse(course.id, payload)
+        ? await adminApi.updateCourse(courseId, payload)
         : await adminApi.createCourse(payload);
       onSaved?.(saved?.course || null, Boolean(course));
     } catch (err) {
@@ -161,10 +167,10 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
       subtitle={t('admin.courseEditor.subtitle')}
       footer={
         <>
-          <button type="button" onClick={onClose} className="btn-secondary h-9 px-4 text-xs">
+          <button type="button" onClick={onClose} className="btn-secondary min-h-11 px-4 text-xs xl:h-9 xl:min-h-0">
             {t('admin.common.cancel')}
           </button>
-          <button type="submit" form="course-form" disabled={saving || loadingCourse || imageBusy} className="btn-primary h-9 px-4 text-xs">
+          <button type="submit" form="course-form" disabled={saving || loadingCourse || imageBusy} className="btn-primary min-h-11 px-4 text-xs xl:h-9 xl:min-h-0">
             {saving ? t('admin.common.saving') : course ? t('admin.common.save') : t('admin.courseEditor.create')}
           </button>
         </>

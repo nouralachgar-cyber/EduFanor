@@ -92,7 +92,7 @@ export default function AdminCourses() {
   const publishedCount = courses.filter((course) => course.published).length;
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 sm:p-6 text-[#415E72]">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.courses.title')}
@@ -102,7 +102,7 @@ export default function AdminCourses() {
             <button
               type="button"
               onClick={load}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
               aria-label={t('admin.common.refresh')}
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -110,7 +110,7 @@ export default function AdminCourses() {
             <button 
               type="button" 
               onClick={openCreate} 
-              className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90"
+              className="flex min-h-11 items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90"
             >
               <Plus className="h-4 w-4 text-[#C5B0CD]" /> {t('admin.courses.newCourse')}
             </button>
@@ -132,14 +132,14 @@ export default function AdminCourses() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.courses.searchPlaceholder')}
-              className="w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+              className="min-h-11 w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
           <select 
             value={status} 
             onChange={(event) => setStatus(event.target.value)} 
-            className="rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-44 shadow-sm"
+            className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-44 shadow-sm"
             aria-label={t('admin.common.status')}
           >
             <option value="">{t('admin.courses.allStatuses')}</option>
@@ -156,7 +156,7 @@ export default function AdminCourses() {
           <EmptyState
             title={t('admin.courses.noCourses')}
             icon={BookOpen}
-            action={<button type="button" onClick={openCreate} className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm"><Plus className="h-4 w-4 text-[#C5B0CD]" />{t('admin.courses.newCourse')}</button>}
+            action={<button type="button" onClick={openCreate} className="flex min-h-11 items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm"><Plus className="h-4 w-4 text-[#C5B0CD]" />{t('admin.courses.newCourse')}</button>}
           />
         ) : (
           <div className="grid gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -176,10 +176,10 @@ export default function AdminCourses() {
                       </Badge>
                     </div>
                     <div className="absolute end-3 top-3 flex gap-1.5">
-                      <button type="button" onClick={() => openEdit(course)} className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#415E72] shadow-sm transition-colors hover:bg-[#F6F5F2] border border-[#C5B0CD]" aria-label={t('admin.common.edit')} title={t('admin.common.edit')}>
+                      <button type="button" onClick={() => openEdit(course)} className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#415E72] shadow-sm transition-colors hover:bg-[#F6F5F2] border border-[#C5B0CD] xl:h-8 xl:w-8" aria-label={t('admin.common.edit')} title={t('admin.common.edit')}>
                         <Edit3 className="h-3.5 w-3.5" />
                       </button>
-                      <button type="button" onClick={() => setDeleting(course)} className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-red-600 shadow-sm transition-colors hover:bg-red-50 border border-red-200" aria-label={t('admin.common.delete')} title={t('admin.common.delete')}>
+                      <button type="button" onClick={() => setDeleting(course)} className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-red-600 shadow-sm transition-colors hover:bg-red-50 border border-red-200 xl:h-8 xl:w-8" aria-label={t('admin.common.delete')} title={t('admin.common.delete')}>
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>

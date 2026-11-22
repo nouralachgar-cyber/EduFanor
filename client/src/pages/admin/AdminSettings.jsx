@@ -114,7 +114,7 @@ export default function AdminSettings() {
 
   if (loading && !data) {
     return (
-      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
         <LoadingState label={t('admin.common.loading')} />
       </div>
     );
@@ -122,7 +122,7 @@ export default function AdminSettings() {
 
   if (error && !data) {
     return (
-      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
         <ErrorState title={t('admin.errors.loadProfile')} message={error} onRetry={load} retryLabel={t('admin.common.retry')} />
       </div>
     );
@@ -132,7 +132,7 @@ export default function AdminSettings() {
   const recentActions = data.recentActions || [];
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
       <PageHeader
         eyebrow={t('admin.shell.system')}
         title={t('admin.settings.title')}
@@ -141,7 +141,7 @@ export default function AdminSettings() {
           <button
             type="button"
             onClick={load}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
             aria-label={t('admin.common.refresh')}
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -325,7 +325,7 @@ export default function AdminSettings() {
             type="button"
             onClick={checkAi}
             disabled={aiStatus.busy}
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-4 text-xs font-bold text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 disabled:opacity-60 shadow-sm"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-4 text-xs font-bold text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 disabled:opacity-60 shadow-sm"
           >
             <RefreshCw className={`h-3.5 w-3.5 text-[#C5B0CD] ${aiStatus.busy ? 'animate-spin' : ''}`} />
             {aiStatus.busy ? t('admin.settings.aiChecking') : t('admin.settings.aiCheck')}
@@ -365,7 +365,7 @@ export default function AdminSettings() {
         <button 
           type="button" 
           onClick={signOut} 
-          className="inline-flex h-9 items-center justify-center gap-2 rounded-xl bg-red-600 px-4 text-xs font-bold text-white transition-opacity hover:bg-red-700 shadow-sm"
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-red-600 px-4 text-xs font-bold text-white transition-opacity hover:bg-red-700 shadow-sm"
         >
           <LogOut className="h-4 w-4" /> {t('admin.settings.signOut')}
         </button>
