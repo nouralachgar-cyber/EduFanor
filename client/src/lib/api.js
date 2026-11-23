@@ -8,9 +8,16 @@ const configuredApiUrl = configuredApiBase
 const useConfiguredApi =
   configuredApiUrl &&
   ['http:', 'https:'].includes(configuredApiUrl.protocol) &&
-  configuredApiUrl.pathname.replace(/\/+$/, '').endsWith('/api') &&
-  (import.meta.env.DEV || configuredApiUrl.origin !== window.location.origin);
-const API_BASE = (useConfiguredApi ? configuredApiUrl.toString() : defaultApiBase).replace(/\/$/, '');
+  configuredApiUrl.origin !== window.location.origin;
+const API_BASE =
+  useConfiguredApi
+    ? (() => {
+        let base = configuredApiUrl!.toString();
+        if (!base.endsWith('/api') && !base.endsWith('/')) base += '/api';
+        else if (!base.endsWith('/api')) base += '/api';
+        return base.replace(/\/$/, '');
+      })()
+    : defaultApiBase || `${window.location.protocol}//${window.location.hostname}:5000/api`;
 
 export function resolveAssetUrl(url) {
   if (typeof url !== 'string' || !url.startsWith('/uploads/')) return url || '';
@@ -65,6 +72,7 @@ export async function apiRequest(path, options = {}) {
   try {
     response = await fetch(`${API_BASE}${path}`, {
       method,
+      credentials: 'include',
       headers: requestHeaders,
       body: body !== undefined ? JSON.stringify(body) : undefined,
       signal,

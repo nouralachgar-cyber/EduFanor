@@ -34,6 +34,10 @@ export default function Login() {
           setErrorMsg(t('auth.networkError'));
         } else if (result?.code === 'INVALID_AUTH_RESPONSE') {
           setErrorMsg(t('auth.loginFailed'));
+        } else if (result?.code === 'MISSING_TOKEN') {
+          setErrorMsg(t('auth.loginFailed'));
+        } else if (result?.code === 'INVALID_ROLE') {
+          setErrorMsg(t('auth.loginFailed'));
         } else if (result?.status >= 500) {
           setErrorMsg(t('auth.serverError'));
         } else {

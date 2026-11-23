@@ -91,15 +91,26 @@ export const AuthProvider = ({ children }) => {
         body: { email: cleanEmail, password },
       });
       const authenticatedUser = data?.user || data;
+
+      // Validate response has required fields
+      if (!data?.token) {
+        return {
+          success: false,
+          code: 'MISSING_TOKEN',
+          status: 0,
+          message: 'Authentication response missing token',
+        };
+      }
+
       if (
-        !data?.token ||
         !authenticatedUser ||
-        !['admin', 'student'].includes(authenticatedUser.role)
+        !['admin', 'student'].includes(String(authenticatedUser.role).toLowerCase())
       ) {
         return {
           success: false,
-          code: 'INVALID_AUTH_RESPONSE',
+          code: 'INVALID_ROLE',
           status: 0,
+          message: 'Invalid user role in authentication response',
         };
       }
 
