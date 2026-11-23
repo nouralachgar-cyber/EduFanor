@@ -53,16 +53,16 @@ export function Hero10({ id, isAr = false }) {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto max-w-3xl"
         >
-          <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#415E72] dark:text-[#C5B0CD]">
+          <p className="font-inter text-lg font-extrabold uppercase tracking-[0.18em] text-[#415E72] dark:text-[#C5B0CD]">
             {isAr ? 'من نحن' : 'About EduFanor'}
           </p>
-          <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-[#765D78] dark:text-[#C5B0CD] sm:text-4xl md:text-5xl">
+          <h2 className="mt-4 font-inter font-bold tracking-tight text-[#765D78] dark:text-[#C5B0CD] sm:text-4xl md:text-5xl">
             {heading}
             <br />
             <span className="text-[#765D78] dark:text-[#C5B0CD]">{highlight}</span>
           </h2>
-          <p className="mt-5 text-sm leading-relaxed text-ink-muted sm:text-base">{description}</p>
-          <p className="mt-4 font-display text-base italic text-ink sm:text-lg">{supporting}</p>
+          <p className="font-inter mt-5 text-lg leading-relaxed text-ink-muted sm:text-base">{description}</p>
+          <p className="mt-4 font-inter text-base italic text-ink sm:text-lg">{supporting}</p>
         </motion.div>
 
         <div

@@ -65,24 +65,20 @@ const GLOBE_ARCS = [
   },
 ];
 
-function SectionLabel({ index, children, tone = 'light' }) {
+function SectionLabel({ index, children, tone = 'light', isAr = false }) {
   const textTone =
     tone === 'dark'
       ? 'text-[#C5B0CD]'
       : 'text-[#415E72] dark:text-[#C5B0CD]';
-  const numberTone =
-    tone === 'dark'
-      ? 'text-[#C5B0CD]'
-      : 'text-[#C5B0CD] dark:text-[#C5B0CD]';
 
   return (
     <div
-      className={`flex items-center gap-3 text-[10px] font-extrabold uppercase tracking-[0.26em] ${textTone}`}
+      className={`flex items-center gap-3 font-extrabold uppercase tracking-[0.18em] ${textTone}`}
     >
-      <span className={`font-display text-[13px] font-semibold tracking-normal ${numberTone}`}>
+      <span className={`font-arabic-display font-bold ${isAr ? 'text-[#C5B0CD]' : 'text-[#415E72] dark:text-[#C5B0CD]'}`}>
         {index}
       </span>
-      <span className="h-px w-8 bg-current opacity-40" aria-hidden="true" />
+      <span className="h-px w-8 bg-current" aria-hidden="true" />
       <span>{children}</span>
     </div>
   );
@@ -340,10 +336,10 @@ function LandingFooter() {
 
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7">
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C5B0CD]/70">
-              {isAr ? 'اكتشف' : 'Explore'}
+              <p className={`text-base font-bold tracking-normal text-[#C5B0CD] ${isAr ? 'text-lg' : 'text-[13px]'}`}>
+                {isAr ? 'اكتشف' : 'Explore'}
             </p>
-            <nav className="mt-4 flex flex-col gap-2.5 text-[13px] font-semibold text-[#F6F5F2]/85">
+            <nav className={`mt-3 flex flex-col gap-2.5 font-semibold text-[#F6F5F2]/85 ${isAr ? 'text-lg' : 'text-[13px]'}`}>
               <a href="#our-impact" className="transition-colors hover:text-[#C5B0CD]">
                 {isAr ? 'أثرنا' : 'Our impact'}
               </a>
@@ -354,10 +350,10 @@ function LandingFooter() {
           </div>
 
           <div>
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C5B0CD]/70">
+            <p className={`text-base font-bold tracking-normal text-[#C5B0CD] ${isAr ? 'text-lg' : 'text-[13px]'}`}>
               {isAr ? 'المنصة' : 'Platform'}
             </p>
-            <nav className="mt-4 flex flex-col gap-2.5 text-[13px] font-semibold text-[#F6F5F2]/85">
+            <nav className={`mt-3 flex flex-col gap-2.5 font-semibold text-[#F6F5F2]/85 ${isAr ? 'text-lg' : 'text-[13px]'}`}>
               <Link to="/about" className="transition-colors hover:text-[#C5B0CD]">
                 {isAr ? 'عن المنصة' : 'About'}
               </Link>
@@ -371,15 +367,15 @@ function LandingFooter() {
           </div>
 
           <div className="col-span-2 sm:col-span-1">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#C5B0CD]/70">
+            <p className={`text-base font-bold tracking-normal text-[#C5B0CD] ${isAr ? 'text-lg' : 'text-[13px]'}`}>
               {isAr ? 'ملاحظة مسؤولة' : 'A responsible note'}
             </p>
-            <p className="mt-4 text-[11.5px] leading-relaxed text-[#F6F5F2]/75">
+            <p className={`mt-3 text-[#F6F5F2]/85 ${isAr ? 'text-sm leading-[1.9]' : 'text-[11.5px] leading-relaxed'}`}>
               {t('footer.disclaimer')}
             </p>
             <a
               href="#home"
-              className="mt-4 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#C5B0CD] transition-colors hover:text-[#F6F5F2]"
+              className={`mt-4 inline-flex items-center gap-2 ${isAr ? 'font-arabic-display text-sm uppercase tracking-[0.18em]' : 'font-extrabold uppercase tracking-[0.18em] text-[11px] transition-colors hover:text-[#F6F5F2]'}`}
             >
               {isAr ? 'إلى الأعلى' : 'Back to top'}
               <ArrowRight className="h-3.5 w-3.5 -rotate-90 rtl:rotate-90" />

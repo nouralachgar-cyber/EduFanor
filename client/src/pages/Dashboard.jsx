@@ -246,7 +246,7 @@ export default function Dashboard() {
                 {t('dashboard.welcomeBack')}{' '}
                 <span className="italic text-accent">{firstName}</span>
               </h1>
-              <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
+              <p className="mt-3 max-w-xl font-arabic text-base leading-relaxed text-ink-muted">
                 {t('dashboard.welcomeSubtitle')}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
@@ -269,15 +269,15 @@ export default function Dashboard() {
             </div>
 
             <div className="w-full max-w-xs rounded-2xl border border-line bg-surface/80 p-5 backdrop-blur-sm">
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+              <p className="font-arabic text-[13px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
                 {isAr ? 'خطوتك التالية' : 'Your next step'}
               </p>
               {nextCourse ? (
                 <>
-                  <p className="mt-2 text-sm font-extrabold leading-snug text-ink">
+                  <p className="mt-2 font-arabic text-base leading-snug text-ink">
                     {nextCourse.title}
                   </p>
-                  <p className="mt-1 text-[11px] text-ink-muted">
+                  <p className="mt-1 font-arabic text-sm text-ink-muted">
                     {nextCourse.duration} · {nextCourse.lessons} {t('coursesPage.lessonsCount')}
                   </p>
                   <Link
@@ -305,7 +305,7 @@ export default function Dashboard() {
                 <div className={`icon-box h-10 w-10 ${stat.color}`}>
                   <Icon className="h-5 w-5" />
                 </div>
-                <p className="text-[11px] font-bold text-ink-muted">{stat.label}</p>
+                <p className="font-arabic text-[11px] font-bold text-ink-muted">{stat.label}</p>
                 <h3 className="font-display text-2xl font-semibold text-ink sm:text-3xl">{stat.value}</h3>
               </div>
             );
@@ -313,7 +313,7 @@ export default function Dashboard() {
         </section>
 
         <section className="card flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-line bg-surface-muted text-lg font-extrabold text-ink">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-line bg-surface-muted font-arabic text-lg font-extrabold text-ink">
             {user?.name ? user.name.charAt(0).toUpperCase() : 'E'}
           </div>
           <div className="min-w-0 flex-1">
@@ -388,8 +388,8 @@ export default function Dashboard() {
                         <span className="chip bg-brand-soft text-brand-ink">{course.percent}%</span>
                       )}
                     </div>
-                    <h3 className="text-base font-extrabold leading-snug text-ink">{course.title}</h3>
-                    <p className="line-clamp-2 text-xs leading-relaxed text-ink-muted">
+                    <h3 className="font-arabic text-base font-extrabold leading-snug text-ink">{course.title}</h3>
+                    <p className="line-clamp-2 font-arabic text-sm leading-relaxed text-ink-muted">
                       {course.description}
                     </p>
                   </div>
@@ -412,7 +412,7 @@ export default function Dashboard() {
                   </div>
 
                   <div className="mt-auto flex items-center justify-between border-t border-line pt-4">
-                    <span className="text-[11px] font-bold text-ink-muted">
+                    <span className="font-arabic text-[11px] font-bold text-ink-muted">
                       {course.lessons} {t('coursesPage.lessonsCount')}
                     </span>
                     <Link
@@ -488,13 +488,13 @@ export default function Dashboard() {
                 <span className="icon-box h-10 w-10 bg-amber/15 text-accent">
                   <Award className="h-5 w-5" />
                 </span>
-                <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">
+                <span className="font-arabic text-[13px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">
                   {isAr ? 'اختبار قصير' : 'Quick quiz'}
                 </span>
               </div>
               <h3 className="text-base font-extrabold text-ink">{t('dashboard.quizSection.title')}</h3>
-              <p className="text-xs leading-relaxed text-ink-muted">{t('dashboard.quizSection.desc')}</p>
-              <span className="mt-auto inline-flex items-center gap-2 text-xs font-extrabold text-brand-ink">
+              <p className="font-arabic text-xs leading-relaxed text-ink-muted">{t('dashboard.quizSection.desc')}</p>
+              <span className="font-arabic mt-auto inline-flex items-center gap-2 text-xs font-extrabold text-brand-ink">
                 {t('dashboard.quizSection.startBtn')}
                 {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
               </span>
@@ -508,8 +508,8 @@ export default function Dashboard() {
                 <span className="chip bg-amber/15 text-accent">{t('aiTutorPage.statusChip')}</span>
               </div>
               <h3 className="text-base font-extrabold text-ink">{t('dashboard.aiSection.title')}</h3>
-              <p className="text-xs leading-relaxed text-ink-muted">{t('dashboard.aiSection.desc')}</p>
-              <span className="mt-auto inline-flex items-center gap-2 text-xs font-extrabold text-brand-ink">
+              <p className="font-arabic text-xs leading-relaxed text-ink-muted">{t('dashboard.aiSection.desc')}</p>
+              <span className="font-arabic mt-auto inline-flex items-center gap-2 text-xs font-extrabold text-brand-ink">
                 {isAr ? 'معاينة المساعد' : 'Preview the tutor'}
                 {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
               </span>
@@ -539,7 +539,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-between border-b border-line pb-4">
               <div className="flex items-center gap-2">
                 <Zap className="h-5 w-5 text-accent" />
-                <h3 id="quick-guide-title" className="text-lg font-extrabold text-ink">
+                <h3 id="quick-guide-title" className="font-arabic text-lg font-extrabold text-ink">
                   {t('quickGuide.title')}
                 </h3>
               </div>
@@ -562,17 +562,17 @@ export default function Dashboard() {
                 const Icon = item.icon;
                 return (
                   <div key={item.title} className="space-y-1.5 rounded-xl border border-line bg-surface-muted p-4">
-                    <h4 className="flex items-center gap-2 text-xs font-extrabold text-brand-ink">
+                    <h4 className="font-arabic flex items-center gap-2 text-xs font-extrabold text-brand-ink">
                       <Icon className="h-4 w-4" />
                       <span>{item.title}</span>
                     </h4>
-                    <p className="text-xs leading-relaxed text-ink-muted">{item.desc}</p>
+                    <p className="font-arabic text-xs leading-relaxed text-ink-muted">{item.desc}</p>
                   </div>
                 );
               })}
             </div>
 
-            <p className="text-[10px] leading-relaxed text-ink-muted">{t('footer.disclaimer')}</p>
+            <p className="font-arabic text-[11px] leading-relaxed text-ink-muted">{t('footer.disclaimer')}</p>
           </div>
         </div>
       )}

@@ -60,7 +60,7 @@ export default function Login() {
             <ShieldCheck className="h-3.5 w-3.5" />
             {isAr ? 'مرحباً بعودتك' : 'Welcome back'}
           </span>
-          <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink">
+          <h1 className="mt-3 font-inter font-semibold tracking-tight text-ink">
             {t('auth.loginTitle')}
           </h1>
           <p className="mt-2 text-sm leading-relaxed text-ink-muted">{t('auth.loginSubtitle')}</p>
@@ -69,7 +69,7 @@ export default function Login() {
         {errorMsg && (
           <div
             role="alert"
-            className="mb-5 flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft p-3.5 text-xs font-bold text-danger"
+            className="mb-5 flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft p-3.5 font-inter text-base font-bold text-danger"
           >
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{errorMsg}</span>
@@ -144,7 +144,7 @@ export default function Login() {
           </button>
         </form>
 
-        <div className="mt-6 border-t border-line pt-4 text-center text-xs text-ink-muted">
+        <div className="mt-6 border-t border-line pt-4 text-center font-inter text-[13px] text-ink-muted">
           {t('auth.noAccount')}{' '}
           <Link to="/register" className="font-extrabold text-brand-ink hover:text-accent">
             {t('auth.signUp')}

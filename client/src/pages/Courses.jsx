@@ -42,7 +42,7 @@ export default function Courses() {
                 <ShieldCheck className="h-3.5 w-3.5" />
                 {t('coursesPage.badge')}
               </span>
-              <h1 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
+              <h1 className="mt-4 font-inter text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
                 {t('coursesPage.title')}
               </h1>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
@@ -52,14 +52,14 @@ export default function Courses() {
 
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div className="rounded-2xl border border-line bg-surface/80 px-5 py-4 text-center backdrop-blur-sm">
-                <p className="font-display text-2xl font-semibold text-ink">{courseList.length}</p>
-                <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
+                <p className="font-inter text-2xl font-semibold text-ink">{courseList.length}</p>
+                <p className="font-inter mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
                   {t('coursesPage.statsCourses')}
                 </p>
               </div>
               <div className="rounded-2xl border border-line bg-surface/80 px-5 py-4 text-center backdrop-blur-sm">
-                <p className="font-display text-2xl font-semibold text-accent">{completedCount}</p>
-                <p className="mt-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
+                <p className="font-inter text-2xl font-semibold text-accent">{completedCount}</p>
+                <p className="font-inter mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
                   {t('coursesPage.completed')}
                 </p>
               </div>
@@ -84,20 +84,20 @@ export default function Courses() {
           </div>
 
           <div className="no-scrollbar flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
-            {['all', 'cpr', 'choking', 'burns'].map((category) => (
-              <button
-                key={category}
-                type="button"
-                onClick={() => setSelectedCategory(category)}
-                className={`whitespace-nowrap rounded-full px-4 py-2 text-xs font-bold transition-all ${
-                  selectedCategory === category
-                    ? 'bg-primary text-on-primary shadow-sm'
-                    : 'bg-surface-muted text-ink-muted hover:text-ink'
-                }`}
-              >
-                {t(`filter.${category}`)}
-              </button>
-            ))}
+{['all', 'cpr', 'choking', 'burns'].map((category) => (
+                <button
+                  key={category}
+                  type="button"
+                  onClick={() => setSelectedCategory(category)}
+                  className={`font-inter whitespace-nowrap rounded-full px-4 py-2 text-[13px] font-bold transition-all ${
+                    selectedCategory === category
+                      ? 'bg-primary text-on-primary shadow-sm'
+                      : 'bg-surface-muted text-ink-muted hover:text-ink'
+                  }`}
+                >
+                  {t(`filter.${category}`)}
+                </button>
+              ))}
           </div>
         </div>
 
@@ -122,10 +122,10 @@ export default function Courses() {
                     </div>
 
                     <div className="space-y-2">
-                      <h2 className="text-base font-extrabold leading-snug text-ink transition-colors group-hover:text-brand-ink">
+                      <h2 className="font-inter text-base font-extrabold leading-snug text-ink transition-colors group-hover:text-brand-ink">
                         {course.title}
                       </h2>
-                      <p className="line-clamp-2 text-xs leading-relaxed text-ink-muted">
+                      <p className="line-clamp-2 font-inter text-sm leading-relaxed text-ink-muted">
                         {course.description}
                       </p>
                     </div>
@@ -163,15 +163,15 @@ export default function Courses() {
             <div className="icon-box h-14 w-14 bg-surface-muted text-ink-muted">
               <SearchX className="h-7 w-7" />
             </div>
-            <h2 className="text-base font-extrabold text-ink">{t('coursesPage.emptyTitle')}</h2>
-            <p className="max-w-sm text-xs leading-relaxed text-ink-muted">{t('coursesPage.emptyDesc')}</p>
+            <h2 className="font-inter text-base font-extrabold text-ink">{t('coursesPage.emptyTitle')}</h2>
+            <p className="font-inter max-w-sm text-sm leading-relaxed text-ink-muted">{t('coursesPage.emptyDesc')}</p>
             <button
               type="button"
               onClick={() => {
                 setSearchQuery('');
                 setSelectedCategory('all');
               }}
-              className="btn-secondary mt-2 px-4 text-xs"
+              className="btn-secondary mt-2 px-4 font-inter text-sm"
             >
               {t('coursesPage.resetSearch')}
             </button>

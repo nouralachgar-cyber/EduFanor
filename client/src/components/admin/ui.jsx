@@ -18,7 +18,7 @@ export function PageHeader({ eyebrow, title, subtitle, actions, children }) {
             {eyebrow}
           </span>
         )}
-        <h1 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">{title}</h1>
+        <h1 className="font-inter text-2xl font-bold tracking-tight text-ink sm:text-3xl">{title}</h1>
         {subtitle && <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-ink-muted">{subtitle}</p>}
         {children}
       </div>
@@ -62,7 +62,7 @@ export function StatCard({ icon: Icon, label, value, hint, tone = 'sage', trend 
       </div>
       <div>
         <p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-ink-muted">{label}</p>
-        <p className="mt-1 font-display text-2xl font-bold leading-none text-ink">{value}</p>
+        <p className="mt-1 font-inter text-2xl font-bold leading-none text-ink">{value}</p>
         {hint && <p className="mt-1.5 text-[11px] font-semibold text-ink-muted">{hint}</p>}
       </div>
     </div>

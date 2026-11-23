@@ -81,7 +81,7 @@ export default function About() {
           <Link to="/" className="flex items-center gap-3">
             <EduFanorWordmark className="w-32 text-[#17313E] dark:text-[#F6F5F2] sm:w-36" />
             <span>
-              <span className="mt-1 hidden text-[10px] font-bold uppercase tracking-[0.16em] text-ink-muted sm:block">
+              <span className="mt-1 hidden font-arabic text-[13px] font-bold uppercase tracking-[0.18em] text-ink-muted sm:block">
                 {isAr ? 'عن المنصة' : 'About the platform'}
               </span>
             </span>
@@ -109,7 +109,7 @@ export default function About() {
             <button
               type="button"
               onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
-              className="flex h-9 items-center gap-1.5 rounded-lg border border-line bg-surface px-2.5 text-[10px] font-extrabold text-ink transition-colors hover:bg-surface-muted"
+              className="flex h-9 items-center gap-1.5 rounded-lg border border-line bg-surface px-2.5 font-arabic text-[13px] font-extrabold text-ink transition-colors hover:bg-surface-muted"
               aria-label={t('nav.toggleLanguage')}
             >
               <Globe className="h-3.5 w-3.5 text-brand-ink" />
@@ -217,8 +217,8 @@ export default function About() {
                   <span className="icon-box h-11 w-11 bg-brand-soft text-brand-ink">
                     <Icon className="h-5 w-5" />
                   </span>
-                  <h2 className="mt-4 text-lg font-extrabold text-ink">{value.title}</h2>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">{value.text}</p>
+                  <h2 className="mt-4 font-display text-lg font-extrabold text-ink">{value.title}</h2>
+                  <p className="mt-2 font-arabic text-base leading-relaxed text-ink-muted">{value.text}</p>
                 </article>
               );
             })}
@@ -228,7 +228,7 @@ export default function About() {
         <section className="border-y border-line bg-beige py-20 md:py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <div className="max-w-2xl">
-              <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+              <span className="font-arabic text-[13px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
                 {isAr ? 'ركائز المحتوى' : 'Content pillars'}
               </span>
               <h2 className="mt-3 section-title">
@@ -263,10 +263,10 @@ export default function About() {
             <span className="icon-box mx-auto h-12 w-12 bg-amber/15 text-accent">
               <ShieldAlert className="h-6 w-6" />
             </span>
-            <h2 className="mt-5 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            <h2 className="mt-5 font-display font-semibold tracking-tight text-ink">
               {isAr ? 'تعلّم لتساعد. واعرف حدودك.' : 'Learn to help. Know your limits.'}
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-ink-muted">
+            <p className="mx-auto mt-4 max-w-2xl font-arabic text-base leading-relaxed text-ink-muted">
               {isAr
                 ? 'EduFanor بيئة تعليمية لتعزيز الوعي بالإسعافات الأولية، وليست بديلاً عن التدريب الميداني المعتمد أو الكادر الطبي المتخصص. في أي طارئ، الأولوية لسلامة المكان والاتصال بخدمات الطوارئ المحلية.'
                 : 'EduFanor is an educational environment for first-aid awareness. It does not replace certified practical training or medical professionals. In any emergency, prioritize scene safety and contact local emergency services.'}
@@ -284,7 +284,7 @@ export default function About() {
       </main>
 
       <footer className="border-t border-line bg-surface">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-center text-[11px] text-ink-muted sm:flex-row sm:text-start lg:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-center font-arabic text-[13px] text-ink-muted sm:flex-row sm:text-start lg:px-12">
           <p>
             © {CURRENT_YEAR} EduFanor. {isAr ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
           </p>

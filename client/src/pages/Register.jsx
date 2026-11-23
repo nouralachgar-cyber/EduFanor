@@ -38,14 +38,14 @@ export default function Register() {
             <ShieldCheck className="h-3.5 w-3.5" />
             {isAr ? 'ابدأ مسارك' : 'Start your path'}
           </span>
-          <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink">
+          <h1 className="mt-3 font-inter text-3xl font-semibold tracking-tight text-ink">
             {t('auth.registerTitle')}
           </h1>
           <p className="mt-2 text-sm leading-relaxed text-ink-muted">{t('auth.registerSubtitle')}</p>
         </div>
 
         {errorMsg && (
-          <div className="mb-5 flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft p-3.5 text-xs font-bold text-danger">
+          <div className="mb-5 flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft p-3.5 font-inter text-base font-bold text-danger">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -132,7 +132,7 @@ export default function Register() {
           </button>
         </form>
 
-        <div className="mt-6 border-t border-line pt-4 text-center text-xs text-ink-muted">
+        <div className="mt-6 border-t border-line pt-4 text-center font-inter text-[13px] text-ink-muted">
           {t('auth.hasAccount')}{' '}
           <Link to="/login" className="font-extrabold text-brand-ink hover:text-accent">
             {t('auth.signIn')}
@@ -140,7 +140,7 @@ export default function Register() {
         </div>
       </div>
 
-      <p className="mt-4 flex items-start gap-2 rounded-xl border border-line bg-surface-muted px-3.5 py-3 text-[10px] leading-relaxed text-ink-muted">
+      <p className="mt-4 flex items-start gap-2 rounded-xl border border-line bg-surface-muted font-inter px-3.5 py-3 text-[13px] leading-relaxed text-ink-muted">
         <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
         {isAr
           ? 'نسخة تجريبية: يُحفظ الحساب محلياً في هذا المتصفح ولا تُرسل البيانات إلى خادم.'
