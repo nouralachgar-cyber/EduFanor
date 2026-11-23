@@ -853,7 +853,7 @@ export default function PublicLandingPage() {
               </motion.div>
               <motion.h2
                 {...reveal(0.06)}
-                className={`mt-6 max-w-2xl font-display font-bold tracking-[-0.025em] text-[#765D78] dark:text-[#C5B0CD] ${
+                className={`mt-6 max-w-2xl font-display font-bold tracking-[-0.025em] text-[#17313E] dark:text-[#F6F5F2] ${
                   isAr
                     ? 'text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.25]'
                     : 'text-[clamp(2rem,4.6vw,3.8rem)] leading-[1.02]'
@@ -863,13 +863,13 @@ export default function PublicLandingPage() {
                   <>
                     الطوارئ قد تحدث في كل مكان،
                     <br />
-                    <span className="text-[#765D78] dark:text-[#C5B0CD]">ومعارفك تُحدث فرقًا.</span>
+                    <span className="text-[#17313E] dark:text-[#F6F5F2]">ومعارفك تُحدث فرقًا.</span>
                   </>
                 ) : (
                   <>
                     Emergencies happen everywhere.
                     <br />
-                    <span className="italic text-[#765D78] dark:text-[#C5B0CD]">Your knowledge can make a difference.</span>
+                    <span className="font-semibold text-[#17313E] dark:text-[#F6F5F2]">Your knowledge can make a difference.</span>
                   </>
                 )}
               </motion.h2>
@@ -933,7 +933,7 @@ export default function PublicLandingPage() {
             <motion.div {...reveal(0)} className="max-w-3xl">
               <SectionLabel index="02">{isAr ? 'المنصة' : 'The platform'}</SectionLabel>
               <h2
-                className={`mt-6 font-display font-bold tracking-[-0.02em] text-[#765D78] dark:text-[#C5B0CD] ${
+                className={`mt-6 font-display font-bold tracking-[-0.02em] text-[#17313E] dark:text-[#F6F5F2] ${
                   isAr
                     ? 'text-[clamp(2rem,4.2vw,3.4rem)] leading-[1.25]'
                     : 'text-[clamp(2rem,4.4vw,3.6rem)] leading-[1.05]'

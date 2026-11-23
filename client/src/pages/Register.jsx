@@ -45,7 +45,7 @@ export default function Register() {
         </div>
 
         {errorMsg && (
-          <div className="mb-5 flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft p-3.5 font-inter text-base font-bold text-danger">
+          <div className="mb-5 flex items-center gap-2 rounded-xl border border-brandPurple bg-surface/95 p-3.5 font-inter text-base font-bold text-brandPurple">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -143,8 +143,8 @@ export default function Register() {
       <p className="mt-4 flex items-start gap-2 rounded-xl border border-line bg-surface-muted font-inter px-3.5 py-3 text-[13px] leading-relaxed text-ink-muted">
         <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
         {isAr
-          ? 'نسخة تجريبية: يُحفظ الحساب محلياً في هذا المتصفح ولا تُرسل البيانات إلى خادم.'
-          : 'Demo build: your account is stored locally in this browser and is not sent to a server.'}
+          ? 'تم إنشاء الحساب وإرساله إلى الخادم.' 
+          : 'Account created and sent to server.'}
       </p>
     </AuthLayout>
   );

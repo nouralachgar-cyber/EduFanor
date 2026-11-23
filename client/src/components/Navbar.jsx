@@ -90,9 +90,9 @@ export default function Navbar() {
       onClick={toggleTheme}
       aria-label={t('nav.toggleTheme', 'Toggle theme')}
       title={t('nav.toggleTheme', 'Toggle theme')}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-ink transition-all hover:border-line-strong hover:bg-surface-muted"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-brandPurple bg-surface/95 text-brandPurple transition-all hover:border-brandPurpleHover hover:bg-brandPurpleLight dark:border-brandPurple dark:text-brandPurple dark:hover:bg-brandPurpleDark"
     >
-      {isDark ? <Sun className="h-4 w-4 text-amber" /> : <Moon className="h-4 w-4 text-primary" />}
+      {isDark ? <Sun className="h-4 w-4 text-amber" /> : <Moon className="h-4 w-4 text-brandPurple" />}
     </button>
   );
 
@@ -100,9 +100,9 @@ export default function Navbar() {
     <button
       onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
       aria-label={t('nav.toggleLanguage', 'Switch language')}
-      className="flex h-10 items-center gap-2 rounded-xl border border-line bg-surface px-3 text-xs font-bold text-ink transition-all hover:border-line-strong hover:bg-surface-muted"
+      className="flex h-10 items-center gap-2 rounded-xl border border-brandPurple bg-surface/95 px-3 text-xs font-bold text-brandPurple transition-all hover:border-brandPurpleHover hover:bg-brandPurpleLight"
     >
-      <Globe className="h-4 w-4 text-primary dark:text-brand-ink" />
+      <Globe className="h-4 w-4 text-brandPurple dark:text-brandPurpleLight" />
       <span>{isAr ? 'EN' : 'ع'}</span>
     </button>
   );
@@ -244,7 +244,7 @@ export default function Navbar() {
           <button
             onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
             aria-label={t('nav.toggleLanguage', 'Switch language')}
-            className="flex h-10 items-center rounded-xl border border-line bg-surface px-3 text-xs font-bold text-ink transition-colors hover:bg-surface-muted"
+            className="flex h-10 items-center rounded-xl border border-brandPurple bg-surface/95 px-3 text-xs font-bold text-brandPurple transition-all hover:border-brandPurpleHover hover:bg-brandPurpleLight"
           >
             {isAr ? 'EN' : 'ع'}
           </button>

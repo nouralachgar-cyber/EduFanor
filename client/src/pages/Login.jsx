@@ -73,7 +73,7 @@ export default function Login() {
         {errorMsg && (
           <div
             role="alert"
-            className="mb-5 flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft p-3.5 font-inter text-base font-bold text-danger"
+            className="mb-5 flex items-center gap-2 rounded-xl border border-brandPurple bg-surface/95 p-3.5 font-inter text-base font-bold text-brandPurple"
           >
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{errorMsg}</span>

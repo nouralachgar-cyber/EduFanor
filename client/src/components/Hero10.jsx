@@ -19,6 +19,10 @@ export function Hero10({ id, isAr = false }) {
     : 'EduFanor is an interactive educational platform dedicated to first-aid awareness and emergency response learning. We provide accessible lessons, practical step-by-step guidance, and interactive learning experiences that help people understand how to respond to emergencies and support others while waiting for professional emergency services.'
   const supporting = isAr ? 'المعرفة هي الخطوة الأولى نحو إحداث فرق.' : 'Knowledge is the first step towards making a difference.'
 
+  const headingStyle = isAr
+    ? 'font-arabic font-extrabold tracking-tight leading-[1.12]'
+    : 'font-inter font-extrabold tracking-tight leading-[1.12]'
+
   const handleMove = (e) => {
     if (reduceMotion) return
     if (typeof window !== 'undefined' && window.innerWidth < 768) return
@@ -56,11 +60,12 @@ export function Hero10({ id, isAr = false }) {
           <p className="font-inter text-lg font-extrabold uppercase tracking-[0.18em] text-[#415E72] dark:text-[#C5B0CD]">
             {isAr ? 'من نحن' : 'About EduFanor'}
           </p>
-          <h2 className="mt-4 font-inter font-bold tracking-tight text-[#765D78] dark:text-[#C5B0CD] sm:text-4xl md:text-5xl">
+          <h2 className="mt-4 font-inter font-extrabold tracking-tight leading-[1.12] relative text-[clamp(1.7rem,7.5vw,5.75rem)] dark:text-[#C5B0CD]">
             {heading}
             <br />
-            <span className="text-[#765D78] dark:text-[#C5B0CD]">{highlight}</span>
+            <span className="font-inter font-extrabold tracking-tight leading-[1.12] text-[clamp(1.5rem,6vw,4.5rem)] dark:text-[#C5B0CD]">{highlight}</span>
           </h2>
+          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-black via-black/60 to-transparent opacity-90 blur-xl" aria-hidden="true" />
           <p className="font-inter mt-5 text-lg leading-relaxed text-ink-muted sm:text-base">{description}</p>
           <p className="mt-4 font-inter text-base italic text-ink sm:text-lg">{supporting}</p>
         </motion.div>

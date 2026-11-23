@@ -1,5 +1,6 @@
 const configuredApiBase = import.meta.env.VITE_API_URL?.trim();
-const defaultApiBase = import.meta.env.DEV
+const isDev = import.meta.env.DEV;
+const defaultApiBase = isDev
   ? `${window.location.protocol}//${window.location.hostname}:5000/api`
   : '';
 const configuredApiUrl = configuredApiBase
@@ -10,14 +11,27 @@ const useConfiguredApi =
   ['http:', 'https:'].includes(configuredApiUrl.protocol) &&
   configuredApiUrl.origin !== window.location.origin;
 const API_BASE =
-  useConfiguredApi
+  isDev || useConfiguredApi
     ? (() => {
-        let base = configuredApiUrl!.toString();
-        if (!base.endsWith('/api') && !base.endsWith('/')) base += '/api';
-        else if (!base.endsWith('/api')) base += '/api';
-        return base.replace(/\/$/, '');
+        if (useConfiguredApi) {
+          let base = configuredApiUrl!.toString();
+          if (!base.endsWith('/api') && !base.endsWith('/')) base += '/api';
+          else if (!base.endsWith('/api')) base += '/api';
+          return base.replace(/\/$/, '');
+        }
+        return `${window.location.protocol}//${window.location.hostname}:5000/api`;
       })()
-    : defaultApiBase || `${window.location.protocol}//${window.location.hostname}:5000/api`;
+    : configuredApiBase
+      ? (() => {
+          // Production: ensure the provided URL ends with /api
+          let base = configuredApiBase;
+          if (!base.endsWith('/api') && !base.endsWith('/')) base += '/api';
+          else if (!base.endsWith('/api')) base += '/api';
+          return base.replace(/\/$/, '');
+        })()
+      : isDev
+        ? `${window.location.protocol}//${window.location.hostname}:5000/api`
+        : '';
 
 export function resolveAssetUrl(url) {
   if (typeof url !== 'string' || !url.startsWith('/uploads/')) return url || '';
