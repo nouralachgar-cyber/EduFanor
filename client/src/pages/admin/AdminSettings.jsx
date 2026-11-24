@@ -165,7 +165,7 @@ export default function AdminSettings() {
               <input 
                 value={profile.name} 
                 onChange={(event) => setProfile((previous) => ({ ...previous, name: event.target.value }))} 
-                className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+                className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
               />
             </Field>
             <Field label={t('admin.settings.email')} required>
@@ -173,7 +173,7 @@ export default function AdminSettings() {
                 type="email" 
                 value={profile.email} 
                 onChange={(event) => setProfile((previous) => ({ ...previous, email: event.target.value }))} 
-                className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+                className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
                 dir="ltr" 
               />
             </Field>

@@ -32,20 +32,25 @@ export default function Register() {
 
   return (
     <AuthLayout>
-      <div className="card p-6 shadow-pop sm:p-8">
+      <div className="px-6 sm:p-8 lg:p-8">
         <div className="mb-6">
-          <span className="chip bg-brand-soft text-brand-ink">
+          <span className="chip bg-softLavender text-plumdeep">
             <ShieldCheck className="h-3.5 w-3.5" />
             {isAr ? 'ابدأ مسارك' : 'Start your path'}
           </span>
-          <h1 className="mt-3 font-inter text-3xl font-semibold tracking-tight text-ink">
+          <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-plumdeep">
             {t('auth.registerTitle')}
           </h1>
-          <p className="mt-2 text-sm leading-relaxed text-ink-muted">{t('auth.registerSubtitle')}</p>
+          <p className="mt-2 text-sm leading-relaxed text-plumLightMuted">
+            {t('auth.registerSubtitle')}
+          </p>
         </div>
 
         {errorMsg && (
-          <div className="mb-5 flex items-center gap-2 rounded-xl border border-brandPurple bg-surface/95 p-3.5 font-inter text-base font-bold text-brandPurple">
+          <div
+            role="alert"
+            className="mb-5 rounded-xl border border-plumLight/30 bg-softLavender p-4 font-inter text-base font-bold text-plumdeep"
+          >
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -54,7 +59,7 @@ export default function Register() {
         <form className="space-y-4" onSubmit={handleRegister}>
           <div className="space-y-1.5">
             <label htmlFor="register-name" className="label">
-              <User className="h-3.5 w-3.5 text-brand-ink" />
+              <User className="h-3.5 w-3.5 text-lavender" />
               <span>{t('auth.name')}</span>
             </label>
             <input
@@ -65,13 +70,13 @@ export default function Register() {
               value={name}
               onChange={(event) => setName(event.target.value)}
               placeholder={t('auth.namePlaceholder')}
-              className="input"
+              className={`input pl-12`}
             />
           </div>
 
           <div className="space-y-1.5">
             <label htmlFor="register-email" className="label">
-              <Mail className="h-3.5 w-3.5 text-brand-ink" />
+              <Mail className="h-3.5 w-3.5 text-lavender" />
               <span>{t('auth.email')}</span>
             </label>
             <input
@@ -82,14 +87,14 @@ export default function Register() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder={t('auth.emailPlaceholder')}
-              className="input"
+              className={`input pl-12`}
               dir="ltr"
             />
           </div>
 
           <div className="space-y-1.5">
             <label htmlFor="register-password" className="label">
-              <Lock className="h-3.5 w-3.5 text-brand-ink" />
+              <Lock className="h-3.5 w-3.5 text-lavender" />
               <span>{t('auth.password')}</span>
             </label>
             <div className="relative">
@@ -102,14 +107,12 @@ export default function Register() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder={t('auth.passwordPlaceholder')}
-                className={`input ${isAr ? 'pe-11' : 'ps-11'}`}
+                className={`input pl-12`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((value) => !value)}
-                className={`absolute top-1/2 -translate-y-1/2 p-1.5 text-ink-muted transition-colors hover:text-ink ${
-                  isAr ? 'left-2.5' : 'right-2.5'
-                }`}
+                className={`absolute top-1/2 -translate-y-1/2 left-3 p-1.5 text-plumLightMuted transition-colors hover:text-plumdeep`}
                 aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -120,7 +123,7 @@ export default function Register() {
           <button type="submit" disabled={loading} className="btn-primary w-full">
             {loading ? (
               <span className="flex items-center gap-2">
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-plumLight/30 border-t-plumdeep" />
                 {t('auth.registering')}
               </span>
             ) : (
@@ -132,16 +135,16 @@ export default function Register() {
           </button>
         </form>
 
-        <div className="mt-6 border-t border-line pt-4 text-center font-inter text-[13px] text-ink-muted">
-          {t('auth.hasAccount')}{' '}
-          <Link to="/login" className="font-extrabold text-brand-ink hover:text-accent">
+        <div className="mt-6 border-t border-plumLight/30 pt-4 text-center font-inter text-[13px] text-plumLightMuted">
+          {t('auth.hasAccount')} {' '}
+          <Link to="/login" className="font-extrabold text-lavender hover:text-softLavender">
             {t('auth.signIn')}
           </Link>
         </div>
       </div>
 
-      <p className="mt-4 flex items-start gap-2 rounded-xl border border-line bg-surface-muted font-inter px-3.5 py-3 text-[13px] leading-relaxed text-ink-muted">
-        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+      <p className="mt-4 flex items-start gap-2 rounded-xl border border-plumLight/30 bg-softLavender font-inter px-3.5 py-3 text-[13px] leading-relaxed text-plumLightMuted">
+        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-lavender" />
         {isAr
           ? 'تم إنشاء الحساب وإرساله إلى الخادم.' 
           : 'Account created and sent to server.'}

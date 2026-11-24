@@ -108,7 +108,7 @@ export default function AdminOverview() {
                   key={option}
                   type="button"
                   onClick={() => setRange(option)}
-                  className={`min-h-11 rounded-lg px-3 py-1.5 text-xs font-extrabold transition-colors xl:min-h-0 ${
+                  className={`min-h-14 rounded-lg px-4 py-2.5 text-base font-extrabold transition-colors xl:min-h-0 ${
                     range === option
                       ? 'bg-[#415E72] text-[#F6F5F2]'
                       : 'text-[#415E72]/70 hover:bg-[#F6F5F2] hover:text-[#415E72]'
@@ -121,7 +121,7 @@ export default function AdminOverview() {
             <button
               type="button"
               onClick={load}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
+              className="flex h-14 w-14 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-12 xl:w-12"
               aria-label={t('admin.common.refresh')}
               title={t('admin.common.refresh')}
             >

@@ -516,14 +516,14 @@ export default function AdminLessonEditor() {
         </Panel>
       ) : (
         <>
-          <Panel title={t('admin.editor.sectionMeta')} subtitle={t('admin.editor.sectionMetaHint')} className="bg-white border border-[#C5B0CD]/40 rounded-2xl p-6 shadow-sm">
-            <div className="space-y-5">
+          <Panel title={t('admin.editor.sectionMeta')} subtitle={t('admin.editor.sectionMetaHint')} className="bg-white border border-[#C5B0CD]/40 rounded-2xl shadow-sm overflow-hidden">
+            <div className="space-y-5 p-4 sm:p-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label={`${t('admin.editor.titleAr')} (${t('admin.common.ar')})`} required>
                   <input
                     value={form.title.ar}
                     onChange={(event) => update((previous) => ({ title: { ...previous.title, ar: event.target.value } }))}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm"
                     dir="rtl"
                     placeholder={t('admin.courseEditor.titleArPlaceholder')}
                   />
@@ -532,7 +532,7 @@ export default function AdminLessonEditor() {
                   <input
                     value={form.title.en}
                     onChange={(event) => update((previous) => ({ title: { ...previous.title, en: event.target.value } }))}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm"
                     dir="ltr"
                     placeholder={t('admin.courseEditor.titleEnPlaceholder')}
                   />
@@ -543,30 +543,29 @@ export default function AdminLessonEditor() {
                 type="button"
                 onClick={suggestTitles}
                 disabled={aiBusy}
-                className="inline-flex items-center gap-2 rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-4 py-2.5 text-xs font-bold text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 disabled:opacity-50 shadow-sm"
+                className="flex items-center gap-2 rounded-lg border border-[#C5B0CD] bg-[#F6F5F2] px-4 py-2.5 text-base font-bold text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 disabled:opacity-50 shadow-sm sm:px-6 sm:py-3"
               >
                 {aiBusy ? <Loader2 className="h-4 w-4 animate-spin text-[#C5B0CD]" /> : <Sparkles className="h-4 w-4 text-[#C5B0CD]" />}
                 {t('admin.editor.aiSuggestTitle')}
               </button>
 
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-3">
                 <Field label={t('admin.editor.courseLabel')} required hint={selectedCourse ? selectedCourse.slug : undefined}>
                   <select
                     value={form.course || defaultCourse}
                     onChange={(event) => update(() => ({ course: event.target.value }))}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
-                    disabled={Boolean(lessonId)}
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm"
                   >
                     <option value="">{t('admin.editor.courseSelect')}</option>
                     {courses.map((course) => (
                       <option key={course._id} value={course._id}>
-                        {localize(course.title, i18n.language)}{course.published ? '' : ` ظ¤ ${t('admin.common.draft')}`}
+                        {localize(course.title, i18n.language)}{course.published ? '' : ` ${t('admin.common.draft')}`}
                       </option>
                     ))}
                   </select>
                 </Field>
                 <Field label={t('admin.editor.difficultyLabel')}>
-                  <select value={form.difficulty} onChange={(event) => update(() => ({ difficulty: event.target.value }))} className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm">
+                  <select value={form.difficulty} onChange={(event) => update(() => ({ difficulty: event.target.value }))} className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm">
                     {DIFFICULTIES.map((difficulty) => (
                       <option key={difficulty} value={difficulty}>
                         {t(`admin.courses.difficulties.${difficulty}`)}
@@ -575,7 +574,7 @@ export default function AdminLessonEditor() {
                   </select>
                 </Field>
                 <Field label={t('admin.editor.reviewLabel')}>
-                  <select value={form.reviewStatus} onChange={(event) => update(() => ({ reviewStatus: event.target.value }))} className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm">
+                  <select value={form.reviewStatus} onChange={(event) => update(() => ({ reviewStatus: event.target.value }))} className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm">
                     {REVIEW_STATES.map((state) => (
                       <option key={state} value={state}>
                         {t(`admin.courses.${state}`)}
@@ -585,14 +584,14 @@ export default function AdminLessonEditor() {
                 </Field>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-3">
                 <Field label={t('admin.editor.orderLabel')}>
                   <input
                     type="number"
                     min="0"
                     value={form.order}
                     onChange={(event) => update(() => ({ order: event.target.value }))}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm"
                   />
                 </Field>
                 <Field label={t('admin.editor.minutesLabel')}>
@@ -601,7 +600,7 @@ export default function AdminLessonEditor() {
                     min="1"
                     value={form.estimatedMinutes}
                     onChange={(event) => update(() => ({ estimatedMinutes: event.target.value }))}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm"
                   />
                 </Field>
                 <Field label={t('admin.editor.videoLabel')} hint={t('admin.editor.videoHint')}>
@@ -609,21 +608,21 @@ export default function AdminLessonEditor() {
                     type="url"
                     value={form.videoUrl}
                     onChange={(event) => update(() => ({ videoUrl: event.target.value }))}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm"
                     dir="ltr"
-                    placeholder="https://www.youtube.com/watch?v=ظخ"
+                    placeholder="https://www.youtube.com/watch?v=..."
                   />
                 </Field>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <Field label={`${t('admin.editor.objectives')} (${t('admin.common.ar')})`} hint={t('admin.editor.objectivesHint')}>
                   <textarea
                     rows={4}
                     value={objectivesAr}
                     onChange={(event) => setObjectivesAr(event.target.value)}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm resize-y"
-                    dir="rtl"
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm resize-y"
+                      dir="rtl"
                   />
                 </Field>
                 <Field label={`${t('admin.editor.objectives')} (${t('admin.common.en')})`} hint={t('admin.editor.objectivesHint')}>
@@ -631,20 +630,20 @@ export default function AdminLessonEditor() {
                     rows={4}
                     value={objectivesEn}
                     onChange={(event) => setObjectivesEn(event.target.value)}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm resize-y"
-                    dir="ltr"
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm resize-y"
+                      dir="ltr"
                   />
                 </Field>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <Field label={`${t('admin.editor.safety')} (${t('admin.common.ar')})`}>
                   <textarea
                     rows={2}
                     value={form.safetyNotes.ar}
                     onChange={(event) => update((previous) => ({ safetyNotes: { ...previous.safetyNotes, ar: event.target.value } }))}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm resize-y"
-                    dir="rtl"
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm resize-y"
+                      dir="rtl"
                   />
                 </Field>
                 <Field label={`${t('admin.editor.safety')} (${t('admin.common.en')})`}>
@@ -652,32 +651,32 @@ export default function AdminLessonEditor() {
                     rows={2}
                     value={form.safetyNotes.en}
                     onChange={(event) => update((previous) => ({ safetyNotes: { ...previous.safetyNotes, en: event.target.value } }))}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm resize-y"
-                    dir="ltr"
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm resize-y"
+                      dir="ltr"
                   />
                 </Field>
               </div>
 
               <SectionLabel>{t('admin.editor.sectionMedia')}</SectionLabel>
-              <div className="flex flex-col gap-3 rounded-2xl border border-[#C5B0CD]/40 bg-[#F6F5F2] p-4 sm:flex-row sm:items-center">
-                <div className="h-20 w-28 shrink-0 overflow-hidden rounded-xl border border-[#C5B0CD] bg-white">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-lg border border-[#C5B0CD] bg-[#F6F5F2] p-4">
                   {form.coverImage ? (
-                    <img src={form.coverImage} alt="" className="h-full w-full object-cover" />
+                    <img src={form.coverImage} alt="" className="w-full h-24 object-cover rounded-lg" />
                   ) : (
-                    <span className="flex h-full items-center justify-center text-[#415E72]/50">
-                      <ImageIcon className="h-6 w-6 text-[#C5B0CD]" />
+                    <span className="flex h-12 items-center justify-center text-[#415E72]/50">
+                      <ImageIcon className="h-5 w-5 text-[#C5B0CD]" />
                     </span>
                   )}
                 </div>
-                <div className="min-w-0 flex-1 space-y-2.5">
+                <div className="space-y-2.5">
                   <input
                     value={form.coverImage}
                     onChange={(event) => update(() => ({ coverImage: event.target.value }))}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+                    className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm"
                     dir="ltr"
                     placeholder={t('admin.editor.coverPlaceholder')}
                   />
-                  <label className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-xl bg-[#F6F5F2] px-4 text-xs font-extrabold text-[#415E72] border border-[#C5B0CD] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm">
+                  <label className="cursor-pointer items-center gap-2 rounded-lg bg-[#F6F5F2] px-4 text-base font-extrabold text-[#415E72] border border-[#C5B0CD] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm">
                     {coverBusy ? <Loader2 className="h-4 w-4 animate-spin text-[#C5B0CD]" /> : <Upload className="h-4 w-4 text-[#C5B0CD]" />}
                     {coverBusy ? t('admin.courseEditor.imageUploading') : t('admin.courseEditor.imageFromPc')}
                     <input
@@ -696,8 +695,8 @@ export default function AdminLessonEditor() {
                   rows={2}
                   value={sourceRefsText}
                   onChange={(event) => setSourceRefsText(event.target.value)}
-                  className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm resize-y"
-                  dir="ltr"
+                  className="w-full rounded-lg border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus-[#C5B0CD] shadow-sm resize-y"
+                    dir="ltr"
                   placeholder="https://cpr.example/source-1"
                 />
               </Field>
@@ -797,15 +796,15 @@ export default function AdminLessonEditor() {
             )}
           </Panel>
 
-          <div className="sticky bottom-6 z-20">
-            <div className="rounded-2xl border border-[#C5B0CD]/60 bg-white/95 p-4 shadow-xl backdrop-blur flex flex-wrap items-center justify-between gap-3">
-              <p className="max-w-[60%] text-xs font-bold text-[#415E72]/70">{t('admin.editor.saveHint')}</p>
-              <div className="flex items-center gap-3">
+          <div className="sticky bottom-6 z-20 left-1/2 -translate-x-1/2">
+            <div className="rounded-2xl border border-[#C5B0CD]/60 bg-white/95 p-3 shadow-xl backdrop-blur flex flex-wrap items-center justify-between gap-2">
+              <p className="max-w-[60%] text-base font-bold text-[#415E72]/70">{t('admin.editor.saveHint')}</p>
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => save(false)}
                   disabled={Boolean(savingMode)}
-                  className="flex items-center gap-1.5 rounded-xl bg-[#F6F5F2] px-4 py-2.5 text-xs font-bold text-[#415E72] border border-[#C5B0CD] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-[#F6F5F2] px-5 py-3 text-base font-bold text-[#415E72] border border-[#C5B0CD] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm disabled:opacity-50 min-h-12"
                 >
                   <Save className="h-4 w-4 text-[#C5B0CD]" />
                   {savingMode === 'draft' ? t('admin.common.saving') : t('admin.editor.saveDraft')}
@@ -814,7 +813,7 @@ export default function AdminLessonEditor() {
                   type="button"
                   onClick={() => save(true)}
                   disabled={Boolean(savingMode)}
-                  className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-5 py-2.5 text-xs font-extrabold text-[#F8H7F6] text-[#F6F5F2] hover:bg-[#415E72]/90 shadow-md disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-xl bg-[#415E72] px-6 py-3 text-extrabold text-[#F8H7F6] text-[#F6F5F2] hover:bg-[#415E72]/90 shadow-md disabled:opacity-50 min-h-12"
                 >
                   <ShieldCheck className="h-4 w-4 text-[#C5B0CD]" />
                   {savingMode === 'publish' ? t('admin.common.saving') : t('admin.editor.publish')}

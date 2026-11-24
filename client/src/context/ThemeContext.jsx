@@ -32,7 +32,13 @@ export function ThemeProvider({ children }) {
   }, [theme]);
 
   const setTheme = useCallback((next) => {
-    setThemeState(next === 'dark' ? 'dark' : 'light');
+    const nextTheme = next === 'dark' ? 'dark' : 'light';
+    setThemeState(nextTheme);
+    try {
+      localStorage.setItem('theme', nextTheme);
+    } catch {
+      /* Storage can be unavailable in private mode. */
+    }
   }, []);
 
   const toggleTheme = useCallback(() => {

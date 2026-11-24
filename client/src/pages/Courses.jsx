@@ -42,7 +42,7 @@ export default function Courses() {
                 <ShieldCheck className="h-3.5 w-3.5" />
                 {t('coursesPage.badge')}
               </span>
-              <h1 className="mt-4 font-inter text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
+              <h1 className={isAr ? 'font-arabic text-3xl font-semibold tracking-tight text-ink sm:text-4xl lg:text-5xl' : 'font-inter text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl'}>
                 {t('coursesPage.title')}
               </h1>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
@@ -52,14 +52,18 @@ export default function Courses() {
 
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div className="rounded-2xl border border-line bg-surface/80 px-5 py-4 text-center backdrop-blur-sm">
-                <p className="font-inter text-2xl font-semibold text-ink">{courseList.length}</p>
-                <p className="font-inter mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
+                <p className={isAr ? 'font-arabic text-2xl font-semibold text-ink' : 'font-inter text-2xl font-semibold text-ink'}>
+                  {courseList.length}
+                </p>
+                <p className={isAr ? 'font-arabic mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted' : 'font-inter mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted'}>
                   {t('coursesPage.statsCourses')}
                 </p>
               </div>
               <div className="rounded-2xl border border-line bg-surface/80 px-5 py-4 text-center backdrop-blur-sm">
-                <p className="font-inter text-2xl font-semibold text-accent">{completedCount}</p>
-                <p className="font-inter mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
+                <p className={isAr ? 'font-arabic text-2xl font-semibold text-accent' : 'font-inter text-2xl font-semibold text-accent'}>
+                  {completedCount}
+                </p>
+                <p className={isAr ? 'font-arabic mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted' : 'font-inter mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted'}>
                   {t('coursesPage.completed')}
                 </p>
               </div>

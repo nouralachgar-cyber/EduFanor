@@ -5,6 +5,10 @@ const jwt = require('jsonwebtoken');
 const LEGACY_ADMIN_EMAIL = 'noura@edufanor.com';
 const adminAttempts = new Map();
 
+// Increase rate limit for admin login to prevent lockout
+const MAX_ADMIN_ATTEMPTS = 15;
+const ADMIN_RESET_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+
 const getAdminEmail = () => (process.env.ADMIN_EMAIL || LEGACY_ADMIN_EMAIL).trim().toLowerCase();
 
 // توليد JWT Token
@@ -28,17 +32,17 @@ const isRateLimited = (key) => {
   const now = Date.now();
   const record = adminAttempts.get(key);
   if (!record) return false;
-  if (now - record.startedAt > 15 * 60 * 1000) {
+  if (now - record.startedAt > ADMIN_RESET_TIMEOUT) {
     adminAttempts.delete(key);
     return false;
   }
-  return record.count >= 8;
+  return record.count >= MAX_ADMIN_ATTEMPTS;
 };
 
 const recordFailedAttempt = (key) => {
   const now = Date.now();
   const record = adminAttempts.get(key);
-  if (!record || now - record.startedAt > 15 * 60 * 1000) {
+  if (!record || now - record.startedAt > ADMIN_RESET_TIMEOUT) {
     adminAttempts.set(key, { count: 1, startedAt: now });
     return;
   }

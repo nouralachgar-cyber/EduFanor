@@ -1,0 +1,14 @@
+
+> client@0.0.0 build
+> vite build
+
+[36mvite v8.3.4 [32mbuilding client environment for production...[36m[39m
+transforming...
+✓ 2972 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                     1.59 kB │ gzip:   0.79 kB
+dist/assets/index-DETGyOLo.css    121.19 kB │ gzip:  19.82 kB
+dist/assets/index-CuE_bkVC.js   2,959.57 kB │ gzip: 819.58 kB
+
+[32m✓ built in 47.01s[39m

@@ -14,7 +14,7 @@ const API_BASE =
   isDev || useConfiguredApi
     ? (() => {
         if (useConfiguredApi) {
-          let base = configuredApiUrl!.toString();
+          let base = configuredApiUrl.toString();
           if (!base.endsWith('/api') && !base.endsWith('/')) base += '/api';
           else if (!base.endsWith('/api')) base += '/api';
           return base.replace(/\/$/, '');

@@ -132,14 +132,14 @@ export default function AdminCourses() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.courses.searchPlaceholder')}
-              className="min-h-11 w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+              className="min-h-11 w-full rounded-xl border border-[#C5B0CD] bg-white py-3 ps-10 pe-4 text-base text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
           <select 
             value={status} 
             onChange={(event) => setStatus(event.target.value)} 
-            className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-44 shadow-sm"
+            className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-44 shadow-sm"
             aria-label={t('admin.common.status')}
           >
             <option value="">{t('admin.courses.allStatuses')}</option>

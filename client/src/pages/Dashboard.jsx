@@ -242,7 +242,7 @@ export default function Dashboard() {
                 <ShieldCheck className="h-3.5 w-3.5" />
                 {t('dashboard.badge')}
               </span>
-              <h1 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl">
+              <h1 className="mt-4 font-display text-3xl font-semibold leading-relaxed tracking-tight text-ink sm:text-4xl lg:text-5xl">
                 {t('dashboard.welcomeBack')}{' '}
                 <span className="italic text-accent">{firstName}</span>
               </h1>

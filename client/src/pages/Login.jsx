@@ -58,22 +58,24 @@ export default function Login() {
 
   return (
     <AuthLayout>
-      <div className="card p-6 shadow-pop sm:p-8">
+      <div className="px-6 sm:p-8 lg:p-8">
         <div className="mb-6">
-          <span className="chip bg-brand-soft text-brand-ink">
+          <span className="chip bg-softLavender text-plumdeep">
             <ShieldCheck className="h-3.5 w-3.5" />
             {isAr ? 'مرحباً بعودتك' : 'Welcome back'}
           </span>
-          <h1 className="mt-3 font-inter font-semibold tracking-tight text-ink">
+          <h1 className="mt-3 font-display font-semibold tracking-tight text-plumdeep">
             {t('auth.loginTitle')}
           </h1>
-          <p className="mt-2 text-sm leading-relaxed text-ink-muted">{t('auth.loginSubtitle')}</p>
+          <p className="mt-2 text-sm leading-relaxed text-plumLightMuted">
+            {t('auth.loginSubtitle')}
+          </p>
         </div>
 
         {errorMsg && (
           <div
             role="alert"
-            className="mb-5 flex items-center gap-2 rounded-xl border border-brandPurple bg-surface/95 p-3.5 font-inter text-base font-bold text-brandPurple"
+            className="mb-5 rounded-xl border border-plumLight/30 bg-softLavender p-4 font-inter text-base font-bold text-plumdeep"
           >
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span>{errorMsg}</span>
@@ -83,25 +85,35 @@ export default function Login() {
         <form className="space-y-4" onSubmit={handleLogin}>
           <div className="space-y-1.5">
             <label htmlFor="login-email" className="label">
-              <Mail className="h-3.5 w-3.5 text-brand-ink" />
+              <Mail className="h-3.5 w-3.5 text-lavender" />
               <span>{t('auth.email')}</span>
             </label>
-            <input
-              id="login-email"
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="noura@edufanor.com"
-              className="input"
-              dir="ltr"
-            />
+            <div className="relative">
+              <input
+                id="login-email"
+                type="email"
+                required
+                autoComplete="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="noura@edufanor.com"
+                className={`input pl-12`}
+                dir="ltr"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((value) => !value)}
+                className={`absolute top-1/2 -translate-y-1/2 left-3 p-1.5 text-plumLightMuted transition-colors hover:text-plumdeep`}
+                aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
           </div>
 
           <div className="space-y-1.5">
             <label htmlFor="login-password" className="label">
-              <Lock className="h-3.5 w-3.5 text-brand-ink" />
+              <Lock className="h-3.5 w-3.5 text-lavender" />
               <span>{t('auth.password')}</span>
             </label>
             <div className="relative">
@@ -113,18 +125,8 @@ export default function Login() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder={t('auth.passwordPlaceholder')}
-                className={`input ${isAr ? 'pe-11' : 'ps-11'}`}
+                className={`input pl-12`}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword((value) => !value)}
-                className={`absolute top-1/2 -translate-y-1/2 p-1.5 text-ink-muted transition-colors hover:text-ink ${
-                  isAr ? 'left-2.5' : 'right-2.5'
-                }`}
-                aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
-              >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </button>
             </div>
           </div>
 
@@ -136,7 +138,7 @@ export default function Login() {
           >
             {loading ? (
               <span className="flex items-center gap-2">
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-plumLight/30 border-t-plumdeep" />
                 {t('auth.loggingIn')}
               </span>
             ) : (
@@ -148,9 +150,9 @@ export default function Login() {
           </button>
         </form>
 
-        <div className="mt-6 border-t border-line pt-4 text-center font-inter text-[13px] text-ink-muted">
-          {t('auth.noAccount')}{' '}
-          <Link to="/register" className="font-extrabold text-brand-ink hover:text-accent">
+        <div className="mt-6 border-t border-plumLight/30 pt-4 text-center font-inter text-[13px] text-plumLightMuted">
+          {t('auth.noAccount')} {' '}
+          <Link to="/register" className="font-extrabold text-lavender hover:text-softLavender">
             {t('auth.signUp')}
           </Link>
         </div>

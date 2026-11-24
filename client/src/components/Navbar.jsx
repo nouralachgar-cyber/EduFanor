@@ -90,9 +90,13 @@ export default function Navbar() {
       onClick={toggleTheme}
       aria-label={t('nav.toggleTheme', 'Toggle theme')}
       title={t('nav.toggleTheme', 'Toggle theme')}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-brandPurple bg-surface/95 text-brandPurple transition-all hover:border-brandPurpleHover hover:bg-brandPurpleLight dark:border-brandPurple dark:text-brandPurple dark:hover:bg-brandPurpleDark"
+      className="flex h-10 w-10 items-center justify-center rounded-full border border-plumdeep text-plumdeep transition-all hover:border-plumLight hover:bg-plumLight dark:border-lavender dark:text-lavender dark:hover:bg-[var(--color-softlavender)]"
     >
-      {isDark ? <Sun className="h-4 w-4 text-amber" /> : <Moon className="h-4 w-4 text-brandPurple" />}
+      {isDark ? (
+        <Sun className="h-4 w-4 text-softLavender" />
+      ) : (
+        <Moon className="h-4 w-4 text-lavender" />
+      )}
     </button>
   );
 
@@ -100,22 +104,22 @@ export default function Navbar() {
     <button
       onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
       aria-label={t('nav.toggleLanguage', 'Switch language')}
-      className="flex h-10 items-center gap-2 rounded-xl border border-brandPurple bg-surface/95 px-3 text-xs font-bold text-brandPurple transition-all hover:border-brandPurpleHover hover:bg-brandPurpleLight"
+      className="flex h-10 items-center gap-2 rounded-full border border-lavender bg-softLavender px-3 text-sm font-bold text-lavender transition-all hover:border-lavender hover:bg-[var(--color-softlavender)] dark:border-lavender dark:text-lavender dark:hover:bg-[var(--color-softlavender)]"
     >
-      <Globe className="h-4 w-4 text-brandPurple dark:text-brandPurpleLight" />
+      <Globe className="h-4 w-4 text-lavender dark:text-softLavenderLight" />
       <span>{isAr ? 'EN' : 'ع'}</span>
     </button>
   );
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur-xl transition-shadow duration-300 ${
-        scrolled ? 'shadow-pop' : ''
+      className={`sticky top-0 z-50 border-b border-plumLight/30 bg-mainBackground/90 backdrop-blur-xl transition-shadow duration-300 ${
+        scrolled ? 'shadow-card' : ''
       }`}
     >
       <div
         className={`mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-4 transition-all duration-300 sm:px-6 lg:px-8 ${
-          scrolled ? 'h-16' : 'h-[4.5rem]'
+          scrolled ? 'h-14' : 'h-[4.5rem]'
         }`}
       >
         <Link
@@ -124,10 +128,12 @@ export default function Navbar() {
           dir="ltr"
           style={{ unicodeBidi: 'isolate' }}
         >
-          <EduFanorWordmark className="w-[8.25rem] text-[#17313E] transition-transform duration-300 group-hover:scale-[1.015] dark:text-[#F6F5F2] sm:w-[9rem]" />
+          <EduFanorWordmark
+            className={`w-[clamp(9.5rem,48vw,11.75rem)] transition-transform duration-300 group-hover:scale-[1.015] sm:w-[12rem] xl:w-[12.5rem] text-plumdeep transition-colors`}
+          />
         </Link>
 
-        <nav className="hidden items-center gap-1 rounded-2xl border border-line bg-surface-muted p-1 lg:flex">
+        <nav className="hidden items-center gap-1 rounded-2xl border border-plumLight/30 bg-softLavender p-1 lg:flex">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const active = isActive(link.path);
@@ -137,11 +143,11 @@ export default function Navbar() {
                 to={link.path}
                 className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all duration-200 ${
                   active
-                    ? 'bg-primary text-on-primary shadow-sm'
-                    : 'text-ink-muted hover:bg-surface hover:text-ink'
+                    ? 'bg-plumdeep text-on-plumdeep shadow-sm'
+                    : 'text-plumdeepMuted hover:bg-softLavender hover:text-plumdeep'}
                 }`}
               >
-                <Icon className={`h-4 w-4 ${active ? 'text-on-primary' : ''}`} />
+                <Icon className={`h-4 w-4 ${active ? 'text-on-plumdeep' : ''}`} />
                 <span>{link.name}</span>
               </Link>
             );
@@ -152,7 +158,7 @@ export default function Navbar() {
           {themeButton}
           {languageButton}
 
-          <span className="mx-1 h-6 w-px bg-line" aria-hidden="true" />
+          <span className="mx-1 h-6 w-px bg-plumLight" aria-hidden="true" />
 
           {user ? (
             <div className="relative" ref={dropdownRef}>
@@ -160,16 +166,16 @@ export default function Navbar() {
                 onClick={() => setProfileDropdownOpen((open) => !open)}
                 aria-expanded={profileDropdownOpen}
                 aria-haspopup="menu"
-                className="flex items-center gap-2.5 rounded-2xl border border-line bg-surface py-1.5 pe-2.5 ps-1.5 transition-all hover:border-line-strong hover:bg-surface-muted"
+                className="flex items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender py-1.5 pe-2.5 ps-1.5 transition-all hover:border-plumLight/50 hover:bg-plumLight/10"
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-on-primary">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full border border-plumLight text-xs font-bold text-plumdeep">
                   {user?.name ? user.name.charAt(0).toUpperCase() : 'N'}
                 </span>
-                <span className="max-w-[9rem] truncate text-xs font-bold text-ink">
+                <span className="max-w-[9rem] truncate text-xs font-bold text-plumdeep">
                   {user?.name || t('dashboard.studentName')}
                 </span>
                 <ChevronDown
-                  className={`h-3.5 w-3.5 text-ink-muted transition-transform duration-200 ${
+                  className={`h-3.5 w-3.5 text-plumLightMuted transition-transform duration-200 ${
                     profileDropdownOpen ? 'rotate-180' : ''
                   }`}
                 />
@@ -178,13 +184,13 @@ export default function Navbar() {
               {profileDropdownOpen && (
                 <div
                   role="menu"
-                  className="animate-rise absolute end-0 top-full z-50 mt-2 w-56 rounded-2xl border border-line bg-card p-2 shadow-pop"
+                  className="animate-rise absolute end-0 top-full z-50 mt-2 w-56 rounded-full border border-plumLight/30 bg-softLavender p-2 shadow-card"
                 >
-                  <div className="border-b border-line px-3 pb-2.5 pt-1.5">
-                    <p className="truncate text-xs font-extrabold text-ink">
+                  <div className="border-b border-plumLight/30 px-3 pb-2.5 pt-1.5">
+                    <p className="truncate text-xs font-extrabold text-plumdeep">
                       {user?.name || t('dashboard.studentName')}
                     </p>
-                    <p className="mt-0.5 truncate text-[11px] text-ink-muted" dir="ltr">
+                    <p className="mt-0.5 truncate text-[11px] text-plumLightMuted" dir="ltr">
                       {user?.email}
                     </p>
                   </div>
@@ -192,38 +198,38 @@ export default function Navbar() {
                   <div className="mt-1 space-y-0.5">
                     <Link
                       to="/profile"
-                      className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-ink transition-colors hover:bg-surface-muted"
+                      className="flex items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender px-3 py-2 text-xs font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
                     >
-                      <User className="h-4 w-4 text-primary dark:text-brand-ink" />
+                      <User className="h-4 w-4 text-plumdeep dark:text-lavender" />
                       <span>{t('nav.profile')}</span>
                     </Link>
                     <Link
                       to="/settings"
-                      className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-ink transition-colors hover:bg-surface-muted"
+                      className="flex items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender px-3 py-2 text-xs font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
                     >
-                      <Settings className="h-4 w-4 text-primary dark:text-brand-ink" />
+                      <Settings className="h-4 w-4 text-plumdeep dark:text-lavender" />
                       <span>{t('nav.settings')}</span>
                     </Link>
                     <Link
                       to="/"
-                      className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-ink transition-colors hover:bg-surface-muted"
+                      className="flex items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender px-3 py-2 text-xs font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
                     >
-                      <Home className="h-4 w-4 text-primary dark:text-brand-ink" />
+                      <Home className="h-4 w-4 text-plumdeep dark:text-lavender" />
                       <span>{t('nav.home', 'Home')}</span>
                     </Link>
                     {user?.role === 'admin' && (
                       <Link
                         to="/admin"
-                        className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-ink transition-colors hover:bg-surface-muted"
+                        className="flex items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender px-3 py-2 text-xs font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
                       >
-                        <ShieldCheck className="h-4 w-4 text-amber" />
+                        <ShieldCheck className="h-4 w-4 text-plumdeep" />
                         <span>{t('nav.admin', 'Admin panel')}</span>
                       </Link>
                     )}
                     <button
                       onClick={handleLogout}
                       role="menuitem"
-                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-danger transition-colors hover:bg-danger-soft"
+                      className="flex w-full items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender px-3 py-2 text-xs font-bold text-plumdeepMuted transition-colors hover:bg-plumLight/10"
                     >
                       <LogOut className="h-4 w-4" />
                       <span>{t('nav.logout')}</span>
@@ -244,7 +250,7 @@ export default function Navbar() {
           <button
             onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
             aria-label={t('nav.toggleLanguage', 'Switch language')}
-            className="flex h-10 items-center rounded-xl border border-brandPurple bg-surface/95 px-3 text-xs font-bold text-brandPurple transition-all hover:border-brandPurpleHover hover:bg-brandPurpleLight"
+            className="flex h-10 items-center rounded-full border border-lavender bg-softLavender px-3 text-xs font-bold text-lavender transition-all hover:border-lavender hover:bg-[var(--color-softlavender)] dark:border-lavender dark:text-lavender dark:hover:bg-[var(--color-softlavender)]"
           >
             {isAr ? 'EN' : 'ع'}
           </button>
@@ -252,7 +258,7 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen((open) => !open)}
             aria-label={t('nav.toggleMenu', 'Toggle menu')}
             aria-expanded={mobileMenuOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-on-primary transition-colors hover:bg-primary-hover"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-plumLight text-plumdeep transition-colors hover:bg-plumLight/10"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -260,17 +266,17 @@ export default function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="animate-fade-in absolute inset-x-0 top-full border-t border-line bg-surface p-4 shadow-pop md:hidden">
+        <div className="animate-fade-in absolute inset-x-0 top-full border-t border-plumLight/30 bg-softLavender p-4 shadow-card md:hidden">
           {user && (
-            <div className="mb-3 flex items-center gap-3 rounded-2xl border border-line bg-surface-muted p-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-on-primary">
+            <div className="mb-3 flex items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender p-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-plumLight text-xs font-bold text-plumdeep">
                 {user?.name ? user.name.charAt(0).toUpperCase() : 'N'}
               </span>
               <div className="min-w-0">
-                <p className="truncate text-xs font-extrabold text-ink">
+                <p className="truncate text-xs font-extrabold text-plumdeep">
                   {user?.name || t('dashboard.studentName')}
                 </p>
-                <p className="truncate text-[11px] text-ink-muted">{user?.email}</p>
+                <p className="truncate text-[11px] text-plumLightMuted">{user?.email}</p>
               </div>
             </div>
           )}
@@ -283,44 +289,46 @@ export default function Navbar() {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-colors ${
-                    active ? 'bg-primary text-on-primary' : 'text-ink hover:bg-surface-muted'
+                  onClick={() => setMobileMenuOpen(false)}
+                  aria-current={active ? 'true' : undefined}
+                  className={`flex items-center justify-between rounded-full px-4 py-3 text-sm font-bold transition-colors ${
+                    active ? 'bg-plumdeep text-on-plumdeep' : 'text-plumdeepMuted hover:bg-softLavender'}
                   }`}
                 >
-                  <Icon className={`h-5 w-5 ${active ? 'text-on-primary' : 'text-primary dark:text-brand-ink'}`} />
+                  <Icon className={`h-5 w-5 ${active ? 'text-on-plumdeep' : 'text-plumdeep'}`} />
                   <span>{link.name}</span>
                 </Link>
               );
             })}
           </nav>
 
-          <div className="mt-3 space-y-1 border-t border-line pt-3">
+          <div className="mt-3 space-y-1 border-t border-plumLight/30 pt-3">
             {user ? (
               <>
                 <Link
                   to="/profile"
-                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
+                  className="flex items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-4 py-3 text-sm font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
                 >
-                  <User className="h-5 w-5 text-primary dark:text-brand-ink" />
+                  <User className="h-5 w-5 text-plumdeep dark:text-lavender" />
                   <span>{t('nav.profile')}</span>
                 </Link>
                 <Link
                   to="/settings"
-                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
+                  className="flex items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-4 py-3 text-sm font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
                 >
-                  <Settings className="h-5 w-5 text-primary dark:text-brand-ink" />
+                  <Settings className="h-5 w-4 text-plumdeep dark:text-lavender" />
                   <span>{t('nav.settings')}</span>
                 </Link>
                 <Link
                   to="/"
-                  className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-ink transition-colors hover:bg-surface-muted"
+                  className="flex items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-4 py-3 text-sm font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
                 >
-                  <Home className="h-5 w-5 text-primary dark:text-brand-ink" />
+                  <Home className="h-5 w-5 text-plumdeep dark:text-lavender" />
                   <span>{t('nav.home', 'Home')}</span>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-danger transition-colors hover:bg-danger-soft"
+                  className="flex w-full items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-4 py-3 text-xs font-bold text-plumdeepMuted transition-colors hover:bg-plumLight/10"
                 >
                   <LogOut className="h-5 w-5" />
                   <span>{t('nav.logout')}</span>

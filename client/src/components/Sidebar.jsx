@@ -42,13 +42,13 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="hidden w-64 shrink-0 flex-col justify-between bg-[#17313E] p-4 text-[#F6F5F2] md:flex">
+    <aside className="hidden w-64 shrink-0 flex-col justify-between bg-plumdeep p-4 text-on-plumdeep md:flex">
       <div className="space-y-6">
         <div className="px-3 pt-2">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/70">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-on-plumdeep/70">
             {isAr ? 'مساحة التعلّم' : 'Learning space'}
           </p>
-          <p className="mt-1 font-display text-lg font-semibold leading-tight text-white">
+          <p className="mt-1 font-display text-lg font-semibold leading-tight text-on-plumdeep">
             {isAr ? 'رحلتك الإسعافية' : 'Your first-aid path'}
           </p>
         </div>
@@ -61,51 +61,50 @@ export default function Sidebar() {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-all ${
+                  `group flex items-center gap-3 rounded-full px-3.5 py-2.5 text-xs font-bold transition-all ${
                     isActive
-                      ? 'bg-[#C5B0CD] text-[#17313E] shadow-sm'
-                      : 'text-[#F6F5F2]/75 hover:bg-white/10 hover:text-[#F6F5F2]'
-                  }`
-                }
+                      ? 'bg-on-plumdeep text-plumdeep'
+                      : 'text-plumLightMuted hover:bg-plumLight hover:text-plumdeep'}
+                `}
               >
                 {({ isActive }) => (
                   <>
-                    <Icon className={`h-4 w-4 ${isActive ? 'text-[#17313E]' : 'text-[#C5B0CD]/80'}`} />
+                    <Icon className={`h-4 w-4 ${isActive ? 'text-plumdeep' : 'text-plumLightMuted'}`} />
                     <span>{link.name}</span>
                   </>
                 )}
               </NavLink>
             );
           })}
-
-          {user?.role === 'admin' && (
-            <Link
-              to="/admin"
-              className={`mt-2 flex items-center gap-3 rounded-xl border border-amber/30 px-3.5 py-2.5 text-xs font-bold transition-all ${
-                location.pathname === '/admin'
-                  ? 'bg-[#C5B0CD] text-[#17313E]'
-                  : 'bg-white/[0.06] text-[#F6F5F2]/75 hover:bg-white/[0.12] hover:text-[#F6F5F2]'
-              }`}
-            >
-              <ShieldCheck className="h-4 w-4" />
-              <span>{isAr ? 'لوحة الإدارة' : 'Admin panel'}</span>
-            </Link>
-          )}
         </nav>
 
-        <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-4">
-          <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-[#F6F5F2]/70">
+        {user?.role === 'admin' && (
+          <Link
+            to="/admin"
+            className={`mt-2 flex items-center gap-3 rounded-full border border-plumLight/30 px-3.5 py-2.5 text-xs font-bold transition-all ${
+              location.pathname === '/admin'
+                ? 'bg-on-plumdeep text-plumdeep'
+                : 'bg-plumLight/10 text-plumdeep hover:bg-plumLight'}
+            }`}
+          >
+            <ShieldCheck className="h-4 w-4" />
+            <span>{isAr ? 'لوحة الإدارة' : 'Admin panel'}</span>
+          </Link>
+        )}
+
+        <div className="rounded-full border border-plumLight/30 bg-softLavender p-4">
+          <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-plumLightMuted">
             <span>{isAr ? 'الإنجاز الكلي' : 'Overall progress'}</span>
-            <Sparkles className="h-3.5 w-3.5 text-amber" />
+            <Sparkles className="h-3.5 w-3.5 text-plumLight" />
           </div>
-          <p className="mt-2 font-display text-2xl font-semibold text-[#F6F5F2]">{percent}%</p>
-          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/20">
+          <p className="mt-2 font-display text-2xl font-semibold text-on-plumdeep">{percent}%</p>
+          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-plumLight">
             <div
-              className="h-full rounded-full bg-[#C5B0CD] transition-all duration-700"
+              className="h-full rounded-full transition-all duration-700"
               style={{ width: `${percent}%` }}
             />
           </div>
-          <p className="mt-2 text-[10px] font-semibold text-[#F6F5F2]/65">
+          <p className="mt-2 text-[10px] font-semibold text-plumLightMuted">
             {isAr
               ? `${completed} من ${courseList.length} مساقات مكتملة`
               : `${completed} of ${courseList.length} courses completed`}
@@ -113,19 +112,19 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <div className="space-y-1 border-t border-line pt-4">
+      <div className="space-y-1 border-t border-plumLight/30 pt-4">
         <NavLink
           to="/profile"
-          className="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#F6F5F2]/75 transition-colors hover:bg-white/10 hover:text-[#F6F5F2]"
+          className="flex items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-3.5 py-2.5 text-xs font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
         >
-          <Settings className="h-4 w-4 text-[#C5B0CD]" />
+          <Settings className="h-4 w-4 text-plumdeep" />
           <span>{t('nav.settings')}</span>
         </NavLink>
 
         <button
           onClick={handleLogout}
           type="button"
-          className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold text-[#C5B0CD] transition-colors hover:bg-[#C5B0CD]/15"
+          className="flex w-full items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-3.5 py-2.5 text-xs font-bold text-plumdeepMuted transition-colors hover:bg-plumLight/10"
         >
           <LogOut className="h-4 w-4" />
           <span>{t('nav.logout')}</span>
