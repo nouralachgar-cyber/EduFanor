@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, ArrowRight, Sun, Moon, CheckCircle2, Globe } from './icons';
+import { ArrowLeft, ArrowRight, CheckCircle2, Globe } from './icons';
 import { useTheme } from '../context/ThemeContext';
 import EduFanorWordmark from './EduFanorWordmark';
+import ThemeToggle from './ui/ThemeToggle';
 
 export default function AuthLayout({ children }) {
   const { t, i18n } = useTranslation();
@@ -102,18 +103,12 @@ export default function AuthLayout({ children }) {
                 <Globe className="h-3.5 w-3.5 text-ink-soft dark:text-lavender" />
                 {isAr ? 'EN' : 'ع'}
               </button>
-              <button
-                type="button"
-                onClick={toggleTheme}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-highlight text-ink transition-colors hover:bg-primary dark:border-line dark:bg-surface-2 dark:text-on-dark dark:hover:bg-primary"
-                aria-label={t('nav.toggleTheme')}
-              >
-                {isDark ? (
-                  <Sun className="h-4 w-4 text-lavender" />
-                ) : (
-                  <Moon className="h-4 w-4 text-on-primary dark:text-on-dark" />
-                )}
-              </button>
+              <ThemeToggle
+                checked={isDark}
+                onChange={toggleTheme}
+                className="scale-[0.68] origin-center"
+                ariaLabel="Toggle dark mode"
+              />
             </div>
           </div>
 

@@ -17,13 +17,12 @@ import {
   ChevronDown,
   Mail,
   Menu,
-  Moon,
-  Sun,
   X,
 } from '../components/icons';
 import { useTheme } from '../context/ThemeContext';
 import { Hero10 } from '../components/Hero10';
 import EduFanorWordmark from '../components/EduFanorWordmark';
+import ThemeToggle from '../components/ui/ThemeToggle';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -675,19 +674,12 @@ export default function PublicLandingPage() {
               </button>
             </div>
 
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label={isAr ? 'تبديل المظهر' : 'Toggle theme'}
-              title={isAr ? 'تبديل المظهر' : 'Toggle theme'}
-              className={`group flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${controlTone}`}
-            >
-              {isDark ? (
-                <Sun className="h-[1.125rem] w-[1.125rem] text-[#635985] drop-shadow-[0_4px_18px_var(--color-primary)] transition-transform duration-500 group-hover:rotate-45" />
-              ) : (
-                <Moon className="h-[1.125rem] w-[1.125rem] text-[#635985] transition-transform duration-500 group-hover:-rotate-12 dark:text-[#BFA2DB]" />
-              )}
-            </button>
+            <ThemeToggle
+              checked={isDark}
+              onChange={toggleTheme}
+              className="scale-[0.72] origin-center"
+              ariaLabel="Toggle dark mode"
+            />
 
             <Link
               to="/login"
@@ -815,7 +807,7 @@ export default function PublicLandingPage() {
         {/* Hero — full-bleed photographic background. */}
         <section
           id="home"
-          className="relative isolate flex min-h-[100svh] items-start overflow-hidden bg-[url('/heroa.jpg')] bg-cover bg-center/80 px-4 pb-20 pt-32 text-left sm:px-6 sm:pt-36 lg:px-8 lg:pt-40"
+          className="relative isolate flex min-h-[calc(100vh-5rem)] items-center overflow-hidden bg-[url('/heroa.jpg')] bg-cover bg-center/80 px-6 text-left sm:px-10 lg:px-14"
         >
           {/* Full-bleed photographic plate */}
           <div
@@ -823,60 +815,50 @@ export default function PublicLandingPage() {
             aria-hidden="true"
           />
 
-          {/* Midnight-to-plum color grading — layered cinematic overlays */}
+          {/* Subtle left-side atmospheric gradient behind text area only */}
           <div
-            className={`absolute inset-0 -z-20 ${isAr ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-[#18122B]/75 via-[#18122B]/35 to-transparent`}
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none absolute inset-0 -z-10 shadow-pop"
+            className="absolute inset-0 -z-20 bg-gradient-to-r from-[#18122B]/45 via-[#18122B]/15 to-transparent"
             aria-hidden="true"
           />
           <div
             className="absolute inset-x-0 bottom-0 -z-10 h-20 bg-gradient-to-t from-on-dark/40 to-transparent dark:from-scrim/40"
             aria-hidden="true"
           />
-          <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-            <div className="absolute -top-24 -start-20 h-80 w-80 rounded-full bg-[radial-gradient(circle,#F0D9FF_0%,transparent_70%)] opacity-25 blur-2xl" />
-            <div className="absolute bottom-[-6rem] -end-24 h-96 w-96 rounded-full bg-[radial-gradient(circle,#BFA2DB_0%,transparent_70%)] opacity-20 blur-3xl" />
-            <div className="absolute top-0 start-1/3 h-px w-1/3 bg-gradient-to-r from-transparent via-on-dark/30 to-transparent" />
-          </div>
 
-          <div className="relative mx-auto w-full max-w-6xl">
+          <div className="relative mx-auto w-full max-w-7xl">
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="relative flex max-w-2xl flex-col gap-6"
+              className="relative flex max-w-2xl flex-col text-left"
               dir="ltr"
             >
               <motion.h1
-                className={`[text-shadow:0_4px_18px_var(--color-scrim)] ${
+                style={!isAr ? { fontFamily: "'Viga', sans-serif" } : undefined}
+                className={`text-white drop-shadow-sm ${
                   isAr
-                    ? 'font-arabic text-[clamp(1.75rem,7vw,3rem)] font-extrabold leading-[1.25] tracking-normal sm:text-5xl lg:text-6xl'
-                    : 'font-copy text-[clamp(1.5rem,7vw,2.25rem)] font-bold tracking-tight leading-[1.12] sm:text-5xl lg:text-6xl'
+                    ? 'font-arabic text-5xl font-extrabold leading-[1.12] tracking-normal sm:text-6xl lg:text-[4.25rem]'
+                    : 'text-5xl leading-[1.12] tracking-normal sm:text-6xl lg:text-[4.25rem]'
                 }`}
               >
                 {isAr ? (
                   <>
-                    <span className="block whitespace-nowrap text-[#F3F1F5]">معرفة صغيرة.</span>
+                    <span className="block whitespace-nowrap">معرفة صغيرة.</span>
                     <span className="mt-[0.12em] block whitespace-nowrap text-[#BFA2DB] drop-shadow-[0_4px_18px_var(--color-primary)]">
                       وثقة تُحدث فرقًا.
                     </span>
                   </>
                 ) : (
                   <>
-                    <span className="block whitespace-nowrap text-[#F3F1F5]">A little knowledge.</span>
-                    <span className="mt-[0.12em] block whitespace-nowrap text-[#BFA2DB] drop-shadow-[0_4px_18px_var(--color-primary)]">
-                      The confidence to act.
-                    </span>
+                    <span className="block whitespace-nowrap text-white">A little knowledge.</span>
+                    <span className="mt-[0.12em] block whitespace-nowrap text-[#F0D9FF] [text-shadow:0_2px_14px_rgba(240,217,255,0.35),0_4px_18px_rgba(24,18,43,0.35)]">The confidence to act.</span>
                   </>
                 )}
               </motion.h1>
 
               <motion.p
-                className={`max-w-xl text-balance text-[clamp(0.98rem,1.3vw,1.1rem)] text-[#F3F1F5]/90 [text-shadow:0_4px_18px_var(--color-scrim)] ${
-                  isAr ? 'font-arabic leading-[2.05]' : 'font-copy leading-[1.8] tracking-[0.01em]'
+                className={`mt-5 max-w-lg text-lg leading-relaxed text-white/95 sm:text-xl ${
+                  isAr ? 'font-arabic' : 'font-copy'
                 }`}
               >
                 {isAr
@@ -884,33 +866,10 @@ export default function PublicLandingPage() {
                   : 'Learn the essentials clearly, practice calmly, and respond with confidence.'}
               </motion.p>
 
-              <motion.div className="relative flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
-                <motion.svg
-                  viewBox="0 0 320 56"
-                  preserveAspectRatio="none"
-                  fill="none"
-                  aria-hidden="true"
-                  className={`pointer-events-none absolute z-10 -top-6 h-6 w-28 sm:-top-7 sm:h-7 sm:w-44 xl:top-1/2 xl:-translate-y-1/2 xl:h-12 ${
-                    isAr
-                      ? 'right-0 xl:right-[calc(36rem_-_50vw)] xl:w-[calc(50vw_-_36rem_-_0.75rem)]'
-                      : 'left-0 xl:left-[calc(36rem_-_50vw_+_0.3125rem)] xl:w-[calc(50vw_-_36rem_-_0.75rem)]'
-                  }`}
-                >
-                  <motion.path
-                    d="M0 28H84C94 28 101 27 107 17C114 5 119 4 124 22L131 43C134 54 140 54 144 42L156 12C161 0 166 0 171 13C176 26 180 28 190 28H320"
-                    stroke="#BFA2DB"
-                    strokeWidth="2.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    vectorEffect="non-scaling-stroke"
-                    initial={reduceMotion ? false : { pathLength: 0, opacity: 0.65 }}
-                    animate={{ pathLength: 1, opacity: 0.9 }}
-                    transition={{ duration: 1.5, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                </motion.svg>
+              <motion.div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
                   to="/register"
-                  className={`group inline-flex min-h-14 items-center justify-center gap-2.5 rounded-full bg-[#F0D9FF] px-6 py-3.5 text-[13px] font-bold tracking-[0.015em] text-[#18122B] shadow-pop ring-1 ring-white/70 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-pop focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 sm:w-auto ${
+                  className={`group inline-flex items-center justify-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-base font-semibold text-[#18122B] shadow-lg transition-all hover:bg-[#F0D9FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 ${
                     isAr ? 'font-arabic' : 'font-copy'
                   }`}
                 >
@@ -923,7 +882,7 @@ export default function PublicLandingPage() {
                 </Link>
                 <a
                   href="#our-impact"
-                  className={`group inline-flex min-h-14 items-center justify-center gap-2.5 rounded-full border border-[#BFA2DB]/70 bg-[#F3F1F5]/20 px-6 py-3.5 text-[13px] font-semibold tracking-[0.015em] text-[#F3F1F5] shadow-pop backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-white/70 hover:bg-[#F3F1F5]/30 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-on-dark/60 sm:w-auto ${
+                  className={`group inline-flex items-center justify-center gap-2.5 rounded-full border border-white/50 bg-[#18122B]/35 px-7 py-3.5 text-base font-medium text-white backdrop-blur-md transition-all hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-on-dark/60 ${
                     isAr ? 'font-arabic' : 'font-copy'
                   }`}
                 >

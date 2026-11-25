@@ -13,8 +13,6 @@ import {
   Award,
   Bot,
   HelpCircle,
-  Sun,
-  Moon,
   Settings,
   ChevronDown,
   Home,
@@ -22,6 +20,7 @@ import {
 import { AuthContext } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import EduFanorWordmark from './EduFanorWordmark';
+import ThemeToggle from './ui/ThemeToggle';
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
@@ -89,18 +88,12 @@ export default function Navbar() {
     'flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-ink shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:bg-highlight hover:text-ink active:scale-[0.98] dark:border-line dark:bg-surface-2 dark:text-on-dark dark:hover:bg-primary dark:hover:text-on-primary';
 
   const themeButton = (
-    <button
-      onClick={toggleTheme}
-      aria-label={t('nav.toggleTheme', 'Toggle theme')}
-      title={t('nav.toggleTheme', 'Toggle theme')}
-      className={iconButtonClass}
-    >
-      {isDark ? (
-        <Sun className="h-4 w-4 text-lavender" />
-      ) : (
-        <Moon className="h-4 w-4 text-on-primary dark:text-on-dark" />
-      )}
-    </button>
+    <ThemeToggle
+      checked={isDark}
+      onChange={toggleTheme}
+      className="scale-[0.72] origin-center"
+      ariaLabel="Toggle dark mode"
+    />
   );
 
   const languageButton = (

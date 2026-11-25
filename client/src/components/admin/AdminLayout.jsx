@@ -12,12 +12,10 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
-  Moon,
   ScrollText,
   Search,
   Settings,
   ShieldCheck,
-  Sun,
   Users,
   X,
 } from '../icons';
@@ -25,6 +23,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { initials } from '../../lib/admin';
 import EduFanorWordmark from '../EduFanorWordmark';
+import ThemeToggle from '../ui/ThemeToggle';
 import '../../styles/admin.css';
 
 const navGroups = [
@@ -262,15 +261,12 @@ export default function AdminLayout() {
               />
             </form>
 
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-card text-ink transition-colors hover:bg-surface-muted xl:h-9 xl:w-9"
-              aria-label={t('admin.shell.theme')}
-              title={t('admin.shell.theme')}
-            >
-              {isDark ? <Sun className="h-4 w-4 text-lavender" /> : <Moon className="h-4 w-4 text-primary" />}
-            </button>
+            <ThemeToggle
+              checked={isDark}
+              onChange={toggleTheme}
+              className="scale-[0.68] origin-center"
+              ariaLabel="Toggle dark mode"
+            />
 
             <button
               type="button"
