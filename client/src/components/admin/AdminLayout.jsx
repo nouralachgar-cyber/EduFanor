@@ -26,6 +26,32 @@ import EduFanorWordmark from '../EduFanorWordmark';
 import ThemeToggle from '../ui/ThemeToggle';
 import '../../styles/admin.css';
 
+const lightText = 'text-[#18122B]';
+const lightBg = 'bg-[#F3F1F5]';
+const lightBorder = 'border-[#D8C7EB]';
+const lightIconBg = 'bg-[#E5DCF2]';
+const lightIconColor = 'text-[#443C68]';
+const lightSecondary = 'text-[#393053]';
+const lightBadgeBg = 'bg-[#E8E0F3]';
+const lightBadgeBorder = 'border-[#BFA2DB]';
+
+const darkMode = 'dark:';
+
+const logoLight = 'text-[#18122B]';
+const logoDark = 'dark:text-white';
+
+const footerBgLight = 'bg-[#EDE7F6]';
+const footerBorderLight = 'border-[#BFA2DB]';
+const footerAvatarBg = 'bg-[#635985]';
+const footerBtnBgLight = 'bg-[#F1F5F9]';
+const footerBtnBorderLight = 'border-[#64748B]';
+const footerBtnTextLight = 'text-[#0f172a]';
+const footerBtnHoverLight = 'hover:bg-[#CBD5E1]';
+const footerBtnBgDark = 'bg-[#1e293b]';
+const footerBtnBorderDark = 'border-[#475569]';
+const footerBtnTextDark = 'text-[#f8fafc]';
+const footerBtnHoverDark = 'hover:bg-[#334155]';
+
 const navGroups = [
   {
     labelKey: 'admin.shell.workspace',
@@ -65,17 +91,17 @@ function SidebarContent({ onNavigate }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex flex-col items-start gap-2 px-5 pt-6 pb-5">
-        <EduFanorWordmark className="w-36 text-on-dark" />
-        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-on-dark/55">
+        <EduFanorWordmark className={`${logoLight} ${logoDark}`} />
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em]">
           {t('admin.shell.subtitle')}
         </p>
       </div>
 
-      <div className="mx-3 mb-4 rounded-xl border border-on-dark/15 bg-on-dark/[0.06] px-3 py-2">
-        <span className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-on-dark/60">
+      <div className="mx-3 mb-4 rounded-xl border lightBorder px-3 py-2">
+        <span className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em]">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-on-dark opacity-60" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-on-dark" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full lightIconBg opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full lightIconBg" />
           </span>
           {t('admin.shell.secureArea')}
         </span>
@@ -84,7 +110,7 @@ function SidebarContent({ onNavigate }) {
       <nav className="admin-scroll flex-1 overflow-y-auto px-3 pb-4">
         {navGroups.map((group, groupIndex) => (
           <div key={group.labelKey} className={groupIndex ? 'mt-5' : ''}>
-            <p className="mb-1.5 px-2.5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-on-dark/35">
+            <p className="mb-1.5 px-2.5 text-[9px] font-extrabold uppercase tracking-[0.2em]">
               {t(group.labelKey)}
             </p>
             <div className="space-y-1">
@@ -104,10 +130,10 @@ function SidebarContent({ onNavigate }) {
                       <>
                         <span
                           className={`flex h-7 w-7 items-center justify-center rounded-lg transition-colors ${
-                            isActive ? 'bg-on-primary/15' : 'bg-on-dark/[0.06]'
+                            isActive ? 'bg-on-primary/15' : 'lightIconBg'
                           }`}
                         >
-                          <Icon className="h-3.5 w-3.5" />
+                          <Icon className={`h-3.5 w-3.5 ${lightIconColor}`} />
                         </span>
                         <span className="flex-1">{t(item.label)}</span>
                         {isActive && <span className="h-1.5 w-1.5 rounded-full bg-current" />}
@@ -121,14 +147,14 @@ function SidebarContent({ onNavigate }) {
         ))}
       </nav>
 
-      <div className="border-t border-on-dark/15 p-3">
-        <div className="mb-2 flex items-center gap-2.5 rounded-xl bg-on-dark/[0.06] px-3 py-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-extrabold text-on-primary">
+      <div className="border-t footerBorderLight p-3 shrink-0">
+        <div className="mb-2 flex items-center gap-2.5 rounded-xl footerBgLight px-3 py-2.5">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-extrabold lightText">
             {initials(user?.name)}
           </span>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-extrabold text-on-dark">{user?.name || t('admin.shell.adminAccount')}</p>
-            <p className="truncate text-[10px] text-on-dark/50" dir="ltr">
+            <p className="truncate text-xs font-semibold footerTextLight">{user?.name || t('admin.shell.adminAccount')}</p>
+            <p className="truncate text-[10px] lightSecondary" dir="ltr">
               {user?.email}
             </p>
           </div>
@@ -136,7 +162,7 @@ function SidebarContent({ onNavigate }) {
         <div className="flex items-center gap-1.5">
           <Link
             to="/"
-            className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-lg border border-on-dark/15 px-2 py-2 text-[10px] font-bold text-on-dark/70 transition-colors hover:bg-on-dark/10 hover:text-on-dark"
+            className={`flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-lg border footerBorderLight px-2 py-2 text-[10px] font-bold footerTextLight transition-colors hover:${footerBtnHoverLight} ${footerBtnBgLight} ${footerBtnBorderLight}`}
           >
             <ChevronLeft className={`h-3 w-3 ${isAr ? 'rotate-180' : ''}`} />
             {t('admin.shell.backToSite')}
@@ -144,11 +170,11 @@ function SidebarContent({ onNavigate }) {
           <button
             type="button"
             onClick={handleLogout}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-on-dark/15 text-on-dark/70 transition-colors hover:bg-negative/20 hover:text-on-dark xl:h-8 xl:w-8"
+            className={`flex h-11 w-11 items-center justify-center rounded-full footerBorderLight ${footerBtnTextLight} transition-colors hover:${footerBtnHoverLight} xl:h-8 xl:w-8`}
             aria-label={t('admin.shell.logout')}
             title={t('admin.shell.logout')}
           >
-            <LogOut className="h-3.5 w-3.5" />
+            <LogOut className="h-3.5 w-3.5 footerTextLight" />
           </button>
         </div>
       </div>
@@ -218,7 +244,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => setMobileOpen(false)}
-              className="absolute end-3 top-4 flex h-11 w-11 items-center justify-center rounded-full text-on-dark/75 hover:bg-on-dark/10 hover:text-on-dark"
+              className="absolute end-3 top-4 flex h-11 w-11 items-center justify-center rounded-full lightBorder text-lightText hover:bg-lightBg/10 hover:lightText"
               aria-label={t('admin.shell.closeMenu')}
             >
               <X className="h-4 w-4" />
@@ -234,20 +260,20 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line bg-card text-ink lg:hidden"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border lightBorder text-lightText lg:hidden"
               aria-label={t('admin.shell.openMenu')}
             >
               <Menu className="h-4 w-4" />
             </button>
 
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-1.5 text-[10px] font-bold text-ink-muted">
-                <ShieldCheck className="h-3 w-3 text-lavender" />
-                <span className="hidden sm:inline">{t('admin.shell.secureArea')}</span>
+              <div className="flex items-center gap-1.5 text-[10px] font-bold lightSecondary">
+                <ShieldCheck className="h-3 w-3 lightText" />
+                <span className="hidden sm:inline lightText">{t('admin.shell.secureArea')}</span>
                 <span className="hidden text-line-strong sm:inline">/</span>
-                <span className="truncate">{currentTitle}</span>
+                <span className="truncate lightText">{currentTitle}</span>
               </div>
-              <h2 className="truncate text-sm font-extrabold text-ink sm:hidden">{currentTitle}</h2>
+              <h2 className="truncate text-sm font-extrabold lightText sm:hidden">{currentTitle}</h2>
             </div>
 
             <form onSubmit={handleSearch} className="relative hidden w-64 md:block xl:w-80">
@@ -271,22 +297,22 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
-              className="flex h-11 items-center gap-1.5 rounded-xl border border-line bg-card px-2.5 text-[10px] font-extrabold text-ink transition-colors hover:bg-surface-muted xl:h-9"
+              className="flex h-11 items-center gap-1.5 rounded-xl border lightBorder px-2.5 text-[10px] font-extrabold lightText transition-colors hover:bg-lightBg xl:h-9"
               aria-label={t('admin.shell.language')}
               title={t('admin.shell.language')}
             >
-              <Globe className="h-3.5 w-3.5 text-lavender" />
+              <Globe className="h-3.5 w-3.5 lightText" />
               {isAr ? 'EN' : 'ع'}
             </button>
 
             <Link
               to="/admin/settings"
-              className="ms-1 hidden items-center gap-2 rounded-xl border border-line bg-card px-2.5 py-1.5 transition-colors hover:bg-surface-muted sm:flex"
+              className="ms-1 hidden items-center gap-2 rounded-xl border lightBorder px-2.5 py-1.5 transition-colors hover:bg-lightBg sm:flex"
             >
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[10px] font-extrabold text-on-primary">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-lightText">
                 {initials(user?.name)}
               </span>
-              <span className="max-w-[7rem] truncate text-[11px] font-extrabold text-ink">{user?.name}</span>
+              <span className="max-w-[7rem] truncate text-[11px] font-extrabold lightText">{user?.name}</span>
             </Link>
           </div>
         </header>

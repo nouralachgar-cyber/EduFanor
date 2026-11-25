@@ -52,12 +52,12 @@ export default function AdminLayout() {
       <aside className={`fixed inset-y-0 z-50 flex w-72 flex-col border-e border-line bg-surface shadow-xl transition-transform duration-300 lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : isAr ? 'translate-x-full lg:translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
-        <div className="flex h-20 items-center justify-between border-b border-line px-6 bg-surface-2">
+        <div className="flex h-20 items-center justify-between border-b border-[#BFA2DB]/60 px-6 bg-[#F3F1F5]">
           <div className="flex min-w-0 items-center gap-3">
-            <EduFanorWordmark className="w-32 text-ink" />
+            <EduFanorWordmark className="w-32 text-[#18122B]" />
             <div>
-              <p className="font-display text-sm font-extrabold text-ink">Admin</p>
-              <p className="text-[10px] font-bold text-muted">Management Console</p>
+              <p className="font-display text-sm font-extrabold text-[#18122B]">Admin</p>
+              <p className="text-[10px] font-bold text-[#443C68]">Management Console</p>
             </div>
           </div>
           <button 
@@ -83,25 +83,25 @@ export default function AdminLayout() {
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3.5 rounded-2xl px-4 py-3 text-xs font-extrabold transition-all ${
                   active 
-                    ? 'bg-primary text-on-primary shadow-md shadow-primary/15 dark:bg-accent'
-                    : 'text-ink-soft hover:bg-surface-2 hover:text-ink'
+                    ? 'bg-[#BFA2DB]/45 text-[#18122B] font-semibold'
+                    : '[&]:not(.dark):text-[#443C68] [&]:not(.dark):hover:bg-[#F3F1F5] [&]:not(.dark):hover:text-[#18122B] [&].dark:text-[#635985] [&].dark:hover:bg-[#F3F1F5] [&].dark:hover:text-[#18122B]'
                 }`}
               >
-                <Icon className={`h-4 w-4 ${active ? 'text-on-primary' : 'text-muted'}`} />
+                <Icon className={`h-4 w-4 bg-[#F3F1F5] text-[#635985] rounded px-2 ${active ? 'text-[#18122B]' : ''} dark:text-[#18122B]`} />
                 {item.label}
               </Link>
             );
           })}
         </div>
 
-        <div className="border-t border-line p-4 bg-surface-2">
-          <div className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3.5 shadow-sm">
+        <div className="border-t border-[#BFA2DB]/60 p-4 bg-[#F3F1F5]">
+          <div className="flex items-center gap-3 rounded-2xl border border-[#BFA2DB]/60 bg-[#F3F1F5] p-3.5 shadow-sm">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-extrabold text-on-primary">
               {user?.name?.[0] || 'A'}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-extrabold text-ink">{user?.name || 'Administrator'}</p>
-              <p className="truncate text-[10px] text-muted" dir="ltr">{user?.email || 'admin@edufanor.com'}</p>
+              <p className="truncate text-xs font-extrabold text-[#18122B]">{user?.name || 'Administrator'}</p>
+              <p className="truncate text-[10px] [&]:not(.dark):text-[#635985] [&].dark:text-[#635985]" dir="ltr">{user?.email || 'admin@edufanor.com'}</p>
             </div>
             <button
               type="button"
@@ -109,10 +109,10 @@ export default function AdminLayout() {
                 logout();
                 navigate('/login');
               }}
-              className="rounded-xl p-2 text-negative-ink hover:bg-negative-soft transition-colors"
+              className="rounded-xl p-2 border border-[#BFA2DB]/60 bg-[#F3F1F5] [&]:not(.dark):text-[#18122B] [&].dark:text-[#18122B] hover:bg-[#F3F1F5] transition-colors"
               title={t('admin.settings.signOut', 'Sign Out')}
             >
-              <LogOut className="h-4 w-4" />
+              <LogOut className="h-4 w-4 [&]:not(.dark):text-[#18122B] [&].dark:text-[#18122B]" />
             </button>
           </div>
         </div>

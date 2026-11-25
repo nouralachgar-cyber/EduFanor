@@ -282,3 +282,112 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+:not(.dark) .admin-sidebar {
+  background-color: #F3F1F5 !important;
+  border-right: 1px solid #D8C7EB !important;
+}
+
+:not(.dark) .admin-nav-link {
+  background-color: #E5DCF2 !important;
+}
+
+:not(.dark) .admin-nav-link > span:first-child {
+  background-color: #E5DCF2 !important;
+}
+
+:not(.dark) .admin-nav-link > span:last-child,
+:not(.dark) .admin-nav-link .flex-1 {
+  color: #393053 !important;
+}
+
+:not(.dark) .admin-nav-link .h-3.w-3,
+:not(.dark) .admin-nav-link .h-3.w-3 svg,
+:not(.dark) .admin-nav-link .h-3.w-3 path,
+:not(.dark) .admin-nav-link .h-3.w-3 polygon {
+  stroke: #443C68 !important;
+}
+
+:not(.dark) .secure-area-text {
+  background-color: #E8E0F3 !important;
+  border: 1px solid #BFA2DB !important;
+  color: #18122B !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.5rem !important;
+}
+
+:not(.dark) .profile-name,
+:not(.dark) .profile-email {
+  color: #18122B !important;
+}
+
+:not(.dark) .back-to-site-link,
+:not(.dark) .logout-button {
+  background-color: #E8E0F3 !important;
+  border: 1px solid #BFA2DB !important;
+  color: #18122B !important;
+}
+
+:not(.dark) .logout-icon {
+  color: #18122B;
+}
+
+/* Light Mode: Section headings & nav button labels */
+:not(.dark) .admin-scroll .uppercase {
+  color: #443C68;
+  font-weight: 700;
+  opacity: 1;
+}
+
+/* Dark Mode: Section headings & nav button labels */
+:dark .admin-scroll .uppercase {
+  color: #f8fafc;
+  font-weight: 700;
+  opacity: 1;
+}
+
+/* Light Mode: Nav button text & icons */
+:not(.dark) .admin-nav-link .flex-1 {
+  color: #0f172a;
+  font-weight: 700;
+  opacity: 1;
+}
+
+/* Dark Mode: Nav button text & icons */
+:dark .admin-nav-link .flex-1 {
+  color: #f8fafc;
+  font-weight: 700;
+  opacity: 1;
+}
+
+/* Light Mode: Profile name & email */
+:not(.dark) .profile-name,
+:not(.dark) .profile-email {
+  color: #18122B;
+  opacity: 1;
+}
+
+/* Dark Mode: Profile name & email */
+:dark .profile-name,
+:dark .profile-email {
+  color: #f8fafc;
+  opacity: 1;
+}
+
+/* Light Mode: Back to site & logout button */
+:not(.dark) .back-to-site-link,
+:not(.dark) .logout-button {
+  background-color: #E8E0F3;
+  border: 1px solid #BFA2DB;
+  color: #18122B;
+  opacity: 1;
+}
+
+/* Dark Mode: Back to site & logout button */
+:dark .back-to-site-link,
+:dark .logout-button {
+  background-color: #1e293b;
+  border: 1px solid #475569;
+  color: #f8fafc;
+  opacity: 1;
+}
