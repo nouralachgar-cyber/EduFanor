@@ -183,31 +183,47 @@ function InteractiveGlobe({ isDark, reduceMotion }) {
   const globeEl = useRef();
   const wrapRef = useRef();
   const [size, setSize] = useState(520);
+  const [domDark, setDomDark] = useState(() => {
+    if (typeof document === 'undefined') return Boolean(isDark);
+    return document.documentElement.classList.contains('dark');
+  });
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return undefined;
+    const root = document.documentElement;
+    const syncTheme = () => setDomDark(root.classList.contains('dark'));
+    syncTheme();
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(root, { attributes: true, attributeFilter: ['class', 'data-theme'] });
+    return () => observer.disconnect();
+  }, []);
+
+  const resolvedDark = typeof document !== 'undefined' ? domDark : Boolean(isDark);
 
   const palette = useMemo(
     () =>
-      isDark
+      resolvedDark
         ? {
-            glow: '#BFA2DB',
+            glow: '#BFA3DC',
             innerRing: 'rgba(240,217,255,0.36)',
             outerRing: 'rgba(191,162,219,0.34)',
             dashRing: 'rgba(240,217,255,0.46)',
-            atmosphere: '#BFA2DB',
-            ambient: '#BFA2DB',
-            ambientIntensity: 1.1,
+            atmosphere: '#BFA3DC',
+            ambient: '#D8C8EE',
+            ambientIntensity: 1.25,
             key: '#FFFFFF',
-            keyIntensity: 1.5,
+            keyIntensity: 1.35,
             fill: '#F0D9FF',
-            fillIntensity: 0.85,
+            fillIntensity: 0.7,
             point: '#FFFFFF',
             arcPrimary: '#F0D9FF',
             arcSecondary: '#FFFFFF',
             ringRgb: '240,217,255',
             globeImage: '//unpkg.com/three-globe/example/img/earth-day.jpg',
-            tint: '#8D79B8',
-            emissive: '#2A1F47',
-            emissiveIntensity: 0.55,
-            shininess: 0.22,
+            tint: '#8C78B8',
+            emissive: '#2B2048',
+            emissiveIntensity: 0.2,
+            shininess: 0.28,
           }
         : {
             glow: '#DFD1F0',
@@ -231,7 +247,7 @@ function InteractiveGlobe({ isDark, reduceMotion }) {
             emissiveIntensity: 0.12,
             shininess: 0.3,
           },
-    [isDark]
+    [resolvedDark]
   );
 
   const globeMaterial = useMemo(
@@ -334,6 +350,7 @@ function InteractiveGlobe({ isDark, reduceMotion }) {
 
       <div className="absolute inset-0 z-10 flex items-center justify-center">
         <Globe
+          key={resolvedDark ? 'impact-globe-dark' : 'impact-globe-light'}
           ref={globeEl}
           width={size}
           height={size}
