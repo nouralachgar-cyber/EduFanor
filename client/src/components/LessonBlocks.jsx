@@ -108,7 +108,7 @@ function YouTubeEmbed({ src, title, fallbackMessage }) {
   return (
     <div className="my-6 space-y-2">
       <div
-        className="relative aspect-video w-full overflow-hidden rounded-2xl border border-line bg-black"
+        className="relative aspect-video w-full overflow-hidden rounded-2xl border border-line bg-scrim"
         style={{ aspectRatio: '16 / 9' }}
       >
         <iframe
@@ -172,7 +172,7 @@ export function LessonBlockRenderer({ block, isAr }) {
               const videoId = extractYouTubeId(url);
               if (videoId) {
                 return (
-                  <div key={index} className="relative aspect-video w-full overflow-hidden rounded-2xl border border-line bg-black" style={{ aspectRatio: '16 / 9' }}>
+                  <div key={index} className="relative aspect-video w-full overflow-hidden rounded-2xl border border-line bg-scrim" style={{ aspectRatio: '16 / 9' }}>
                     <iframe
                       className="absolute inset-0 h-full w-full"
                       src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0&playsinline=1`}

@@ -6,13 +6,13 @@ import AchievementActions from './AchievementActions';
 import AchievementGraphic from './AchievementGraphic';
 
 const confettiPieces = [
-  { left: '12%', delay: 0, color: '#C5B0CD' },
-  { left: '22%', delay: 0.4, color: '#415E72' },
-  { left: '34%', delay: 0.8, color: '#17313E' },
-  { left: '47%', delay: 0.2, color: '#F6F5F2' },
-  { left: '61%', delay: 0.7, color: '#415E72' },
-  { left: '73%', delay: 0.3, color: '#C5B0CD' },
-  { left: '86%', delay: 0.9, color: '#17313E' },
+  { left: '12%', delay: 0, color: 'var(--palette-lavender)' },
+  { left: '22%', delay: 0.4, color: 'var(--palette-muted)' },
+  { left: '34%', delay: 0.8, color: 'var(--palette-ink)' },
+  { left: '47%', delay: 0.2, color: 'var(--palette-highlight)' },
+  { left: '61%', delay: 0.7, color: 'var(--palette-primary)' },
+  { left: '73%', delay: 0.3, color: 'var(--palette-lilac)' },
+  { left: '86%', delay: 0.9, color: 'var(--palette-accent)' },
 ];
 
 export default function AchievementCelebration({
@@ -31,7 +31,7 @@ export default function AchievementCelebration({
     <AnimatePresence>
       {open && achievement && (
         <motion.div
-          className="fixed inset-0 z-[80] flex items-center justify-center overflow-y-auto bg-[#17313E]/75 p-3 backdrop-blur-sm sm:p-6"
+          className="fixed inset-0 z-[80] flex items-center justify-center overflow-y-auto bg-scrim/75 p-3 backdrop-blur-sm sm:p-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

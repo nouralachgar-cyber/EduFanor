@@ -202,94 +202,107 @@ export default function Dashboard() {
       icon: BookCheck,
       label: isAr ? 'المساقات المكتملة' : 'Courses completed',
       value: `${totalCompleted} / ${courseStats.length}`,
-      color: 'bg-brand-soft text-brand-ink',
+      color: 'bg-highlight text-ink-soft dark:bg-highlight dark:text-on-primary',
     },
     {
       icon: TrendingUp,
       label: t('dashboard.stats.learningProgress'),
       value: `${progressPercent}%`,
-      color: 'bg-teal/20 text-teal-deep',
+      color: 'bg-positive-soft text-positive-ink dark:bg-positive-soft dark:text-positive-ink',
     },
     {
       icon: Award,
       label: isAr ? 'أفضل نتيجة اختبار' : 'Best quiz score',
       value: quizBest ? `${quizBest.percent}%` : '—',
-      color: 'bg-brand-soft text-brand-ink',
+      color: 'bg-caution-soft text-caution-ink dark:bg-caution-soft dark:text-caution-ink',
     },
     {
       icon: Flame,
       label: t('dashboard.stats.learningStreak'),
       value: `${streak} ${t('dashboard.stats.days')}`,
-      color: 'bg-pink-soft text-[#415E72] dark:text-[#C5B0CD]',
+      color: 'bg-negative-soft text-negative-ink dark:bg-negative-soft dark:text-negative-ink',
     },
   ];
 
+  const arrowClass = isAr
+    ? 'transition-transform duration-200 group-hover:-translate-x-1'
+    : 'transition-transform duration-200 group-hover:translate-x-1';
+
   return (
-    <div className="page-container">
+    <div className="page-container min-h-full antialiased">
       <div className="page-content space-y-8">
-        <section className="relative overflow-hidden rounded-3xl border border-line bg-card p-6 shadow-pop sm:p-8 lg:p-10">
+        <section className="animate-fade-up relative overflow-hidden rounded-3xl border border-line/90 bg-gradient-to-br from-highlight via-on-dark to-positive-soft/60 p-6 shadow-sm dark:border-line dark:from-scrim/40 dark:via-surface-2 dark:to-scrim/30 sm:p-8 lg:p-10">
           <div
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 88% 12%, rgba(197, 176, 205,0.32), transparent 46%), radial-gradient(circle at 6% 96%, rgba(197, 176, 205,0.5), transparent 52%)',
+                'radial-gradient(circle at 88% 12%, var(--palette-lavender), transparent 46%), radial-gradient(circle at 6% 96%, var(--palette-lilac), transparent 52%)',
             }}
             aria-hidden="true"
           />
-          <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="relative z-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <span className="chip bg-brand-soft text-brand-ink">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface/90 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-soft shadow-sm dark:border-primary/60 dark:bg-surface-2/90 dark:text-lavender">
                 <ShieldCheck className="h-3.5 w-3.5" />
                 {t('dashboard.badge')}
               </span>
-              <h1 className="mt-4 font-display text-3xl font-semibold leading-relaxed tracking-tight text-ink sm:text-4xl lg:text-5xl">
+              <h1 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-ink dark:text-on-dark sm:text-4xl lg:text-5xl">
                 {t('dashboard.welcomeBack')}{' '}
-                <span className="italic text-accent">{firstName}</span>
+                <span className="italic text-ink-soft dark:text-lavender">{firstName}</span>
               </h1>
-              <p className="mt-3 max-w-xl font-arabic text-base leading-relaxed text-ink-muted">
-                {t('dashboard.welcomeSubtitle')}
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft dark:text-on-dark/80 sm:text-base">
+              {t('dashboard.welcomeSubtitle')}
+            </p>
+              <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Link
                   to={nextCourse ? `/lesson?id=${nextCourse.id}` : '/courses'}
-                  className="btn-primary px-6"
+                  className="group inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-on-primary shadow-md shadow-pop transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-lg active:scale-[0.98] dark:bg-primary dark:text-on-primary dark:hover:bg-primary-hover sm:px-6"
                 >
                   <span>{t('dashboard.continueBtn')}</span>
-                  {isAr ? <ArrowLeft className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+                  {isAr ? (
+                    <ArrowLeft className={`h-4 w-4 ${arrowClass}`} />
+                  ) : (
+                    <ArrowRight className={`h-4 w-4 ${arrowClass}`} />
+                  )}
                 </Link>
                 <button
                   type="button"
                   onClick={() => setGuideModalOpen(true)}
-                  className="btn-secondary px-5"
+                  className="group inline-flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-3 text-sm font-bold text-ink-soft shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:bg-highlight hover:shadow-md active:scale-[0.98] dark:border-line-strong dark:bg-surface-2 dark:text-lavender dark:hover:bg-primary dark:hover:text-on-primary"
                 >
-                  <Zap className="h-4 w-4 text-accent" />
+                  <Zap className="h-4 w-4 text-lavender dark:text-lavender" />
                   <span>{t('quickGuide.btnText')}</span>
                 </button>
               </div>
             </div>
 
-            <div className="w-full max-w-xs rounded-2xl border border-line bg-surface/80 p-5 backdrop-blur-sm">
-              <p className="font-arabic text-[13px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+            <div className="group w-full max-w-xs rounded-2xl border border-line bg-surface p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-md dark:border-line dark:bg-surface-2 dark:hover:border-primary">
+              <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-soft dark:text-lavender">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                 {isAr ? 'خطوتك التالية' : 'Your next step'}
               </p>
               {nextCourse ? (
                 <>
-                  <p className="mt-2 font-arabic text-base leading-snug text-ink">
+                  <p className="mt-3 text-base font-bold leading-snug text-ink dark:text-on-dark">
                     {nextCourse.title}
                   </p>
-                  <p className="mt-1 font-arabic text-sm text-ink-muted">
+                  <p className="mt-1 text-xs text-ink-soft dark:text-lavender">
                     {nextCourse.duration} · {nextCourse.lessons} {t('coursesPage.lessonsCount')}
                   </p>
                   <Link
                     to={`/lesson?id=${nextCourse.id}`}
-                    className="mt-3 inline-flex items-center gap-2 text-[11px] font-extrabold text-brand-ink hover:text-accent"
+                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-extrabold text-ink-soft transition-colors hover:text-ink dark:text-lavender dark:hover:text-lavender"
                   >
                     {isAr ? 'افتح الدرس' : 'Open lesson'}
-                    {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+                    {isAr ? (
+                      <ArrowLeft className={`h-3.5 w-3.5 ${arrowClass}`} />
+                    ) : (
+                      <ArrowRight className={`h-3.5 w-3.5 ${arrowClass}`} />
+                    )}
                   </Link>
                 </>
               ) : (
-                <p className="mt-2 text-sm font-bold text-ink">
+                <p className="mt-3 text-sm font-bold text-ink dark:text-on-dark">
                   {t('dashboard.stats.allDone')}
                 </p>
               )}
@@ -298,39 +311,61 @@ export default function Dashboard() {
         </section>
 
         <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          {stats.map((stat) => {
+          {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <div key={stat.label} className="stat-card">
-                <div className={`icon-box h-10 w-10 ${stat.color}`}>
+              <div
+                key={stat.label}
+                style={{ animationDelay: `${120 + index * 80}ms` }}
+                className="animate-fade-up flex flex-col rounded-2xl border border-line/90 bg-surface p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-md dark:border-line dark:bg-surface-2 dark:hover:border-primary"
+              >
+                <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl ${stat.color}`}>
                   <Icon className="h-5 w-5" />
                 </div>
-                <p className="font-arabic text-[11px] font-bold text-ink-muted">{stat.label}</p>
-                <h3 className="font-display text-2xl font-semibold text-ink sm:text-3xl">{stat.value}</h3>
+                <p className="text-[11px] font-bold leading-snug text-ink-soft dark:text-lavender">
+                  {stat.label}
+                </p>
+                <h3 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink dark:text-on-dark">
+                  {stat.value}
+                </h3>
               </div>
             );
           })}
         </section>
 
-        <section className="card flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-line bg-surface-muted font-arabic text-lg font-extrabold text-ink">
-            {user?.name ? user.name.charAt(0).toUpperCase() : 'E'}
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-base font-extrabold text-ink">
-                {user?.name || t('dashboard.studentName')}
-              </h2>
-              <span className="chip bg-success-soft text-success-ink">{t('studentCard.active')}</span>
+        <section
+          style={{ animationDelay: '440ms' }}
+          className="animate-fade-up rounded-2xl border border-line/90 bg-surface p-5 shadow-sm dark:border-line dark:bg-surface-2 sm:p-6"
+        >
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-line bg-highlight text-lg font-extrabold text-ink-soft dark:border-primary/60 dark:bg-highlight dark:text-on-primary">
+              {user?.name ? user.name.charAt(0).toUpperCase() : 'E'}
             </div>
-            <p className="mt-1 text-xs text-ink-muted">{t('studentCard.subtitle')}</p>
-            <p className="mt-1.5 font-mono text-[11px] font-bold text-brand-ink">
-              {t('studentCard.idLabel')} {studentId}
-            </p>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-base font-bold text-ink dark:text-on-dark">
+                  {user?.name || t('dashboard.studentName')}
+                </h2>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-positive-soft px-2.5 py-1 text-[11px] font-bold text-positive-ink dark:border-primary/60 dark:bg-positive-soft dark:text-positive-ink">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 animate-pulse-dot rounded-full bg-primary dark:bg-primary" />
+                  </span>
+                  {t('studentCard.active')}
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-ink-soft dark:text-lavender">{t('studentCard.subtitle')}</p>
+              <p className="mt-1.5 font-mono text-[11px] font-bold text-ink-soft dark:text-lavender">
+                {t('studentCard.idLabel')} {studentId}
+              </p>
+            </div>
+            <Link
+              to="/profile"
+              className="inline-flex shrink-0 items-center justify-center rounded-full border border-line bg-surface px-4 py-2 text-sm font-bold text-ink-soft shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-highlight hover:text-ink hover:shadow-md active:scale-[0.98] dark:border-line-strong dark:bg-surface-2 dark:text-on-dark dark:hover:bg-surface-2 sm:self-start"
+            >
+              {t('nav.profile')}
+            </Link>
           </div>
-          <Link to="/profile" className="btn-secondary shrink-0 px-4 text-xs">
-            {t('nav.profile')}
-          </Link>
         </section>
 
         {user?.role === 'student' && getStoredToken() && (
@@ -346,83 +381,104 @@ export default function Dashboard() {
         )}
 
         <section className="space-y-5">
-          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+          <div className="flex flex-col justify-between gap-3 border-b border-line pb-4 dark:border-line sm:flex-row sm:items-end">
             <div>
               <h2 className="section-title">{t('dashboard.continueLearningSection.title')}</h2>
               <p className="section-subtitle">{t('dashboard.learningPath.subtitle')}</p>
             </div>
-            <Link to="/courses" className="btn-secondary px-4 text-xs">
+            <Link
+              to="/courses"
+              className="inline-flex shrink-0 items-center justify-center rounded-full border border-line bg-surface px-4 py-2 text-sm font-bold text-ink-soft shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-highlight hover:text-ink hover:shadow-md active:scale-[0.98] dark:border-line-strong dark:bg-surface-2 dark:text-on-dark dark:hover:bg-surface-2"
+            >
               {t('dashboard.exploreSection.viewAll')}
             </Link>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {courseStats.map((course) => {
+            {courseStats.map((course, index) => {
               const Icon = categoryIcons[course.category] || BookOpen;
               const completed = course.completed;
               return (
-                <article key={course.id} className="course-card">
+                <article
+                  key={course.id}
+                  style={{ animationDelay: `${520 + index * 90}ms` }}
+                  className="group flex animate-fade-up flex-col rounded-2xl border border-line/90 bg-surface p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-md dark:border-line dark:bg-surface-2 dark:hover:border-primary"
+                >
                   <div className="flex items-start justify-between gap-3">
                     <span
-                      className={`icon-box h-11 w-11 ${
-                        completed ? 'bg-success-soft text-success-ink' : 'bg-brand-soft text-brand-ink'
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
+                        completed
+                          ? 'bg-positive-soft text-positive-ink dark:bg-positive-soft dark:text-positive-ink'
+                          : 'bg-highlight text-ink-soft dark:bg-highlight dark:text-on-primary'
                       }`}
                     >
                       <Icon className="h-5 w-5" />
                     </span>
-                    <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink-muted">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink-soft dark:text-lavender">
                       <Clock className="h-3.5 w-3.5" />
                       {course.duration}
                     </div>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="mt-4 space-y-2">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="chip bg-surface-muted text-ink-muted">{course.level}</span>
+                      <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[11px] font-bold text-ink-soft dark:bg-surface-2 dark:text-lavender">
+                        {course.level}
+                      </span>
                       {completed ? (
-                        <span className="chip bg-success-soft text-success-ink">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-positive-soft px-2.5 py-1 text-[11px] font-bold text-positive-ink dark:bg-positive-soft dark:text-positive-ink">
                           <CheckCircle2 className="h-3 w-3" />
                           {t('coursesPage.completed')}
                         </span>
                       ) : (
-                        <span className="chip bg-brand-soft text-brand-ink">{course.percent}%</span>
+                        <span className="rounded-full bg-highlight px-2.5 py-1 text-[11px] font-bold text-ink-soft dark:bg-highlight dark:text-on-primary">
+                          {course.percent}%
+                        </span>
                       )}
                     </div>
-                    <h3 className="font-arabic text-base font-extrabold leading-snug text-ink">{course.title}</h3>
-                    <p className="line-clamp-2 font-arabic text-sm leading-relaxed text-ink-muted">
+                    <h3 className="text-base font-bold leading-snug text-ink dark:text-on-dark">
+                      {course.title}
+                    </h3>
+                    <p className="line-clamp-2 text-sm leading-relaxed text-ink-soft dark:text-lavender">
                       {course.description}
                     </p>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-[10px] font-bold text-ink-muted">
+                  <div className="mt-5 space-y-2">
+                    <div className="flex items-center justify-between text-[10px] font-bold text-ink-soft dark:text-lavender">
                       <span>{isAr ? 'تقدمك' : 'Your progress'}</span>
-                      <span className="text-brand-ink">
+                      <span className="text-ink-soft dark:text-lavender">
                         {course.done} / {course.total}
                       </span>
                     </div>
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-muted">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-surface-2 dark:bg-surface-2">
                       <div
-                        className={`h-full rounded-full transition-all duration-500 ${
-                          completed ? 'bg-success-ink' : 'bg-primary'
+                        className={`h-full rounded-full transition-all duration-700 ${
+                          completed
+                            ? 'bg-primary'
+                            : 'bg-primary'
                         }`}
                         style={{ width: `${course.percent}%` }}
                       />
                     </div>
                   </div>
 
-                  <div className="mt-auto flex items-center justify-between border-t border-line pt-4">
-                    <span className="font-arabic text-[11px] font-bold text-ink-muted">
+                  <div className="mt-auto flex items-center justify-between border-t border-line pt-4 dark:border-line">
+                    <span className="text-[11px] font-bold text-ink-soft dark:text-lavender">
                       {course.lessons} {t('coursesPage.lessonsCount')}
                     </span>
                     <Link
                       to={`/lesson?id=${course.id}`}
-                      className="inline-flex items-center gap-1.5 text-xs font-extrabold text-brand-ink transition-colors hover:text-accent"
+                      className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-extrabold text-ink-soft transition-colors hover:bg-highlight hover:text-ink dark:text-lavender dark:hover:bg-primary/10 dark:hover:text-lavender"
                     >
                       {completed
                         ? t('coursesPage.continueCourse')
                         : t('dashboard.learningPath.start')}
-                      {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+                      {isAr ? (
+                        <ArrowLeft className={`h-3.5 w-3.5 ${arrowClass}`} />
+                      ) : (
+                        <ArrowRight className={`h-3.5 w-3.5 ${arrowClass}`} />
+                      )}
                     </Link>
                   </div>
                 </article>
@@ -432,20 +488,22 @@ export default function Dashboard() {
         </section>
 
         <section className="grid gap-4 lg:grid-cols-12">
-          <div className="card space-y-4 p-6 lg:col-span-7">
-            <div className="flex items-start gap-3">
-              <div className="icon-box h-10 w-10 bg-primary text-on-primary">
-                <Target className="h-5 w-5 text-on-primary" />
+          <div className="rounded-2xl border border-line/90 bg-surface p-6 shadow-sm dark:border-line dark:bg-surface-2 lg:col-span-7">
+            <div className="flex items-start gap-3 border-b border-line pb-4 dark:border-line">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-highlight text-ink-soft dark:bg-highlight dark:text-on-primary">
+                <Target className="h-5 w-5" />
               </div>
               <div>
-                <span className="chip bg-brand-soft text-brand-ink">{t('challenge.title')}</span>
-                <h2 className="mt-2 text-base font-extrabold leading-snug text-ink">
+                <span className="inline-flex items-center rounded-full bg-caution-soft px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-caution-ink dark:bg-caution-soft dark:text-caution-ink">
+                  {t('challenge.title')}
+                </span>
+                <h2 className="mt-2 text-base font-bold leading-snug text-ink dark:text-on-dark">
                   {t('challenge.question')}
                 </h2>
               </div>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="mt-5 space-y-2.5">
               {[1, 2, 3].map((num) => {
                 const isSelected = selectedOption === num;
                 const isCorrect = num === 1;
@@ -454,12 +512,12 @@ export default function Dashboard() {
                     key={num}
                     type="button"
                     onClick={() => setSelectedOption(num)}
-                    className={`w-full rounded-xl border p-4 text-start text-xs font-bold transition-all ${
+                    className={`w-full rounded-xl border px-4 py-3 text-start text-xs font-bold transition-all duration-200 active:scale-[0.99] ${
                       isSelected && isCorrect
-                        ? 'border-success-ink/40 bg-success-soft text-success-ink'
+                        ? 'border-primary bg-positive-soft text-positive-ink dark:border-primary/60 dark:bg-positive-soft dark:text-positive-ink'
                         : isSelected
-                        ? 'border-danger/40 bg-danger-soft text-danger'
-                        : 'border-line bg-surface-muted text-ink hover:border-primary/40'
+                        ? 'border-line-strong bg-negative-soft text-negative-ink dark:border-line-strong dark:bg-negative-soft dark:text-negative-ink'
+                        : 'border-line bg-surface-2 text-ink-soft hover:border-primary hover:bg-highlight dark:border-line dark:bg-surface-2 dark:text-lavender dark:hover:border-primary'
                     }`}
                   >
                     {num}. {t(`challenge.opt${num}`)}
@@ -469,13 +527,13 @@ export default function Dashboard() {
             </div>
 
             {selectedOption === 1 && (
-              <div className="animate-fade-in flex items-center gap-2 rounded-xl bg-success-soft p-4 text-xs font-bold text-success-ink">
+              <div className="animate-fade-up mt-4 flex items-center gap-2 rounded-xl border border-line bg-positive-soft p-4 text-xs font-bold text-positive-ink dark:border-primary dark:bg-positive-soft dark:text-positive-ink">
                 <CheckCircle2 className="h-5 w-5 shrink-0" />
                 <span>{t('challenge.correctMsg')}</span>
               </div>
             )}
             {(selectedOption === 2 || selectedOption === 3) && (
-              <div className="animate-fade-in flex items-center gap-2 rounded-xl bg-danger-soft p-4 text-xs font-bold text-danger">
+              <div className="animate-fade-up mt-4 flex items-center gap-2 rounded-xl border border-line bg-negative-soft p-4 text-xs font-bold text-negative-ink dark:border-line-strong dark:bg-negative-soft dark:text-negative-ink">
                 <XCircle className="h-5 w-5 shrink-0" />
                 <span>{t('challenge.wrongMsg')}</span>
               </div>
@@ -483,70 +541,94 @@ export default function Dashboard() {
           </div>
 
           <div className="grid gap-4 lg:col-span-5">
-            <Link to="/quizzes" className="card-hover card flex flex-col gap-3 p-6">
+            <Link
+              to="/quizzes"
+              className="group flex flex-col gap-3 rounded-2xl border border-line/90 bg-surface p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-md dark:border-line dark:bg-surface-2 dark:hover:border-primary"
+            >
               <div className="flex items-center justify-between">
-                <span className="icon-box h-10 w-10 bg-amber/15 text-accent">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-caution-soft text-caution-ink dark:bg-caution-soft dark:text-caution-ink">
                   <Award className="h-5 w-5" />
                 </span>
-                <span className="font-arabic text-[13px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">
+                <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-soft dark:text-lavender">
                   {isAr ? 'اختبار قصير' : 'Quick quiz'}
                 </span>
               </div>
-              <h3 className="text-base font-extrabold text-ink">{t('dashboard.quizSection.title')}</h3>
-              <p className="font-arabic text-xs leading-relaxed text-ink-muted">{t('dashboard.quizSection.desc')}</p>
-              <span className="font-arabic mt-auto inline-flex items-center gap-2 text-xs font-extrabold text-brand-ink">
+              <h3 className="text-base font-bold text-ink dark:text-on-dark">
+                {t('dashboard.quizSection.title')}
+              </h3>
+              <p className="text-xs leading-relaxed text-ink-soft dark:text-lavender">
+                {t('dashboard.quizSection.desc')}
+              </p>
+              <span className="mt-auto inline-flex items-center gap-1.5 text-xs font-extrabold text-ink-soft dark:text-lavender">
                 {t('dashboard.quizSection.startBtn')}
-                {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+                {isAr ? (
+                  <ArrowLeft className={`h-3.5 w-3.5 ${arrowClass}`} />
+                ) : (
+                  <ArrowRight className={`h-3.5 w-3.5 ${arrowClass}`} />
+                )}
               </span>
             </Link>
 
-            <Link to="/ai-tutor" className="card-hover card flex flex-col gap-3 p-6">
+            <Link
+              to="/ai-tutor"
+              className="group flex flex-col gap-3 rounded-2xl border border-line/90 bg-surface p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-md dark:border-line dark:bg-surface-2 dark:hover:border-primary"
+            >
               <div className="flex items-center justify-between">
-                <span className="icon-box h-10 w-10 bg-primary text-on-primary">
-                  <Bot className="h-5 w-5 text-on-primary" />
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-highlight text-ink-soft dark:bg-highlight dark:text-on-primary">
+                  <Bot className="h-5 w-5" />
                 </span>
-                <span className="chip bg-amber/15 text-accent">{t('aiTutorPage.statusChip')}</span>
+                <span className="rounded-full bg-caution-soft px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.12em] text-caution-ink dark:bg-caution-soft dark:text-caution-ink">
+                  {t('aiTutorPage.statusChip')}
+                </span>
               </div>
-              <h3 className="text-base font-extrabold text-ink">{t('dashboard.aiSection.title')}</h3>
-              <p className="font-arabic text-xs leading-relaxed text-ink-muted">{t('dashboard.aiSection.desc')}</p>
-              <span className="font-arabic mt-auto inline-flex items-center gap-2 text-xs font-extrabold text-brand-ink">
+              <h3 className="text-base font-bold text-ink dark:text-on-dark">
+                {t('dashboard.aiSection.title')}
+              </h3>
+              <p className="text-xs leading-relaxed text-ink-soft dark:text-lavender">
+                {t('dashboard.aiSection.desc')}
+              </p>
+              <span className="mt-auto inline-flex items-center gap-1.5 text-xs font-extrabold text-ink-soft dark:text-lavender">
                 {isAr ? 'معاينة المساعد' : 'Preview the tutor'}
-                {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+                {isAr ? (
+                  <ArrowLeft className={`h-3.5 w-3.5 ${arrowClass}`} />
+                ) : (
+                  <ArrowRight className={`h-3.5 w-3.5 ${arrowClass}`} />
+                )}
               </span>
             </Link>
           </div>
         </section>
 
-        <p className="flex items-start gap-2 rounded-2xl border border-line bg-surface-muted px-4 py-3 text-[11px] leading-relaxed text-ink-muted">
-          <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+        <p className="flex items-start gap-2 rounded-2xl border border-line bg-surface-2/70 px-4 py-3 text-[11px] leading-relaxed text-ink-soft dark:border-line dark:bg-surface-2 dark:text-lavender">
+          <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-lavender" />
           {t('footer.disclaimer')}
         </p>
       </div>
 
       {guideModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-scrim/50 p-4 backdrop-blur-sm"
           onClick={() => setGuideModalOpen(false)}
           role="presentation"
         >
           <div
-            className="card animate-rise w-full max-w-lg space-y-5 p-6"
+            className="animate-fade-up w-full max-w-lg space-y-5 rounded-2xl border border-line bg-surface p-6 shadow-xl dark:border-line dark:bg-surface-2"
             onClick={(event) => event.stopPropagation()}
             role="dialog"
             aria-modal="true"
             aria-labelledby="quick-guide-title"
           >
-            <div className="flex items-center justify-between border-b border-line pb-4">
+            <div className="flex items-center justify-between border-b border-line pb-4 dark:border-line">
               <div className="flex items-center gap-2">
-                <Zap className="h-5 w-5 text-accent" />
-                <h3 id="quick-guide-title" className="font-arabic text-lg font-extrabold text-ink">
+                <Zap className="h-5 w-5 text-lavender dark:text-lavender" />
+                <h3 id="quick-guide-title" className="text-lg font-bold text-ink dark:text-on-dark">
                   {t('quickGuide.title')}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setGuideModalOpen(false)}
-                className="rounded-lg bg-surface-muted p-2 text-ink-muted transition-colors hover:bg-line hover:text-ink"
+                className="rounded-lg bg-surface-2 p-2 text-ink-soft transition-colors hover:bg-surface-2 hover:text-ink active:scale-95 dark:bg-surface-2 dark:text-lavender dark:hover:bg-surface-2"
                 aria-label={isAr ? 'إغلاق' : 'Close'}
               >
                 <X className="h-5 w-5" />
@@ -561,22 +643,23 @@ export default function Dashboard() {
               ].map((item) => {
                 const Icon = item.icon;
                 return (
-                  <div key={item.title} className="space-y-1.5 rounded-xl border border-line bg-surface-muted p-4">
-                    <h4 className="font-arabic flex items-center gap-2 text-xs font-extrabold text-brand-ink">
+                  <div key={item.title} className="space-y-1.5 rounded-xl border border-line bg-surface-2 p-4 dark:border-line dark:bg-surface-2">
+                    <h4 className="flex items-center gap-2 text-xs font-bold text-ink-soft dark:text-lavender">
                       <Icon className="h-4 w-4" />
                       <span>{item.title}</span>
                     </h4>
-                    <p className="font-arabic text-xs leading-relaxed text-ink-muted">{item.desc}</p>
+                    <p className="text-xs leading-relaxed text-ink-soft dark:text-lavender">{item.desc}</p>
                   </div>
                 );
               })}
             </div>
 
-            <p className="font-arabic text-[11px] leading-relaxed text-ink-muted">{t('footer.disclaimer')}</p>
+            <p className="text-[11px] leading-relaxed text-ink-soft dark:text-lavender">
+              {t('footer.disclaimer')}
+            </p>
           </div>
         </div>
       )}
     </div>
   );
 }
-            

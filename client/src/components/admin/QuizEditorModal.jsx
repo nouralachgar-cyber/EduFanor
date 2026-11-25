@@ -283,7 +283,7 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
               type="button"
               onClick={draftWithAi}
               disabled={aiBusy}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-primary/35 px-3 py-1.5 text-[11px] font-bold text-primary transition-colors hover:bg-primary/10 disabled:opacity-50 dark:text-brand-ink"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-primary/35 px-3 py-1.5 text-[11px] font-bold text-lavender transition-colors hover:bg-primary/10 disabled:opacity-50"
             >
               {aiBusy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
               {t('admin.quizzesPage.aiDraft')}
@@ -301,7 +301,7 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
                     <button
                       type="button"
                       onClick={() => setForm((previous) => ({ ...previous, questions: previous.questions.filter((_, index) => index !== questionIndex) }))}
-                      className="inline-flex items-center gap-1 text-[10px] font-bold text-danger hover:underline"
+                      className="inline-flex items-center gap-1 text-[10px] font-bold text-negative-ink hover:underline"
                     >
                       <Trash2 className="h-3 w-3" /> {t('admin.courses.removeQuestion')}
                     </button>
@@ -359,7 +359,7 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
                           {question.correctAnswer === optionIndex ? t('admin.courses.correctAnswer') : ''}
                         </span>
                         {question.options.ar.length > 2 && (
-                          <button type="button" onClick={() => removeOption(questionIndex, optionIndex)} className="text-[9px] font-bold text-danger hover:underline">
+                          <button type="button" onClick={() => removeOption(questionIndex, optionIndex)} className="text-[9px] font-bold text-negative-ink hover:underline">
                             {t('admin.courses.removeOption')}
                           </button>
                         )}
@@ -369,7 +369,7 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
                   <button
                     type="button"
                     onClick={() => addOption(questionIndex)}
-                    className="inline-flex items-center gap-1 text-[10px] font-bold text-primary hover:underline dark:text-brand-ink"
+                    className="inline-flex items-center gap-1 text-[10px] font-bold text-lavender hover:underline"
                   >
                     <Plus className="h-3 w-3" /> {t('admin.courses.addOption')}
                   </button>
@@ -404,10 +404,10 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
           </button>
 
           {error && (
-            <p className="rounded-xl border border-danger/25 bg-danger-soft px-3.5 py-2.5 text-[11px] font-bold text-danger">{error}</p>
+            <p className="rounded-xl border border-negative/25 bg-negative-soft px-3.5 py-2.5 text-[11px] font-bold text-negative-ink">{error}</p>
           )}
           {aiError && !aiBusy && (
-            <p className="rounded-xl border border-danger/25 bg-danger-soft px-3.5 py-2.5 text-[11px] font-bold text-danger">{aiError}</p>
+            <p className="rounded-xl border border-negative/25 bg-negative-soft px-3.5 py-2.5 text-[11px] font-bold text-negative-ink">{aiError}</p>
           )}
         </form>
       </Modal>
@@ -430,10 +430,10 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
                 <div
                   key={index}
                   className={`flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 ${
-                    aiPreview.result.suggestedCorrectIndex === index ? 'border-success/40 bg-success-soft' : 'border-line bg-card'
-                  }`}
-                >
-                  {aiPreview.result.suggestedCorrectIndex === index && <CheckCircle2 className="h-4 w-4 shrink-0 text-success-ink" />}
+                     aiPreview.result.suggestedCorrectIndex === index ? 'border-positive/40 bg-positive-soft' : 'border-line bg-card'
+                   }`}
+                 >
+                   {aiPreview.result.suggestedCorrectIndex === index && <CheckCircle2 className="h-4 w-4 shrink-0 text-positive-ink" />}
                   <span dir="rtl" className="flex-1 text-xs font-bold text-ink">{optionAr}</span>
                   <span dir="ltr" className="text-[11px] text-ink-muted">{aiPreview.result.options?.en?.[index]}</span>
                 </div>

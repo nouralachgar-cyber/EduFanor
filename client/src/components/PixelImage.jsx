@@ -35,8 +35,8 @@ export function PixelImage({
         {Array.from({ length: totalPixels }).map((_, i) => (
           <div
             key={i}
-            className={`border border-white/20 transition-all duration-300 ${
-              isHovered ? 'opacity-0 scale-90' : 'bg-brand/20 opacity-100'
+            className={`border border-surface/20 transition-all duration-300 ${
+              isHovered ? 'opacity-0 scale-90' : 'bg-lavender/20 opacity-100'
             }`}
             style={{ transitionDelay: `${i * 30}ms` }}
           />

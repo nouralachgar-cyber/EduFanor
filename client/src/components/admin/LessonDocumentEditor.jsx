@@ -56,9 +56,9 @@ function EditorButton({ icon: Icon, children, onClick, onMouseDown, title, disab
         onMouseDown?.();
       }}
       onClick={onClick}
-      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-line bg-card px-3 py-2 text-xs font-bold text-ink transition-colors hover:border-primary/50 hover:bg-brand-soft disabled:cursor-not-allowed disabled:opacity-50 xl:min-h-9 ${className}`}
+      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-line bg-card px-3 py-2 text-xs font-bold text-ink transition-colors hover:border-primary/50 hover:bg-highlight disabled:cursor-not-allowed disabled:opacity-50 xl:min-h-9 ${className}`}
     >
-      {Icon && <Icon className="h-4 w-4 shrink-0 text-primary dark:text-brand-ink" />}
+      {Icon && <Icon className="h-4 w-4 shrink-0 text-lavender" />}
       <span>{children}</span>
     </button>
   );
@@ -373,7 +373,7 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
 
   const insertMenu = (index) => (
     <div
-      className="my-2 flex flex-wrap items-center gap-2 rounded-xl border border-primary/20 bg-brand-soft/60 p-2"
+      className="my-2 flex flex-wrap items-center gap-2 rounded-xl border border-primary/20 bg-highlight/60 p-2"
       dir={isAr ? 'rtl' : 'ltr'}
     >
       <EditorButton icon={Type} onClick={() => insertBlock('paragraph', {}, index)}>{label('Text', 'نص')}</EditorButton>
@@ -409,7 +409,7 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
           ? 'min-h-10 text-xl font-bold leading-tight'
           : 'min-h-[5rem] text-base leading-8';
     return (
-      <div className={callout ? `rounded-xl border p-4 ${block.type === 'warning' || block.type === 'safety' ? 'border-danger/30 bg-danger-soft/60' : block.type === 'tip' ? 'border-accent/30 bg-amber-soft/20' : 'border-primary/25 bg-brand-soft/40'}` : ''}>
+      <div className={callout ? `rounded-xl border p-4 ${block.type === 'warning' || block.type === 'safety' ? 'border-negative/30 bg-negative-soft/60' : block.type === 'tip' ? 'border-accent/30 bg-caution-soft/25' : 'border-primary/25 bg-highlight/40'}` : ''}>
         <textarea
           data-editable-id={block.id}
           aria-label={placeholder}
@@ -495,7 +495,7 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
 
     return (
       <div className="space-y-2 rounded-xl border border-line bg-surface-muted/40 p-3 sm:p-4">
-        <div className="overflow-hidden rounded-lg border border-line bg-black">
+        <div className="overflow-hidden rounded-lg border border-line bg-canvas">
           {block.type === 'youtube' && youtubeId ? (
             <div className="relative aspect-video w-full">
               <iframe
@@ -510,7 +510,7 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
           ) : block.type === 'video' && url ? (
             <video src={resolveAssetUrl(url)} controls className="h-auto max-h-[34rem] w-full" preload="metadata" />
           ) : (
-            <div className="flex h-44 items-center justify-center text-sm text-white/70">
+            <div className="flex h-44 items-center justify-center text-sm text-ink-muted">
               {label('Enter a YouTube URL or upload a video', 'أدخل رابط يوتيوب أو ارفع فيديو')}
             </div>
           )}
@@ -547,7 +547,7 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
             <button type="button" onClick={() => moveBlock(block.id, 1)} disabled={index === blocks.length - 1} title={label('Move down', 'تحريك لأسفل')} aria-label={label('Move down', 'تحريك لأسفل')} className="flex min-h-11 min-w-11 items-center justify-center rounded-md text-ink-muted hover:bg-card hover:text-ink disabled:opacity-30 xl:min-h-0 xl:min-w-0">
               <ChevronDown className="h-4 w-4" />
             </button>
-            <button type="button" onClick={() => removeBlock(block.id)} title={label('Delete block', 'حذف الكتلة')} aria-label={label('Delete block', 'حذف الكتلة')} className="flex min-h-11 min-w-11 items-center justify-center rounded-md text-danger hover:bg-danger-soft xl:min-h-0 xl:min-w-0">
+            <button type="button" onClick={() => removeBlock(block.id)} title={label('Delete block', 'حذف الكتلة')} aria-label={label('Delete block', 'حذف الكتلة')} className="flex min-h-11 min-w-11 items-center justify-center rounded-md text-negative-ink hover:bg-negative-soft xl:min-h-0 xl:min-w-0">
               <Trash2 className="h-4 w-4" />
             </button>
           </div>
@@ -573,7 +573,7 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
         onMouseDown={(event) => event.preventDefault()}
         onClick={() => setInsertionPoint(index)}
         aria-label={label(`Insert a block at position ${index + 1}`, `إدراج كتلة في الموضع ${index + 1}`)}
-        className="relative z-10 inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-3 py-1.5 text-[11px] font-bold text-ink-muted shadow-sm transition-colors hover:border-primary/50 hover:bg-brand-soft hover:text-primary"
+        className="relative z-10 inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-3 py-1.5 text-[11px] font-bold text-ink-muted shadow-sm transition-colors hover:border-primary/50 hover:bg-highlight hover:text-primary"
       >
         <Plus className="h-3.5 w-3.5" />
         {label('Add block here', 'أضف كتلة هنا')}
@@ -651,7 +651,7 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
           </p>
         )}
         {error && (
-          <p role="alert" className="mx-3 mt-3 rounded-lg border border-danger/30 bg-danger-soft px-3 py-2 text-xs font-bold text-danger">
+          <p role="alert" className="mx-3 mt-3 rounded-lg border border-negative/30 bg-negative-soft px-3 py-2 text-xs font-bold text-negative-ink">
             {error}
           </p>
         )}

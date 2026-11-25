@@ -109,7 +109,7 @@ export default function AdminQuizzes() {
   );
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
+    <div className="space-y-6 bg-canvas min-h-screen p-4 text-ink sm:p-6">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.quizzesPage.title')}
@@ -119,7 +119,7 @@ export default function AdminQuizzes() {
             <button
               type="button"
               onClick={loadQuizzes}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface-2 text-ink transition-colors hover:bg-highlight shadow-sm xl:h-10 xl:w-10"
               aria-label={t('admin.common.refresh')}
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -128,37 +128,37 @@ export default function AdminQuizzes() {
               type="button" 
               onClick={openCreate} 
               disabled={lessons.length === 0} 
-              className="flex min-h-11 items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90 disabled:opacity-50"
+              className="flex min-h-11 items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-on-primary shadow-sm hover:bg-primary-hover disabled:opacity-50"
             >
-              <Plus className="h-4 w-4 text-[#C5B0CD]" /> {t('admin.quizzesPage.newQuiz')}
+              <Plus className="h-4 w-4 text-lavender" /> {t('admin.quizzesPage.newQuiz')}
             </button>
           </div>
         }
       />
 
       <div className="flex flex-wrap items-center gap-2">
-        <Badge tone="surface" className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]"><ClipboardCheck className="h-3.5 w-3.5 text-[#C5B0CD]" /> {t('admin.common.quizzes')}: {formatNumber(quizzes.length, i18n.language)}</Badge>
-        <Badge tone="green" className="bg-emerald-50 text-emerald-800 border border-emerald-200">{t('admin.common.published')}: {formatNumber(totals.published, i18n.language)}</Badge>
-        <Badge tone="amber" className="bg-amber-50 text-amber-800 border border-amber-200">{t('admin.common.draft')}: {formatNumber(quizzes.length - totals.published, i18n.language)}</Badge>
-        <Badge tone="outline" className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]"><FileQuestion className="h-3.5 w-3.5 text-[#C5B0CD]" /> {t('admin.courses.questionsCount')}: {formatNumber(totals.questions, i18n.language)}</Badge>
+        <Badge tone="surface" className="bg-surface-2 text-ink border border-line"><ClipboardCheck className="h-3.5 w-3.5 text-lavender" /> {t('admin.common.quizzes')}: {formatNumber(quizzes.length, i18n.language)}</Badge>
+        <Badge tone="green" className="bg-positive-soft text-positive-ink border border-line">{t('admin.common.published')}: {formatNumber(totals.published, i18n.language)}</Badge>
+        <Badge tone="amber" className="bg-caution-soft text-caution-ink border border-line">{t('admin.common.draft')}: {formatNumber(quizzes.length - totals.published, i18n.language)}</Badge>
+        <Badge tone="outline" className="bg-surface-2 text-ink border border-line"><FileQuestion className="h-3.5 w-3.5 text-lavender" /> {t('admin.courses.questionsCount')}: {formatNumber(totals.questions, i18n.language)}</Badge>
       </div>
 
-      <Panel noPadding className="bg-white border border-[#C5B0CD]/40 rounded-2xl shadow-sm overflow-hidden">
-        <div className="flex flex-col gap-3 border-b border-[#C5B0CD]/30 p-4 bg-[#F6F5F2]/50 sm:flex-row sm:items-center">
+      <Panel noPadding className="bg-surface border border-line rounded-2xl shadow-sm overflow-hidden">
+        <div className="flex flex-col gap-3 border-b border-line p-4 bg-surface-2 sm:flex-row sm:items-center">
           <div className="relative min-w-0 flex-1">
-            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#415E72]/60" />
+            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.quizzesPage.searchPlaceholder')}
-              className="min-h-11 w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+              className="min-h-11 w-full rounded-xl border border-line bg-surface py-2.5 ps-10 pe-4 text-xs text-ink focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
           <select 
             value={lessonFilter} 
             onChange={(event) => setLessonFilter(event.target.value)} 
-            className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-60 shadow-sm"
+            className="min-h-11 rounded-xl border border-line bg-surface px-4 py-2.5 text-xs text-ink focus:outline-none focus:ring-2 focus:ring-primary sm:w-60 shadow-sm"
             aria-label={t('admin.quizzesPage.filterLesson')}
           >
             <option value="">{t('admin.quizzesPage.allLessons')}</option>
@@ -179,27 +179,27 @@ export default function AdminQuizzes() {
             title={t('admin.quizzesPage.noQuizzes')}
             icon={ClipboardCheck}
             action={
-              <button type="button" onClick={openCreate} disabled={lessons.length === 0} className="flex min-h-11 items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90 disabled:opacity-50">
-                <Plus className="h-4 w-4 text-[#C5B0CD]" /> {t('admin.quizzesPage.newQuiz')}
+              <button type="button" onClick={openCreate} disabled={lessons.length === 0} className="flex min-h-11 items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-on-primary shadow-sm hover:bg-primary-hover disabled:opacity-50">
+                <Plus className="h-4 w-4 text-lavender" /> {t('admin.quizzesPage.newQuiz')}
               </button>
             }
           />
         ) : (
-          <div className="divide-y divide-[#C5B0CD]/20">
+          <div className="divide-y divide-line">
             {quizzes.map((quiz) => (
-              <div key={quiz._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between hover:bg-[#F6F5F2]/60 transition-colors">
+              <div key={quiz._id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between hover:bg-surface-2 transition-colors">
                 <div className="flex min-w-0 items-start gap-3.5">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]/50">
-                    <ClipboardCheck className="h-4 w-4 text-[#C5B0CD]" />
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface-2 text-ink border border-line">
+                    <ClipboardCheck className="h-4 w-4 text-lavender" />
                   </span>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-xs font-extrabold text-[#415E72]">{localize(quiz.title, i18n.language)}</p>
-                      <Badge tone={quiz.published ? 'green' : 'amber'} className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]">
+                      <p className="text-xs font-extrabold text-ink">{localize(quiz.title, i18n.language)}</p>
+                      <Badge tone={quiz.published ? 'green' : 'amber'} className="bg-surface-2 text-ink border border-line">
                         {quiz.published ? t('admin.common.published') : t('admin.common.draft')}
                       </Badge>
                     </div>
-                    <p className="mt-1 text-[10px] font-bold text-[#415E72]/70">
+                    <p className="mt-1 text-[10px] font-bold text-ink-soft">
                       {t('admin.quizzesPage.lessonCol')}: {localize(quiz.lesson?.title, i18n.language) || t('admin.common.notAvailable')}
                       {quiz.lesson?.course?.title ? ` · ${t('admin.lessonsPage.courseCol')}: ${localize(quiz.lesson.course.title, i18n.language)}` : ''}
                       {' · '}{t('admin.courses.questionsCount')}: {formatNumber(quiz.questions?.length || 0, i18n.language)}
@@ -216,31 +216,31 @@ export default function AdminQuizzes() {
                     type="button"
                     onClick={() => togglePublish(quiz)}
                     disabled={togglingId === quiz._id}
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm disabled:opacity-40 xl:h-8 xl:w-8"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface-2 text-ink transition-colors hover:bg-highlight shadow-sm disabled:opacity-40 xl:h-8 xl:w-8"
                     aria-label={quiz.published ? t('admin.quizzesPage.unpublish') : t('admin.quizzesPage.publishNow')}
                     title={quiz.published ? t('admin.quizzesPage.unpublish') : t('admin.quizzesPage.publishNow')}
                   >
                     {togglingId === quiz._id ? (
-                      <RefreshCw className="h-4 w-4 animate-spin text-[#C5B0CD]" />
+                      <RefreshCw className="h-4 w-4 animate-spin text-lavender" />
                     ) : quiz.published ? (
-                      <EyeOff className="h-4 w-4 text-[#C5B0CD]" />
+                      <EyeOff className="h-4 w-4 text-lavender" />
                     ) : (
-                      <Eye className="h-4 w-4 text-[#C5B0CD]" />
+                      <Eye className="h-4 w-4 text-lavender" />
                     )}
                   </button>
                   <button
                     type="button"
                     onClick={() => openEdit(quiz)}
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-8 xl:w-8"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface-2 text-ink transition-colors hover:bg-highlight shadow-sm xl:h-8 xl:w-8"
                     aria-label={t('admin.common.edit')}
                     title={t('admin.common.edit')}
                   >
-                    <Edit3 className="h-4 w-4 text-[#C5B0CD]" />
+                    <Edit3 className="h-4 w-4 text-lavender" />
                   </button>
                   <button
                     type="button"
                     onClick={() => setDeleting(quiz)}
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-600 transition-colors hover:bg-red-100 shadow-sm xl:h-8 xl:w-8"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-negative-soft text-negative-ink transition-colors hover:bg-highlight shadow-sm xl:h-8 xl:w-8"
                     aria-label={t('admin.common.delete')}
                     title={t('admin.common.delete')}
                   >

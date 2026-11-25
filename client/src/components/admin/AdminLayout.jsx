@@ -66,17 +66,17 @@ function SidebarContent({ onNavigate }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex flex-col items-start gap-2 px-5 pt-6 pb-5">
-        <EduFanorWordmark className="w-36 text-[#F6F5F2]" />
-        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-white/55">
+        <EduFanorWordmark className="w-36 text-on-dark" />
+        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-on-dark/55">
           {t('admin.shell.subtitle')}
         </p>
       </div>
 
-      <div className="mx-3 mb-4 rounded-xl border border-white/10 bg-white/[0.06] px-3 py-2">
-        <span className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/60">
+      <div className="mx-3 mb-4 rounded-xl border border-on-dark/15 bg-on-dark/[0.06] px-3 py-2">
+        <span className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-on-dark/60">
           <span className="relative flex h-1.5 w-1.5">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F6F5F2] opacity-60" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#F6F5F2]" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-on-dark opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-on-dark" />
           </span>
           {t('admin.shell.secureArea')}
         </span>
@@ -85,7 +85,7 @@ function SidebarContent({ onNavigate }) {
       <nav className="admin-scroll flex-1 overflow-y-auto px-3 pb-4">
         {navGroups.map((group, groupIndex) => (
           <div key={group.labelKey} className={groupIndex ? 'mt-5' : ''}>
-            <p className="mb-1.5 px-2.5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-white/35">
+            <p className="mb-1.5 px-2.5 text-[9px] font-extrabold uppercase tracking-[0.2em] text-on-dark/35">
               {t(group.labelKey)}
             </p>
             <div className="space-y-1">
@@ -105,13 +105,13 @@ function SidebarContent({ onNavigate }) {
                       <>
                         <span
                           className={`flex h-7 w-7 items-center justify-center rounded-lg transition-colors ${
-                            isActive ? 'bg-primary/10' : 'bg-white/[0.06]'
+                            isActive ? 'bg-on-primary/15' : 'bg-on-dark/[0.06]'
                           }`}
                         >
                           <Icon className="h-3.5 w-3.5" />
                         </span>
                         <span className="flex-1">{t(item.label)}</span>
-                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#17313E]" />}
+                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-current" />}
                       </>
                     )}
                   </NavLink>
@@ -122,14 +122,14 @@ function SidebarContent({ onNavigate }) {
         ))}
       </nav>
 
-      <div className="border-t border-white/10 p-3">
-        <div className="mb-2 flex items-center gap-2.5 rounded-xl bg-white/[0.06] px-3 py-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F6F5F2] text-xs font-extrabold text-[#17313E]">
+      <div className="border-t border-on-dark/15 p-3">
+        <div className="mb-2 flex items-center gap-2.5 rounded-xl bg-on-dark/[0.06] px-3 py-2.5">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-extrabold text-on-primary">
             {initials(user?.name)}
           </span>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-extrabold text-white">{user?.name || t('admin.shell.adminAccount')}</p>
-            <p className="truncate text-[10px] text-white/50" dir="ltr">
+            <p className="truncate text-xs font-extrabold text-on-dark">{user?.name || t('admin.shell.adminAccount')}</p>
+            <p className="truncate text-[10px] text-on-dark/50" dir="ltr">
               {user?.email}
             </p>
           </div>
@@ -137,7 +137,7 @@ function SidebarContent({ onNavigate }) {
         <div className="flex items-center gap-1.5">
           <Link
             to="/"
-            className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-lg border border-white/10 px-2 py-2 text-[10px] font-bold text-white/65 transition-colors hover:bg-white/[0.08] hover:text-white"
+            className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-lg border border-on-dark/15 px-2 py-2 text-[10px] font-bold text-on-dark/70 transition-colors hover:bg-on-dark/10 hover:text-on-dark"
           >
             <ChevronLeft className={`h-3 w-3 ${isAr ? 'rotate-180' : ''}`} />
             {t('admin.shell.backToSite')}
@@ -145,7 +145,7 @@ function SidebarContent({ onNavigate }) {
           <button
             type="button"
             onClick={handleLogout}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-white/65 transition-colors hover:bg-danger/20 hover:text-white xl:h-8 xl:w-8"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-on-dark/15 text-on-dark/70 transition-colors hover:bg-negative/20 hover:text-on-dark xl:h-8 xl:w-8"
             aria-label={t('admin.shell.logout')}
             title={t('admin.shell.logout')}
           >
@@ -211,7 +211,7 @@ export default function AdminLayout() {
         <div className="fixed inset-0 z-[70] lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-[#17313E]/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-scrim/70 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
             aria-label={t('admin.shell.closeMenu')}
           />
@@ -219,7 +219,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => setMobileOpen(false)}
-              className="absolute end-3 top-4 flex h-11 w-11 items-center justify-center rounded-full text-white/70 hover:bg-white/10 hover:text-white"
+              className="absolute end-3 top-4 flex h-11 w-11 items-center justify-center rounded-full text-on-dark/75 hover:bg-on-dark/10 hover:text-on-dark"
               aria-label={t('admin.shell.closeMenu')}
             >
               <X className="h-4 w-4" />
@@ -243,7 +243,7 @@ export default function AdminLayout() {
 
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 text-[10px] font-bold text-ink-muted">
-                <ShieldCheck className="h-3 w-3 text-amber" />
+                <ShieldCheck className="h-3 w-3 text-lavender" />
                 <span className="hidden sm:inline">{t('admin.shell.secureArea')}</span>
                 <span className="hidden text-line-strong sm:inline">/</span>
                 <span className="truncate">{currentTitle}</span>
@@ -269,7 +269,7 @@ export default function AdminLayout() {
               aria-label={t('admin.shell.theme')}
               title={t('admin.shell.theme')}
             >
-              {isDark ? <Sun className="h-4 w-4 text-amber" /> : <Moon className="h-4 w-4 text-primary" />}
+              {isDark ? <Sun className="h-4 w-4 text-lavender" /> : <Moon className="h-4 w-4 text-primary" />}
             </button>
 
             <button
@@ -279,7 +279,7 @@ export default function AdminLayout() {
               aria-label={t('admin.shell.language')}
               title={t('admin.shell.language')}
             >
-              <Globe className="h-3.5 w-3.5 text-primary dark:text-brand-ink" />
+              <Globe className="h-3.5 w-3.5 text-lavender" />
               {isAr ? 'EN' : 'ع'}
             </button>
 
@@ -287,7 +287,7 @@ export default function AdminLayout() {
               to="/admin/settings"
               className="ms-1 hidden items-center gap-2 rounded-xl border border-line bg-card px-2.5 py-1.5 transition-colors hover:bg-surface-muted sm:flex"
             >
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[10px] font-extrabold text-white">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[10px] font-extrabold text-on-primary">
                 {initials(user?.name)}
               </span>
               <span className="max-w-[7rem] truncate text-[11px] font-extrabold text-ink">{user?.name}</span>

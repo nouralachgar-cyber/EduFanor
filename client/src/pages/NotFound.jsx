@@ -9,15 +9,15 @@ export default function NotFound() {
   return (
     <div className="flex min-h-[70vh] items-center justify-center p-4">
       <div className="text-center space-y-6 max-w-md">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-brand-soft">
-          <Search className="h-10 w-10 text-brand-ink" />
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-highlight">
+          <Search className="h-10 w-10 text-ink-soft" />
         </div>
         <div className="space-y-2">
           <h1 className="text-5xl font-extrabold text-ink">404</h1>
           <p className="text-lg font-bold text-ink">
             {t('notFound.title', 'Page not found')}
           </p>
-          <p className="text-sm text-ink-muted">
+          <p className="text-sm text-ink-soft">
             {t('notFound.desc', 'The page you are looking for does not exist or has been moved.')}
           </p>
         </div>

@@ -19,10 +19,10 @@ export default function GlobalEmergencySection() {
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-12">
-      <div className="relative grid min-h-[460px] grid-cols-1 items-center gap-8 overflow-hidden rounded-3xl border border-line bg-beige p-6 shadow-pop md:p-12 lg:grid-cols-12">
+      <div className="relative grid min-h-[460px] grid-cols-1 items-center gap-8 overflow-hidden rounded-3xl border border-line bg-canvas p-6 shadow-pop md:p-12 lg:grid-cols-12">
         <div className="z-10 space-y-6 lg:col-span-7">
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent/25 bg-amber/15 px-3.5 py-1.5 text-xs font-bold text-ink">
-            <ShieldAlert className="h-4 w-4 text-accent" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-caution-soft px-3.5 py-1.5 text-xs font-bold text-ink">
+            <ShieldAlert className="h-4 w-4 text-caution-ink" />
             <span>
               {isAr
                 ? 'الوعي بالإسعافات الأولية مسؤولية مشتركة'
@@ -35,18 +35,18 @@ export default function GlobalEmergencySection() {
               <>
                 الحوادث تقع في أي مكان..
                 <br />
-                <span className="italic text-accent">واستعدادك يصنع فارقاً.</span>
+                <span className="italic text-lavender">واستعدادك يصنع فارقاً.</span>
               </>
             ) : (
               <>
                 Emergencies happen anywhere..
                 <br />
-                <span className="italic text-accent">Your preparation matters.</span>
+                <span className="italic text-lavender">Your preparation matters.</span>
               </>
             )}
           </h2>
 
-          <p className="max-w-xl text-xs leading-relaxed text-ink-muted md:text-sm">
+          <p className="max-w-xl text-xs leading-relaxed text-ink-soft md:text-sm">
             {isAr
               ? 'تعلّم أساسيات التعامل مع الاختناق والنزيف والحالات الطارئة عبر دروس منظمة واختبارات قصيرة. المعرفة لا تغني عن التدريب المعتمد أو خدمات الطوارئ، لكنها تساعدك على التصرف بوعي أكبر.'
               : 'Learn the basics of responding to choking, bleeding, and emergency situations through structured lessons and short quizzes. Knowledge does not replace certified training or emergency services, but it helps you act more consciously.'}
@@ -69,7 +69,7 @@ export default function GlobalEmergencySection() {
           <Globe3D
             markers={markers}
             config={{
-              atmosphereColor: '#C5B0CD',
+              atmosphereColor: '#BFA2DB',
               autoRotateSpeed: 0.4,
             }}
           />

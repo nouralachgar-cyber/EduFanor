@@ -34,7 +34,7 @@ export default function AdminAudit() {
   const pagination = data?.pagination || { page: 1, pages: 1, total: 0 };
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
+    <div className="space-y-6 bg-canvas min-h-screen p-4 text-ink sm:p-6">
       <PageHeader
         eyebrow={t('admin.shell.operations')}
         title={t('admin.audit.title')}
@@ -43,7 +43,7 @@ export default function AdminAudit() {
           <button
             type="button"
             onClick={load}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface-2 text-ink transition-colors hover:bg-highlight shadow-sm xl:h-10 xl:w-10"
             aria-label={t('admin.common.refresh')}
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -51,12 +51,12 @@ export default function AdminAudit() {
         }
       />
 
-      <Panel noPadding className="bg-white border border-[#C5B0CD]/40 rounded-2xl shadow-sm overflow-hidden">
-        <div className="flex items-center justify-between gap-2 border-b border-[#C5B0CD]/30 px-5 py-4 bg-[#F6F5F2]/50">
-          <h2 className="flex items-center gap-2 text-sm font-extrabold text-[#415E72]">
-            <ShieldCheck className="h-4 w-4 text-[#C5B0CD]" /> {t('admin.audit.title')}
+      <Panel noPadding className="bg-surface border border-line rounded-2xl shadow-sm overflow-hidden">
+        <div className="flex items-center justify-between gap-2 border-b border-line px-5 py-4 bg-surface-2">
+          <h2 className="flex items-center gap-2 text-sm font-extrabold text-ink">
+            <ShieldCheck className="h-4 w-4 text-lavender" /> {t('admin.audit.title')}
           </h2>
-          <Badge tone="outline" className="bg-white text-[#415E72] border-[#C5B0CD]">
+          <Badge tone="outline" className="bg-surface text-ink border-line">
             {formatNumber(pagination.total, i18n.language)}
           </Badge>
         </div>
@@ -68,7 +68,7 @@ export default function AdminAudit() {
             <div className="admin-scroll hidden overflow-x-auto md:block">
               <table className="admin-table w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#C5B0CD]/30 bg-[#F6F5F2] text-[11px] text-[#415E72]">
+                  <tr className="border-b border-line bg-surface-2 text-[11px] text-ink">
                     <th className="p-3.5">{t('admin.audit.actor')}</th>
                     <th className="p-3.5">{t('admin.audit.action')}</th>
                     <th className="p-3.5">{t('admin.audit.target')}</th>
@@ -76,51 +76,51 @@ export default function AdminAudit() {
                     <th className="p-3.5">{t('admin.audit.time')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#C5B0CD]/20 text-xs">
+                <tbody className="divide-y divide-line text-xs">
                   {logs.map((log) => (
-                    <tr key={log._id} className="hover:bg-[#F6F5F2]/60 transition-colors">
+                    <tr key={log._id} className="hover:bg-surface-2 transition-colors">
                       <td className="p-3.5">
                         <div className="flex items-center gap-2.5">
-                          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F6F5F2] text-[10px] font-extrabold text-[#415E72] border border-[#C5B0CD]/50">
+                          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-2 text-[10px] font-extrabold text-ink border border-line">
                             {initials(log.actor?.name || 'A')}
                           </span>
                           <div>
-                            <p className="text-xs font-bold text-[#415E72]">{log.actor?.name || t('admin.common.notAvailable')}</p>
-                            <p className="text-[9px] text-[#415E72]/70" dir="ltr">{log.actor?.email || ''}</p>
+                            <p className="text-xs font-bold text-ink">{log.actor?.name || t('admin.common.notAvailable')}</p>
+                            <p className="text-[9px] text-ink-soft" dir="ltr">{log.actor?.email || ''}</p>
                           </div>
                         </div>
                       </td>
                       <td className="p-3.5">
-                        <Badge tone="amber" className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]">
+                        <Badge tone="amber" className="bg-surface-2 text-ink border border-line">
                           {t(`admin.audit.actions.${log.action}`, { defaultValue: log.action })}
                         </Badge>
                       </td>
                       <td className="p-3.5">
-                        <p className="text-[11px] font-bold text-[#415E72]">{log.targetLabel || '—'}</p>
-                        <p className="text-[9px] text-[#415E72]/70">{t(`admin.audit.targets.${log.targetType}`, { defaultValue: log.targetType || '' })}</p>
+                        <p className="text-[11px] font-bold text-ink">{log.targetLabel || '—'}</p>
+                        <p className="text-[9px] text-ink-soft">{t(`admin.audit.targets.${log.targetType}`, { defaultValue: log.targetType || '' })}</p>
                       </td>
-                      <td className="p-3.5 max-w-sm text-[11px] text-[#415E72]/80">{log.details || '—'}</td>
-                      <td className="p-3.5 text-[10px] text-[#415E72]/70">{relativeTime(log.createdAt, i18n.language)}</td>
+                      <td className="p-3.5 max-w-sm text-[11px] text-ink-soft">{log.details || '—'}</td>
+                      <td className="p-3.5 text-[10px] text-ink-soft">{relativeTime(log.createdAt, i18n.language)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
 
-            <div className="divide-y divide-[#C5B0CD]/20 md:hidden">
+            <div className="divide-y divide-line md:hidden">
               {logs.map((log) => (
                 <div key={log._id} className="flex items-start gap-3 p-4">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F6F5F2] text-[10px] font-extrabold text-[#415E72] border border-[#C5B0CD]/50">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-2 text-[10px] font-extrabold text-ink border border-line">
                     {initials(log.actor?.name || 'A')}
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <p className="text-[11px] font-extrabold text-[#415E72]">{t(`admin.audit.actions.${log.action}`, { defaultValue: log.action })}</p>
-                      <Badge tone="outline" className="bg-[#F6F5F2] text-[#415E72] border-[#C5B0CD]">{t(`admin.audit.targets.${log.targetType}`, { defaultValue: log.targetType || '' })}</Badge>
+                      <p className="text-[11px] font-extrabold text-ink">{t(`admin.audit.actions.${log.action}`, { defaultValue: log.action })}</p>
+                      <Badge tone="outline" className="bg-surface-2 text-ink border-line">{t(`admin.audit.targets.${log.targetType}`, { defaultValue: log.targetType || '' })}</Badge>
                     </div>
-                    <p className="mt-0.5 truncate text-[10px] font-semibold text-[#415E72]/70">{log.targetLabel || '—'}</p>
-                    {log.details && <p className="mt-0.5 line-clamp-2 text-[10px] text-[#415E72]/80">{log.details}</p>}
-                    <p className="mt-1 text-[9px] font-semibold text-[#415E72]/60">{relativeTime(log.createdAt, i18n.language)} · {log.actor?.name}</p>
+                    <p className="mt-0.5 truncate text-[10px] font-semibold text-ink-soft">{log.targetLabel || '—'}</p>
+                    {log.details && <p className="mt-0.5 line-clamp-2 text-[10px] text-ink-soft">{log.details}</p>}
+                    <p className="mt-1 text-[9px] font-semibold text-muted">{relativeTime(log.createdAt, i18n.language)} · {log.actor?.name}</p>
                   </div>
                 </div>
               ))}

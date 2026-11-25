@@ -18,17 +18,17 @@ export default function StudentLayout() {
   const { t } = useTranslation();
 
   return (
-    <div className="app-shell flex min-h-screen flex-col">
+    <div className="app-shell flex min-h-screen flex-col bg-canvas antialiased dark:bg-canvas">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-white"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-on-primary dark:focus:bg-accent"
       >
         {t('common.skipToContent', 'Skip to content')}
       </a>
 
       <Navbar />
 
-      <div className="mx-auto flex w-full  flex-1">
+      <div className="mx-auto flex w-full max-w-[1800px] flex-1">
         <Sidebar />
         <main id="main-content" className="min-w-0 flex-1 pb-24 md:pb-0">
           <Outlet />
@@ -41,7 +41,7 @@ export default function StudentLayout() {
 
       <nav
         aria-label={t('nav.studentNavigation', 'Student navigation')}
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl md:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 shadow-[0_-4px_16px_-8px_var(--palette-line)] backdrop-blur-xl dark:border-line dark:bg-scrim/95 md:hidden"
       >
         <ul className="mx-auto flex max-w-md items-center justify-between">
           {mobileLinks.map((link) => {
@@ -57,8 +57,10 @@ export default function StudentLayout() {
                 <NavLink
                   to={link.path}
                   className={({ isActive }) =>
-                    `flex min-w-14 flex-col items-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold transition-colors ${
-                      isActive ? 'text-primary dark:text-brand-ink' : 'text-ink-muted hover:text-ink'
+                    `relative flex min-w-14 flex-col items-center gap-1 rounded-xl px-2 py-1.5 text-[10px] font-bold transition-all duration-200 active:scale-[0.98] ${
+                      isActive
+                        ? 'bg-primary text-on-primary after:absolute after:bottom-0 after:start-1/2 after:h-0.5 after:w-6 after:-translate-x-1/2 after:rounded-full after:bg-on-primary dark:bg-accent dark:text-on-primary dark:after:bg-on-primary'
+                        : 'text-ink hover:bg-highlight hover:text-ink dark:text-muted dark:hover:bg-surface-2 dark:hover:text-lavender'
                     }`
                   }
                 >

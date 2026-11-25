@@ -7,8 +7,8 @@ export default function ProtectedRoute({ children, requireAdmin }) {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#F6F5F2]">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#C5B0CD] border-t-[#415E72]" />
+      <div className="flex min-h-screen items-center justify-center bg-canvas">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-line border-t-primary" />
       </div>
     );
   }

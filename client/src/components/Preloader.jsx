@@ -69,7 +69,7 @@ export default function Preloader({ onDone }) {
             duration: reduceMotion ? 0.15 : 0.55,
             ease: [0.76, 0, 0.24, 1],
           }}
-          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[#F6F5F2] dark:bg-[#17313E]"
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-canvas dark:bg-scrim"
           role="dialog"
           aria-label="EduFanor"
         >
@@ -86,7 +86,7 @@ export default function Preloader({ onDone }) {
           >
             <EduFanorWordmark
               animated={!reduceMotion}
-              className="w-full text-[#17313E] dark:text-[#F6F5F2]"
+              className="w-full text-ink dark:text-on-dark"
             />
           </motion.div>
         </motion.div>

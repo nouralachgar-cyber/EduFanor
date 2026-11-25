@@ -6,7 +6,25 @@ async function createPng(svgElement) {
   if (!svgElement) throw new Error('Achievement preview is not available.');
   if (document.fonts?.ready) await document.fonts.ready;
 
-  const svgBlob = new Blob([new XMLSerializer().serializeToString(svgElement)], {
+  const clone = svgElement.cloneNode(true);
+  const computed = getComputedStyle(svgElement);
+  const resolved = new Map();
+  const resolveVariables = (value) =>
+    value.replace(/var\(--palette-([a-z0-9-]+)\)/g, (match, token) => {
+      if (!resolved.has(token)) {
+        resolved.set(token, computed.getPropertyValue(`--palette-${token}`).trim() || match);
+      }
+      return resolved.get(token);
+    });
+  [clone, ...clone.querySelectorAll('*')].forEach((element) => {
+    Array.from(element.attributes).forEach((attribute) => {
+      if (attribute.value.includes('var(--palette-')) {
+        element.setAttribute(attribute.name, resolveVariables(attribute.value));
+      }
+    });
+  });
+
+  const svgBlob = new Blob([new XMLSerializer().serializeToString(clone)], {
     type: 'image/svg+xml;charset=utf-8',
   });
   const svgUrl = URL.createObjectURL(svgBlob);
@@ -130,7 +148,7 @@ export default function AchievementActions({
         </div>
       )}
       {status && (
-        <p role="status" className="flex items-center gap-1.5 text-xs font-semibold text-brand-ink">
+        <p role="status" className="flex items-center gap-1.5 text-xs font-semibold text-ink-soft">
           {status === t('achievement.messageCopied') && <CheckCircle2 className="h-4 w-4" />}
           {status}
         </p>

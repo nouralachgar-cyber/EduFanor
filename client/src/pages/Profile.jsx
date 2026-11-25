@@ -51,21 +51,21 @@ export default function Profile() {
     <div className="page-container">
       <div className="page-content mx-auto max-w-5xl space-y-8">
         <header>
-          <span className="chip bg-brand-soft text-brand-ink">
+          <span className="chip bg-highlight text-ink-soft">
             <User className="h-3.5 w-3.5" />
             {t('profilePage.title')}
           </span>
           <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
             {isAr ? 'ملفك الشخصي' : 'Your profile'}
           </h1>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-muted">{t('profilePage.subtitle')}</p>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">{t('profilePage.subtitle')}</p>
         </header>
 
         <div className="grid gap-5 lg:grid-cols-12">
           <aside className="card p-6 lg:col-span-5">
             <div className="flex flex-col items-center text-center">
               <div className="relative">
-                <div className="h-28 w-28 rounded-3xl border-2 border-primary bg-surface-muted p-1.5">
+                <div className="h-28 w-28 rounded-3xl border-2 border-primary bg-surface-2 p-1.5">
                   <img
                     src={selectedAvatar}
                     alt={isAr ? 'الصورة الرمزية المختارة' : 'Selected avatar'}
@@ -74,28 +74,28 @@ export default function Profile() {
                   />
                 </div>
                 <span className="absolute -bottom-1 -end-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-on-primary shadow-md">
-                  <Camera className="h-4 w-4 text-accent" />
+                  <Camera className="h-4 w-4 text-primary" />
                 </span>
               </div>
 
               <p className="mt-4 text-base font-extrabold text-ink">
                 {name || t('profilePage.studentFallback')}
               </p>
-              <p className="mt-0.5 text-xs text-ink-muted" dir="ltr">
+              <p className="mt-0.5 text-xs text-ink-soft" dir="ltr">
                 {email}
               </p>
-              <span className="chip mt-3 bg-success-soft text-success-ink">
+              <span className="chip mt-3 bg-positive-soft text-positive-ink">
                 <ShieldCheck className="h-3 w-3" />
                 {t('studentCard.active')}
               </span>
-              <p className="mt-3 font-mono text-[10px] font-bold text-ink-muted">
+              <p className="mt-3 font-mono text-[10px] font-bold text-ink-soft">
                 {t('studentCard.idLabel')} {studentId}
               </p>
             </div>
 
             <div className="mt-6 space-y-2.5 border-t border-line pt-5">
               <label className="label">
-                <Sparkles className="h-4 w-4 text-accent" />
+                <Sparkles className="h-4 w-4 text-primary" />
                 <span>{t('profilePage.chooseAvatar')}</span>
               </label>
               <div className="grid grid-cols-6 gap-2">
@@ -108,8 +108,8 @@ export default function Profile() {
                     aria-pressed={selectedAvatar === avatarUrl}
                     className={`flex items-center justify-center rounded-xl border-2 p-1.5 transition-all ${
                       selectedAvatar === avatarUrl
-                        ? 'border-primary bg-brand-soft'
-                        : 'border-transparent bg-surface-muted hover:border-line-strong'
+                        ? 'border-primary bg-highlight'
+                        : 'border-transparent bg-surface-2 hover:border-line-strong'
                     }`}
                   >
                     <img src={avatarUrl} alt="" className="h-9 w-9 rounded-lg" loading="lazy" />
@@ -119,8 +119,8 @@ export default function Profile() {
             </div>
 
             {bio && (
-              <div className="mt-5 rounded-xl border border-line bg-surface-muted p-4">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">
+              <div className="mt-5 rounded-xl border border-line bg-surface-2 p-4">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-soft">
                   {t('profilePage.bio')}
                 </p>
                 <p className="mt-1.5 text-xs leading-relaxed text-ink">{bio}</p>
@@ -130,7 +130,7 @@ export default function Profile() {
 
           <section className="card p-6 sm:p-8 lg:col-span-7">
             {savedSuccess && (
-              <div className="mb-5 flex animate-fade-in items-center gap-2 rounded-xl bg-success-soft p-3.5 text-xs font-bold text-success-ink">
+              <div className="mb-5 flex animate-fade-in items-center gap-2 rounded-xl bg-positive-soft p-3.5 text-xs font-bold text-positive-ink">
                 <CheckCircle2 className="h-5 w-5 shrink-0" />
                 <span>{t('profilePage.successMsg')}</span>
               </div>
@@ -139,7 +139,7 @@ export default function Profile() {
             <form onSubmit={handleSave} className="space-y-5">
               <div className="space-y-1.5">
                 <label htmlFor="profile-name" className="label">
-                  <User className="h-4 w-4 text-brand-ink" />
+                  <User className="h-4 w-4 text-ink-soft" />
                   <span>{t('profilePage.fullName')}</span>
                 </label>
                 <input
@@ -154,11 +154,11 @@ export default function Profile() {
 
               <div className="space-y-1.5">
                 <label htmlFor="profile-email" className="label">
-                  <Mail className="h-4 w-4 text-brand-ink" />
+                  <Mail className="h-4 w-4 text-ink-soft" />
                   <span>{t('profilePage.email')}</span>
                 </label>
                 <input id="profile-email" type="email" value={email} disabled className="input opacity-60" dir="ltr" />
-                <p className="text-[10px] text-ink-muted">
+                <p className="text-[10px] text-ink-soft">
                   {isAr
                     ? 'البريد الإلكتروني مرتبط بحسابك ولا يمكن تعديله من هنا.'
                     : 'Your email is linked to your account and cannot be edited here.'}
@@ -167,7 +167,7 @@ export default function Profile() {
 
               <div className="space-y-1.5">
                 <label htmlFor="profile-bio" className="label">
-                  <FileText className="h-4 w-4 text-brand-ink" />
+                  <FileText className="h-4 w-4 text-ink-soft" />
                   <span>{t('profilePage.bio')}</span>
                 </label>
                 <textarea
@@ -185,7 +185,7 @@ export default function Profile() {
               </button>
             </form>
 
-            <p className="mt-5 border-t border-line pt-4 text-[10px] leading-relaxed text-ink-muted">
+            <p className="mt-5 border-t border-line pt-4 text-[10px] leading-relaxed text-ink-soft">
               {isAr
                 ? 'تُحفظ تفضيلات الملف الشخصي محلياً في هذا المتصفح.'
                 : 'Profile preferences are stored locally in this browser.'}

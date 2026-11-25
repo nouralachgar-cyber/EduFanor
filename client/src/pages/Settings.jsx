@@ -23,32 +23,32 @@ export default function Settings() {
     <div className="page-container">
       <div className="page-content mx-auto max-w-3xl space-y-8">
         <header>
-          <span className="chip bg-brand-soft text-brand-ink">
+          <span className="chip bg-highlight text-ink-soft">
             <SettingsIcon className="h-3.5 w-3.5" />
             {t('nav.settings')}
           </span>
           <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
             {t('settingsPage.title')}
           </h1>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-muted">{t('settingsPage.subtitle')}</p>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">{t('settingsPage.subtitle')}</p>
         </header>
 
         <section className="card divide-y divide-line overflow-hidden">
           <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div className="flex items-start gap-3">
-              <span className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
+              <span className="icon-box h-10 w-10 bg-highlight text-ink-soft">
                 <Languages className="h-5 w-5" />
               </span>
               <div>
                 <h2 className="text-sm font-extrabold text-ink">{t('settingsPage.languageTitle')}</h2>
-                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-muted">
+                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-soft">
                   {t('settingsPage.languageDesc')}
                 </p>
               </div>
             </div>
 
             <div
-              className="flex shrink-0 items-center rounded-xl border border-line bg-surface-muted p-1"
+              className="flex shrink-0 items-center rounded-xl border border-line bg-surface-2 p-1"
               role="group"
               aria-label={t('settingsPage.languageTitle')}
             >
@@ -56,7 +56,7 @@ export default function Settings() {
                 type="button"
                 onClick={() => i18n.changeLanguage('ar')}
                 className={`rounded-lg px-4 py-1.5 text-xs font-extrabold transition-colors ${
-                  isAr ? 'bg-primary text-on-primary' : 'text-ink-muted hover:text-ink'
+                  isAr ? 'bg-primary text-on-primary' : 'text-ink-soft hover:text-ink'
                 }`}
               >
                 العربية
@@ -65,7 +65,7 @@ export default function Settings() {
                 type="button"
                 onClick={() => i18n.changeLanguage('en')}
                 className={`rounded-lg px-4 py-1.5 text-xs font-extrabold transition-colors ${
-                  !isAr ? 'bg-primary text-on-primary' : 'text-ink-muted hover:text-ink'
+                  !isAr ? 'bg-primary text-on-primary' : 'text-ink-soft hover:text-ink'
                 }`}
               >
                 English
@@ -75,14 +75,14 @@ export default function Settings() {
 
           <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div className="flex items-start gap-3">
-              <span className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
+              <span className="icon-box h-10 w-10 bg-highlight text-ink-soft">
                 {isDark ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
               </span>
               <div>
                 <h2 className="text-sm font-extrabold text-ink">
                   {isAr ? 'المظهر' : 'Appearance'}
                 </h2>
-                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-muted">
+                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-soft">
                   {isAr
                     ? 'اختر بين الوضع الفاتح والداكن. يُحفظ اختيارك في هذا المتصفح.'
                     : 'Choose between light and dark appearance. Your choice is saved in this browser.'}
@@ -100,23 +100,23 @@ export default function Settings() {
                 isDark ? 'justify-end bg-primary' : 'justify-start bg-line-strong'
               }`}
             >
-              <span className="h-6 w-6 rounded-full bg-white shadow-sm" />
+              <span className="h-6 w-6 rounded-full bg-surface shadow-sm" />
             </button>
           </div>
 
           <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div className="flex items-start gap-3">
-              <span className="icon-box h-10 w-10 bg-success-soft text-success-ink">
+              <span className="icon-box h-10 w-10 bg-positive-soft text-positive-ink">
                 <ShieldCheck className="h-5 w-5" />
               </span>
               <div>
                 <h2 className="text-sm font-extrabold text-ink">{t('settingsPage.verifiedTitle')}</h2>
-                <p className="mt-0.5 max-w-md text-[11px] leading-relaxed text-ink-muted">
+                <p className="mt-0.5 max-w-md text-[11px] leading-relaxed text-ink-soft">
                   {t('settingsPage.verifiedDesc')}
                 </p>
               </div>
             </div>
-            <span className="chip shrink-0 bg-success-soft text-success-ink">
+            <span className="chip shrink-0 bg-positive-soft text-positive-ink">
               <Check className="h-3 w-3" />
               {t('settingsPage.active')}
             </span>
@@ -124,39 +124,39 @@ export default function Settings() {
 
           <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div className="flex items-start gap-3">
-              <span className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
+              <span className="icon-box h-10 w-10 bg-highlight text-ink-soft">
                 <MonitorSmartphone className="h-5 w-5" />
               </span>
               <div>
                 <h2 className="text-sm font-extrabold text-ink">
                   {isAr ? 'الحركة والوصول' : 'Motion and accessibility'}
                 </h2>
-                <p className="mt-0.5 max-w-md text-[11px] leading-relaxed text-ink-muted">
+                <p className="mt-0.5 max-w-md text-[11px] leading-relaxed text-ink-soft">
                   {isAr
                     ? 'تحترم الواجهة إعداد تقليل الحركة في نظامك، وتدعم التنقل بلوحة المفاتيح.'
                     : 'The interface respects your system’s reduced-motion setting and supports keyboard navigation.'}
                 </p>
               </div>
             </div>
-            <Sparkles className="h-5 w-5 shrink-0 text-accent" />
+            <Sparkles className="h-5 w-5 shrink-0 text-primary" />
           </div>
         </section>
 
         <section className="card p-6">
           <div className="flex items-start gap-3">
-            <span className="icon-box h-10 w-10 bg-surface-muted text-ink-muted">
+            <span className="icon-box h-10 w-10 bg-surface-2 text-ink-soft">
               <Info className="h-5 w-5" />
             </span>
             <div>
               <h2 className="text-sm font-extrabold text-ink">{t('settingsPage.aboutTitle')}</h2>
-              <p className="mt-1 text-xs leading-relaxed text-ink-muted">{t('settingsPage.aboutDesc')}</p>
-              <p className="mt-2 font-mono text-[10px] text-ink-muted">{t('settingsPage.version')}</p>
+              <p className="mt-1 text-xs leading-relaxed text-ink-soft">{t('settingsPage.aboutDesc')}</p>
+              <p className="mt-2 font-mono text-[10px] text-ink-soft">{t('settingsPage.version')}</p>
             </div>
           </div>
         </section>
 
-        <p className="flex items-start gap-2 rounded-2xl border border-line bg-surface-muted px-4 py-3 text-[11px] leading-relaxed text-ink-muted">
-          <Globe className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" />
+        <p className="flex items-start gap-2 rounded-2xl border border-line bg-surface-2 px-4 py-3 text-[11px] leading-relaxed text-ink-soft">
+          <Globe className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
           {t('footer.disclaimer')}
         </p>
       </div>

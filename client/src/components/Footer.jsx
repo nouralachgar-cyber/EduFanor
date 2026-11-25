@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Mail } from './icons';
@@ -8,19 +8,19 @@ export default function Footer() {
   const { t } = useTranslation();
 
   return (
-    <footer className="border-t border-plumLight/30 bg-mainBackground text-plumdeep">
+    <footer className="border-t border-line bg-canvas text-ink-soft">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <Link to="/" className="group inline-flex items-center">
               <EduFanorWordmark
-                className="w-36 text-plumdeep transition-transform duration-300 group-hover:scale-[1.015] dark:text-softLavender"
+                className="w-36 text-ink-soft transition-transform duration-300 group-hover:scale-[1.015] dark:text-on-dark"
               />
             </Link>
-            <p className="mt-3 text-xs leading-relaxed text-plumLightMuted">{t('footer.desc')}</p>
-            <p className="mt-3 flex items-center gap-2 text-[11px] font-semibold text-plumLightMuted">
+            <p className="mt-3 text-xs leading-relaxed text-ink-soft">{t('footer.desc')}</p>
+            <p className="mt-3 flex items-center gap-2 text-[11px] font-semibold text-ink-soft">
               <Mail className="h-3.5 w-3.5 text-lavender" />
-              <a href="mailto:support@edufanor.com" className="hover:text-plumdeep" dir="ltr">
+              <a href="mailto:support@edufanor.com" className="hover:text-lavender" dir="ltr">
                 support@edufanor.com
               </a>
             </p>
@@ -28,51 +28,51 @@ export default function Footer() {
 
           <div className="grid grid-cols-2 gap-8 md:grid-cols-3 text-sm">
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-plumLightMuted">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-soft">
                 {t('footer.learn', 'Learn')}
               </p>
-              <nav className="mt-3 flex flex-col gap-2 font-semibold text-plumdeep">
-                <Link to="/courses" className="transition-colors hover:text-plumdeep">
+              <nav className="mt-3 flex flex-col gap-2 font-semibold text-ink-soft">
+                <Link to="/courses" className="transition-colors hover:text-lavender">
                   {t('footer.courses')}
                 </Link>
-                <Link to="/progress" className="transition-colors hover:text-plumdeep">
+                <Link to="/progress" className="transition-colors hover:text-lavender">
                   {t('nav.progress', 'Progress')}
                 </Link>
-                <Link to="/quizzes" className="transition-colors hover:text-plumdeep">
+                <Link to="/quizzes" className="transition-colors hover:text-lavender">
                   {t('nav.quizzes', 'Quizzes')}
                 </Link>
               </nav>
             </div>
 
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-plumLightMuted">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-soft">
                 {t('footer.platform', 'Platform')}
               </p>
-              <nav className="mt-3 flex flex-col gap-2 font-semibold text-plumdeep">
-                <Link to="/ai-tutor" className="transition-colors hover:text-plumdeep">
+              <nav className="mt-3 flex flex-col gap-2 font-semibold text-ink-soft">
+                <Link to="/ai-tutor" className="transition-colors hover:text-lavender">
                   {t('footer.aiTutor')}
                 </Link>
-                <Link to="/about" className="transition-colors hover:text-plumdeep">
+                <Link to="/about" className="transition-colors hover:text-lavender">
                   {t('footer.about', 'About')}
                 </Link>
-                <Link to="/settings" className="transition-colors hover:text-plumdeep">
+                <Link to="/settings" className="transition-colors hover:text-lavender">
                   {t('nav.settings')}
                 </Link>
               </nav>
             </div>
 
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-plumLightMuted">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-soft">
                 {t('footer.notes', 'Notes')}
               </p>
-              <p className="mt-3 text-[11px] leading-relaxed text-plumLightMuted">
+              <p className="mt-3 text-[11px] leading-relaxed text-ink-soft">
                 {t('footer.disclaimer', 'Educational content only. In an emergency, contact local emergency services first.')}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 border-t border-plumLight/30 pt-6 text-xs text-plumLightMuted">
+        <div className="mt-8 border-t border-line pt-6 text-xs text-ink-soft">
           {t('footer.copyright')}
         </div>
       </div>

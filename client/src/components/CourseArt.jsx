@@ -10,11 +10,11 @@ import { HeartPulse, Wind, Droplets, CheckCircle2 } from './icons';
 const VARIANTS = {
   cpr: {
     icon: HeartPulse,
-    tile: 'bg-[#F6F5F2] text-[#415E72]',
+    tile: 'bg-surface-2 text-ink-soft',
     motif: (
       <svg
         viewBox="0 0 220 60"
-        className="absolute bottom-3 start-0 w-full text-[#415E72]/15"
+        className="absolute bottom-3 start-0 w-full text-ink-soft/15"
         fill="none"
         aria-hidden="true"
       >
@@ -30,11 +30,11 @@ const VARIANTS = {
   },
   choking: {
     icon: Wind,
-    tile: 'bg-[#F6F5F2] text-[#415E72] ring-1 ring-[#C5B0CD]/40',
+    tile: 'bg-surface-2 text-ink-soft ring-1 ring-line-strong/40',
     motif: (
       <svg
         viewBox="0 0 120 120"
-        className="absolute -end-4 -top-4 h-32 w-32 text-[#415E72]/12"
+        className="absolute -end-4 -top-4 h-32 w-32 text-ink-soft/12"
         fill="none"
         aria-hidden="true"
       >
@@ -45,11 +45,11 @@ const VARIANTS = {
   },
   burns: {
     icon: Droplets,
-    tile: 'bg-[#F6F5F2] text-[#415E72]',
+    tile: 'bg-surface-2 text-ink-soft',
     motif: (
       <svg
         viewBox="0 0 120 120"
-        className="absolute -end-2 -top-3 h-28 w-28 text-[#415E72]/35"
+        className="absolute -end-2 -top-3 h-28 w-28 text-ink-soft/35"
         fill="currentColor"
         aria-hidden="true"
       >
@@ -66,8 +66,8 @@ export default function CourseArt({ category, completed = false }) {
   const Icon = variant.icon;
 
   return (
-    <div className="relative h-36 overflow-hidden rounded-t-2xl border-b border-line bg-cream">
-      <svg className="absolute inset-0 h-full w-full text-[#415E72]/[0.05]" aria-hidden="true">
+    <div className="relative h-36 overflow-hidden rounded-t-2xl border-b border-line bg-surface-2">
+      <svg className="absolute inset-0 h-full w-full text-ink-soft/[0.05]" aria-hidden="true">
         <defs>
           <pattern id={patternId} width="26" height="26" patternUnits="userSpaceOnUse">
             <path
@@ -81,13 +81,13 @@ export default function CourseArt({ category, completed = false }) {
         <rect width="100%" height="100%" fill={`url(#${patternId})`} />
       </svg>
 
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cream/40 to-cream" aria-hidden="true" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-surface-2/40 to-surface-2" aria-hidden="true" />
 
       {variant.motif}
 
       <div className="relative z-10 flex h-full items-center justify-center">
         <div
-          className={`flex h-14 w-14 items-center justify-center rounded-2xl shadow-md ring-4 ring-white/70 dark:ring-white/25 ${variant.tile}`}
+          className={`flex h-14 w-14 items-center justify-center rounded-2xl shadow-md ring-4 ring-surface/70 dark:ring-on-dark/25 ${variant.tile}`}
         >
           <Icon className="h-7 w-7" />
         </div>

@@ -13,25 +13,25 @@ export default function AuthLayout({ children }) {
   const points = [t('auth.point1'), t('auth.point2'), t('auth.point3')];
 
   return (
-    <div className="min-h-screen bg-mainBackground text-plumdeep">
+    <div className="min-h-screen bg-canvas text-ink">
       <div className="grid min-h-screen lg:grid-cols-2">
         <aside
-          className="relative hidden overflow-hidden bg-plumdeep bg-cover bg-[center_35%] px-10 py-10 text-on-plumdeep lg:flex lg:flex-col lg:justify-between"
+          className="relative hidden overflow-hidden bg-scrim bg-cover bg-[center_35%] lg:flex lg:flex-col lg:justify-between px-10 py-10 lg:px-12 lg:py-20"
           style={{ backgroundImage: "url('/heroa.jpg')" }}
         >
           <div
-            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(73,48,93,0.78),rgba(138,107,190,0.45))]"
+            className="absolute inset-0 bg-gradient-to-b from-scrim/80 to-scrim/50"
             aria-hidden="true"
           />
           <div
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_18%,rgba(233,224,245,0.18),transparent_52%),radial-gradient(ellipse_at_18%_85%,rgba(138,107,190,0.14),transparent_46%)]"
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_18%,var(--palette-highlight),transparent_52%),radial-gradient(ellipse_at_18%_85%,var(--palette-lavender),transparent_46%)] opacity-20"
             aria-hidden="true"
           />
           <div
             className="absolute inset-0 opacity-[0.16]"
             style={{
               backgroundImage:
-                'radial-gradient(rgba(249,185,200,0.35) 1px, transparent 1px)',
+                'radial-gradient(var(--palette-highlight) 1px, transparent 1px)',
               backgroundSize: '22px 22px',
             }}
             aria-hidden="true"
@@ -39,12 +39,12 @@ export default function AuthLayout({ children }) {
 
           <div className="relative z-10">
             <Link to="/" className="inline-flex items-center">
-              <EduFanorWordmark className="w-36 text-plumdeep" />
+              <EduFanorWordmark className="w-36 text-on-dark" />
             </Link>
           </div>
 
           <div className="relative z-10 max-w-md">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-softLavender">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-on-dark">
               {isAr ? 'تعلم بثقة ووضوح' : 'Learn with clarity and confidence'}
             </p>
             <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight">
@@ -52,17 +52,17 @@ export default function AuthLayout({ children }) {
                 <>
                   معرفة صغيرة.
                   <br />
-                  <span className="italic text-softLavender">استعداد أكبر.</span>
+                  <span className="italic text-on-dark">استعداد أكبر.</span>
                 </>
               ) : (
                 <>
                   A little knowledge.
                   <br />
-                  <span className="italic text-softLavender">A calmer response.</span>
+                  <span className="italic text-on-dark">A calmer response.</span>
                 </>
               )}
             </h2>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-plumLight/75">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-on-dark/75">
               {isAr
                 ? 'دروس منظمة، اختبارات قصيرة، وتقدّم محفوظ — مساحة تعلّم هادئة للإسعافات الأولية.'
                 : 'Structured lessons, short quizzes, and saved progress — a calm first-aid learning space.'}
@@ -70,14 +70,14 @@ export default function AuthLayout({ children }) {
 
             <ul className="mt-8 space-y-3">
               {points.map((point) => (
-                <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-plumLight/85">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-softLavender" />
+                <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-on-dark/85">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-on-dark" />
                   <span className="leading-relaxed">{point}</span>
                 </li>
               ))}
             </ul>
 
-            <p className="relative z-10 max-w-sm text-[10px] leading-relaxed text-plumLight/60">
+            <p className="relative z-10 max-w-sm text-[10px] leading-relaxed text-on-dark/60">
               {isAr
                 ? 'المحتوى تعليمي فقط. في الطوارئ، اتصل بخدمات الإسعاف المحلية أولاً.'
                 : 'Educational content only. In an emergency, contact local emergency services first.'}
@@ -86,8 +86,8 @@ export default function AuthLayout({ children }) {
         </aside>
 
         <main className="flex min-h-screen flex-col">
-          <div className="flex items-center justify-between border-b border-plumLight/30 px-4 py-4 sm:px-6">
-            <Link to="/" className="inline-flex items-center gap-2 text-xs font-extrabold text-plumLightMuted transition-colors hover:text-plumdeep">
+          <div className="flex items-center justify-between border-b border-line px-4 py-4 sm:px-6">
+            <Link to="/" className="inline-flex items-center gap-2 text-xs font-extrabold text-ink-soft transition-colors hover:text-ink dark:text-lavender dark:hover:text-on-dark">
               {isAr ? <ArrowRight className="h-4 w-4" /> : <ArrowLeft className="h-4 w-4" />}
               <span>{isAr ? 'العودة للرئيسية' : 'Back to home'}</span>
             </Link>
@@ -96,22 +96,22 @@ export default function AuthLayout({ children }) {
               <button
                 type="button"
                 onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
-                className="flex h-9 items-center gap-1.5 rounded-full border border-plumLight/30 bg-softLavender px-2.5 text-[10px] font-extrabold text-plumdeep transition-colors hover:bg-plumLight/10"
+                className="flex h-9 items-center gap-1.5 rounded-full border border-line bg-highlight px-2.5 text-[10px] font-extrabold text-ink transition-colors hover:bg-primary dark:border-line dark:bg-surface-2 dark:text-on-dark dark:hover:bg-primary"
                 aria-label={t('nav.toggleLanguage')}
               >
-                <Globe className="h-3.5 w-3.5 text-lavender" />
+                <Globe className="h-3.5 w-3.5 text-ink-soft dark:text-lavender" />
                 {isAr ? 'EN' : 'ع'}
               </button>
               <button
                 type="button"
                 onClick={toggleTheme}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-plumLight/30 bg-softLavender text-plumdeep transition-colors hover:bg-plumLight/10"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-highlight text-ink transition-colors hover:bg-primary dark:border-line dark:bg-surface-2 dark:text-on-dark dark:hover:bg-primary"
                 aria-label={t('nav.toggleTheme')}
               >
                 {isDark ? (
-                  <Sun className="h-4 w-4 text-softLavender" />
+                  <Sun className="h-4 w-4 text-lavender" />
                 ) : (
-                  <Moon className="h-4 w-4 text-lavender" />
+                  <Moon className="h-4 w-4 text-on-primary dark:text-on-dark" />
                 )}
               </button>
             </div>
@@ -120,7 +120,7 @@ export default function AuthLayout({ children }) {
           <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6">
             <div className="w-full max-w-md">
               <div className="mb-6 lg:hidden">
-                <EduFanorWordmark className="w-32 text-plumdeep dark:text-softLavender" />
+                <EduFanorWordmark className="w-32 text-ink dark:text-on-dark" />
               </div>
               {children}
             </div>

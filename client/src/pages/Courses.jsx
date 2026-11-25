@@ -32,20 +32,20 @@ export default function Courses() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 90% 8%, rgba(197, 176, 205, 0.3), transparent 44%), radial-gradient(circle at 4% 100%, rgba(197, 176, 205, 0.55), transparent 52%)',
+                'radial-gradient(circle at 90% 8%, #BFA2DB, transparent 44%), radial-gradient(circle at 4% 100%, #BFA2DB, transparent 52%)',
             }}
             aria-hidden="true"
           />
           <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <span className="chip bg-brand-soft text-brand-ink">
+              <span className="chip bg-highlight text-ink-soft">
                 <ShieldCheck className="h-3.5 w-3.5" />
                 {t('coursesPage.badge')}
               </span>
               <h1 className={isAr ? 'font-arabic text-3xl font-semibold tracking-tight text-ink sm:text-4xl lg:text-5xl' : 'font-inter text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl lg:text-5xl'}>
                 {t('coursesPage.title')}
               </h1>
-              <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
+              <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft">
                 {t('coursesPage.subtitle')}
               </p>
             </div>
@@ -55,15 +55,15 @@ export default function Courses() {
                 <p className={isAr ? 'font-arabic text-2xl font-semibold text-ink' : 'font-inter text-2xl font-semibold text-ink'}>
                   {courseList.length}
                 </p>
-                <p className={isAr ? 'font-arabic mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted' : 'font-inter mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted'}>
+                <p className={isAr ? 'font-arabic mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-soft' : 'font-inter mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-soft'}>
                   {t('coursesPage.statsCourses')}
                 </p>
               </div>
               <div className="rounded-2xl border border-line bg-surface/80 px-5 py-4 text-center backdrop-blur-sm">
-                <p className={isAr ? 'font-arabic text-2xl font-semibold text-accent' : 'font-inter text-2xl font-semibold text-accent'}>
+                <p className={isAr ? 'font-arabic text-2xl font-semibold text-primary' : 'font-inter text-2xl font-semibold text-primary'}>
                   {completedCount}
                 </p>
-                <p className={isAr ? 'font-arabic mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted' : 'font-inter mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-muted'}>
+                <p className={isAr ? 'font-arabic mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-soft' : 'font-inter mt-0.5 text-[13px] font-extrabold uppercase tracking-[0.14em] text-ink-soft'}>
                   {t('coursesPage.completed')}
                 </p>
               </div>
@@ -74,7 +74,7 @@ export default function Courses() {
         <div className="flex flex-col gap-4 rounded-2xl border border-line bg-card p-4 md:flex-row md:items-center md:justify-between">
           <div className="relative w-full md:max-w-md">
             <Search
-              className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted ${
+              className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft ${
                 isAr ? 'right-4' : 'left-4'
               }`}
             />
@@ -96,7 +96,7 @@ export default function Courses() {
                   className={`font-inter whitespace-nowrap rounded-full px-4 py-2 text-[13px] font-bold transition-all ${
                     selectedCategory === category
                       ? 'bg-primary text-on-primary shadow-sm'
-                      : 'bg-surface-muted text-ink-muted hover:text-ink'
+                      : 'bg-surface-2 text-ink-soft hover:text-ink'
                   }`}
                 >
                   {t(`filter.${category}`)}
@@ -118,25 +118,25 @@ export default function Courses() {
 
                   <div className="flex flex-1 flex-col gap-4 p-5">
                     <div className="flex items-center justify-between gap-3">
-                      <span className="chip bg-brand-soft text-brand-ink">{course.level}</span>
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink-muted">
-                        <Clock className="h-3.5 w-3.5 text-accent" />
+                      <span className="chip bg-highlight text-ink-soft">{course.level}</span>
+                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink-soft">
+                        <Clock className="h-3.5 w-3.5 text-primary" />
                         <span>{course.duration}</span>
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <h2 className="font-inter text-base font-extrabold leading-snug text-ink transition-colors group-hover:text-brand-ink">
+                      <h2 className="font-inter text-base font-extrabold leading-snug text-ink transition-colors group-hover:text-ink-soft">
                         {course.title}
                       </h2>
-                      <p className="line-clamp-2 font-inter text-sm leading-relaxed text-ink-muted">
+                      <p className="line-clamp-2 font-inter text-sm leading-relaxed text-ink-soft">
                         {course.description}
                       </p>
                     </div>
 
                     <div className="mt-auto flex items-center justify-between gap-3 border-t border-line pt-4">
-                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink-muted">
-                        <BookOpen className="h-4 w-4 text-teal-deep" />
+                      <div className="flex items-center gap-1.5 text-[11px] font-bold text-ink-soft">
+                        <BookOpen className="h-4 w-4 text-ink-soft" />
                         <span>
                           {course.lessons} {t('coursesPage.lessonsCount')}
                         </span>
@@ -146,7 +146,7 @@ export default function Courses() {
                         to={`/lesson?id=${course.id}`}
                         className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-extrabold transition-all ${
                           completed
-                            ? 'bg-success-soft text-success-ink hover:opacity-90'
+                            ? 'bg-positive-soft text-positive-ink hover:opacity-90'
                             : 'bg-primary text-on-primary hover:bg-primary-hover'
                         }`}
                       >
@@ -164,11 +164,11 @@ export default function Courses() {
           </div>
         ) : (
           <div className="empty-state card">
-            <div className="icon-box h-14 w-14 bg-surface-muted text-ink-muted">
+            <div className="icon-box h-14 w-14 bg-surface-2 text-ink-soft">
               <SearchX className="h-7 w-7" />
             </div>
             <h2 className="font-inter text-base font-extrabold text-ink">{t('coursesPage.emptyTitle')}</h2>
-            <p className="font-inter max-w-sm text-sm leading-relaxed text-ink-muted">{t('coursesPage.emptyDesc')}</p>
+            <p className="font-inter max-w-sm text-sm leading-relaxed text-ink-soft">{t('coursesPage.emptyDesc')}</p>
             <button
               type="button"
               onClick={() => {

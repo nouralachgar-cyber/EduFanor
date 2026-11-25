@@ -92,7 +92,7 @@ export default function AdminCourses() {
   const publishedCount = courses.filter((course) => course.published).length;
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 sm:p-6 text-[#415E72]">
+    <div className="space-y-6 bg-canvas min-h-screen p-4 sm:p-6 text-ink">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.courses.title')}
@@ -102,7 +102,7 @@ export default function AdminCourses() {
             <button
               type="button"
               onClick={load}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface-2 text-ink transition-colors hover:bg-highlight shadow-sm xl:h-10 xl:w-10"
               aria-label={t('admin.common.refresh')}
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -110,36 +110,36 @@ export default function AdminCourses() {
             <button 
               type="button" 
               onClick={openCreate} 
-              className="flex min-h-11 items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm hover:bg-[#415E72]/90"
+              className="flex min-h-11 items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-on-primary shadow-sm hover:bg-primary-hover"
             >
-              <Plus className="h-4 w-4 text-[#C5B0CD]" /> {t('admin.courses.newCourse')}
+              <Plus className="h-4 w-4 text-on-primary" /> {t('admin.courses.newCourse')}
             </button>
           </div>
         }
       />
 
       <div className="flex flex-wrap items-center gap-2">
-        <Badge tone="sage" className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]"><BookOpen className="h-3 w-3 text-[#C5B0CD]" /> {formatNumber(courses.length, i18n.language)} {t('admin.common.courses')}</Badge>
-        <Badge tone="green" className="bg-emerald-50 text-emerald-800 border border-emerald-200">{t('admin.common.published')}: {formatNumber(publishedCount, i18n.language)}</Badge>
-        <Badge tone="amber" className="bg-amber-50 text-amber-800 border border-amber-200">{t('admin.common.draft')}: {formatNumber(courses.length - publishedCount, i18n.language)}</Badge>
+        <Badge tone="sage" className="bg-surface-2 text-ink border border-line"><BookOpen className="h-3 w-3 text-lavender" /> {formatNumber(courses.length, i18n.language)} {t('admin.common.courses')}</Badge>
+        <Badge tone="green" className="bg-positive-soft text-positive-ink border border-line">{t('admin.common.published')}: {formatNumber(publishedCount, i18n.language)}</Badge>
+        <Badge tone="amber" className="bg-caution-soft text-caution-ink border border-line">{t('admin.common.draft')}: {formatNumber(courses.length - publishedCount, i18n.language)}</Badge>
       </div>
 
-      <Panel noPadding className="bg-white border border-[#C5B0CD]/40 rounded-2xl shadow-sm overflow-hidden">
-        <div className="flex flex-col gap-3 border-b border-[#C5B0CD]/30 p-4 bg-[#F6F5F2]/50 sm:flex-row sm:items-center">
+      <Panel noPadding className="bg-surface border border-line rounded-2xl shadow-sm overflow-hidden">
+        <div className="flex flex-col gap-3 border-b border-line p-4 bg-surface-2 sm:flex-row sm:items-center">
           <div className="relative min-w-0 flex-1">
-            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#415E72]/60" />
+            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.courses.searchPlaceholder')}
-              className="min-h-11 w-full rounded-xl border border-[#C5B0CD] bg-white py-3 ps-10 pe-4 text-base text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+              className="min-h-11 w-full rounded-xl border border-line bg-surface py-3 ps-10 pe-4 text-base text-ink focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
           <select 
             value={status} 
             onChange={(event) => setStatus(event.target.value)} 
-            className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-3 text-base text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] sm:w-44 shadow-sm"
+            className="min-h-11 rounded-xl border border-line bg-surface px-4 py-3 text-base text-ink focus:outline-none focus:ring-2 focus:ring-primary sm:w-44 shadow-sm"
             aria-label={t('admin.common.status')}
           >
             <option value="">{t('admin.courses.allStatuses')}</option>
@@ -156,66 +156,66 @@ export default function AdminCourses() {
           <EmptyState
             title={t('admin.courses.noCourses')}
             icon={BookOpen}
-            action={<button type="button" onClick={openCreate} className="flex min-h-11 items-center gap-1.5 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-sm"><Plus className="h-4 w-4 text-[#C5B0CD]" />{t('admin.courses.newCourse')}</button>}
+            action={<button type="button" onClick={openCreate} className="flex min-h-11 items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-on-primary shadow-sm"><Plus className="h-4 w-4 text-on-primary" />{t('admin.courses.newCourse')}</button>}
           />
         ) : (
           <div className="grid gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3">
             {courses.map((course) => (
-              <article key={course._id} className="rounded-2xl border border-[#C5B0CD]/40 bg-[#F6F5F2] overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
+              <article key={course._id} className="rounded-2xl border border-line bg-surface-2 overflow-hidden shadow-sm hover:shadow-md transition-shadow group flex flex-col justify-between">
                 <div>
-                  <div className="relative h-40 overflow-hidden bg-white border-b border-[#C5B0CD]/30">
+                  <div className="relative h-40 overflow-hidden bg-surface border-b border-line">
                     {course.image ? (
                       <img src={course.image} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
                     ) : (
-                      <div className="flex h-full items-center justify-center text-[#415E72]/50"><ImageIcon className="h-8 w-8 text-[#C5B0CD]" /></div>
+                      <div className="flex h-full items-center justify-center text-muted"><ImageIcon className="h-8 w-8 text-lavender" /></div>
                     )}
-                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#415E72]/80 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-primary/80 to-transparent" />
                     <div className="absolute start-3 top-3 flex gap-1.5">
-                      <Badge tone={course.published ? 'green' : 'amber'} className="bg-white/90 text-[#415E72] border border-[#C5B0CD]">
+                      <Badge tone={course.published ? 'green' : 'amber'} className="bg-surface/90 text-ink border border-line">
                         {course.published ? t('admin.common.published') : t('admin.common.draft')}
                       </Badge>
                     </div>
                     <div className="absolute end-3 top-3 flex gap-1.5">
-                      <button type="button" onClick={() => openEdit(course)} className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[#415E72] shadow-sm transition-colors hover:bg-[#F6F5F2] border border-[#C5B0CD] xl:h-8 xl:w-8" aria-label={t('admin.common.edit')} title={t('admin.common.edit')}>
+                      <button type="button" onClick={() => openEdit(course)} className="flex h-11 w-11 items-center justify-center rounded-full bg-surface text-ink shadow-sm transition-colors hover:bg-surface-2 border border-line xl:h-8 xl:w-8" aria-label={t('admin.common.edit')} title={t('admin.common.edit')}>
                         <Edit3 className="h-3.5 w-3.5" />
                       </button>
-                      <button type="button" onClick={() => setDeleting(course)} className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-red-600 shadow-sm transition-colors hover:bg-red-50 border border-red-200 xl:h-8 xl:w-8" aria-label={t('admin.common.delete')} title={t('admin.common.delete')}>
+                      <button type="button" onClick={() => setDeleting(course)} className="flex h-11 w-11 items-center justify-center rounded-full bg-surface text-negative-ink shadow-sm transition-colors hover:bg-negative-soft border border-line xl:h-8 xl:w-8" aria-label={t('admin.common.delete')} title={t('admin.common.delete')}>
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
                     <div className="absolute inset-x-3 bottom-2.5">
-                      <p className="truncate text-[10px] font-extrabold uppercase tracking-wider text-[#F6F5F2]">
+                      <p className="truncate text-[10px] font-extrabold uppercase tracking-wider text-on-primary">
                         {t(`admin.courses.categories.${course.category}`, { defaultValue: course.category })}
                       </p>
-                      <h3 className="truncate font-display text-base font-bold text-white">{localize(course.title, i18n.language)}</h3>
+                      <h3 className="truncate font-display text-base font-bold text-on-primary">{localize(course.title, i18n.language)}</h3>
                     </div>
                   </div>
                   <div className="p-4">
-                    <p className="line-clamp-2 min-h-[2.4rem] text-xs leading-relaxed text-[#415E72]/80">
+                    <p className="line-clamp-2 min-h-[2.4rem] text-xs leading-relaxed text-ink-soft">
                       {localize(course.description, i18n.language)}
                     </p>
                     <div className="mt-4 grid grid-cols-3 gap-2">
-                      <div className="rounded-xl bg-white p-2 text-center border border-[#C5B0CD]/40">
-                        <p className="text-[9px] font-bold text-[#415E72]/60">{t('admin.common.lessons')}</p>
-                        <p className="text-xs font-extrabold text-[#415E72]">{formatNumber(course.lessonCount || 0, i18n.language)}</p>
+                      <div className="rounded-xl bg-surface p-2 text-center border border-line">
+                        <p className="text-[9px] font-bold text-muted">{t('admin.common.lessons')}</p>
+                        <p className="text-xs font-extrabold text-ink">{formatNumber(course.lessonCount || 0, i18n.language)}</p>
                       </div>
-                      <div className="rounded-xl bg-white p-2 text-center border border-[#C5B0CD]/40">
-                        <p className="text-[9px] font-bold text-[#415E72]/60">{t('admin.common.quizzes')}</p>
-                        <p className="text-xs font-extrabold text-[#415E72]">{formatNumber(course.quizCount || 0, i18n.language)}</p>
+                      <div className="rounded-xl bg-surface p-2 text-center border border-line">
+                        <p className="text-[9px] font-bold text-muted">{t('admin.common.quizzes')}</p>
+                        <p className="text-xs font-extrabold text-ink">{formatNumber(course.quizCount || 0, i18n.language)}</p>
                       </div>
-                      <div className="rounded-xl bg-white p-2 text-center border border-[#C5B0CD]/40">
-                        <p className="text-[9px] font-bold text-[#415E72]/60">{t('admin.courses.estimatedMinutes')}</p>
-                        <p className="text-xs font-extrabold text-[#415E72]">{formatNumber(course.estimatedMinutes, i18n.language)}</p>
+                      <div className="rounded-xl bg-surface p-2 text-center border border-line">
+                        <p className="text-[9px] font-bold text-muted">{t('admin.courses.estimatedMinutes')}</p>
+                        <p className="text-xs font-extrabold text-ink">{formatNumber(course.estimatedMinutes, i18n.language)}</p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="px-4 pb-4 pt-2 flex items-center justify-between gap-2 border-t border-[#C5B0CD]/20">
-                  <span className="text-[10px] font-bold text-[#415E72]/70">
+                <div className="px-4 pb-4 pt-2 flex items-center justify-between gap-2 border-t border-line">
+                  <span className="text-[10px] font-bold text-ink-soft">
                     {t(`admin.courses.difficulties.${course.difficulty}`, { defaultValue: course.difficulty })}
                   </span>
-                  <Link to={`/admin/courses/${course._id}`} className="inline-flex items-center gap-1 text-xs font-extrabold text-[#415E72] hover:text-[#C5B0CD] transition-colors">
-                    {t('admin.courses.openCourse')} <ArrowUpRight className="h-3.5 w-3.5 text-[#C5B0CD]" />
+                  <Link to={`/admin/courses/${course._id}`} className="inline-flex items-center gap-1 text-xs font-extrabold text-ink hover:text-lavender transition-colors">
+                    {t('admin.courses.openCourse')} <ArrowUpRight className="h-3.5 w-3.5 text-lavender" />
                   </Link>
                 </div>
               </article>

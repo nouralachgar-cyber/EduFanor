@@ -323,18 +323,18 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
             <button
               type="button"
               onClick={() => update((previous) => ({ published: !previous.published }))}
-              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${form.published ? 'bg-success' : 'bg-line-strong'}`}
+              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${form.published ? 'bg-positive' : 'bg-line-strong'}`}
               aria-pressed={form.published}
               aria-label={t('admin.common.published')}
             >
               <span
-                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${form.published ? 'left-[1.4rem]' : 'left-0.5'}`}
+                className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface shadow transition-all ${form.published ? 'left-[1.4rem]' : 'left-0.5'}`}
               />
             </button>
           </div>
 
           {error && (
-            <p className="rounded-xl border border-danger/25 bg-danger-soft px-3.5 py-2.5 text-[11px] font-bold text-danger">{error}</p>
+            <p className="rounded-xl border border-negative/25 bg-negative-soft px-3.5 py-2.5 text-[11px] font-bold text-negative-ink">{error}</p>
           )}
         </form>
       )}

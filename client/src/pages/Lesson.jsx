@@ -200,18 +200,18 @@ export default function Lesson() {
         <div className="flex flex-col justify-between gap-3 border-b border-line pb-4 sm:flex-row sm:items-center">
           <Link
             to="/courses"
-            className="inline-flex items-center gap-2 text-sm font-bold text-brand-ink transition-colors hover:text-accent"
+            className="inline-flex items-center gap-2 text-sm font-bold text-ink-soft transition-colors hover:text-primary"
           >
             {isAr ? <ArrowRight className="h-4 w-4" /> : <ArrowLeft className="h-4 w-4" />}
             <span>{t('lessonPage.backToCourses')}</span>
           </Link>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="chip bg-brand-soft text-brand-ink">
+            <span className="chip bg-highlight text-ink-soft">
               <BookOpen className="h-3 w-3" />
               {course.level}
             </span>
             {completed && (
-              <span className="chip bg-success-soft text-success-ink">
+              <span className="chip bg-positive-soft text-positive-ink">
                 <CheckCircle2 className="h-3 w-3" />
                 {t('coursesPage.completed')}
               </span>
@@ -221,22 +221,22 @@ export default function Lesson() {
 
         <header className="grid gap-6 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-8">
-            <span className="chip bg-surface-muted text-ink-muted">
-              <Sparkles className="h-3.5 w-3.5 text-accent" />
+            <span className="chip bg-surface-2 text-ink-soft">
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
               {isAr ? 'درس تفاعلي متقدم' : 'Interactive advanced lesson'}
             </span>
             <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
               {course.title}
             </h1>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">{course.description}</p>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-soft">{course.description}</p>
           </div>
           <div className="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
-            <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-card px-3.5 py-2 text-[11px] font-bold text-ink-muted">
-              <Clock className="h-3.5 w-3.5 text-accent" />
+            <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-card px-3.5 py-2 text-[11px] font-bold text-ink-soft">
+              <Clock className="h-3.5 w-3.5 text-primary" />
               {course.duration}
             </span>
-            <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-card px-3.5 py-2 text-[11px] font-bold text-ink-muted">
-              <Layers className="h-3.5 w-3.5 text-accent" />
+            <span className="inline-flex items-center gap-2 rounded-xl border border-line bg-card px-3.5 py-2 text-[11px] font-bold text-ink-soft">
+              <Layers className="h-3.5 w-3.5 text-primary" />
               {steps.length} {isAr ? 'خطوات' : 'steps'}
             </span>
           </div>
@@ -245,14 +245,14 @@ export default function Lesson() {
         {steps.length > 0 && (
           <div className="card space-y-3 p-5">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-ink-muted">
+              <span className="text-xs font-bold text-ink-soft">
                 {t('lessonPage.stepTitle')} {currentStep + 1} / {steps.length}
               </span>
-              <span className="text-xs font-extrabold text-brand-ink">{progress}%</span>
+              <span className="text-xs font-extrabold text-ink-soft">{progress}%</span>
             </div>
-            <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface-muted">
+            <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface-2">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-primary to-sage transition-all duration-500 ease-out"
+                className="h-full rounded-full bg-gradient-to-r from-primary to-positive-soft transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -264,7 +264,7 @@ export default function Lesson() {
                   disabled={index > maxUnlockedStep}
                   onClick={() => setCurrentStep(index)}
                   className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
-                    index <= currentStep ? 'bg-primary' : index <= maxUnlockedStep ? 'bg-accent/60' : 'bg-line cursor-not-allowed'
+                    index <= currentStep ? 'bg-primary' : index <= maxUnlockedStep ? 'bg-primary/60' : 'bg-line cursor-not-allowed'
                   }`}
                   aria-label={`${t('lessonPage.stepTitle')} ${index + 1}`}
                 />
@@ -282,7 +282,7 @@ export default function Lesson() {
                     <span className="text-lg font-extrabold">{currentStep + 1}</span>
                   </div>
                   <div>
-                    <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">
+                    <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-soft">
                       {t('lessonPage.stepTitle')} {currentStep + 1}
                     </p>
                     <h2 className="mt-1 text-xl font-extrabold leading-snug text-ink sm:text-2xl">
@@ -316,15 +316,15 @@ export default function Lesson() {
                 </div>
 
                 {!blocks.length && activeStep.content && (
-                  <p className="text-sm leading-relaxed text-ink-muted sm:text-base">{activeStep.content}</p>
+                  <p className="text-sm leading-relaxed text-ink-soft sm:text-base">{activeStep.content}</p>
                 )}
 
                 {activeStep.warning && blocks.every((b) => b.type !== 'warning') && (
-                  <div className="flex items-start gap-3 rounded-xl border border-danger/25 bg-danger-soft p-4">
-                    <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-danger" />
+                  <div className="flex items-start gap-3 rounded-xl border border-line-strong/25 bg-negative-soft p-4">
+                    <ShieldAlert className="mt-0.5 h-5 w-5 shrink-0 text-negative-ink" />
                     <div className="space-y-1">
-                      <h4 className="text-xs font-extrabold text-danger">{t('lessonPage.safetyWarning')}</h4>
-                      <p className="text-xs leading-relaxed text-danger/90">{activeStep.warning}</p>
+                      <h4 className="text-xs font-extrabold text-negative-ink">{t('lessonPage.safetyWarning')}</h4>
+                      <p className="text-xs leading-relaxed text-negative-ink/90">{activeStep.warning}</p>
                     </div>
                   </div>
                 )}
@@ -333,9 +333,9 @@ export default function Lesson() {
 
             {/* قسم الاختبار التقييم القصير لكل خطوة (Quiz Integration) */}
             {activeStep?.quiz && (
-              <div className="mt-6 rounded-2xl border border-line bg-surface-muted/60 p-5 space-y-4">
+              <div className="mt-6 rounded-2xl border border-line bg-surface-2/60 p-5 space-y-4">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-accent" />
+                  <Sparkles className="h-4 w-4 text-primary" />
                   <h3 className="text-xs font-extrabold uppercase tracking-wider text-ink">
                     {isAr ? 'اختبار استيعاب الخطوة' : 'Step Comprehension Quiz'}
                   </h3>
@@ -350,9 +350,9 @@ export default function Lesson() {
                       className={`w-full text-start px-4 py-3 rounded-xl border text-xs font-bold transition-all ${
                         selectedQuizOpt === optIdx
                           ? optIdx === (activeStep.quiz.correctIndex ?? 0)
-                            ? 'bg-success-soft text-success-ink border-success'
-                            : 'bg-danger-soft text-danger border-danger'
-                          : 'bg-card border-line hover:border-accent'
+                            ? 'bg-positive-soft text-positive-ink border-primary'
+                            : 'bg-negative-soft text-negative-ink border-line-strong'
+                          : 'bg-card border-line hover:border-primary'
                       }`}
                     >
                       {opt}
@@ -364,7 +364,7 @@ export default function Lesson() {
           </article>
 
           <aside className="card flex flex-col gap-4 p-6 lg:col-span-4">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-soft">
               {isAr ? 'خطوات هذا المساق (مقفل تتابعياً)' : 'Course steps (Sequential Lock)'}
             </p>
             <ol className="space-y-3">
@@ -378,31 +378,31 @@ export default function Lesson() {
                       onClick={() => !isLocked && setCurrentStep(index)}
                       className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-start text-xs font-bold transition-colors ${
                         index === currentStep
-                          ? 'bg-brand-soft text-brand-ink'
+                          ? 'bg-highlight text-ink-soft'
                           : isLocked
-                          ? 'opacity-50 cursor-not-allowed text-ink-muted'
-                          : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
+                          ? 'opacity-50 cursor-not-allowed text-ink-soft'
+                          : 'text-ink-soft hover:bg-surface-2 hover:text-ink'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
                         <span
                           className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[9px] ${
-                            index === currentStep ? 'bg-primary text-on-primary' : 'bg-surface-muted'
+                            index === currentStep ? 'bg-primary text-on-primary' : 'bg-surface-2'
                           }`}
                         >
                           {index + 1}
                         </span>
                         <span className="truncate max-w-[160px]">{step.title}</span>
                       </div>
-                      {isLocked ? <Lock className="h-3.5 w-3.5 text-ink-muted" /> : <CheckCircle2 className="h-3.5 w-3.5 text-success-ink" />}
+                      {isLocked ? <Lock className="h-3.5 w-3.5 text-ink-soft" /> : <CheckCircle2 className="h-3.5 w-3.5 text-positive-ink" />}
                     </button>
                   </li>
                 );
               })}
             </ol>
 
-            <div className="mt-auto rounded-xl border border-line bg-surface-muted p-3.5">
-              <p className="text-[10px] leading-relaxed text-ink-muted">{t('footer.disclaimer')}</p>
+            <div className="mt-auto rounded-xl border border-line bg-surface-2 p-3.5">
+              <p className="text-[10px] leading-relaxed text-ink-soft">{t('footer.disclaimer')}</p>
             </div>
           </aside>
         </div>
@@ -458,7 +458,7 @@ export default function Lesson() {
         </div>
 
         {assessmentRequired && (
-          <div className="flex flex-col gap-3 rounded-xl border border-amber/30 bg-amber/10 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 rounded-xl border border-line/30 bg-caution-soft/10 p-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs font-semibold leading-relaxed text-ink">
               {t('achievement.assessmentRequired')}
             </p>
@@ -471,7 +471,7 @@ export default function Lesson() {
           </div>
         )}
 
-        <p className="text-center text-[10px] leading-relaxed text-ink-muted">
+        <p className="text-center text-[10px] leading-relaxed text-ink-soft">
           {t('lessonPage.finishHint')}
         </p>
       </div>

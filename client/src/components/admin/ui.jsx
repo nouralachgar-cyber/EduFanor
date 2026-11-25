@@ -3,9 +3,9 @@ import { AlertTriangle, ChevronLeft, ChevronRight, Inbox, Loader2, X } from '../
 import { formatNumber } from '../../lib/admin';
 
 const tones = {
-  sage: 'bg-brand-soft text-success-ink',
-  amber: 'bg-amber-soft/45 text-amber',
-  clay: 'bg-danger-soft text-danger',
+  sage: 'bg-positive-soft text-positive-ink',
+  amber: 'bg-caution-soft/60 text-caution-ink',
+  clay: 'bg-negative-soft text-negative-ink',
   surface: 'bg-surface-muted text-ink',
 };
 
@@ -53,7 +53,7 @@ export function StatCard({ icon: Icon, label, value, hint, tone = 'sage', trend 
         </span>
         {trend !== undefined && trend !== null && (
           <span
-            className={`chip ${Number(trend) >= 0 ? 'bg-success-soft text-success-ink' : 'bg-danger-soft text-danger'}`}
+            className={`chip ${Number(trend) >= 0 ? 'bg-positive-soft text-positive-ink' : 'bg-negative-soft text-negative-ink'}`}
           >
             {Number(trend) >= 0 ? '+' : ''}
             {trend}%
@@ -72,10 +72,10 @@ export function StatCard({ icon: Icon, label, value, hint, tone = 'sage', trend 
 export function Badge({ children, tone = 'neutral' }) {
   const map = {
     neutral: 'bg-surface-muted text-ink-muted',
-    green: 'bg-success-soft text-success-ink',
-    amber: 'bg-amber-soft/50 text-amber',
-    red: 'bg-danger-soft text-danger',
-    sage: 'bg-brand-soft text-success-ink',
+    green: 'bg-positive-soft text-positive-ink',
+    amber: 'bg-caution-soft/60 text-caution-ink',
+    red: 'bg-negative-soft text-negative-ink',
+    sage: 'bg-positive-soft text-positive-ink',
     outline: 'border border-line bg-transparent text-ink-muted',
   };
   return <span className={`chip ${map[tone] || map.neutral}`}>{children}</span>;
@@ -84,7 +84,7 @@ export function Badge({ children, tone = 'neutral' }) {
 export function LoadingState({ label }) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-14 text-center">
-      <Loader2 className="h-6 w-6 animate-spin text-primary dark:text-brand-ink" />
+      <Loader2 className="h-6 w-6 animate-spin text-lavender" />
       <p className="text-xs font-bold text-ink-muted">{label}</p>
     </div>
   );
@@ -93,7 +93,7 @@ export function LoadingState({ label }) {
 export function ErrorState({ title, message, onRetry, retryLabel }) {
   return (
     <div className="flex flex-col items-center justify-center gap-3 px-4 py-16 text-center">
-      <span className="icon-box h-12 w-12 bg-danger-soft text-danger">
+      <span className="icon-box h-12 w-12 bg-negative-soft text-negative-ink">
         <AlertTriangle className="h-6 w-6" />
       </span>
       <div>
@@ -188,7 +188,7 @@ export function Modal({ open, onClose, title, subtitle, children, footer, size =
           <button
             type="button"
             onClick={onClose}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink xl:h-8 xl:w-8"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-ink-soft transition-colors hover:bg-surface-muted hover:text-ink xl:h-8 xl:w-8"
             aria-label="Close"
           >
             <X className="h-4 w-4" />
@@ -217,7 +217,7 @@ export function ConfirmDialog({ open, onClose, onConfirm, title, message, confir
             type="button"
             onClick={onConfirm}
             disabled={busy}
-            className="inline-flex h-9 items-center gap-2 rounded-xl bg-danger px-4 text-xs font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="inline-flex h-9 items-center gap-2 rounded-xl bg-negative px-4 text-xs font-bold text-negative-ink transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {busy && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
             {confirmLabel}
@@ -235,7 +235,7 @@ export function Field({ label, hint, required, children, className = '' }) {
     <label className={`block ${className}`}>
       <span className="label mb-1.5">
         {label}
-        {required && <span className="text-danger">*</span>}
+        {required && <span className="text-negative-ink">*</span>}
       </span>
       {children}
       {hint && <span className="mt-1 block text-[10px] font-semibold text-ink-muted">{hint}</span>}

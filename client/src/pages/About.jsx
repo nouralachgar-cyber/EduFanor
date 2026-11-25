@@ -79,9 +79,9 @@ export default function About() {
       <header className="sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur-xl">
         <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-12">
           <Link to="/" className="flex items-center gap-3">
-            <EduFanorWordmark className="w-32 text-[#17313E] dark:text-[#F6F5F2] sm:w-36" />
+            <EduFanorWordmark className="w-32 text-ink dark:text-on-dark sm:w-36" />
             <span>
-              <span className="mt-1 hidden font-arabic text-[13px] font-bold uppercase tracking-[0.18em] text-ink-muted sm:block">
+              <span className="mt-1 hidden font-arabic text-[13px] font-bold uppercase tracking-[0.18em] text-ink-soft sm:block">
                 {isAr ? 'عن المنصة' : 'About the platform'}
               </span>
             </span>
@@ -90,17 +90,17 @@ export default function About() {
           <nav className="hidden items-center gap-1 md:flex" aria-label={isAr ? 'التنقل' : 'Navigation'}>
             <Link
               to="/"
-              className="rounded-full px-3.5 py-2 text-xs font-bold text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink"
+              className="rounded-full px-3.5 py-2 text-xs font-bold text-ink-soft transition-colors hover:bg-surface-2 hover:text-ink"
             >
               {isAr ? 'الرئيسية' : 'Home'}
             </Link>
             <Link
               to="/#courses"
-              className="rounded-full px-3.5 py-2 text-xs font-bold text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink"
+              className="rounded-full px-3.5 py-2 text-xs font-bold text-ink-soft transition-colors hover:bg-surface-2 hover:text-ink"
             >
               {isAr ? 'المساقات' : 'Courses'}
             </Link>
-            <span className="rounded-full bg-brand-soft px-3.5 py-2 text-xs font-extrabold text-brand-ink">
+            <span className="rounded-full bg-highlight px-3.5 py-2 text-xs font-extrabold text-ink-soft">
               {isAr ? 'عن المنصة' : 'About'}
             </span>
           </nav>
@@ -109,21 +109,21 @@ export default function About() {
             <button
               type="button"
               onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
-              className="flex h-9 items-center gap-1.5 rounded-lg border border-line bg-surface px-2.5 font-arabic text-[13px] font-extrabold text-ink transition-colors hover:bg-surface-muted"
+              className="flex h-9 items-center gap-1.5 rounded-lg border border-line bg-surface px-2.5 font-arabic text-[13px] font-extrabold text-ink transition-colors hover:bg-surface-2"
               aria-label={t('nav.toggleLanguage')}
             >
-              <Globe className="h-3.5 w-3.5 text-brand-ink" />
+              <Globe className="h-3.5 w-3.5 text-ink-soft" />
               {isAr ? 'EN' : 'ع'}
             </button>
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-ink transition-colors hover:bg-surface-muted"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-ink transition-colors hover:bg-surface-2"
               aria-label={t('nav.toggleTheme')}
             >
-              {isDark ? <Sun className="h-4 w-4 text-accent" /> : <Moon className="h-4 w-4 text-brand-ink" />}
+              {isDark ? <Sun className="h-4 w-4 text-primary" /> : <Moon className="h-4 w-4 text-ink-soft" />}
             </button>
-            <Link to="/login" className="hidden px-3 py-2 text-xs font-bold text-ink-muted hover:text-ink sm:inline-flex">
+            <Link to="/login" className="hidden px-3 py-2 text-xs font-bold text-ink-soft hover:text-ink sm:inline-flex">
               {t('nav.login')}
             </Link>
             <Link to="/register" className="btn-primary px-4 text-xs">
@@ -134,19 +134,19 @@ export default function About() {
       </header>
 
       <main>
-        <section className="relative overflow-hidden border-b border-line bg-beige py-20 md:py-28">
+        <section className="relative overflow-hidden border-b border-line bg-canvas py-20 md:py-28">
           <div
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 90% 8%, rgba(197, 176, 205, 0.3), transparent 46%), radial-gradient(circle at 4% 100%, rgba(246, 245, 242, 0.55), transparent 52%)',
+                'radial-gradient(circle at 90% 8%, #BFA2DB, transparent 46%), radial-gradient(circle at 4% 100%, #F3F1F5, transparent 52%)',
             }}
             aria-hidden="true"
           />
           <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-12 lg:gap-16 lg:px-12">
             <div className="lg:col-span-7">
-              <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
-                <Users className="h-3.5 w-3.5 text-accent" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-soft">
+                <Users className="h-3.5 w-3.5 text-primary" />
                 {isAr ? 'مشروع تعليمي توعوي' : 'An educational awareness project'}
               </span>
               <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl md:text-6xl">
@@ -154,17 +154,17 @@ export default function About() {
                   <>
                     «قليل من المعرفة
                     <br />
-                    <span className="italic text-accent">يمكن أن يصنع فارقاً.»</span>
+                    <span className="italic text-primary">يمكن أن يصنع فارقاً.»</span>
                   </>
                 ) : (
                   <>
                     “A little knowledge
                     <br />
-                    <span className="italic text-accent">can make a difference.”</span>
+                    <span className="italic text-primary">can make a difference.”</span>
                   </>
                 )}
               </h1>
-              <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ink-muted md:text-base">
+              <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ink-soft md:text-base">
                 {isAr
                   ? 'قد تحدث الطوارئ في أي مكان، وقد يستغرق وصول المساعدة وقتاً. تهدف EduFanor إلى جعل المعرفة الأساسية بالإسعافات الأولية أكثر سهولة، لمساعدة الأفراد على التعلم والاستجابة بهدوء ومسؤولية إلى حين وصول فرق الإنقاذ المختصة.'
                   : 'Emergencies can happen anywhere, and help may take time to arrive. EduFanor aims to make essential first-aid knowledge more accessible, helping people learn to respond calmly and responsibly while professional help is on the way.'}
@@ -182,7 +182,7 @@ export default function About() {
 
             <aside className="lg:col-span-5">
               <div className="rounded-3xl border border-line bg-card p-7 shadow-pop">
-                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+                <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-ink-soft">
                   {isAr ? 'لماذا وُجدت EduFanor' : 'Why EduFanor exists'}
                 </p>
                 <p className="mt-4 font-display text-2xl font-semibold leading-snug text-ink">
@@ -190,16 +190,16 @@ export default function About() {
                     ? 'لأن المعرفة الأساسية يجب أن تكون أسهل في الوصول والفهم.'
                     : 'Because essential knowledge should be easier to access and understand.'}
                 </p>
-                <p className="mt-4 text-sm leading-relaxed text-ink-muted">
+                <p className="mt-4 text-sm leading-relaxed text-ink-soft">
                   {isAr
                     ? 'في اللحظات الأولى، قد يشعر كثيرون بالتردد أو لا يعرفون من أين يبدأون. تسعى المنصة إلى سد هذه الفجوة التعليمية عبر دروس منظمة واختبارات قصيرة.'
                     : 'In the first moments, many people may feel unsure or not know where to begin. The platform aims to help bridge that learning gap through structured lessons and short quizzes.'}
                 </p>
                 <div className="mt-6 flex items-center gap-3 border-t border-line pt-5">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-soft text-brand-ink">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-highlight text-ink-soft">
                     <ShieldCheck className="h-5 w-5" />
                   </span>
-                  <p className="text-xs font-bold leading-relaxed text-ink-muted">
+                  <p className="text-xs font-bold leading-relaxed text-ink-soft">
                     {isAr ? 'تعلّم لتساعد. واعرف حدودك.' : 'Learn to help. Know your limits.'}
                   </p>
                 </div>
@@ -214,21 +214,21 @@ export default function About() {
               const Icon = value.icon;
               return (
                 <article key={value.title} className="card p-7">
-                  <span className="icon-box h-11 w-11 bg-brand-soft text-brand-ink">
+                  <span className="icon-box h-11 w-11 bg-highlight text-ink-soft">
                     <Icon className="h-5 w-5" />
                   </span>
                   <h2 className="mt-4 font-display text-lg font-extrabold text-ink">{value.title}</h2>
-                  <p className="mt-2 font-arabic text-base leading-relaxed text-ink-muted">{value.text}</p>
+                  <p className="mt-2 font-arabic text-base leading-relaxed text-ink-soft">{value.text}</p>
                 </article>
               );
             })}
           </div>
         </section>
 
-        <section className="border-y border-line bg-beige py-20 md:py-24">
+        <section className="border-y border-line bg-canvas py-20 md:py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
             <div className="max-w-2xl">
-              <span className="font-arabic text-[13px] font-extrabold uppercase tracking-[0.18em] text-ink-muted">
+              <span className="font-arabic text-[13px] font-extrabold uppercase tracking-[0.18em] text-ink-soft">
                 {isAr ? 'ركائز المحتوى' : 'Content pillars'}
               </span>
               <h2 className="mt-3 section-title">
@@ -246,11 +246,11 @@ export default function About() {
                 const Icon = pillar.icon;
                 return (
                   <article key={pillar.title} className="rounded-2xl border border-line bg-surface p-5">
-                    <span className="icon-box h-10 w-10 bg-surface-muted text-brand-ink">
+                    <span className="icon-box h-10 w-10 bg-surface-2 text-ink-soft">
                       <Icon className="h-5 w-5" />
                     </span>
                     <h3 className="mt-3 text-sm font-extrabold text-ink">{pillar.title}</h3>
-                    <p className="mt-1.5 text-xs leading-relaxed text-ink-muted">{pillar.text}</p>
+                    <p className="mt-1.5 text-xs leading-relaxed text-ink-soft">{pillar.text}</p>
                   </article>
                 );
               })}
@@ -260,13 +260,13 @@ export default function About() {
 
         <section className="bg-surface py-20 md:py-24">
           <div className="mx-auto max-w-4xl px-6 text-center lg:px-12">
-            <span className="icon-box mx-auto h-12 w-12 bg-amber/15 text-accent">
+            <span className="icon-box mx-auto h-12 w-12 bg-caution-soft/15 text-primary">
               <ShieldAlert className="h-6 w-6" />
             </span>
             <h2 className="mt-5 font-display font-semibold tracking-tight text-ink">
               {isAr ? 'تعلّم لتساعد. واعرف حدودك.' : 'Learn to help. Know your limits.'}
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl font-arabic text-base leading-relaxed text-ink-muted">
+            <p className="mx-auto mt-4 max-w-2xl font-arabic text-base leading-relaxed text-ink-soft">
               {isAr
                 ? 'EduFanor بيئة تعليمية لتعزيز الوعي بالإسعافات الأولية، وليست بديلاً عن التدريب الميداني المعتمد أو الكادر الطبي المتخصص. في أي طارئ، الأولوية لسلامة المكان والاتصال بخدمات الطوارئ المحلية.'
                 : 'EduFanor is an educational environment for first-aid awareness. It does not replace certified practical training or medical professionals. In any emergency, prioritize scene safety and contact local emergency services.'}
@@ -284,7 +284,7 @@ export default function About() {
       </main>
 
       <footer className="border-t border-line bg-surface">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-center font-arabic text-[13px] text-ink-muted sm:flex-row sm:text-start lg:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-center font-arabic text-[13px] text-ink-soft sm:flex-row sm:text-start lg:px-12">
           <p>
             © {CURRENT_YEAR} EduFanor. {isAr ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
           </p>

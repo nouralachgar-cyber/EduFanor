@@ -240,14 +240,14 @@ export default function Quizzes() {
       <div className="page-content mx-auto max-w-4xl space-y-6">
         <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <span className="chip bg-brand-soft text-brand-ink">
+            <span className="chip bg-highlight text-ink-soft">
               <Sparkles className="h-3.5 w-3.5" />
               {isAr ? 'تدرّب على المعرفة' : 'Practice your knowledge'}
             </span>
             <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
               {databaseQuiz?.title || (isAr ? 'اختبار الإسعافات الأولية' : 'First Aid Knowledge Quiz')}
             </h1>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-muted">
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">
               {isAr
                 ? 'اختبر معلوماتك الأساسية وتأكد من جاهزيتك للتعامل مع الحالات الطارئة.'
                 : 'Test your essential knowledge and evaluate your readiness for emergency situations.'}
@@ -257,7 +257,7 @@ export default function Quizzes() {
           <div className="flex items-center gap-3 rounded-2xl border border-line bg-card px-4 py-3">
             <Award className="h-5 w-5 text-on-primary" />
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-ink-muted">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-ink-soft">
                 {isAr ? 'أفضل نتيجة' : 'Best score'}
               </p>
               <p className="text-sm font-extrabold text-ink">{best ? `${best.percent}%` : '—'}</p>
@@ -266,27 +266,27 @@ export default function Quizzes() {
         </header>
 
         {quizLoading ? (
-          <section className="card p-6 text-sm font-semibold text-ink-muted" role="status">
+          <section className="card p-6 text-sm font-semibold text-ink-soft" role="status">
             {t('achievement.loadingAssessment')}
           </section>
         ) : quizLoadError ? (
-          <section className="card p-6 text-sm font-semibold text-danger" role="alert">
+          <section className="card p-6 text-sm font-semibold text-negative-ink" role="alert">
             {quizLoadError}
           </section>
         ) : !showResult ? (
           <section className="card space-y-6 p-6 sm:p-8">
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-[11px] font-extrabold text-ink-muted">
+              <div className="flex items-center justify-between text-[11px] font-extrabold text-ink-soft">
                 <span>
                   {isAr
                     ? `السؤال ${currentQuestion + 1} من ${questions.length}`
                     : `Question ${currentQuestion + 1} of ${questions.length}`}
                 </span>
-                <span className="text-brand-ink">{progressPercent}%</span>
+                <span className="text-ink-soft">{progressPercent}%</span>
               </div>
-              <div className="h-2 w-full overflow-hidden rounded-full bg-surface-muted">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-surface-2">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-primary to-sage transition-all duration-500"
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-positive-soft transition-all duration-500"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -298,13 +298,13 @@ export default function Quizzes() {
               {active.options.map((option, index) => {
                 const isCorrect = hasAnswerKey && index === active.correct;
                 const isSelected = index === selectedOption;
-                let style = 'border-line bg-surface-muted text-ink hover:border-primary/40';
+                let style = 'border-line bg-surface-2 text-ink hover:border-primary/40';
                 if (isAnswered && isCorrect) {
-                  style = 'border-success-ink/40 bg-success-soft text-success-ink';
+                  style = 'border-positive-ink/40 bg-positive-soft text-positive-ink';
                 } else if (isAnswered && isSelected && hasAnswerKey) {
-                  style = 'border-danger/40 bg-danger-soft text-danger';
+                  style = 'border-line-strong/40 bg-negative-soft text-negative-ink';
                 } else if (isAnswered && isSelected) {
-                  style = 'border-primary/40 bg-brand-soft text-brand-ink';
+                  style = 'border-primary/40 bg-highlight text-ink-soft';
                 }
 
                 return (
@@ -327,14 +327,14 @@ export default function Quizzes() {
             </div>
 
             {submitError && (
-              <p role="alert" className="rounded-xl border border-danger/20 bg-danger-soft p-3 text-xs font-semibold text-danger">
+              <p role="alert" className="rounded-xl border border-line-strong/20 bg-negative-soft p-3 text-xs font-semibold text-negative-ink">
                 {submitError}
               </p>
             )}
 
             {isAnswered && (
               <div className="flex animate-fade-in flex-col gap-3 border-t border-line pt-5 sm:flex-row sm:items-center sm:justify-between">
-                <p className={`flex items-center gap-2 text-xs font-bold ${hasAnswerKey && selectedOption === active.correct ? 'text-success-ink' : 'text-ink-muted'}`}>
+                <p className={`flex items-center gap-2 text-xs font-bold ${hasAnswerKey && selectedOption === active.correct ? 'text-positive-ink' : 'text-ink-soft'}`}>
                   {answerFeedback}
                 </p>
                 <button
@@ -351,20 +351,20 @@ export default function Quizzes() {
           </section>
         ) : (
           <section className="card space-y-6 p-8 text-center sm:p-10">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-pink-soft text-[#415E72] dark:text-[#C5B0CD]">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-highlight text-ink-soft dark:text-lavender">
               <Award className="h-8 w-8" />
             </div>
             <div>
               <h2 className="font-display text-2xl font-semibold text-ink sm:text-3xl">
                 {isAr ? 'اكتمل الاختبار' : 'Quiz completed'}
               </h2>
-              <p className="mt-2 text-sm text-ink-muted">
+              <p className="mt-2 text-sm text-ink-soft">
                 {isAr
                   ? `حصلت على ${score} من أصل ${questions.length} إجابات صحيحة.`
                   : `You scored ${score} out of ${questions.length}.`}
               </p>
               {databaseQuiz && assessmentPassed !== null && (
-                <p className={`mt-2 text-sm font-bold ${assessmentPassed ? 'text-success-ink' : 'text-danger'}`}>
+                <p className={`mt-2 text-sm font-bold ${assessmentPassed ? 'text-positive-ink' : 'text-negative-ink'}`}>
                   {assessmentPassed
                     ? t('achievement.assessmentPassed')
                     : t('achievement.assessmentPassingScore', { score: databaseQuiz.passingScore })}
@@ -373,17 +373,17 @@ export default function Quizzes() {
             </div>
 
             <div className="mx-auto flex max-w-sm flex-col gap-3">
-              <div className="flex items-center justify-between text-xs font-extrabold text-ink-muted">
+              <div className="flex items-center justify-between text-xs font-extrabold text-ink-soft">
                 <span>{isAr ? 'نتيجتك' : 'Your result'}</span>
-                <span className="text-brand-ink">{finalPercent}%</span>
+                <span className="text-ink-soft">{finalPercent}%</span>
               </div>
-              <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface-muted">
+              <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface-2">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-primary to-amber transition-all duration-700"
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-caution-soft transition-all duration-700"
                   style={{ width: `${finalPercent}%` }}
                 />
               </div>
-              <p className="text-[11px] leading-relaxed text-ink-muted">
+              <p className="text-[11px] leading-relaxed text-ink-soft">
                 {databaseQuiz
                   ? isAr
                     ? 'تم التحقق من نتيجتك وحفظها في حسابك.'
@@ -412,7 +412,7 @@ export default function Quizzes() {
           </section>
         )}
 
-        <p className="text-center text-[10px] leading-relaxed text-ink-muted">
+        <p className="text-center text-[10px] leading-relaxed text-ink-soft">
           {isAr
             ? 'هذا الاختبار تعليمي ولا يُغني عن التدريب المعتمد أو خدمات الطوارئ.'
             : 'This quiz is educational and does not replace certified training or emergency services.'}

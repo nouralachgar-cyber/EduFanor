@@ -36,7 +36,7 @@ export default function AchievementPanel({
     <>
       <section className="card space-y-5 p-5 sm:p-6" aria-labelledby="achievement-panel-title">
         <header className="flex items-start gap-3">
-          <span className="icon-box h-10 w-10 bg-amber/15 text-accent">
+          <span className="icon-box h-10 w-10 bg-primary/15 text-lavender">
             <Award className="h-5 w-5" />
           </span>
           <div>
@@ -65,7 +65,7 @@ export default function AchievementPanel({
               />
             </div>
             <div className="space-y-3 lg:col-span-4">
-              <span className="chip bg-success-soft text-success-ink">
+              <span className="chip bg-positive-soft text-positive-ink">
                 <Sparkles className="h-3 w-3" />
                 {t('achievement.completedStatus')}
               </span>
@@ -87,7 +87,7 @@ export default function AchievementPanel({
             </div>
           </div>
         ) : error ? (
-          <p role="alert" className="rounded-xl border border-danger/20 bg-danger-soft p-4 text-xs leading-relaxed text-danger">
+          <p role="alert" className="rounded-xl border border-negative/20 bg-negative-soft p-4 text-xs leading-relaxed text-negative-ink">
             {t('achievement.loadError')}
           </p>
         ) : (

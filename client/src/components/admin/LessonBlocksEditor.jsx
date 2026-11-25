@@ -438,7 +438,7 @@ function AssetUploader({ kind = 'image', onUploaded }) {
         onChange={(event) => handleFile(event.target.files?.[0])}
       />
       <span className="text-[10px] font-semibold text-ink-muted">{t(`admin.courses.blocks.${hints[kind] || hints.image}`)}</span>
-      {error && <p className="text-[10px] font-bold text-danger">{error}</p>}
+      {error && <p className="text-[10px] font-bold text-negative-ink">{error}</p>}
     </div>
   );
 }
@@ -447,7 +447,7 @@ function UrlPreview({ url }) {
   const valid = isHttpUrl(url);
   if (!valid) {
     return (
-      <div className="flex h-28 w-full flex-col items-center justify-center gap-1.5 rounded-xl border border-dashed border-danger/40 bg-danger-soft px-3 text-center text-[10px] font-bold text-danger">
+      <div className="flex h-28 w-full flex-col items-center justify-center gap-1.5 rounded-xl border border-dashed border-negative/40 bg-negative-soft px-3 text-center text-[10px] font-bold text-negative-ink">
         <Link2 className="h-4 w-4" />
         <span className="break-all">{url.slice(0, 80)}</span>
       </div>
@@ -556,9 +556,9 @@ function BlockTypeMenu({ insertAt, onPick }) {
               key={type.value}
               type="button"
               onClick={() => onPick(type.value, insertAt)}
-              className="flex items-center gap-2 rounded-xl border border-line bg-surface-muted/50 px-2.5 py-2 text-start text-[10px] font-extrabold text-ink transition-colors hover:border-primary/50 hover:bg-brand-soft"
+              className="flex items-center gap-2 rounded-xl border border-line bg-surface-muted/50 px-2.5 py-2 text-start text-[10px] font-extrabold text-ink transition-colors hover:border-primary/50 hover:bg-highlight"
             >
-              <Icon className="h-3.5 w-3.5 shrink-0 text-primary dark:text-brand-ink" />
+              <Icon className="h-3.5 w-3.5 shrink-0 text-lavender" />
               <span className="truncate">{t(`admin.courses.blocks.${type.labelKey}`)}</span>
             </button>
           );
@@ -600,7 +600,7 @@ function BlockEditBody({ block, index, helpers }) {
           <button
             type="button"
             onClick={() => onImprove(index)}
-            className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-extrabold text-primary transition-colors hover:bg-brand-soft disabled:opacity-50 dark:text-brand-ink"
+            className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-extrabold text-lavender transition-colors hover:bg-highlight disabled:opacity-50"
           >
             <Sparkles className="h-3 w-3" /> {t('admin.editor.aiImprove')}
           </button>
@@ -620,12 +620,12 @@ function BlockEditBody({ block, index, helpers }) {
             <input
               value={block.data.url || ''}
               onChange={(event) => updateData(index, 'url', event.target.value)}
-              className={`input h-9 text-xs ${block.data.url && !isHttpUrl(block.data.url) ? 'border-danger' : ''}`}
+              className={`input h-9 text-xs ${block.data.url && !isHttpUrl(block.data.url) ? 'border-negative' : ''}`}
               dir="ltr"
               placeholder="https://ظخ"
             />
             {block.data.url && !isHttpUrl(block.data.url) && (
-              <p className="mt-1 text-[10px] font-bold text-danger">{t('admin.courses.blocks.invalidUrl')}</p>
+              <p className="mt-1 text-[10px] font-bold text-negative-ink">{t('admin.courses.blocks.invalidUrl')}</p>
             )}
           </div>
           <AssetUploader kind="image" onUploaded={(uploadedUrl) => updateData(index, 'url', uploadedUrl)} />
@@ -664,7 +664,7 @@ function BlockEditBody({ block, index, helpers }) {
                 <input
                   value={image.url || ''}
                   onChange={(event) => gallery.updateImage(index, image.id, { url: event.target.value })}
-                  className={`input h-9 text-xs ${image.url && !isHttpUrl(image.url) ? 'border-danger' : ''}`}
+                  className={`input h-9 text-xs ${image.url && !isHttpUrl(image.url) ? 'border-negative' : ''}`}
                   dir="ltr"
                   placeholder="https://ظخ"
                 />
@@ -678,12 +678,12 @@ function BlockEditBody({ block, index, helpers }) {
           <button
             type="button"
             onClick={() => gallery.add(index)}
-            className="inline-flex items-center gap-1 text-[10px] font-bold text-primary hover:underline dark:text-brand-ink"
+            className="inline-flex items-center gap-1 text-[10px] font-bold text-lavender hover:underline"
           >
             <Plus className="h-3 w-3" /> {t('admin.courses.blocks.addImage')}
           </button>
           {images.some((image) => image.url) && (
-            <button type="button" onClick={() => gallery.clear(index)} className="inline-flex items-center gap-1 text-[10px] font-bold text-danger hover:underline">
+            <button type="button" onClick={() => gallery.clear(index)} className="inline-flex items-center gap-1 text-[10px] font-bold text-negative-ink hover:underline">
               <Trash2 className="h-3 w-3" /> {t('admin.courses.blocks.removeImage')}
             </button>
           )}
@@ -702,12 +702,12 @@ function BlockEditBody({ block, index, helpers }) {
           <input
             value={url}
             onChange={(event) => updateData(index, 'url', event.target.value)}
-            className={`input h-9 text-xs ${url && !videoId ? 'border-danger' : ''}`}
+            className={`input h-9 text-xs ${url && !videoId ? 'border-negative' : ''}`}
             dir="ltr"
             placeholder="https://www.youtube.com/watch?v=ظخ"
           />
           {url && !videoId && (
-            <p className="mt-1 flex items-center gap-1 text-[10px] font-bold text-danger">
+            <p className="mt-1 flex items-center gap-1 text-[10px] font-bold text-negative-ink">
               <AlertTriangle className="h-3 w-3" /> {t('admin.courses.blocks.youtubeInvalid')}
             </p>
           )}
@@ -717,9 +717,9 @@ function BlockEditBody({ block, index, helpers }) {
         {videoId && (
           <div className="space-y-1.5">
             <p className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-ink-muted">
-              <Play className="h-3 w-3 text-primary dark:text-brand-ink" /> {t('admin.courses.blocks.embedPreview')}
+              <Play className="h-3 w-3 text-lavender" /> {t('admin.courses.blocks.embedPreview')}
             </p>
-            <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-line bg-black" style={{ aspectRatio: '16 / 9' }}>
+            <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-line bg-canvas" style={{ aspectRatio: '16 / 9' }}>
               <iframe
                 className="absolute inset-0 h-full w-full"
                 src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0&playsinline=1`}
@@ -752,17 +752,17 @@ function BlockEditBody({ block, index, helpers }) {
           <input
             value={url}
             onChange={(event) => updateData(index, 'url', event.target.value)}
-            className={`input h-9 text-xs ${url && !videoId && !directVideo ? 'border-danger' : ''}`}
+            className={`input h-9 text-xs ${url && !videoId && !directVideo ? 'border-negative' : ''}`}
             dir="ltr"
             placeholder="https://ظخ/video.mp4"
           />
           {url && !videoId && !directVideo && (
-            <p className="mt-1 text-[10px] font-bold text-danger">{t('admin.courses.blocks.invalidUrl')}</p>
+            <p className="mt-1 text-[10px] font-bold text-negative-ink">{t('admin.courses.blocks.invalidUrl')}</p>
           )}
         </div>
         <AssetUploader kind="video" onUploaded={(uploadedUrl) => updateData(index, 'url', uploadedUrl)} />
         {url && (
-          <div className="overflow-hidden rounded-xl border border-line bg-black">
+          <div className="overflow-hidden rounded-xl border border-line bg-canvas">
             {videoId ? (
               <div className="relative aspect-video w-full" style={{ aspectRatio: '16 / 9' }}>
                 <iframe
@@ -797,12 +797,12 @@ function BlockEditBody({ block, index, helpers }) {
               <input
                 value={url}
                 onChange={(event) => updateData(index, 'url', event.target.value)}
-                className={`input h-9 text-xs ${url && !isHttpUrl(url) ? 'border-danger' : ''}`}
+                className={`input h-9 text-xs ${url && !isHttpUrl(url) ? 'border-negative' : ''}`}
                 dir="ltr"
                 placeholder="https://ظخ"
               />
               {url && !isHttpUrl(url) && (
-                <p className="mt-1 text-[10px] font-bold text-danger">{t('admin.courses.blocks.invalidUrl')}</p>
+                <p className="mt-1 text-[10px] font-bold text-negative-ink">{t('admin.courses.blocks.invalidUrl')}</p>
               )}
             </div>
             <AssetUploader kind="file" onUploaded={(uploadedUrl) => updateData(index, 'url', uploadedUrl)} />
@@ -830,10 +830,10 @@ function BlockEditBody({ block, index, helpers }) {
     return (
       <div className="space-y-2">
         {steps.map((step, stepIndex) => (
-          <div key={step.id || stepIndex} className="rounded-xl border border-freshGreen/30 bg-brand-soft/40 p-2.5">
+          <div key={step.id || stepIndex} className="rounded-xl border border-positive/30 bg-highlight/40 p-2.5">
             <div className="mb-1.5 flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-[10px] font-extrabold text-ink">
-                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[9px] text-white">{stepIndex + 1}</span>
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[9px] text-on-primary">{stepIndex + 1}</span>
                 {t('admin.courses.blocks.step')}
               </span>
               <div className="flex items-center gap-1">
@@ -843,7 +843,7 @@ function BlockEditBody({ block, index, helpers }) {
                 <button type="button" onClick={() => stepHelpers.move(index, stepIndex, 1)} disabled={stepIndex === steps.length - 1} className="rounded-md p-0.5 text-ink-muted hover:bg-card hover:text-ink disabled:opacity-30" title={t('admin.courses.blocks.moveDown')}>
                   <ChevronDown className="h-3 w-3" />
                 </button>
-                <button type="button" onClick={() => stepHelpers.remove(index, stepIndex)} className="rounded-md p-0.5 text-ink-muted hover:bg-danger-soft hover:text-danger" title={t('admin.courses.blocks.removeStep')}>
+                <button type="button" onClick={() => stepHelpers.remove(index, stepIndex)} className="rounded-md p-0.5 text-ink-muted hover:bg-negative-soft hover:text-negative-ink" title={t('admin.courses.blocks.removeStep')}>
                   <Trash2 className="h-3 w-3" />
                 </button>
               </div>
@@ -868,7 +868,7 @@ function BlockEditBody({ block, index, helpers }) {
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => stepHelpers.add(index)} className="inline-flex items-center gap-1 text-[10px] font-bold text-primary hover:underline dark:text-brand-ink">
+        <button type="button" onClick={() => stepHelpers.add(index)} className="inline-flex items-center gap-1 text-[10px] font-bold text-lavender hover:underline">
           <Plus className="h-3 w-3" /> {t('admin.courses.blocks.addStep')}
         </button>
       </div>
@@ -1054,7 +1054,7 @@ export default function LessonBlocksEditor({ blocks = [], onChange, onImprove })
       <button
         type="button"
         onClick={() => setMenuAt(menuAt === positionKey ? null : positionKey)}
-        className="z-10 flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-line-strong bg-card text-ink-muted transition-all hover:scale-110 hover:border-primary hover:text-primary dark:hover:text-brand-ink"
+        className="z-10 flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-line-strong bg-card text-ink-muted transition-all hover:scale-110 hover:border-primary hover:text-lavender"
         title={t('admin.courses.blocks.insertHere')}
         aria-label={t('admin.courses.blocks.insertHere')}
       >
@@ -1079,7 +1079,7 @@ export default function LessonBlocksEditor({ blocks = [], onChange, onImprove })
       </div>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="icon-box h-8 w-8 bg-brand-soft text-success-ink">
+          <span className="icon-box h-8 w-8 bg-highlight text-positive-ink">
             <Images className="h-4 w-4" />
           </span>
           <div>
@@ -1137,7 +1137,7 @@ export default function LessonBlocksEditor({ blocks = [], onChange, onImprove })
                       {index + 1}
                     </span>
                     <span className="flex items-center gap-1.5 rounded-lg bg-card px-2 py-1 text-[10px] font-extrabold text-ink">
-                      <Icon className="h-3.5 w-3.5 text-primary dark:text-brand-ink" />
+                      <Icon className="h-3.5 w-3.5 text-lavender" />
                       {t(`admin.courses.blocks.${meta.labelKey}`)}
                     </span>
                   </div>
@@ -1154,7 +1154,7 @@ export default function LessonBlocksEditor({ blocks = [], onChange, onImprove })
                     <button type="button" onClick={() => duplicateBlock(index)} className="rounded-md p-1 text-ink-muted hover:bg-card hover:text-ink" aria-label={t('admin.courses.blocks.duplicate')} title={t('admin.courses.blocks.duplicate')}>
                       <Copy className="h-3.5 w-3.5" />
                     </button>
-                    <button type="button" onClick={() => removeBlock(index)} className="rounded-md p-1 text-ink-muted hover:bg-danger-soft hover:text-danger" aria-label={t('admin.courses.blocks.remove')} title={t('admin.courses.blocks.remove')}>
+                    <button type="button" onClick={() => removeBlock(index)} className="rounded-md p-1 text-ink-muted hover:bg-negative-soft hover:text-negative-ink" aria-label={t('admin.courses.blocks.remove')} title={t('admin.courses.blocks.remove')}>
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
                   </div>

@@ -105,17 +105,17 @@ export default function AITutor() {
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(circle at 88% 10%, rgba(197, 176, 205, 0.32), transparent 46%), radial-gradient(circle at 4% 100%, rgba(197, 176, 205, 0.5), transparent 52%)',
+                'radial-gradient(circle at 88% 10%, #BFA2DB, transparent 46%), radial-gradient(circle at 4% 100%, #BFA2DB, transparent 52%)',
             }}
             aria-hidden="true"
           />
           <div className="relative z-10 max-w-2xl">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="chip bg-brand-soft text-brand-ink">
+              <span className="chip bg-highlight text-ink-soft">
                 <Sparkles className="h-3.5 w-3.5" />
                 {t('aiTutorPage.badge')}
               </span>
-              <span className="chip bg-pink-soft text-[#415E72] dark:text-[#C5B0CD]">
+              <span className="chip bg-highlight text-ink-soft dark:text-lavender">
                 <Zap className="h-3 w-3" />
                 {t('aiTutorPage.statusChip')}
               </span>
@@ -123,7 +123,7 @@ export default function AITutor() {
             <h1 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
               {t('aiTutorPage.title')}
             </h1>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-soft">
               {t('aiTutorPage.subtitle')}
             </p>
           </div>
@@ -144,8 +144,8 @@ export default function AITutor() {
                 onClick={() => switchTab(item.key)}
                 className={`inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-[11px] font-extrabold transition-all sm:text-xs ${
                   active
-                    ? 'bg-[linear-gradient(135deg,#415E72,#17313E)] text-white shadow-[0_10px_26px_-12px_rgba(100,45,61,0.55)] dark:bg-[linear-gradient(135deg,#C5B0CD,#F6F5F2)] dark:text-[#17313E]'
-                    : 'text-ink-muted hover:bg-surface-muted hover:text-ink'
+                    ? 'bg-gradient-to-br from-primary to-scrim text-on-dark shadow-pop dark:bg-gradient-to-br dark:from-primary dark:to-scrim dark:text-on-dark'
+                    : 'text-ink-soft hover:bg-surface-2 hover:text-ink'
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -161,16 +161,16 @@ export default function AITutor() {
 
         <section className="card space-y-4 p-5 sm:p-6">
           <div className="flex items-center gap-3">
-            <span className="icon-box h-10 w-10 bg-pink-soft text-[#415E72] dark:text-[#C5B0CD]">
+            <span className="icon-box h-10 w-10 bg-highlight text-ink-soft dark:text-lavender">
               <Zap className="h-5 w-5" />
             </span>
             <div>
               <h2 className="text-base font-extrabold text-ink">{t('aiTutorPage.guideTitle')}</h2>
-              <p className="text-[11px] text-ink-muted">{t('aiTutorPage.guideSubtitle')}</p>
+              <p className="text-[11px] text-ink-soft">{t('aiTutorPage.guideSubtitle')}</p>
             </div>
           </div>
 
-          <div className="flex items-start gap-2 rounded-xl bg-danger-soft p-3.5 text-xs text-danger">
+          <div className="flex items-start gap-2 rounded-xl bg-negative-soft p-3.5 text-xs text-negative-ink">
             <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0" />
             <span className="leading-relaxed">{t('aiTutorPage.disclaimer')}</span>
           </div>
@@ -299,15 +299,15 @@ function ChatPanel({ isAr, lang, t }) {
   return (
     <section className="card flex flex-col overflow-hidden" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3 sm:px-6">
-        <span className="inline-flex items-center gap-2 text-[11px] font-extrabold text-ink-muted">
-          <Bot className="h-4 w-4 text-primary dark:text-[#C5B0CD]" />
+        <span className="inline-flex items-center gap-2 text-[11px] font-extrabold text-ink-soft">
+          <Bot className="h-4 w-4 text-primary dark:text-lavender" />
           {t('ai.chat.panelTitle')}
         </span>
         <button
           type="button"
           onClick={clearChat}
           disabled={busy}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-line px-2.5 py-1.5 text-[10px] font-extrabold text-ink-muted transition-colors hover:border-danger/40 hover:text-danger disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-line px-2.5 py-1.5 text-[10px] font-extrabold text-ink-soft transition-colors hover:border-line-strong/40 hover:text-negative-ink disabled:opacity-50"
         >
           <Trash2 className="h-3 w-3" />
           {t('ai.chat.clear')}
@@ -324,8 +324,8 @@ function ChatPanel({ isAr, lang, t }) {
                 <span
                   className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl shadow-sm ${
                     isUser
-                      ? 'bg-ink/[0.07] text-ink-muted'
-                      : 'bg-[linear-gradient(135deg,#415E72,#17313E)] text-white dark:bg-[linear-gradient(135deg,#C5B0CD,#F6F5F2)] dark:text-[#17313E]'
+                      ? 'bg-ink/[0.07] text-ink-soft'
+                      : 'bg-gradient-to-br from-primary to-scrim text-on-dark dark:bg-gradient-to-br dark:from-primary dark:to-scrim dark:text-on-dark'
                   }`}
                 >
                   {isUser ? <UserRound className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
@@ -334,10 +334,10 @@ function ChatPanel({ isAr, lang, t }) {
                   <div
                     className={`rounded-2xl border px-4 py-3 ${
                       isUser
-                        ? 'rounded-ss-sm border-transparent bg-primary text-white shadow-[0_10px_26px_-14px_rgba(100,45,61,0.5)] dark:bg-[#C5B0CD] dark:text-[#17313E]'
+                        ? 'rounded-ss-sm border-transparent bg-primary text-on-primary shadow-pop dark:bg-primary dark:text-on-primary'
                         : message.error
-                        ? 'border-danger/30 bg-danger-soft'
-                        : 'rounded-ss-sm border-line bg-surface-muted'
+                        ? 'border-line-strong/30 bg-negative-soft'
+                        : 'rounded-ss-sm border-line bg-surface-2'
                     }`}
                   >
                     <AiMarkdown content={message.content} className="text-[13px]" />
@@ -348,7 +348,7 @@ function ChatPanel({ isAr, lang, t }) {
                         <button
                           type="button"
                           onClick={() => retry(index)}
-                          className="inline-flex items-center gap-1 rounded-lg border border-line bg-card px-2 py-1 text-[10px] font-extrabold text-ink-muted transition-colors hover:text-danger"
+                          className="inline-flex items-center gap-1 rounded-lg border border-line bg-card px-2 py-1 text-[10px] font-extrabold text-ink-soft transition-colors hover:text-negative-ink"
                         >
                           <RefreshCw className="h-3 w-3" />
                           {t('ai.chat.retry')}
@@ -357,10 +357,10 @@ function ChatPanel({ isAr, lang, t }) {
                         <button
                           type="button"
                           onClick={() => copyMessage(message)}
-                          className="inline-flex items-center gap-1 rounded-lg border border-line bg-card px-2 py-1 text-[10px] font-extrabold text-ink-muted transition-colors hover:text-ink"
+                          className="inline-flex items-center gap-1 rounded-lg border border-line bg-card px-2 py-1 text-[10px] font-extrabold text-ink-soft transition-colors hover:text-ink"
                         >
                           {copiedId === message.id ? (
-                            <Check className="h-3 w-3 text-success-ink" />
+                            <Check className="h-3 w-3 text-positive-ink" />
                           ) : (
                             <Copy className="h-3 w-3" />
                           )}
@@ -384,7 +384,7 @@ function ChatPanel({ isAr, lang, t }) {
               type="button"
               disabled={busy}
               onClick={() => send(suggestion)}
-              className="rounded-full border border-line bg-surface px-3 py-1.5 text-[11px] font-bold text-ink-muted transition-colors hover:border-primary/45 hover:text-ink disabled:opacity-50"
+              className="rounded-full border border-line bg-surface px-3 py-1.5 text-[11px] font-bold text-ink-soft transition-colors hover:border-primary/45 hover:text-ink disabled:opacity-50"
             >
               {suggestion}
             </button>
@@ -421,7 +421,7 @@ function ChatPanel({ isAr, lang, t }) {
             {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           </button>
         </form>
-        <p className="text-center text-[10px] text-ink-muted">{t('ai.chat.hint')}</p>
+        <p className="text-center text-[10px] text-ink-soft">{t('ai.chat.hint')}</p>
       </div>
     </section>
   );
@@ -431,10 +431,10 @@ function PendingBubble({ isAr }) {
   return (
     <div className="flex justify-start">
       <div className="flex items-start gap-2.5">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(135deg,#415E72,#17313E)] text-white shadow-sm dark:bg-[linear-gradient(135deg,#C5B0CD,#F6F5F2)] dark:text-[#17313E]">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-scrim text-on-dark shadow-sm dark:bg-gradient-to-br dark:from-primary dark:to-scrim dark:text-on-dark">
           <Bot className="h-4 w-4" />
         </span>
-        <div className="flex items-center gap-2 rounded-2xl border border-line bg-surface-muted px-4 py-3">
+        <div className="flex items-center gap-2 rounded-2xl border border-line bg-surface-2 px-4 py-3">
           <span className="flex gap-1">
             {[0, 1, 2].map((dot) => (
               <span
@@ -444,7 +444,7 @@ function PendingBubble({ isAr }) {
               />
             ))}
           </span>
-          <span className="text-[11px] font-bold text-ink-muted">{isAr ? 'يكتب...' : 'typing...'}</span>
+          <span className="text-[11px] font-bold text-ink-soft">{isAr ? 'يكتب...' : 'typing...'}</span>
         </div>
       </div>
     </div>
@@ -498,17 +498,17 @@ function ScenarioPanel({ isAr, lang, t }) {
     <section className="space-y-4" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="card space-y-4 p-5 sm:p-6">
         <div className="flex items-center gap-3">
-          <span className="icon-box h-10 w-10 bg-brand-soft text-brand-ink">
+          <span className="icon-box h-10 w-10 bg-highlight text-ink-soft">
             <Target className="h-5 w-5" />
           </span>
           <div>
             <h2 className="text-base font-extrabold text-ink">{t('ai.scenario.title')}</h2>
-            <p className="text-[11px] text-ink-muted">{t('ai.scenario.subtitle')}</p>
+            <p className="text-[11px] text-ink-soft">{t('ai.scenario.subtitle')}</p>
           </div>
         </div>
 
         <div>
-          <p className="mb-2 text-[11px] font-extrabold uppercase tracking-wider text-ink-muted">
+          <p className="mb-2 text-[11px] font-extrabold uppercase tracking-wider text-ink-soft">
             {t('ai.scenario.topicLabel')}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -522,8 +522,8 @@ function ScenarioPanel({ isAr, lang, t }) {
                   onClick={() => setTopic(item.key)}
                   className={`inline-flex items-center gap-1.5 rounded-xl border px-3 py-2 text-[11px] font-bold transition-colors ${
                     active
-                      ? 'border-transparent bg-primary text-on-primary dark:bg-[#C5B0CD] dark:text-[#17313E]'
-                      : 'border-line bg-card text-ink-muted hover:border-primary/40'
+                      ? 'border-transparent bg-primary text-on-primary dark:bg-primary dark:text-on-primary'
+                      : 'border-line bg-card text-ink-soft hover:border-primary/40'
                   }`}
                 >
                   <Icon className="h-3.5 w-3.5" />
@@ -535,7 +535,7 @@ function ScenarioPanel({ isAr, lang, t }) {
         </div>
 
         <div>
-          <p className="mb-2 text-[11px] font-extrabold uppercase tracking-wider text-ink-muted">
+          <p className="mb-2 text-[11px] font-extrabold uppercase tracking-wider text-ink-soft">
             {t('ai.difficultyLabel')}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -546,8 +546,8 @@ function ScenarioPanel({ isAr, lang, t }) {
                 onClick={() => setDifficulty(level)}
                 className={`rounded-xl border px-3 py-2 text-[11px] font-bold transition-colors ${
                   difficulty === level
-                    ? 'border-transparent bg-primary text-on-primary dark:bg-[#C5B0CD] dark:text-[#17313E]'
-                    : 'border-line bg-card text-ink-muted hover:border-primary/40'
+                    ? 'border-transparent bg-primary text-on-primary dark:bg-primary dark:text-on-primary'
+                    : 'border-line bg-card text-ink-soft hover:border-primary/40'
                 }`}
               >
                 {t(`ai.difficulty.${level}`)}
@@ -568,7 +568,7 @@ function ScenarioPanel({ isAr, lang, t }) {
           <span>{scenario ? t('ai.scenario.reGenerate') : t('ai.scenario.generate')}</span>
         </button>
 
-        <p className="flex items-start gap-2 rounded-xl bg-amber-soft px-3.5 py-2.5 text-[11px] leading-relaxed text-amber">
+        <p className="flex items-start gap-2 rounded-xl bg-caution-soft px-3.5 py-2.5 text-[11px] leading-relaxed text-caution-ink">
           <ShieldAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" />
           {t('ai.scenario.disclaimer')}
         </p>
@@ -578,11 +578,11 @@ function ScenarioPanel({ isAr, lang, t }) {
         <article className="card space-y-4 p-5 sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h3 className="font-display text-base font-bold text-ink">{scenario.title}</h3>
-            <span className="chip bg-surface-muted text-ink-muted">
+            <span className="chip bg-surface-2 text-ink-soft">
               {t(`ai.difficulty.${scenario.difficulty || difficulty}`)}
             </span>
           </div>
-          <div className="rounded-2xl border border-line bg-surface-muted/50 p-4">
+          <div className="rounded-2xl border border-line bg-surface-2/50 p-4">
             <AiMarkdown content={scenario.narrative} />
           </div>
           <p className="text-sm font-extrabold text-ink">{scenario.question}</p>
@@ -594,10 +594,10 @@ function ScenarioPanel({ isAr, lang, t }) {
               const isBest = feedback ? option.label === feedback.correctOptionLabel : false;
               const tone = revealed && isSelected
                 ? feedback.correct
-                  ? 'border-success/40 bg-success-soft'
-                  : 'border-danger/30 bg-danger-soft'
+                  ? 'border-primary/40 bg-positive-soft'
+                  : 'border-line-strong/30 bg-negative-soft'
                 : revealed && isBest
-                ? 'border-success/40 bg-success-soft/70'
+                ? 'border-primary/40 bg-positive-soft/70'
                 : isSelected
                 ? 'border-primary bg-primary/10'
                 : 'border-line bg-card hover:border-primary/40';
@@ -614,9 +614,9 @@ function ScenarioPanel({ isAr, lang, t }) {
                   </span>
                   <span className="flex-1">{option.label}</span>
                   {revealed && isSelected && (
-                    feedback.correct ? <CheckCircle2 className="h-4 w-4 text-success-ink" /> : <XCircle className="h-4 w-4 text-danger" />
+                    feedback.correct ? <CheckCircle2 className="h-4 w-4 text-positive-ink" /> : <XCircle className="h-4 w-4 text-negative-ink" />
                   )}
-                  {revealed && !isSelected && isBest && <Award className="h-4 w-4 text-success-ink" />}
+                  {revealed && !isSelected && isBest && <Award className="h-4 w-4 text-positive-ink" />}
                 </button>
               );
             })}
@@ -625,21 +625,21 @@ function ScenarioPanel({ isAr, lang, t }) {
           {feedback && (
             <div
               className={`space-y-3 rounded-2xl border p-4 ${
-                feedback.correct ? 'border-success/40 bg-success-soft/70' : 'border-danger/30 bg-danger-soft/70'
+                feedback.correct ? 'border-primary/40 bg-positive-soft/70' : 'border-line-strong/30 bg-negative-soft/70'
               }`}
             >
               <p className="flex items-center gap-2 text-xs font-extrabold text-ink">
                 {feedback.correct ? (
-                  <CheckCircle2 className="h-4 w-4 text-success-ink" />
+                  <CheckCircle2 className="h-4 w-4 text-positive-ink" />
                 ) : (
-                  <XCircle className="h-4 w-4 text-danger" />
+                  <XCircle className="h-4 w-4 text-negative-ink" />
                 )}
                 {feedback.correct ? t('ai.scenario.correctTitle') : t('ai.scenario.wrongTitle')}
               </p>
               <AiMarkdown content={feedback.feedback} />
               {feedback.suggestedLessonTitle && (
-                <p className="inline-flex items-center gap-1.5 rounded-lg bg-card px-2.5 py-1.5 text-[11px] font-bold text-ink-muted">
-                  <Lightbulb className="h-3 w-3 text-amber" />
+                <p className="inline-flex items-center gap-1.5 rounded-lg bg-card px-2.5 py-1.5 text-[11px] font-bold text-ink-soft">
+                  <Lightbulb className="h-3 w-3 text-caution-ink" />
                   {t('ai.scenario.reviewLesson')}: {feedback.suggestedLessonTitle}
                 </p>
               )}
@@ -649,7 +649,7 @@ function ScenarioPanel({ isAr, lang, t }) {
       )}
 
       {error && (
-        <div className="flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft px-3.5 py-2.5 text-xs font-bold text-danger">
+        <div className="flex items-center gap-2 rounded-xl border border-line-strong/25 bg-negative-soft px-3.5 py-2.5 text-xs font-bold text-negative-ink">
           <XCircle className="h-4 w-4 shrink-0" />
           <span className="flex-1">{error}</span>
         </div>
@@ -711,12 +711,12 @@ function PlanPanel({ isAr, lang, t }) {
     <section className="space-y-4" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="card space-y-4 p-5 sm:p-6">
         <div className="flex items-center gap-3">
-          <span className="icon-box h-10 w-10 bg-mint-soft text-sage-green">
+          <span className="icon-box h-10 w-10 bg-positive-soft text-positive-ink">
             <GraduationCap className="h-5 w-5" />
           </span>
           <div>
             <h2 className="text-base font-extrabold text-ink">{t('ai.plan.title')}</h2>
-            <p className="text-[11px] text-ink-muted">{t('ai.plan.subtitle')}</p>
+            <p className="text-[11px] text-ink-soft">{t('ai.plan.subtitle')}</p>
           </div>
         </div>
 
@@ -731,14 +731,14 @@ function PlanPanel({ isAr, lang, t }) {
             <span>{t('ai.plan.generate')}</span>
           </button>
           {cached && plan && typeof ageText === 'string' && ageText !== '' && (
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-ink-muted">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-ink-soft">
               <Clock className="h-3 w-3" />
               {t('ai.plan.cached', { time: ageText })}
             </span>
           )}
         </div>
 
-        <p className="rounded-xl bg-amber-soft px-3.5 py-2.5 text-[11px] leading-relaxed text-amber">
+        <p className="rounded-xl bg-caution-soft px-3.5 py-2.5 text-[11px] leading-relaxed text-caution-ink">
           {t('ai.plan.privacyNote')}
         </p>
       </div>
@@ -748,13 +748,13 @@ function PlanPanel({ isAr, lang, t }) {
       {plan && <PlanResults plan={plan} isAr={isAr} t={t} />}
 
       {error && (
-        <div className="flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft px-3.5 py-2.5 text-xs font-bold text-danger">
+        <div className="flex items-center gap-2 rounded-xl border border-line-strong/25 bg-negative-soft px-3.5 py-2.5 text-xs font-bold text-negative-ink">
           <XCircle className="h-4 w-4 shrink-0" />
           <span className="flex-1">{error}</span>
           <button
             type="button"
             onClick={generate}
-            className="flex items-center gap-1 rounded-lg border border-danger/30 px-2 py-1 text-[10px] font-extrabold hover:bg-danger/10"
+            className="flex items-center gap-1 rounded-lg border border-line-strong/30 px-2 py-1 text-[10px] font-extrabold hover:bg-negative-soft/10"
           >
             <RefreshCw className="h-3 w-3" />
             {t('ai.common.retry')}
@@ -770,10 +770,10 @@ function PlanResults({ plan, isAr, t }) {
     <div className="space-y-4">
       {plan.summary && (
         <div className="card space-y-2 p-5">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">{t('ai.plan.summaryLabel')}</p>
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-soft">{t('ai.plan.summaryLabel')}</p>
           <AiMarkdown content={plan.summary} />
           {plan.encouragement && (
-            <p className="mt-2 rounded-xl bg-mint-soft px-3.5 py-2.5 text-[11px] font-bold text-sage-green">
+            <p className="mt-2 rounded-xl bg-positive-soft px-3.5 py-2.5 text-[11px] font-bold text-positive-ink">
               {plan.encouragement}
             </p>
           )}
@@ -782,15 +782,15 @@ function PlanResults({ plan, isAr, t }) {
 
       {Array.isArray(plan.nextSteps) && plan.nextSteps.length > 0 && (
         <div className="card space-y-3 p-5">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">{t('ai.plan.nextLabel')}</p>
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-soft">{t('ai.plan.nextLabel')}</p>
           {plan.nextSteps.map((step, index) => (
-            <div key={index} className="flex items-start gap-3 rounded-xl border border-line bg-surface-muted/50 p-3">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-white dark:bg-[#C5B0CD] dark:text-[#17313E]">
+            <div key={index} className="flex items-start gap-3 rounded-xl border border-line bg-surface-2/50 p-3">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-extrabold text-on-primary dark:bg-primary dark:text-on-primary">
                 {index + 1}
               </span>
               <div className="min-w-0">
                 <p className="text-xs font-extrabold text-ink">{step.lesson}</p>
-                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-muted">{step.why}</p>
+                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-soft">{step.why}</p>
               </div>
             </div>
           ))}
@@ -799,10 +799,10 @@ function PlanResults({ plan, isAr, t }) {
 
       {Array.isArray(plan.revisionTopics) && plan.revisionTopics.length > 0 && (
         <div className="card space-y-3 p-5">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">{t('ai.plan.revisionLabel')}</p>
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-soft">{t('ai.plan.revisionLabel')}</p>
           <div className="flex flex-wrap gap-2">
             {plan.revisionTopics.map((topic, index) => (
-              <span key={index} className="chip bg-brand-soft text-brand-ink">
+              <span key={index} className="chip bg-highlight text-ink-soft">
                 <BookOpen className="h-3 w-3" />
                 {topic}
               </span>
@@ -813,18 +813,18 @@ function PlanResults({ plan, isAr, t }) {
 
       {Array.isArray(plan.sevenDayPlan) && plan.sevenDayPlan.length > 0 && (
         <div className="card space-y-3 p-5">
-          <p className="inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">
+          <p className="inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-soft">
             <CalendarDays className="h-3.5 w-3.5" />
             {t('ai.plan.weekLabel')}
           </p>
           {plan.sevenDayPlan.map((session, index) => (
-            <div key={index} className="flex items-start gap-3 rounded-xl border border-line bg-surface-muted/50 p-3">
-              <span className="chip shrink-0 bg-pink-soft text-[#415E72] dark:text-[#C5B0CD]">
+            <div key={index} className="flex items-start gap-3 rounded-xl border border-line bg-surface-2/50 p-3">
+              <span className="chip shrink-0 bg-highlight text-ink-soft dark:text-lavender">
                 {isAr ? 'يوم' : 'Day'} {session.day}
               </span>
               <div className="min-w-0">
                 <p className="text-xs font-extrabold text-ink">{session.focus}</p>
-                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-muted">{session.activity}</p>
+                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-soft">{session.activity}</p>
               </div>
             </div>
           ))}
@@ -833,7 +833,7 @@ function PlanResults({ plan, isAr, t }) {
 
       {Array.isArray(plan.practiceAdvice) && plan.practiceAdvice.length > 0 && (
         <div className="card space-y-2.5 p-5">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-muted">{t('ai.plan.practiceLabel')}</p>
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-ink-soft">{t('ai.plan.practiceLabel')}</p>
           {plan.practiceAdvice.map((advice, index) => (
             <p key={index} className="flex items-start gap-2 text-xs leading-relaxed text-ink">
               <BookCheck />
@@ -848,9 +848,9 @@ function PlanResults({ plan, isAr, t }) {
 
 function Thinking({ isAr, label }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-line bg-surface-muted/50 px-4 py-3">
+    <div className="flex items-center gap-3 rounded-2xl border border-line bg-surface-2/50 px-4 py-3">
       <Loader2 className="h-4 w-4 animate-spin text-primary" />
-      <span className="text-xs font-bold text-ink-muted">{label}</span>
+      <span className="text-xs font-bold text-ink-soft">{label}</span>
       <span className="flex gap-1">
         {[0, 1, 2].map((dot) => (
           <span

@@ -10,8 +10,8 @@ import {
   LogOut,
   LayoutDashboard,
   BookOpen,
-  Bot,
   Award,
+  Bot,
   HelpCircle,
   Sun,
   Moon,
@@ -85,17 +85,20 @@ export default function Navbar() {
 
   const isActive = (path) => location.pathname === path;
 
+  const iconButtonClass =
+    'flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-ink shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:bg-highlight hover:text-ink active:scale-[0.98] dark:border-line dark:bg-surface-2 dark:text-on-dark dark:hover:bg-primary dark:hover:text-on-primary';
+
   const themeButton = (
     <button
       onClick={toggleTheme}
       aria-label={t('nav.toggleTheme', 'Toggle theme')}
       title={t('nav.toggleTheme', 'Toggle theme')}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-plumdeep text-plumdeep transition-all hover:border-plumLight hover:bg-plumLight dark:border-lavender dark:text-lavender dark:hover:bg-[var(--color-softlavender)]"
+      className={iconButtonClass}
     >
       {isDark ? (
-        <Sun className="h-4 w-4 text-softLavender" />
+        <Sun className="h-4 w-4 text-lavender" />
       ) : (
-        <Moon className="h-4 w-4 text-lavender" />
+        <Moon className="h-4 w-4 text-on-primary dark:text-on-dark" />
       )}
     </button>
   );
@@ -104,17 +107,17 @@ export default function Navbar() {
     <button
       onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
       aria-label={t('nav.toggleLanguage', 'Switch language')}
-      className="flex h-10 items-center gap-2 rounded-full border border-lavender bg-softLavender px-3 text-sm font-bold text-lavender transition-all hover:border-lavender hover:bg-[var(--color-softlavender)] dark:border-lavender dark:text-lavender dark:hover:bg-[var(--color-softlavender)]"
+      className="flex h-10 items-center gap-2 rounded-full border border-line bg-surface px-3 text-sm font-bold text-ink shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:bg-highlight hover:text-ink active:scale-[0.98] dark:border-line dark:bg-surface-2 dark:text-on-dark dark:hover:bg-primary dark:hover:text-on-primary"
     >
-      <Globe className="h-4 w-4 text-lavender dark:text-softLavenderLight" />
+      <Globe className="h-4 w-4 text-ink-soft dark:text-lavender" />
       <span>{isAr ? 'EN' : 'ع'}</span>
     </button>
   );
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b border-plumLight/30 bg-mainBackground/90 backdrop-blur-xl transition-shadow duration-300 ${
-        scrolled ? 'shadow-card' : ''
+      className={`sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur-xl transition-shadow duration-300 dark:border-line dark:bg-scrim/95 ${
+        scrolled ? 'shadow-md' : 'shadow-sm'
       }`}
     >
       <div
@@ -129,11 +132,11 @@ export default function Navbar() {
           style={{ unicodeBidi: 'isolate' }}
         >
           <EduFanorWordmark
-            className={`w-[clamp(9.5rem,48vw,11.75rem)] transition-transform duration-300 group-hover:scale-[1.015] sm:w-[12rem] xl:w-[12.5rem] text-plumdeep transition-colors`}
+            className={`w-[clamp(9.5rem,48vw,11.75rem)] text-ink transition-all duration-300 group-hover:scale-[1.015] group-hover:text-lavender dark:text-on-dark sm:w-[12rem] xl:w-[12.5rem]`}
           />
         </Link>
 
-        <nav className="hidden items-center gap-1 rounded-2xl border border-plumLight/30 bg-softLavender p-1 lg:flex">
+        <nav className="hidden items-center gap-1 rounded-full border border-line bg-surface-2 p-1 shadow-sm dark:border-line dark:bg-surface-2 lg:flex">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const active = isActive(link.path);
@@ -141,13 +144,13 @@ export default function Navbar() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-bold transition-all duration-200 ${
+                className={`relative flex items-center gap-2 rounded-full px-3.5 py-2 text-xs font-bold transition-all duration-200 active:scale-[0.98] ${
                   active
-                    ? 'bg-plumdeep text-on-plumdeep shadow-sm'
-                    : 'text-plumdeepMuted hover:bg-softLavender hover:text-plumdeep'}
+                    ? 'bg-primary text-on-primary shadow-sm after:absolute after:bottom-1 after:start-1/2 after:h-0.5 after:w-4 after:-translate-x-1/2 after:rounded-full after:bg-on-primary dark:bg-accent dark:text-on-primary dark:after:bg-on-primary'
+                    : 'text-ink hover:bg-highlight hover:text-ink dark:text-lavender dark:hover:bg-surface-2 dark:hover:text-lavender'
                 }`}
               >
-                <Icon className={`h-4 w-4 ${active ? 'text-on-plumdeep' : ''}`} />
+                <Icon className={`h-4 w-4 ${active ? 'text-on-primary' : 'text-ink-soft dark:text-lavender'}`} />
                 <span>{link.name}</span>
               </Link>
             );
@@ -158,7 +161,7 @@ export default function Navbar() {
           {themeButton}
           {languageButton}
 
-          <span className="mx-1 h-6 w-px bg-plumLight" aria-hidden="true" />
+          <span className="mx-1 h-6 w-px bg-line" aria-hidden="true" />
 
           {user ? (
             <div className="relative" ref={dropdownRef}>
@@ -166,16 +169,16 @@ export default function Navbar() {
                 onClick={() => setProfileDropdownOpen((open) => !open)}
                 aria-expanded={profileDropdownOpen}
                 aria-haspopup="menu"
-                className="flex items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender py-1.5 pe-2.5 ps-1.5 transition-all hover:border-plumLight/50 hover:bg-plumLight/10"
+                className="flex items-center gap-2.5 rounded-full border border-line bg-surface py-1.5 pe-2.5 ps-1.5 shadow-sm transition-all duration-200 hover:border-line-strong hover:bg-highlight active:scale-[0.98] dark:border-line dark:bg-surface-2 dark:hover:bg-primary"
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-full border border-plumLight text-xs font-bold text-plumdeep">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-highlight text-xs font-bold text-ink dark:border-line-strong dark:bg-primary dark:text-on-primary">
                   {user?.name ? user.name.charAt(0).toUpperCase() : 'N'}
                 </span>
-                <span className="max-w-[9rem] truncate text-xs font-bold text-plumdeep">
+                <span className="max-w-[9rem] truncate text-xs font-bold text-ink dark:text-on-dark">
                   {user?.name || t('dashboard.studentName')}
                 </span>
                 <ChevronDown
-                  className={`h-3.5 w-3.5 text-plumLightMuted transition-transform duration-200 ${
+                  className={`h-3.5 w-3.5 text-muted transition-transform duration-200 dark:text-lavender ${
                     profileDropdownOpen ? 'rotate-180' : ''
                   }`}
                 />
@@ -184,52 +187,43 @@ export default function Navbar() {
               {profileDropdownOpen && (
                 <div
                   role="menu"
-                  className="animate-rise absolute end-0 top-full z-50 mt-2 w-56 rounded-full border border-plumLight/30 bg-softLavender p-2 shadow-card"
+                  className="animate-fade-up absolute end-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-2xl border border-line bg-surface p-2 shadow-lg dark:border-line dark:bg-surface-2"
                 >
-                  <div className="border-b border-plumLight/30 px-3 pb-2.5 pt-1.5">
-                    <p className="truncate text-xs font-extrabold text-plumdeep">
+                  <div className="border-b border-line px-3 pb-2.5 pt-1.5">
+                    <p className="truncate text-xs font-bold text-ink dark:text-on-dark">
                       {user?.name || t('dashboard.studentName')}
                     </p>
-                    <p className="mt-0.5 truncate text-[11px] text-plumLightMuted" dir="ltr">
+                    <p className="mt-0.5 truncate text-[11px] text-ink-soft dark:text-muted" dir="ltr">
                       {user?.email}
                     </p>
                   </div>
 
                   <div className="mt-1 space-y-0.5">
-                    <Link
-                      to="/profile"
-                      className="flex items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender px-3 py-2 text-xs font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
-                    >
-                      <User className="h-4 w-4 text-plumdeep dark:text-lavender" />
-                      <span>{t('nav.profile')}</span>
-                    </Link>
-                    <Link
-                      to="/settings"
-                      className="flex items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender px-3 py-2 text-xs font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
-                    >
-                      <Settings className="h-4 w-4 text-plumdeep dark:text-lavender" />
-                      <span>{t('nav.settings')}</span>
-                    </Link>
-                    <Link
-                      to="/"
-                      className="flex items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender px-3 py-2 text-xs font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
-                    >
-                      <Home className="h-4 w-4 text-plumdeep dark:text-lavender" />
-                      <span>{t('nav.home', 'Home')}</span>
-                    </Link>
-                    {user?.role === 'admin' && (
-                      <Link
-                        to="/admin"
-                        className="flex items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender px-3 py-2 text-xs font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
-                      >
-                        <ShieldCheck className="h-4 w-4 text-plumdeep" />
-                        <span>{t('nav.admin', 'Admin panel')}</span>
-                      </Link>
-                    )}
+                    {[
+                      { to: '/profile', icon: User, label: t('nav.profile') },
+                      { to: '/settings', icon: Settings, label: t('nav.settings') },
+                      { to: '/', icon: Home, label: t('nav.home', 'Home') },
+                      ...(user?.role === 'admin'
+                        ? [{ to: '/admin', icon: ShieldCheck, label: t('nav.admin', 'Admin panel') }]
+                        : []),
+                    ].map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Link
+                          key={item.to}
+                          to={item.to}
+                          role="menuitem"
+                          className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-ink transition-colors hover:bg-highlight hover:text-ink dark:text-lavender dark:hover:bg-surface-2 dark:hover:text-lavender"
+                        >
+                          <Icon className="h-4 w-4 text-ink-soft dark:text-lavender" />
+                          <span>{item.label}</span>
+                        </Link>
+                      );
+                    })}
                     <button
                       onClick={handleLogout}
                       role="menuitem"
-                      className="flex w-full items-center gap-2.5 rounded-full border border-plumLight/30 bg-softLavender px-3 py-2 text-xs font-bold text-plumdeepMuted transition-colors hover:bg-plumLight/10"
+                      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-negative transition-colors hover:bg-negative-soft dark:text-negative-ink dark:hover:bg-negative-soft"
                     >
                       <LogOut className="h-4 w-4" />
                       <span>{t('nav.logout')}</span>
@@ -247,18 +241,12 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2 md:hidden">
           {themeButton}
-          <button
-            onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
-            aria-label={t('nav.toggleLanguage', 'Switch language')}
-            className="flex h-10 items-center rounded-full border border-lavender bg-softLavender px-3 text-xs font-bold text-lavender transition-all hover:border-lavender hover:bg-[var(--color-softlavender)] dark:border-lavender dark:text-lavender dark:hover:bg-[var(--color-softlavender)]"
-          >
-            {isAr ? 'EN' : 'ع'}
-          </button>
+          {languageButton}
           <button
             onClick={() => setMobileMenuOpen((open) => !open)}
             aria-label={t('nav.toggleMenu', 'Toggle menu')}
             aria-expanded={mobileMenuOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-plumLight text-plumdeep transition-colors hover:bg-plumLight/10"
+            className={iconButtonClass}
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -266,17 +254,17 @@ export default function Navbar() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="animate-fade-in absolute inset-x-0 top-full border-t border-plumLight/30 bg-softLavender p-4 shadow-card md:hidden">
+        <div className="animate-fade-up absolute inset-x-0 top-full border-b border-line bg-surface/95 p-4 shadow-lg backdrop-blur-xl dark:border-line dark:bg-scrim/95 md:hidden">
           {user && (
-            <div className="mb-3 flex items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender p-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-plumLight text-xs font-bold text-plumdeep">
+            <div className="mb-3 flex items-center gap-3 rounded-2xl border border-line bg-surface-2 p-3 dark:border-line dark:bg-surface-2">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line bg-highlight text-xs font-bold text-ink dark:border-line-strong dark:bg-primary dark:text-on-primary">
                 {user?.name ? user.name.charAt(0).toUpperCase() : 'N'}
               </span>
               <div className="min-w-0">
-                <p className="truncate text-xs font-extrabold text-plumdeep">
+                <p className="truncate text-xs font-bold text-ink dark:text-on-dark">
                   {user?.name || t('dashboard.studentName')}
                 </p>
-                <p className="truncate text-[11px] text-plumLightMuted">{user?.email}</p>
+                <p className="truncate text-[11px] text-ink-soft dark:text-muted">{user?.email}</p>
               </div>
             </div>
           )}
@@ -291,44 +279,42 @@ export default function Navbar() {
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
                   aria-current={active ? 'true' : undefined}
-                  className={`flex items-center justify-between rounded-full px-4 py-3 text-sm font-bold transition-colors ${
-                    active ? 'bg-plumdeep text-on-plumdeep' : 'text-plumdeepMuted hover:bg-softLavender'}
+                  className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-bold transition-colors ${
+                    active
+                      ? 'bg-primary text-on-primary shadow-sm after:absolute after:bottom-0 after:start-1/2 after:h-0.5 after:w-6 after:-translate-x-1/2 after:rounded-full after:bg-on-primary dark:bg-accent dark:text-on-primary dark:after:bg-on-primary'
+                      : 'text-ink hover:bg-highlight hover:text-ink dark:text-lavender dark:hover:bg-surface-2 dark:hover:text-lavender'
                   }`}
                 >
-                  <Icon className={`h-5 w-5 ${active ? 'text-on-plumdeep' : 'text-plumdeep'}`} />
+                  <Icon className={`h-5 w-5 ${active ? 'text-on-primary' : 'text-ink-soft dark:text-lavender'}`} />
                   <span>{link.name}</span>
                 </Link>
               );
             })}
           </nav>
 
-          <div className="mt-3 space-y-1 border-t border-plumLight/30 pt-3">
+          <div className="mt-3 space-y-1 border-t border-line pt-3 dark:border-line">
             {user ? (
               <>
-                <Link
-                  to="/profile"
-                  className="flex items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-4 py-3 text-sm font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
-                >
-                  <User className="h-5 w-5 text-plumdeep dark:text-lavender" />
-                  <span>{t('nav.profile')}</span>
-                </Link>
-                <Link
-                  to="/settings"
-                  className="flex items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-4 py-3 text-sm font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
-                >
-                  <Settings className="h-5 w-4 text-plumdeep dark:text-lavender" />
-                  <span>{t('nav.settings')}</span>
-                </Link>
-                <Link
-                  to="/"
-                  className="flex items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-4 py-3 text-sm font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
-                >
-                  <Home className="h-5 w-5 text-plumdeep dark:text-lavender" />
-                  <span>{t('nav.home', 'Home')}</span>
-                </Link>
+                {[
+                  { to: '/profile', icon: User, label: t('nav.profile') },
+                  { to: '/settings', icon: Settings, label: t('nav.settings') },
+                  { to: '/', icon: Home, label: t('nav.home', 'Home') },
+                ].map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-ink transition-colors hover:bg-highlight hover:text-ink dark:text-lavender dark:hover:bg-surface-2 dark:hover:text-lavender"
+                    >
+                      <Icon className="h-5 w-5 text-ink-soft dark:text-lavender" />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
                 <button
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-4 py-3 text-xs font-bold text-plumdeepMuted transition-colors hover:bg-plumLight/10"
+                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-negative transition-colors hover:bg-negative-soft dark:text-negative-ink dark:hover:bg-negative-soft"
                 >
                   <LogOut className="h-5 w-5" />
                   <span>{t('nav.logout')}</span>

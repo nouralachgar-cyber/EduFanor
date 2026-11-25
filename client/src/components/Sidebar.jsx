@@ -1,37 +1,14 @@
-import React, { useContext } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+﻿import React, { useContext } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  LayoutDashboard,
-  BookOpen,
-  Award,
-  HelpCircle,
-  Bot,
-  Settings,
-  LogOut,
-  ShieldCheck,
-  Sparkles,
-} from './icons';
+import { ShieldCheck, Sparkles } from './icons';
 import { AuthContext } from '../context/AuthContext';
-import { useCatalog } from '../context/CatalogContext';
-import { isCourseCompleted } from '../lib/progress';
+import { LayoutDashboard, BookOpen, Award, HelpCircle, Bot } from './icons';
 
 export default function Sidebar() {
   const { t, i18n } = useTranslation();
-  const { logout, user } = useContext(AuthContext);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const isAr = i18n.language === 'ar';
-
-  const { courses } = useCatalog();
-  const courseList = Array.isArray(courses) ? courses : [];
-  const completed = courseList.filter((course) => isCourseCompleted(course.id)).length;
-  const percent = courseList.length ? Math.round((completed / courseList.length) * 100) : 0;
-
-  const handleLogout = () => {
-    if (logout) logout();
-    navigate('/', { replace: true });
-  };
 
   const navLinks = [
     { name: t('nav.dashboard'), path: '/dashboard', icon: LayoutDashboard },
@@ -42,13 +19,13 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="hidden w-64 shrink-0 flex-col justify-between bg-plumdeep p-4 text-on-plumdeep md:flex">
+    <aside className="hidden w-64 shrink-0 flex-col justify-between border-e border-line bg-surface p-4 text-ink shadow-sm dark:border-line dark:bg-surface-2 md:flex">
       <div className="space-y-6">
-        <div className="px-3 pt-2">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-on-plumdeep/70">
+        <div className="rounded-2xl border border-line bg-gradient-to-br from-highlight to-surface-2 p-4 dark:border-line dark:from-primary dark:to-surface-2">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-ink-soft dark:text-lavender">
             {isAr ? 'مساحة التعلّم' : 'Learning space'}
           </p>
-          <p className="mt-1 font-display text-lg font-semibold leading-tight text-on-plumdeep">
+          <p className="mt-1 font-display text-lg font-semibold leading-tight text-ink dark:text-on-dark">
             {isAr ? 'رحلتك الإسعافية' : 'Your first-aid path'}
           </p>
         </div>
@@ -61,15 +38,20 @@ export default function Sidebar() {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) =>
-                  `group flex items-center gap-3 rounded-full px-3.5 py-2.5 text-xs font-bold transition-all ${
+                  `group relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-all duration-200 active:scale-[0.99] ${
                     isActive
-                      ? 'bg-on-plumdeep text-plumdeep'
-                      : 'text-plumLightMuted hover:bg-plumLight hover:text-plumdeep'}
-                `}
+                      ? 'bg-highlight text-ink-soft shadow-sm before:absolute before:inset-y-2 before:start-0 before:w-1 before:rounded-full before:bg-primary dark:bg-accent dark:text-on-primary dark:before:bg-lavender'
+                      : 'text-ink-soft hover:bg-surface-2 hover:text-ink dark:text-lavender dark:hover:bg-highlight dark:hover:text-on-primary'
+                  }`
+                }
               >
                 {({ isActive }) => (
                   <>
-                    <Icon className={`h-4 w-4 ${isActive ? 'text-plumdeep' : 'text-plumLightMuted'}`} />
+                    <Icon
+                      className={`h-4 w-4 ${
+                        isActive ? 'text-primary dark:text-lavender' : 'text-ink-soft dark:text-lavender'
+                      }`}
+                    />
                     <span>{link.name}</span>
                   </>
                 )}
@@ -77,58 +59,27 @@ export default function Sidebar() {
             );
           })}
         </nav>
-
-        {user?.role === 'admin' && (
-          <Link
-            to="/admin"
-            className={`mt-2 flex items-center gap-3 rounded-full border border-plumLight/30 px-3.5 py-2.5 text-xs font-bold transition-all ${
-              location.pathname === '/admin'
-                ? 'bg-on-plumdeep text-plumdeep'
-                : 'bg-plumLight/10 text-plumdeep hover:bg-plumLight'}
-            }`}
-          >
-            <ShieldCheck className="h-4 w-4" />
-            <span>{isAr ? 'لوحة الإدارة' : 'Admin panel'}</span>
-          </Link>
-        )}
-
-        <div className="rounded-full border border-plumLight/30 bg-softLavender p-4">
-          <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-plumLightMuted">
-            <span>{isAr ? 'الإنجاز الكلي' : 'Overall progress'}</span>
-            <Sparkles className="h-3.5 w-3.5 text-plumLight" />
-          </div>
-          <p className="mt-2 font-display text-2xl font-semibold text-on-plumdeep">{percent}%</p>
-          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-plumLight">
-            <div
-              className="h-full rounded-full transition-all duration-700"
-              style={{ width: `${percent}%` }}
-            />
-          </div>
-          <p className="mt-2 text-[10px] font-semibold text-plumLightMuted">
-            {isAr
-              ? `${completed} من ${courseList.length} مساقات مكتملة`
-              : `${completed} of ${courseList.length} courses completed`}
-          </p>
-        </div>
       </div>
 
-      <div className="space-y-1 border-t border-plumLight/30 pt-4">
-        <NavLink
-          to="/profile"
-          className="flex items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-3.5 py-2.5 text-xs font-bold text-plumdeep transition-colors hover:bg-plumLight/10"
+      {user?.role === 'admin' && (
+        <Link
+          to="/admin"
+          className="mt-2 flex items-center gap-3 rounded-xl border border-line bg-surface-2 px-3.5 py-2.5 text-xs font-bold text-ink transition-all duration-200 hover:border-line-strong hover:bg-highlight hover:text-ink active:scale-[0.99] dark:border-line dark:bg-surface-2 dark:text-lavender dark:hover:bg-primary dark:hover:text-on-primary"
         >
-          <Settings className="h-4 w-4 text-plumdeep" />
-          <span>{t('nav.settings')}</span>
-        </NavLink>
+          <ShieldCheck className="h-4 w-4 text-ink-soft dark:text-lavender" />
+          <span>{isAr ? 'لوحة الإدارة' : 'Admin panel'}</span>
+        </Link>
+      )}
 
-        <button
-          onClick={handleLogout}
-          type="button"
-          className="flex w-full items-center gap-3 rounded-full border border-plumLight/30 bg-softLavender px-3.5 py-2.5 text-xs font-bold text-plumdeepMuted transition-colors hover:bg-plumLight/10"
-        >
-          <LogOut className="h-4 w-4" />
-          <span>{t('nav.logout')}</span>
-        </button>
+      <div className="rounded-2xl border border-line bg-surface-2 p-4 shadow-sm dark:border-line dark:bg-surface-2">
+        <div className="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-ink-soft dark:text-muted">
+          <span>{isAr ? 'الإنجاز الكلي' : 'Overall progress'}</span>
+          <Sparkles className="h-3.5 w-3.5 text-lavender" />
+        </div>
+        <p className="mt-2 font-display text-2xl font-semibold text-ink dark:text-on-dark">0%</p>
+        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-highlight dark:bg-surface">
+          <div className="h-full w-0 rounded-full bg-primary transition-all duration-700 dark:bg-accent" />
+        </div>
       </div>
     </aside>
   );

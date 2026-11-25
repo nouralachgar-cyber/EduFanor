@@ -131,7 +131,7 @@ export default function AdminCourses() {
   }
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-6 text-[#415E72]">
+    <div className="space-y-6 bg-canvas min-h-screen p-6 text-ink">
       <PageHeader
         eyebrow={isAr ? '╪ح╪»╪د╪▒╪ر ┘à╪ص╪ز┘ê┘ë ╪د┘┘à┘╪╡╪ر' : 'Content Management'}
         title={isAr ? '╪ح╪»╪د╪▒╪ر ╪د┘╪»┘ê╪▒╪د╪ز ┘ê╪د┘╪»╪▒┘ê╪│' : 'Courses & Lessons Management'}
@@ -141,7 +141,7 @@ export default function AdminCourses() {
             <button
               type="button"
               onClick={loadCourses}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface-2 text-ink transition-colors hover:bg-highlight"
               aria-label={t('admin.common.refresh')}
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -149,9 +149,9 @@ export default function AdminCourses() {
             <button
               type="button"
               onClick={handleOpenCreate}
-              className="flex items-center gap-2 rounded-xl bg-[#415E72] px-4 py-2.5 text-xs font-extrabold text-[#F6F5F2] shadow-md transition-all hover:bg-[#415E72]/90"
+              className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-on-primary shadow-md transition-all hover:bg-primary-hover"
             >
-              <Plus className="h-4 w-4 text-[#C5B0CD]" />
+              <Plus className="h-4 w-4 text-lavender" />
               {isAr ? '╪»┘ê╪▒╪ر ╪ش╪»┘è╪»╪ر' : 'New Course'}
             </button>
           </div>
@@ -160,15 +160,15 @@ export default function AdminCourses() {
 
       {/* Edit / Create Modal Form */}
       {isEditing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm overflow-y-auto">
-          <div className="w-full max-w-3xl rounded-3xl bg-[#F6F5F2] border-2 border-[#C5B0CD] p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-[#C5B0CD]/40 pb-4 mb-6">
-              <h2 className="text-lg font-extrabold text-[#415E72]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-scrim/50 p-4 backdrop-blur-sm overflow-y-auto">
+          <div className="w-full max-w-3xl rounded-3xl bg-surface-2 border-2 border-line p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-line pb-4 mb-6">
+              <h2 className="text-lg font-extrabold text-ink">
                 {currentCourse ? (isAr ? '╪ز╪╣╪»┘è┘ ╪د┘╪»┘ê╪▒╪ر' : 'Edit Course') : (isAr ? '╪ح╪╢╪د┘╪ر ╪»┘ê╪▒╪ر ╪ش╪»┘è╪»╪ر' : 'Add New Course')}
               </h2>
               <button 
                 onClick={() => setIsEditing(false)}
-                className="rounded-lg p-2 text-[#415E72] hover:bg-[#F6F5F2]"
+                className="rounded-lg p-2 text-ink hover:bg-surface-2"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -177,7 +177,7 @@ export default function AdminCourses() {
             <form onSubmit={handleSave} className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#415E72] mb-1">
+                  <label className="block text-xs font-bold text-ink mb-1">
                     {isAr ? '╪د┘╪╣┘┘ê╪د┘ ╪ذ╪د┘╪╣╪▒╪ذ┘è╪ر' : 'Title (Arabic)'}
                   </label>
                   <input
@@ -185,12 +185,12 @@ export default function AdminCourses() {
                     required
                     value={titleAr}
                     onChange={(e) => setTitleAr(e.target.value)}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-sm text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72]"
+                    className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="┘à╪س╪د┘: ╪ث╪│╪د╪│┘è╪د╪ز ╪د┘╪ح╪│╪╣╪د┘╪د╪ز ╪د┘╪ث┘ê┘┘è╪ر"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#415E72] mb-1">
+                  <label className="block text-xs font-bold text-ink mb-1">
                     {isAr ? '╪د┘╪╣┘┘ê╪د┘ ╪ذ╪د┘╪ح┘╪ش┘┘è╪▓┘è╪ر' : 'Title (English)'}
                   </label>
                   <input
@@ -198,7 +198,7 @@ export default function AdminCourses() {
                     required
                     value={titleEn}
                     onChange={(e) => setTitleEn(e.target.value)}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-sm text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72]"
+                    className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="e.g. First Aid Basics"
                   />
                 </div>
@@ -206,26 +206,26 @@ export default function AdminCourses() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#415E72] mb-1">
+                  <label className="block text-xs font-bold text-ink mb-1">
                     {isAr ? '╪د┘┘ê╪╡┘ ╪ذ╪د┘╪╣╪▒╪ذ┘è╪ر' : 'Description (Arabic)'}
                   </label>
                   <textarea
                     rows={3}
                     value={descAr}
                     onChange={(e) => setDescAr(e.target.value)}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-sm text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72]"
+                    className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="╪ز┘╪د╪╡┘è┘ ╪د┘╪»┘ê╪▒╪ر ╪ذ╪د┘╪╣╪▒╪ذ┘è╪ر..."
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#415E72] mb-1">
+                  <label className="block text-xs font-bold text-ink mb-1">
                     {isAr ? '╪د┘┘ê╪╡┘ ╪ذ╪د┘╪ح┘╪ش┘┘è╪▓┘è╪ر' : 'Description (English)'}
                   </label>
                   <textarea
                     rows={3}
                     value={descEn}
                     onChange={(e) => setDescEn(e.target.value)}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-sm text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72]"
+                    className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="Course details in English..."
                   />
                 </div>
@@ -233,13 +233,13 @@ export default function AdminCourses() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#415E72] mb-1">
+                  <label className="block text-xs font-bold text-ink mb-1">
                     {isAr ? '╪د┘┘à╪│╪ز┘ê┘ë' : 'Level'}
                   </label>
                   <select
                     value={level}
                     onChange={(e) => setLevel(e.target.value)}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-sm text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72]"
+                    className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary"
                   >
                     <option value="Beginner">{isAr ? '┘à╪ذ╪ز╪»╪خ' : 'Beginner'}</option>
                     <option value="Intermediate">{isAr ? '┘à╪ز┘ê╪│╪╖' : 'Intermediate'}</option>
@@ -247,14 +247,14 @@ export default function AdminCourses() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#415E72] mb-1">
+                  <label className="block text-xs font-bold text-ink mb-1">
                     {isAr ? '╪د┘┘à╪»╪ر ╪د┘╪▓┘à┘┘è╪ر' : 'Duration'}
                   </label>
                   <input
                     type="text"
                     value={duration}
                     onChange={(e) => setDuration(e.target.value)}
-                    className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-sm text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72]"
+                    className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="e.g. 2 hours"
                   />
                 </div>
@@ -262,51 +262,51 @@ export default function AdminCourses() {
 
               {/* YouTube Video URL */}
               <div>
-                <label className="block text-xs font-bold text-[#415E72] mb-1 flex items-center gap-1.5">
-                  <Video className="h-4 w-4 text-[#C5B0CD]" />
+                <label className="block text-xs font-bold text-ink mb-1 flex items-center gap-1.5">
+                  <Video className="h-4 w-4 text-lavender" />
                   {isAr ? '╪▒╪د╪ذ╪╖ ┘┘è╪»┘è┘ê ┘è┘ê╪ز┘è┘ê╪ذ (YouTube URL)' : 'YouTube Video URL'}
                 </label>
                 <input
                   type="url"
                   value={youtubeUrl}
                   onChange={(e) => setYoutubeUrl(e.target.value)}
-                  className="w-full rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-sm text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72]"
+                  className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="https://www.youtube.com/watch?v=..."
                 />
               </div>
 
               {/* Image Upload from PC */}
               <div>
-                <label className="block text-xs font-bold text-[#415E72] mb-1 flex items-center gap-1.5">
-                  <ImageIcon className="h-4 w-4 text-[#C5B0CD]" />
+                <label className="block text-xs font-bold text-ink mb-1 flex items-center gap-1.5">
+                  <ImageIcon className="h-4 w-4 text-lavender" />
                   {isAr ? '╪╡┘ê╪▒╪ر ╪د┘╪»┘ê╪▒╪ر (╪د╪«╪ز╪▒ ┘à┘ ┘à┘┘╪د╪ز ╪ص╪د╪│┘ê╪ذ┘â)' : 'Course Image (Upload from PC)'}
                 </label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full rounded-xl border border-[#C5B0CD] bg-white p-2 text-xs text-[#415E72] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#F6F5F2] file:text-[#415E72] hover:file:bg-[#C5B0CD]/40"
+                  className="w-full rounded-xl border border-line bg-surface p-2 text-xs text-ink file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-surface-2 file:text-ink hover:file:bg-highlight"
                 />
                 {imagePreview && (
-                  <div className="mt-3 relative w-32 h-20 rounded-xl overflow-hidden border border-[#C5B0CD]">
+                  <div className="mt-3 relative w-32 h-20 rounded-xl overflow-hidden border border-line">
                     <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                   </div>
                 )}
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-[#C5B0CD]/40">
+              <div className="flex justify-end gap-3 pt-4 border-t border-line">
                 <button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="rounded-xl bg-[#F6F5F2] px-5 py-2.5 text-xs font-bold text-[#415E72] hover:bg-[#C5B0CD]/30"
+                  className="rounded-xl bg-surface-2 px-5 py-2.5 text-xs font-bold text-ink hover:bg-highlight"
                 >
                   {isAr ? '╪ح┘╪║╪د╪ة' : 'Cancel'}
                 </button>
                 <button
                   type="submit"
-                  className="flex items-center gap-2 rounded-xl bg-[#415E72] px-6 py-2.5 text-xs font-extrabold text-[#F6F5F2] hover:bg-[#415E72]/90 shadow-md"
+                  className="flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-xs font-extrabold text-on-primary hover:bg-primary-hover shadow-md"
                 >
-                  <Save className="h-4 w-4 text-[#C5B0CD]" />
+                  <Save className="h-4 w-4 text-lavender" />
                   {isAr ? '╪ص┘╪╕ ╪د┘╪»┘ê╪▒╪ر' : 'Save Course'}
                 </button>
               </div>
@@ -316,13 +316,13 @@ export default function AdminCourses() {
       )}
 
       {/* Courses List Panel */}
-      <Panel className="bg-white border border-[#C5B0CD]/50 shadow-sm rounded-2xl p-6">
-        <div className="flex items-center justify-between border-b border-[#C5B0CD]/30 pb-4 mb-4">
-          <h2 className="text-sm font-extrabold text-[#415E72] flex items-center gap-2">
-            <BookOpen className="h-4 w-4 text-[#C5B0CD]" />
+      <Panel className="bg-surface border border-line shadow-sm rounded-2xl p-6">
+        <div className="flex items-center justify-between border-b border-line pb-4 mb-4">
+          <h2 className="text-sm font-extrabold text-ink flex items-center gap-2">
+            <BookOpen className="h-4 w-4 text-lavender" />
             {isAr ? '┘é╪د╪خ┘à╪ر ╪د┘╪»┘ê╪▒╪د╪ز ╪د┘╪ص╪د┘┘è╪ر' : 'Current Courses List'}
           </h2>
-          <Badge tone="outline" className="bg-[#F6F5F2] text-[#415E72] border-[#C5B0CD]">
+          <Badge tone="outline" className="bg-surface-2 text-ink border-line">
             {formatNumber(courses.length, i18n.language)}
           </Badge>
         </div>
@@ -332,42 +332,42 @@ export default function AdminCourses() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
-              <div key={course._id || course.id} className="rounded-2xl border border-[#C5B0CD]/40 bg-[#F6F5F2] p-5 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+              <div key={course._id || course.id} className="rounded-2xl border border-line bg-surface-2 p-5 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
                 <div>
                   {course.image && (
-                    <div className="w-full h-36 rounded-xl overflow-hidden mb-4 border border-[#C5B0CD]">
+                    <div className="w-full h-36 rounded-xl overflow-hidden mb-4 border border-line">
                       <img src={course.image} alt="Course" className="w-full h-full object-cover" />
                     </div>
                   )}
                   <div className="flex items-center justify-between mb-2">
-                    <span className="rounded-full bg-[#F6F5F2] border border-[#C5B0CD] px-3 py-1 text-[10px] font-bold text-[#415E72]">
+                    <span className="rounded-full bg-surface-2 border border-line px-3 py-1 text-[10px] font-bold text-ink">
                       {course.level}
                     </span>
-                    <span className="text-[10px] text-[#415E72]/70 font-semibold">{course.duration}</span>
+                    <span className="text-[10px] text-ink-soft font-semibold">{course.duration}</span>
                   </div>
-                  <h3 className="font-display text-base font-bold text-[#415E72] mb-1">
+                  <h3 className="font-display text-base font-bold text-ink mb-1">
                     {localize(course.title, i18n.language)}
                   </h3>
-                  <p className="text-xs text-[#415E72]/70 line-clamp-2">
+                  <p className="text-xs text-ink-soft line-clamp-2">
                     {localize(course.description, i18n.language)}
                   </p>
                 </div>
 
-                <div className="mt-6 flex items-center justify-between pt-4 border-t border-[#C5B0CD]/30">
-                  <span className="text-[10px] font-bold text-[#C5B0CD]">
+                <div className="mt-6 flex items-center justify-between pt-4 border-t border-line">
+                  <span className="text-[10px] font-bold text-lavender">
                     {course.youtubeUrl ? (isAr ? '┘┘è╪»┘è┘ê ┘à╪ز┘ê┘╪▒ ≡اح' : 'Video attached ≡اح') : (isAr ? '╪ذ╪»┘ê┘ ┘┘è╪»┘è┘ê' : 'No video')}
                   </span>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleOpenEdit(course)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F6F5F2] text-[#415E72] hover:bg-[#C5B0CD]/40"
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-2 text-ink hover:bg-highlight"
                       title={isAr ? '╪ز╪╣╪»┘è┘' : 'Edit'}
                     >
                       <Edit3 className="h-3.5 w-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(course._id || course.id)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-red-50 text-red-600 hover:bg-red-100"
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-negative-soft text-negative-ink hover:bg-highlight"
                       title={isAr ? '╪ص╪░┘' : 'Delete'}
                     >
                       <Trash2 className="h-3.5 w-3.5" />

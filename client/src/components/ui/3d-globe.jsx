@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import ThreeGlobe from "three-globe";
+import { useTheme } from "../../context/ThemeContext";
 
 export function Globe3D({ 
   className = "", 
@@ -10,6 +11,7 @@ export function Globe3D({
   onMarkerHover 
 }) {
   const containerRef = useRef(null);
+  const { isDark } = useTheme();
 
   useEffect(() => {
     const container = containerRef.current;
@@ -32,10 +34,10 @@ export function Globe3D({
     container.appendChild(renderer.domElement);
 
     // 2. إضاءة المشهد
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+    const ambientLight = new THREE.AmbientLight(isDark ? "#BFA2DB" : "#F3F1F5", 1.2);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    const dirLight = new THREE.DirectionalLight(isDark ? "#F0D9FF" : "#FFFFFF", 1.8);
     dirLight.position.set(100, 100, 200);
     scene.add(dirLight);
 
@@ -55,12 +57,12 @@ export function Globe3D({
           marker.alt = d.label || "";
         }
         marker.className = d.src
-          ? "w-6 h-6 rounded-full border-2 border-white shadow-lg transition-transform group-hover:scale-125"
-          : "block h-2.5 w-2.5 rounded-full border-2 border-white bg-[#415E72] shadow-lg transition-transform group-hover:scale-125";
+          ? "w-6 h-6 rounded-full border-2 border-line-strong shadow-lg transition-transform group-hover:scale-125"
+          : "block h-2.5 w-2.5 rounded-full border-2 border-line-strong bg-primary shadow-lg transition-transform group-hover:scale-125";
 
         const label = document.createElement("span");
         label.innerText = d.label || "";
-        label.className = "absolute bottom-full mb-1 hidden group-hover:block text-[10px] bg-black/80 text-white font-bold px-2 py-0.5 rounded shadow whitespace-nowrap";
+        label.className = "absolute bottom-full mb-1 hidden group-hover:block text-[10px] bg-scrim/90 text-on-dark font-bold px-2 py-0.5 rounded shadow whitespace-nowrap";
 
         el.appendChild(marker);
         el.appendChild(label);
@@ -78,7 +80,7 @@ export function Globe3D({
 
     // إعدادات الغلاف الجوي
     globe.showAtmosphere(true);
-    globe.atmosphereColor(config.atmosphereColor || "#C5B0CD");
+    globe.atmosphereColor(config.atmosphereColor || (isDark ? "#635985" : "#BFA2DB"));
     globe.atmosphereAltitude(0.15);
 
     scene.add(globe);
@@ -108,7 +110,7 @@ export function Globe3D({
       renderer.dispose();
       container.innerHTML = "";
     };
-  }, [markers, config]);
+  }, [markers, config, isDark]);
 
   return (
     <div 

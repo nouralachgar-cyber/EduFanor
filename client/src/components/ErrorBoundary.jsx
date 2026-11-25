@@ -28,21 +28,21 @@ function ErrorFallback({ error, onReset }) {
   const { t } = useTranslation();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-surface-muted p-4">
+    <div className="flex min-h-screen items-center justify-center bg-surface-2 p-4">
       <div className="card max-w-md w-full p-8 text-center space-y-6">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-danger-soft">
-          <AlertTriangle className="h-8 w-8 text-danger" />
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-negative-soft">
+          <AlertTriangle className="h-8 w-8 text-negative-ink" />
         </div>
         <div className="space-y-2">
           <h2 className="text-xl font-extrabold text-ink">
             {t('error.title', 'Something went wrong')}
           </h2>
-          <p className="text-sm text-ink-muted">
+          <p className="text-sm text-ink-soft">
             {t('error.desc', 'An unexpected error occurred. Please try again.')}
           </p>
         </div>
         {error && (
-          <p className="break-all rounded-lg bg-danger-soft p-3 font-mono text-xs text-danger">
+          <p className="break-all rounded-lg bg-negative-soft p-3 font-mono text-xs text-negative-ink">
             {error.message || String(error)}
           </p>
         )}

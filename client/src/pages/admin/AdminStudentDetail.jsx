@@ -66,7 +66,7 @@ export default function AdminStudentDetail() {
 
   if (loading && !data) {
     return (
-      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
+      <div className="space-y-6 bg-canvas min-h-screen p-4 text-ink sm:p-6">
         <LoadingState label={t('admin.common.loading')} />
       </div>
     );
@@ -74,7 +74,7 @@ export default function AdminStudentDetail() {
 
   if (error && !data) {
     return (
-      <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
+      <div className="space-y-6 bg-canvas min-h-screen p-4 text-ink sm:p-6">
         <ErrorState title={t('admin.errors.loadStudent')} message={error} onRetry={load} retryLabel={t('admin.common.retry')} />
       </div>
     );
@@ -111,48 +111,48 @@ export default function AdminStudentDetail() {
   };
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
+    <div className="space-y-6 bg-canvas min-h-screen p-4 text-ink sm:p-6">
       <div>
         <button
           type="button"
           onClick={() => navigate('/admin/students')}
-          className="mb-4 inline-flex min-h-11 items-center gap-1.5 text-xs font-extrabold text-[#415E72]/70 transition-colors hover:text-[#415E72]"
+          className="mb-4 inline-flex min-h-11 items-center gap-1.5 text-xs font-extrabold text-ink-soft transition-colors hover:text-ink"
         >
-          <ArrowLeft className="h-4 w-4 rtl:rotate-180 text-[#C5B0CD]" /> {t('admin.students.title')}
+          <ArrowLeft className="h-4 w-4 rtl:rotate-180 text-lavender" /> {t('admin.students.title')}
         </button>
 
-        <div className="rounded-3xl border border-[#C5B0CD]/40 bg-white p-4 shadow-sm flex flex-col gap-4 sm:p-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="rounded-3xl border border-line bg-surface p-4 shadow-sm flex flex-col gap-4 sm:p-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex min-w-0 items-start gap-4">
-            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#415E72] text-lg font-extrabold text-[#F6F5F2] shadow-sm">
+            <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-extrabold text-on-primary shadow-sm">
               {initials(student.name)}
             </span>
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <h1 className="font-display text-xl font-bold tracking-tight text-[#415E72] sm:text-2xl">{student.name}</h1>
-                <Badge tone={suspended ? 'red' : 'green'} className={suspended ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}>
+                <h1 className="font-display text-xl font-bold tracking-tight text-ink sm:text-2xl">{student.name}</h1>
+                <Badge tone={suspended ? 'red' : 'green'} className={suspended ? 'bg-negative-soft text-negative-ink border border-line' : 'bg-positive-soft text-positive-ink border border-line'}>
                   {suspended ? t('admin.common.suspended') : t('admin.common.active')}
                 </Badge>
               </div>
-              <p className="mt-1 flex items-center gap-1.5 truncate text-xs text-[#415E72]/70" dir="ltr">
-                <Mail className="h-3.5 w-3.5 shrink-0 text-[#C5B0CD]" /> {student.email}
+              <p className="mt-1 flex items-center gap-1.5 truncate text-xs text-ink-soft" dir="ltr">
+                <Mail className="h-3.5 w-3.5 shrink-0 text-lavender" /> {student.email}
               </p>
-              <p className="mt-1 text-[10px] font-semibold text-[#415E72]/60">
+              <p className="mt-1 text-[10px] font-semibold text-muted">
                 {t('admin.students.memberSince')} {formatDate(student.createdAt, i18n.language)}
               </p>
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <Link to="/admin/students" className="inline-flex min-h-11 items-center rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-4 py-2 text-xs font-bold text-[#415E72] shadow-sm transition-colors hover:bg-[#C5B0CD]/30">
+            <Link to="/admin/students" className="inline-flex min-h-11 items-center rounded-xl border border-line bg-surface-2 px-4 py-2 text-xs font-bold text-ink shadow-sm transition-colors hover:bg-highlight">
               {t('admin.common.back')}
             </Link>
             <button
               type="button"
               onClick={() => setConfirm(true)}
-              className={`inline-flex min-h-11 items-center gap-1.5 rounded-xl px-4 text-xs font-bold text-white shadow-sm transition-opacity hover:opacity-90 ${
-                suspended ? 'bg-[#415E72]' : 'bg-red-600'
+              className={`inline-flex min-h-11 items-center gap-1.5 rounded-xl px-4 text-xs font-bold shadow-sm transition-opacity hover:opacity-90 ${
+                suspended ? 'bg-primary text-on-primary' : 'bg-negative-soft text-negative-ink'
               }`}
             >
-              {suspended ? <ShieldCheck className="h-4 w-4 text-[#C5B0CD]" /> : <Ban className="h-4 w-4" />}
+              {suspended ? <ShieldCheck className="h-4 w-4 text-lavender" /> : <Ban className="h-4 w-4" />}
               {suspended ? t('admin.students.activate') : t('admin.students.suspend')}
             </button>
           </div>
@@ -167,34 +167,34 @@ export default function AdminStudentDetail() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1.25fr_1fr]">
-        <Panel title={t('admin.students.learningProgress')} className="bg-white border border-[#C5B0CD]/40 rounded-2xl shadow-sm overflow-hidden" noPadding>
+        <Panel title={t('admin.students.learningProgress')} className="bg-surface border border-line rounded-2xl shadow-sm overflow-hidden" noPadding>
           <div className="grid gap-4 p-5 sm:grid-cols-2">
-            <div className="rounded-2xl border border-[#C5B0CD]/30 bg-[#F6F5F2] p-4">
-              <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#415E72]/60">{t('admin.students.coursesStarted')}</p>
-              <p className="mt-1 font-display text-xl font-bold text-[#415E72]">{formatNumber(courses.length, i18n.language)}</p>
+            <div className="rounded-2xl border border-line bg-surface-2 p-4">
+              <p className="text-[10px] font-extrabold uppercase tracking-wider text-muted">{t('admin.students.coursesStarted')}</p>
+              <p className="mt-1 font-display text-xl font-bold text-ink">{formatNumber(courses.length, i18n.language)}</p>
             </div>
-            <div className="rounded-2xl border border-[#C5B0CD]/30 bg-[#F6F5F2] p-4">
-              <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#415E72]/60">{t('admin.students.coursesCompleted')}</p>
-              <p className="mt-1 font-display text-xl font-bold text-[#415E72]">
+            <div className="rounded-2xl border border-line bg-surface-2 p-4">
+              <p className="text-[10px] font-extrabold uppercase tracking-wider text-muted">{t('admin.students.coursesCompleted')}</p>
+              <p className="mt-1 font-display text-xl font-bold text-ink">
                 {formatNumber(events.filter((event) => event.type === 'course_complete').length, i18n.language)}
               </p>
             </div>
           </div>
 
-          <div className="border-t border-[#C5B0CD]/30 p-5">
-            <p className="mb-3 text-xs font-extrabold text-[#415E72]">{t('admin.students.completedLessons')}</p>
+          <div className="border-t border-line p-5">
+            <p className="mb-3 text-xs font-extrabold text-ink">{t('admin.students.completedLessons')}</p>
             {completedLessons.length === 0 ? (
-              <p className="rounded-xl border border-dashed border-[#C5B0CD] px-4 py-6 text-center text-xs font-semibold text-[#415E72]/70 bg-[#F6F5F2]">
+              <p className="rounded-xl border border-dashed border-line px-4 py-6 text-center text-xs font-semibold text-ink-soft bg-surface-2">
                 {t('admin.common.noResults')}
               </p>
             ) : (
               <div className="admin-scroll max-h-64 space-y-2 overflow-y-auto">
                 {completedLessons.map((lesson) => (
-                  <div key={lesson._id} className="flex items-center gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] px-3.5 py-2.5">
-                    <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-700" />
+                  <div key={lesson._id} className="flex items-center gap-3 rounded-xl border border-line bg-surface-2 px-3.5 py-2.5">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-positive-ink" />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-bold text-[#415E72]">{localize(lesson.title, i18n.language)}</p>
-                      <p className="truncate text-[10px] text-[#415E72]/70">{localize(lesson.course?.title, i18n.language)}</p>
+                      <p className="truncate text-xs font-bold text-ink">{localize(lesson.title, i18n.language)}</p>
+                      <p className="truncate text-[10px] text-ink-soft">{localize(lesson.course?.title, i18n.language)}</p>
                     </div>
                   </div>
                 ))}
@@ -203,37 +203,37 @@ export default function AdminStudentDetail() {
           </div>
         </Panel>
 
-        <Panel title={t('admin.students.account')} className="bg-white border border-[#C5B0CD]/40 rounded-2xl p-6 shadow-sm">
+        <Panel title={t('admin.students.account')} className="bg-surface border border-line rounded-2xl p-6 shadow-sm">
           <div className="space-y-3">
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] px-4 py-3">
-              <span className="text-xs font-semibold text-[#415E72]/70">{t('admin.common.status')}</span>
-              <Badge tone={suspended ? 'red' : 'green'} className={suspended ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface-2 px-4 py-3">
+              <span className="text-xs font-semibold text-ink-soft">{t('admin.common.status')}</span>
+              <Badge tone={suspended ? 'red' : 'green'} className={suspended ? 'bg-negative-soft text-negative-ink border border-line' : 'bg-positive-soft text-positive-ink border border-line'}>
                 {suspended ? t('admin.common.suspended') : t('admin.common.active')}
               </Badge>
             </div>
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] px-4 py-3">
-              <span className="text-xs font-semibold text-[#415E72]/70">{t('admin.students.joined')}</span>
-              <span className="text-xs font-bold text-[#415E72]">{formatDate(student.createdAt, i18n.language)}</span>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface-2 px-4 py-3">
+              <span className="text-xs font-semibold text-ink-soft">{t('admin.students.joined')}</span>
+              <span className="text-xs font-bold text-ink">{formatDate(student.createdAt, i18n.language)}</span>
             </div>
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] px-4 py-3">
-              <span className="text-xs font-semibold text-[#415E72]/70">{t('admin.students.lastActive')}</span>
-              <span className="text-xs font-bold text-[#415E72]">{progress?.lastActive ? formatDateTime(progress.lastActive, i18n.language) : student.lastLoginAt ? formatDateTime(student.lastLoginAt, i18n.language) : t('admin.common.notAvailable')}</span>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface-2 px-4 py-3">
+              <span className="text-xs font-semibold text-ink-soft">{t('admin.students.lastActive')}</span>
+              <span className="text-xs font-bold text-ink">{progress?.lastActive ? formatDateTime(progress.lastActive, i18n.language) : student.lastLoginAt ? formatDateTime(student.lastLoginAt, i18n.language) : t('admin.common.notAvailable')}</span>
             </div>
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] px-4 py-3">
-              <span className="text-xs font-semibold text-[#415E72]/70">{t('admin.students.bestScore')}</span>
-              <span className="text-xs font-extrabold text-[#415E72]">{formatPercent(best, i18n.language)}</span>
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface-2 px-4 py-3">
+              <span className="text-xs font-semibold text-ink-soft">{t('admin.students.bestScore')}</span>
+              <span className="text-xs font-extrabold text-ink">{formatPercent(best, i18n.language)}</span>
             </div>
-            <div className="rounded-2xl border border-[#C5B0CD]/30 bg-[#F6F5F2] p-4">
-              <p className="mb-3 text-[10px] font-extrabold uppercase tracking-wider text-[#415E72]/60">{t('admin.students.courses')}</p>
+            <div className="rounded-2xl border border-line bg-surface-2 p-4">
+              <p className="mb-3 text-[10px] font-extrabold uppercase tracking-wider text-muted">{t('admin.students.courses')}</p>
               {courses.length === 0 ? (
-                <p className="text-xs font-semibold text-[#415E72]/70">{t('admin.students.noCourses')}</p>
+                <p className="text-xs font-semibold text-ink-soft">{t('admin.students.noCourses')}</p>
               ) : (
                 <div className="space-y-2">
                   {courses.map((course) => (
-                    <Link key={course.slug} to={`/admin/courses/${course._id}`} className="flex items-center gap-3 rounded-xl border border-[#C5B0CD]/30 bg-white px-3.5 py-2.5 transition-colors hover:border-[#415E72]">
-                      <BookOpen className="h-4 w-4 shrink-0 text-[#C5B0CD]" />
-                      <span className="min-w-0 flex-1 truncate text-xs font-bold text-[#415E72]">{localize(course.title, i18n.language)}</span>
-                      <span className="text-[10px] font-semibold text-[#415E72]/60">{course.estimatedMinutes} {t('admin.common.minutes')}</span>
+                    <Link key={course.slug} to={`/admin/courses/${course._id}`} className="flex items-center gap-3 rounded-xl border border-line bg-surface px-3.5 py-2.5 transition-colors hover:border-primary">
+                      <BookOpen className="h-4 w-4 shrink-0 text-lavender" />
+                      <span className="min-w-0 flex-1 truncate text-xs font-bold text-ink">{localize(course.title, i18n.language)}</span>
+                      <span className="text-[10px] font-semibold text-muted">{course.estimatedMinutes} {t('admin.common.minutes')}</span>
                     </Link>
                   ))}
                 </div>
@@ -244,34 +244,34 @@ export default function AdminStudentDetail() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[1.15fr_1fr]">
-        <Panel title={t('admin.students.quizAttempts')} noPadding className="bg-white border border-[#C5B0CD]/40 rounded-2xl shadow-sm overflow-hidden">
+        <Panel title={t('admin.students.quizAttempts')} noPadding className="bg-surface border border-line rounded-2xl shadow-sm overflow-hidden">
           {attempts.length === 0 ? (
             <EmptyState title={t('admin.common.noResults')} icon={Target} />
           ) : (
             <div className="admin-scroll overflow-x-auto">
               <table className="admin-table w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#C5B0CD]/30 bg-[#F6F5F2]/50 text-xs text-[#415E72]">
+                  <tr className="border-b border-line bg-surface-2 text-xs text-ink">
                     <th className="p-3.5">{t('admin.activity.lesson')}</th>
                     <th className="p-3.5">{t('admin.common.score')}</th>
                     <th className="p-3.5">{t('admin.common.status')}</th>
                     <th className="p-3.5">{t('admin.activity.time')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#C5B0CD]/20 text-xs">
+                <tbody className="divide-y divide-line text-xs">
                   {attempts.slice().reverse().map((attempt, index) => (
-                    <tr key={attempt._id || index} className="hover:bg-[#F6F5F2]/60 transition-colors">
+                    <tr key={attempt._id || index} className="hover:bg-surface-2 transition-colors">
                       <td className="p-3.5">
-                        <p className="text-xs font-bold text-[#415E72]">{localize(attempt.lesson?.title, i18n.language) || t('admin.common.notAvailable')}</p>
-                        <p className="text-[10px] text-[#415E72]/70">{localize(attempt.lesson?.course?.title, i18n.language)}</p>
+                        <p className="text-xs font-bold text-ink">{localize(attempt.lesson?.title, i18n.language) || t('admin.common.notAvailable')}</p>
+                        <p className="text-[10px] text-ink-soft">{localize(attempt.lesson?.course?.title, i18n.language)}</p>
                       </td>
-                      <td className="p-3.5 font-extrabold text-[#415E72]">{formatPercent(attempt.score, i18n.language)}</td>
+                      <td className="p-3.5 font-extrabold text-ink">{formatPercent(attempt.score, i18n.language)}</td>
                       <td className="p-3.5">
-                        <Badge tone={attempt.passed ? 'green' : 'amber'} className={attempt.passed ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'}>
+                        <Badge tone={attempt.passed ? 'green' : 'amber'} className={attempt.passed ? 'bg-positive-soft text-positive-ink border border-line' : 'bg-caution-soft text-caution-ink border border-line'}>
                           {attempt.passed ? t('admin.common.yes') : t('admin.common.no')}
                         </Badge>
                       </td>
-                      <td className="p-3.5 text-xs text-[#415E72]/70">{formatDateTime(attempt.attemptedAt, i18n.language)}</td>
+                      <td className="p-3.5 text-xs text-ink-soft">{formatDateTime(attempt.attemptedAt, i18n.language)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -280,29 +280,29 @@ export default function AdminStudentDetail() {
           )}
         </Panel>
 
-        <Panel title={t('admin.students.recentEvents')} noPadding className="bg-white border border-[#C5B0CD]/40 rounded-2xl shadow-sm overflow-hidden">
+        <Panel title={t('admin.students.recentEvents')} noPadding className="bg-surface border border-line rounded-2xl shadow-sm overflow-hidden">
           {events.length === 0 ? (
             <EmptyState title={t('admin.students.noEvents')} icon={Activity} />
           ) : (
-            <div className="admin-scroll max-h-[26rem] divide-y divide-[#C5B0CD]/20 overflow-y-auto">
+            <div className="admin-scroll max-h-[26rem] divide-y divide-line overflow-y-auto">
               {events.map((event) => {
                 const Icon = eventIcons[event.type] || Activity;
                 return (
-                  <div key={event._id} className="flex items-start gap-3.5 px-4 py-3.5 hover:bg-[#F6F5F2]/60 transition-colors">
-                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]/50">
-                      <Icon className="h-4 w-4 text-[#C5B0CD]" />
+                  <div key={event._id} className="flex items-start gap-3.5 px-4 py-3.5 hover:bg-surface-2 transition-colors">
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-2 text-ink border border-line">
+                      <Icon className="h-4 w-4 text-lavender" />
                     </span>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-extrabold text-[#415E72]">{t(eventLabels[event.type] || 'admin.activity.event')}</p>
-                      <p className="truncate text-[10px] text-[#415E72]/70">
+                      <p className="text-xs font-extrabold text-ink">{t(eventLabels[event.type] || 'admin.activity.event')}</p>
+                      <p className="truncate text-[10px] text-ink-soft">
                         {event.lesson ? localize(event.lesson.title, i18n.language) : eventCourse(event) || t('admin.common.notAvailable')}
                       </p>
                     </div>
                     <div className="shrink-0 text-end">
                       {event.percent !== undefined && event.percent !== null && (
-                        <p className="text-xs font-extrabold text-[#415E72]">{formatPercent(event.percent, i18n.language)}</p>
+                        <p className="text-xs font-extrabold text-ink">{formatPercent(event.percent, i18n.language)}</p>
                       )}
-                      <p className="text-[10px] text-[#415E72]/60">{relativeTime(event.occurredAt, i18n.language)}</p>
+                      <p className="text-[10px] text-muted">{relativeTime(event.occurredAt, i18n.language)}</p>
                     </div>
                   </div>
                 );

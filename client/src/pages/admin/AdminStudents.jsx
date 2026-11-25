@@ -116,7 +116,7 @@ export default function AdminStudents() {
   );
 
   return (
-    <div className="space-y-6 bg-[#F6F5F2] min-h-screen p-4 text-[#415E72] sm:p-6">
+    <div className="space-y-6 bg-canvas min-h-screen p-4 text-ink sm:p-6">
       <PageHeader
         eyebrow={t('admin.shell.workspace')}
         title={t('admin.students.title')}
@@ -125,7 +125,7 @@ export default function AdminStudents() {
           <button
             type="button"
             onClick={load}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-10 xl:w-10"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface-2 text-ink transition-colors hover:bg-highlight shadow-sm xl:h-10 xl:w-10"
             aria-label={t('admin.common.refresh')}
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -134,37 +134,37 @@ export default function AdminStudents() {
       />
 
       <div className="flex flex-wrap items-center gap-2">
-        <Badge tone="green" className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]">
-          <Users className="h-3.5 w-3.5 text-[#C5B0CD]" /> {formatNumber(pagination.total, i18n.language)} {t('admin.common.students')}
+        <Badge tone="green" className="bg-surface-2 text-ink border border-line">
+          <Users className="h-3.5 w-3.5 text-lavender" /> {formatNumber(pagination.total, i18n.language)} {t('admin.common.students')}
         </Badge>
-        <Badge tone="sage" className="bg-emerald-50 text-emerald-800 border border-emerald-200">{t('admin.common.active')}: {formatNumber(summary.active, i18n.language)}</Badge>
-        <Badge tone="red" className="bg-red-50 text-red-700 border border-red-200">{t('admin.common.suspended')}: {formatNumber(summary.suspended, i18n.language)}</Badge>
+        <Badge tone="sage" className="bg-positive-soft text-positive-ink border border-line">{t('admin.common.active')}: {formatNumber(summary.active, i18n.language)}</Badge>
+        <Badge tone="red" className="bg-negative-soft text-negative-ink border border-line">{t('admin.common.suspended')}: {formatNumber(summary.suspended, i18n.language)}</Badge>
       </div>
 
-      <Panel noPadding className="bg-white border border-[#C5B0CD]/40 rounded-2xl shadow-sm overflow-hidden">
-        <div className="flex flex-col gap-3 border-b border-[#C5B0CD]/30 p-4 bg-[#F6F5F2]/50 lg:flex-row lg:items-center">
+      <Panel noPadding className="bg-surface border border-line rounded-2xl shadow-sm overflow-hidden">
+        <div className="flex flex-col gap-3 border-b border-line p-4 bg-surface-2 lg:flex-row lg:items-center">
           <div className="relative min-w-0 flex-1">
-            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#415E72]/60" />
+            <Search className="pointer-events-none absolute start-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={t('admin.students.searchPlaceholder')}
-              className="min-h-11 w-full rounded-xl border border-[#C5B0CD] bg-white py-2.5 ps-10 pe-4 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm"
+              className="min-h-11 w-full rounded-xl border border-line bg-surface py-2.5 ps-10 pe-4 text-xs text-ink focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
               aria-label={t('admin.common.search')}
             />
           </div>
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-            <select value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm" aria-label={t('admin.common.status')}>
+            <select value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-11 rounded-xl border border-line bg-surface px-4 py-2.5 text-xs text-ink focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" aria-label={t('admin.common.status')}>
               <option value="">{t('admin.students.allStatuses')}</option>
               <option value="active">{t('admin.common.active')}</option>
               <option value="suspended">{t('admin.common.suspended')}</option>
             </select>
-            <select value={activity} onChange={(event) => setActivity(event.target.value)} className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] shadow-sm" aria-label={t('admin.common.filter')}>
+            <select value={activity} onChange={(event) => setActivity(event.target.value)} className="min-h-11 rounded-xl border border-line bg-surface px-4 py-2.5 text-xs text-ink focus:outline-none focus:ring-2 focus:ring-primary shadow-sm" aria-label={t('admin.common.filter')}>
               <option value="">{t('admin.students.allActivity')}</option>
               <option value="active">{t('admin.students.onlyActive')}</option>
               <option value="inactive">{t('admin.students.onlyInactive')}</option>
             </select>
-            <select value={sort} onChange={(event) => setSort(event.target.value)} className="min-h-11 rounded-xl border border-[#C5B0CD] bg-white px-4 py-2.5 text-xs text-[#415E72] focus:outline-none focus:ring-2 focus:ring-[#415E72] col-span-2 sm:col-span-1 shadow-sm" aria-label={t('admin.common.filter')}>
+            <select value={sort} onChange={(event) => setSort(event.target.value)} className="min-h-11 rounded-xl border border-line bg-surface px-4 py-2.5 text-xs text-ink focus:outline-none focus:ring-2 focus:ring-primary col-span-2 sm:col-span-1 shadow-sm" aria-label={t('admin.common.filter')}>
               {sorts.map((option) => (
                 <option key={option} value={option}>
                   {t(`admin.students.sort${option.charAt(0).toUpperCase()}${option.slice(1)}`, { defaultValue: option })}
@@ -185,7 +185,7 @@ export default function AdminStudents() {
             <div className="admin-scroll hidden overflow-x-auto md:block">
               <table className="admin-table w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#C5B0CD]/30 bg-[#F6F5F2]/50 text-xs text-[#415E72]">
+                  <tr className="border-b border-line bg-surface-2 text-xs text-ink">
                     <th className="p-3.5">{t('admin.students.name')}</th>
                     <th className="p-3.5">{t('admin.common.status')}</th>
                     <th className="p-3.5">{t('admin.students.joined')}</th>
@@ -196,41 +196,41 @@ export default function AdminStudents() {
                     <th className="p-3.5">{t('admin.common.actions')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#C5B0CD]/20 text-xs">
+                <tbody className="divide-y divide-line text-xs">
                   {rows.map((student) => (
-                    <tr key={student._id} className="hover:bg-[#F6F5F2]/60 transition-colors">
+                    <tr key={student._id} className="hover:bg-surface-2 transition-colors">
                       <td className="p-3.5">
                         <Link to={`/admin/students/${student._id}`} className="group flex items-center gap-3">
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#F6F5F2] text-xs font-extrabold text-[#415E72] border border-[#C5B0CD]/50">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface-2 text-xs font-extrabold text-ink border border-line">
                             {initials(student.name)}
                           </span>
                           <span className="min-w-0">
-                            <span className="block truncate text-xs font-extrabold text-[#415E72] group-hover:text-[#C5B0CD]">{student.name}</span>
-                            <span className="block truncate text-[10px] text-[#415E72]/70" dir="ltr">{student.email}</span>
+                            <span className="block truncate text-xs font-extrabold text-ink group-hover:text-lavender">{student.name}</span>
+                            <span className="block truncate text-[10px] text-ink-soft" dir="ltr">{student.email}</span>
                           </span>
                         </Link>
                       </td>
                       <td className="p-3.5">
                         <div className="flex flex-col items-start gap-1">
-                          <Badge tone={student.status === 'suspended' ? 'red' : 'green'} className={student.status === 'suspended' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}>
+                          <Badge tone={student.status === 'suspended' ? 'red' : 'green'} className={student.status === 'suspended' ? 'bg-negative-soft text-negative-ink border border-line' : 'bg-positive-soft text-positive-ink border border-line'}>
                             {student.status === 'suspended' ? t('admin.common.suspended') : t('admin.common.active')}
                           </Badge>
                         </div>
                       </td>
-                      <td className="p-3.5 text-xs text-[#415E72]/70">{formatDate(student.createdAt, i18n.language)}</td>
-                      <td className="p-3.5 text-xs text-[#415E72]/70">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</td>
-                      <td className="p-3.5 font-bold text-[#415E72]">{formatNumber(student.completedLessonCount || 0, i18n.language)}</td>
-                      <td className="p-3.5 font-bold text-[#415E72]">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</td>
-                      <td className="p-3.5 font-bold text-[#415E72]">{formatPercent(student.bestQuiz, i18n.language)}</td>
+                      <td className="p-3.5 text-xs text-ink-soft">{formatDate(student.createdAt, i18n.language)}</td>
+                      <td className="p-3.5 text-xs text-ink-soft">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</td>
+                      <td className="p-3.5 font-bold text-ink">{formatNumber(student.completedLessonCount || 0, i18n.language)}</td>
+                      <td className="p-3.5 font-bold text-ink">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</td>
+                      <td className="p-3.5 font-bold text-ink">{formatPercent(student.bestQuiz, i18n.language)}</td>
                       <td className="p-3.5">
                         <div className="flex items-center gap-2">
                           <Link
                             to={`/admin/students/${student._id}`}
-                            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] transition-colors hover:bg-[#C5B0CD]/30 shadow-sm xl:h-8 xl:w-8"
+                            className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-surface-2 text-ink transition-colors hover:bg-highlight shadow-sm xl:h-8 xl:w-8"
                             aria-label={t('admin.common.view')}
                             title={t('admin.common.view')}
                           >
-                            <ArrowUpRight className="h-4 w-4 text-[#C5B0CD]" />
+                            <ArrowUpRight className="h-4 w-4 text-lavender" />
                           </Link>
                           <button
                             type="button"
@@ -242,8 +242,8 @@ export default function AdminStudents() {
                             }
                             className={`flex h-11 w-11 items-center justify-center rounded-xl border transition-colors shadow-sm xl:h-8 xl:w-8 ${
                               student.status === 'suspended'
-                                ? 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
-                                : 'border-red-200 bg-red-50 text-red-600 hover:bg-red-100'
+                                ? 'border-line bg-positive-soft text-positive-ink hover:bg-highlight'
+                                : 'border-line bg-negative-soft text-negative-ink hover:bg-highlight'
                             }`}
                             aria-label={student.status === 'suspended' ? t('admin.students.activate') : t('admin.students.suspend')}
                             title={student.status === 'suspended' ? t('admin.students.activate') : t('admin.students.suspend')}
@@ -258,43 +258,43 @@ export default function AdminStudents() {
               </table>
             </div>
 
-            <div className="divide-y divide-[#C5B0CD]/20 md:hidden">
+            <div className="divide-y divide-line md:hidden">
               {rows.map((student) => (
-                <div key={student._id} className="p-4 hover:bg-[#F6F5F2]/60 transition-colors">
+                <div key={student._id} className="p-4 hover:bg-surface-2 transition-colors">
                   <div className="flex items-start gap-3.5">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F6F5F2] text-xs font-extrabold text-[#415E72] border border-[#C5B0CD]/50">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-2 text-xs font-extrabold text-ink border border-line">
                       {initials(student.name)}
                     </span>
                     <div className="min-w-0 flex-1">
-                      <Link to={`/admin/students/${student._id}`} className="block truncate text-xs font-extrabold text-[#415E72]">
+                      <Link to={`/admin/students/${student._id}`} className="block truncate text-xs font-extrabold text-ink">
                         {student.name}
                       </Link>
-                      <p className="flex items-center gap-1.5 truncate text-[10px] text-[#415E72]/70" dir="ltr">
-                        <Mail className="h-3.5 w-3.5 shrink-0 text-[#C5B0CD]" /> {student.email}
+                      <p className="flex items-center gap-1.5 truncate text-[10px] text-ink-soft" dir="ltr">
+                        <Mail className="h-3.5 w-3.5 shrink-0 text-lavender" /> {student.email}
                       </p>
                       <div className="mt-2.5 flex flex-wrap items-center gap-2">
-                        <Badge tone={student.status === 'suspended' ? 'red' : 'green'} className={student.status === 'suspended' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}>
+                        <Badge tone={student.status === 'suspended' ? 'red' : 'green'} className={student.status === 'suspended' ? 'bg-negative-soft text-negative-ink border border-line' : 'bg-positive-soft text-positive-ink border border-line'}>
                           {student.status === 'suspended' ? t('admin.common.suspended') : t('admin.common.active')}
                         </Badge>
-                        <Badge tone="outline" className="bg-[#F6F5F2] text-[#415E72] border border-[#C5B0CD]">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</Badge>
+                        <Badge tone="outline" className="bg-surface-2 text-ink border border-line">{student.lastActive ? relativeTime(student.lastActive, i18n.language) : t('admin.students.neverActive')}</Badge>
                       </div>
                       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-                        <div className="rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] p-2">
-                          <p className="text-[9px] font-bold text-[#415E72]/60">{t('admin.students.lessonsDone')}</p>
-                          <p className="text-xs font-extrabold text-[#415E72]">{formatNumber(student.completedLessonCount || 0, i18n.language)}</p>
+                        <div className="rounded-xl border border-line bg-surface-2 p-2">
+                          <p className="text-[9px] font-bold text-muted">{t('admin.students.lessonsDone')}</p>
+                          <p className="text-xs font-extrabold text-ink">{formatNumber(student.completedLessonCount || 0, i18n.language)}</p>
                         </div>
-                        <div className="rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] p-2">
-                          <p className="text-[9px] font-bold text-[#415E72]/60">{t('admin.students.quizzesTaken')}</p>
-                          <p className="text-xs font-extrabold text-[#415E72]">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</p>
+                        <div className="rounded-xl border border-line bg-surface-2 p-2">
+                          <p className="text-[9px] font-bold text-muted">{t('admin.students.quizzesTaken')}</p>
+                          <p className="text-xs font-extrabold text-ink">{formatNumber(student.quizAttemptCount || 0, i18n.language)}</p>
                         </div>
-                        <div className="rounded-xl border border-[#C5B0CD]/30 bg-[#F6F5F2] p-2">
-                          <p className="text-[9px] font-bold text-[#415E72]/60">{t('admin.students.bestScore')}</p>
-                          <p className="text-xs font-extrabold text-[#415E72]">{formatPercent(student.bestQuiz, i18n.language)}</p>
+                        <div className="rounded-xl border border-line bg-surface-2 p-2">
+                          <p className="text-[9px] font-bold text-muted">{t('admin.students.bestScore')}</p>
+                          <p className="text-xs font-extrabold text-ink">{formatPercent(student.bestQuiz, i18n.language)}</p>
                         </div>
                       </div>
                       <div className="mt-3 flex gap-2">
-                        <Link to={`/admin/students/${student._id}`} className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] py-2 text-center text-xs font-bold text-[#415E72] shadow-sm transition-colors hover:bg-[#C5B0CD]/30">
-                          <UserRound className="h-3.5 w-3.5 text-[#C5B0CD]" /> {t('admin.common.view')}
+                        <Link to={`/admin/students/${student._id}`} className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-xl border border-line bg-surface-2 py-2 text-center text-xs font-bold text-ink shadow-sm transition-colors hover:bg-highlight">
+                          <UserRound className="h-3.5 w-3.5 text-lavender" /> {t('admin.common.view')}
                         </Link>
                         <button
                           type="button"
@@ -306,8 +306,8 @@ export default function AdminStudents() {
                           }
                           className={`flex min-h-11 items-center justify-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold shadow-sm ${
                             student.status === 'suspended'
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                              : 'bg-red-50 text-red-600 border border-red-200'
+                              ? 'bg-positive-soft text-positive-ink border border-line'
+                              : 'bg-negative-soft text-negative-ink border border-line'
                           }`}
                         >
                           {student.status === 'suspended' ? <ShieldCheck className="h-3.5 w-3.5" /> : <Ban className="h-3.5 w-3.5" />}

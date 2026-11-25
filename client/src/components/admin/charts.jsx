@@ -1,7 +1,12 @@
 import React from 'react';
 import { formatNumber } from '../../lib/admin';
 
-const palette = ['#415E72', '#415E72', '#415E72', '#17313E'];
+const palette = [
+  'var(--palette-lavender)',
+  'var(--palette-muted)',
+  'var(--palette-primary)',
+  'var(--palette-accent)',
+];
 
 export function LineChart({
   data = [],
@@ -214,13 +219,13 @@ export function DistributionBars({ data = [], language = 'en' }) {
   );
 }
 
-export function Donut({ value, label, sublabel, tone = '#415E72' }) {
+export function Donut({ value, label, sublabel, tone = 'var(--palette-lavender)' }) {
   const safe = Math.max(0, Math.min(100, Number(value) || 0));
   return (
     <div
       className="relative flex h-32 w-32 items-center justify-center rounded-full"
       style={{
-        background: `conic-gradient(${tone} ${safe * 3.6}deg, var(--color-surface-muted) 0deg)`,
+        background: `conic-gradient(${tone} ${safe * 3.6}deg, var(--palette-surface-2) 0deg)`,
       }}
     >
       <div className="flex h-[6.4rem] w-[6.4rem] flex-col items-center justify-center rounded-full bg-card text-center">

@@ -21,7 +21,7 @@ export function AnimatedGridPattern({
   return (
     <svg
       aria-hidden="true"
-      className={`pointer-events-none absolute inset-0 h-full w-full fill-brand/15 stroke-brand/10 ${className}`}
+      className={`pointer-events-none absolute inset-0 h-full w-full fill-lavender/15 stroke-lavender/10 ${className}`}
     >
       <defs>
         <pattern

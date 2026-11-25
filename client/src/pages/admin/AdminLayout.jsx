@@ -39,38 +39,38 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F5F2] text-[#415E72] flex font-sans" dir={isAr ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-canvas text-ink flex font-sans" dir={isAr ? 'rtl' : 'ltr'}>
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-[#415E72]/50 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-scrim/50 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 z-50 flex w-72 flex-col border-e border-[#C5B0CD]/40 bg-white shadow-xl transition-transform duration-300 lg:static lg:translate-x-0 ${
+      <aside className={`fixed inset-y-0 z-50 flex w-72 flex-col border-e border-line bg-surface shadow-xl transition-transform duration-300 lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : isAr ? 'translate-x-full lg:translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
-        <div className="flex h-20 items-center justify-between border-b border-[#C5B0CD]/30 px-6 bg-[#F6F5F2]/50">
+        <div className="flex h-20 items-center justify-between border-b border-line px-6 bg-surface-2">
           <div className="flex min-w-0 items-center gap-3">
-            <EduFanorWordmark className="w-32 text-[#34233F]" />
+            <EduFanorWordmark className="w-32 text-ink" />
             <div>
-              <p className="font-display text-sm font-extrabold text-[#415E72]">Admin</p>
-              <p className="text-[10px] font-bold text-[#415E72]/60">Management Console</p>
+              <p className="font-display text-sm font-extrabold text-ink">Admin</p>
+              <p className="text-[10px] font-bold text-muted">Management Console</p>
             </div>
           </div>
           <button 
             type="button" 
             onClick={() => setSidebarOpen(false)} 
-            className="rounded-xl p-2 text-[#415E72]/70 hover:bg-[#C5B0CD]/20 lg:hidden"
+            className="rounded-xl p-2 text-ink-soft hover:bg-highlight lg:hidden"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-4 py-6 space-y-1.5">
-          <p className="px-3 pb-2 text-[10px] font-extrabold uppercase tracking-wider text-[#415E72]/50">
+          <p className="px-3 pb-2 text-[10px] font-extrabold uppercase tracking-wider text-muted">
             {t('admin.shell.navigation', 'Navigation')}
           </p>
           {navItems.map((item) => {
@@ -83,25 +83,25 @@ export default function AdminLayout() {
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3.5 rounded-2xl px-4 py-3 text-xs font-extrabold transition-all ${
                   active 
-                    ? 'bg-[#415E72] text-[#F6F5F2] shadow-md shadow-[#415E72]/15'
-                    : 'text-[#415E72]/80 hover:bg-[#F6F5F2] hover:text-[#415E72]'
+                    ? 'bg-primary text-on-primary shadow-md shadow-primary/15 dark:bg-accent'
+                    : 'text-ink-soft hover:bg-surface-2 hover:text-ink'
                 }`}
               >
-                <Icon className={`h-4 w-4 ${active ? 'text-[#C5B0CD]' : 'text-[#415E72]/60'}`} />
+                <Icon className={`h-4 w-4 ${active ? 'text-on-primary' : 'text-muted'}`} />
                 {item.label}
               </Link>
             );
           })}
         </div>
 
-        <div className="border-t border-[#C5B0CD]/30 p-4 bg-[#F6F5F2]/30">
-          <div className="flex items-center gap-3 rounded-2xl border border-[#C5B0CD]/40 bg-white p-3.5 shadow-sm">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#415E72] text-xs font-extrabold text-[#F6F5F2]">
+        <div className="border-t border-line p-4 bg-surface-2">
+          <div className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3.5 shadow-sm">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-extrabold text-on-primary">
               {user?.name?.[0] || 'A'}
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-extrabold text-[#415E72]">{user?.name || 'Administrator'}</p>
-              <p className="truncate text-[10px] text-[#415E72]/60" dir="ltr">{user?.email || 'admin@edufanor.com'}</p>
+              <p className="truncate text-xs font-extrabold text-ink">{user?.name || 'Administrator'}</p>
+              <p className="truncate text-[10px] text-muted" dir="ltr">{user?.email || 'admin@edufanor.com'}</p>
             </div>
             <button
               type="button"
@@ -109,7 +109,7 @@ export default function AdminLayout() {
                 logout();
                 navigate('/login');
               }}
-              className="rounded-xl p-2 text-red-600 hover:bg-red-50 transition-colors"
+              className="rounded-xl p-2 text-negative-ink hover:bg-negative-soft transition-colors"
               title={t('admin.settings.signOut', 'Sign Out')}
             >
               <LogOut className="h-4 w-4" />
@@ -121,18 +121,18 @@ export default function AdminLayout() {
       {/* Main Content Area */}
       <div className="flex flex-1 flex-col min-w-0 overflow-hidden">
         {/* Top Header */}
-        <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-[#C5B0CD]/40 bg-white/95 px-6 backdrop-blur-md shadow-xs">
+        <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-line bg-surface/95 px-6 backdrop-blur-md shadow-xs">
           <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={() => setSidebarOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C5B0CD] bg-[#F6F5F2] text-[#415E72] lg:hidden shadow-sm"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface-2 text-ink lg:hidden shadow-sm"
             >
-              <Menu className="h-5 w-5 text-[#C5B0CD]" />
+              <Menu className="h-5 w-5 text-lavender" />
             </button>
             <div className="hidden sm:flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#C5B0CD]/50 bg-[#F6F5F2] px-3 py-1 text-xs font-extrabold text-[#415E72]">
-                <Sparkles className="h-3.5 w-3.5 text-[#C5B0CD]" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface-2 px-3 py-1 text-xs font-extrabold text-ink">
+                <Sparkles className="h-3.5 w-3.5 text-lavender" />
                 EduFanor Control Panel
               </span>
             </div>
@@ -142,7 +142,7 @@ export default function AdminLayout() {
             <button
               type="button"
               onClick={() => i18n.changeLanguage(isAr ? 'en' : 'ar')}
-              className="rounded-xl border border-[#C5B0CD] bg-[#F6F5F2] px-3.5 py-2 text-xs font-extrabold text-[#415E72] hover:bg-[#C5B0CD]/30 transition-colors shadow-sm"
+              className="rounded-xl border border-line bg-surface-2 px-3.5 py-2 text-xs font-extrabold text-ink hover:bg-highlight transition-colors shadow-sm"
             >
               {isAr ? 'English' : 'العربية'}
             </button>

@@ -14,7 +14,7 @@ export default function CourseCard({ course, completed = false }) {
       <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex items-center justify-between gap-2">
           <span className="chip bg-brand-soft text-brand-ink">{course.level}</span>
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-ink-muted">
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-ink-soft">
             <Clock className="h-3.5 w-3.5" />
             {course.duration}
           </span>
@@ -24,10 +24,10 @@ export default function CourseCard({ course, completed = false }) {
           {course.title}
         </h3>
 
-        <p className="line-clamp-2 text-sm leading-relaxed text-ink-muted">{course.description}</p>
+        <p className="line-clamp-2 text-sm leading-relaxed text-ink-soft">{course.description}</p>
 
         <div className="mt-auto flex items-center justify-between gap-3 border-t border-line pt-4">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-ink-muted">
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-ink-soft">
             <BookOpen className="h-4 w-4 text-brand-ink" />
             {t('dashboard.courseMeta.lessons', { count: course.lessons })}
           </span>
