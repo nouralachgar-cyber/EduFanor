@@ -291,7 +291,7 @@ export default function AdminLayout() {
           </div>
         </header>
 
-        <main className="admin-main mx-auto w-full">
+        <main className="admin-main">
           <Outlet />
         </main>
       </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Search, Clock, BookOpen, ArrowRight, ArrowLeft, ShieldCheck, SearchX, CheckCircle2 } from '../components/icons';
+import { Search, Clock, BookOpen, ArrowRight, ArrowLeft, ShieldCheck, SearchX, CheckCircle2, Award } from '../components/icons';
 import CourseArt from '../components/CourseArt';
 import { isCourseCompleted } from '../lib/progress';
 import { useCatalog } from '../context/CatalogContext';
@@ -142,20 +142,31 @@ export default function Courses() {
                         </span>
                       </div>
 
-                      <Link
-                        to={`/lesson?id=${course.id}`}
-                        className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-extrabold transition-all ${
-                          completed
-                            ? 'bg-positive-soft text-positive-ink hover:opacity-90'
-                            : 'bg-primary text-on-primary hover:bg-primary-hover'
-                        }`}
-                      >
-                        {completed && <CheckCircle2 className="h-3.5 w-3.5" />}
-                        <span>
-                          {completed ? t('coursesPage.continueCourse') : t('coursesPage.startCourse')}
-                        </span>
-                        {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
-                      </Link>
+                      <div className="flex items-center gap-2">
+                        {completed && (
+                          <Link
+                            to={`/certificate/${course.id}`}
+                            className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-surface px-3 py-2.5 text-xs font-extrabold text-ink-soft transition-all hover:bg-highlight hover:text-ink"
+                          >
+                            <Award className="h-3.5 w-3.5 text-primary" />
+                            <span>{t('certificate.view')}</span>
+                          </Link>
+                        )}
+                        <Link
+                          to={`/lesson?id=${course.id}`}
+                          className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-extrabold transition-all ${
+                            completed
+                              ? 'bg-positive-soft text-positive-ink hover:opacity-90'
+                              : 'bg-primary text-on-primary hover:bg-primary-hover'
+                          }`}
+                        >
+                          {completed && <CheckCircle2 className="h-3.5 w-3.5" />}
+                          <span>
+                            {completed ? t('coursesPage.continueCourse') : t('coursesPage.startCourse')}
+                          </span>
+                          {isAr ? <ArrowLeft className="h-3.5 w-3.5" /> : <ArrowRight className="h-3.5 w-3.5" />}
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </article>

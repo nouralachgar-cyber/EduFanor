@@ -20,6 +20,7 @@ import AITutor from './pages/AITutor';
 import Profile from './pages/Profile';
 import Progress from './pages/Progress';
 import Quizzes from './pages/Quizzes';
+import Certificate from './pages/Certificate';
 import NotFound from './pages/NotFound';
 
 import ProtectedRoute from './components/ProtectedRoute';
@@ -126,6 +127,15 @@ export default function App() {
           <Route path="/progress" element={<Progress />} />
           <Route path="/quizzes" element={<Quizzes />} />
         </Route>
+
+        <Route
+          path="/certificate/:courseId"
+          element={
+            <ProtectedRoute>
+              <Certificate />
+            </ProtectedRoute>
+          }
+        />
 
         {/* 404 Page */}
         <Route path="*" element={<NotFound />} />

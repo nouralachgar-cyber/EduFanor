@@ -64,6 +64,9 @@ export function markCourseCompleted(courseId) {
   if (!courseId) return;
   try {
     localStorage.setItem(`completed_${courseId}`, 'true');
+    if (!localStorage.getItem(`completed_at_${courseId}`)) {
+      localStorage.setItem(`completed_at_${courseId}`, new Date().toISOString());
+    }
   } catch {
     /* Ignore unavailable storage. */
   }

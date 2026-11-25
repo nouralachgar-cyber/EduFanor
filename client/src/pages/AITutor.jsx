@@ -97,7 +97,7 @@ export default function AITutor() {
 
   return (
     <div className="page-container">
-      <div className="page-content mx-auto max-w-4xl space-y-6">
+      <div className="page-content space-y-6">
         {toastMsg && <Toast message={toastMsg} type="success" onClose={() => setToastMsg('')} />}
 
         <header className="relative overflow-hidden rounded-3xl border border-line bg-card p-6 shadow-pop sm:p-8">

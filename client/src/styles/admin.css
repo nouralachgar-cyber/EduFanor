@@ -236,8 +236,23 @@
 }
 
 .admin-main {
-  max-width: 1680px;
+  width: 100%;
+  max-width: min(100rem, calc(100vw - 2rem));
   min-width: 0;
+  margin-inline: auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+@media (min-width: 640px) {
+  .admin-main {
+    padding: 2rem 1.5rem 3.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-main {
+    padding: 2rem 2rem 4rem;
+  }
 }
 
 .admin-shell :is(input, select, textarea):focus-visible {

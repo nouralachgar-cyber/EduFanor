@@ -21,7 +21,7 @@ export default function Settings() {
 
   return (
     <div className="page-container">
-      <div className="page-content mx-auto max-w-3xl space-y-8">
+      <div className="page-content space-y-8">
         <header>
           <span className="chip bg-highlight text-ink-soft">
             <SettingsIcon className="h-3.5 w-3.5" />

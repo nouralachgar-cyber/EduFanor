@@ -188,7 +188,7 @@ export default function Lesson() {
 
   return (
     <div className="page-container">
-      <div className="page-content mx-auto max-w-5xl space-y-6">
+      <div className="page-content space-y-6">
         {toastMsg && (
           <Toast
             message={toastMsg}

@@ -486,7 +486,7 @@
 
   .page-content {
     width: 100%;
-    max-width: 88rem;
+    max-width: 100rem;
     margin-inline: auto;
     padding: 1.5rem 1rem 3rem;
   }
@@ -527,7 +527,8 @@
 
 @media (min-width: 1024px) {
   .page-content {
-    padding: 2.5rem 2rem 4rem;
+    max-width: min(100rem, calc(100vw - 2rem));
+    padding: 2rem 2rem 4rem;
   }
 }
 

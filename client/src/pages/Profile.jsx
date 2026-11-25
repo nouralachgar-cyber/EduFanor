@@ -49,7 +49,7 @@ export default function Profile() {
 
   return (
     <div className="page-container">
-      <div className="page-content mx-auto max-w-5xl space-y-8">
+      <div className="page-content space-y-8">
         <header>
           <span className="chip bg-highlight text-ink-soft">
             <User className="h-3.5 w-3.5" />

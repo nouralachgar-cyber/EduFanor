@@ -137,6 +137,15 @@ export default function Progress() {
                     >
                       {done ? t('coursesPage.completed') : isAr ? 'لم يكتمل' : 'Not completed'}
                     </span>
+                    {done && (
+                      <Link
+                        to={`/certificate/${course.id}`}
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-surface px-3 py-2 text-xs font-extrabold text-ink-soft transition-colors hover:bg-highlight hover:text-ink"
+                      >
+                        <Award className="h-3.5 w-3.5 text-primary" />
+                        {t('certificate.view')}
+                      </Link>
+                    )}
                     <Link
                       to={`/lesson?id=${course.id}`}
                       className="inline-flex items-center gap-1.5 text-xs font-extrabold text-ink-soft transition-colors hover:text-primary"

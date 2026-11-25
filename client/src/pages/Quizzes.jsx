@@ -237,7 +237,7 @@ export default function Quizzes() {
 
   return (
     <div className="page-container">
-      <div className="page-content mx-auto max-w-4xl space-y-6">
+      <div className="page-content space-y-6">
         <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <span className="chip bg-highlight text-ink-soft">

@@ -304,7 +304,16 @@ export const Edit = p => (
   <I {...p}><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></I>
 );
 export const Download = p => (
-  <I {...p}><path d="M12 4v12M6 11l6 6 6-6" /><path d="M4 20h16" /></I>
+  <I {...p}><path d="M12 3v12M7 11l5 5 5-5" /><path d="M4 19h16" /></I>
+);
+export const Share2 = p => (
+  <I {...p}><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></I>
+);
+export const Printer = p => (
+  <I {...p}><path d="M6 9V4h12v5M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect x="6" y="14" width="12" height="7" rx="1.5" /></I>
+);
+export const Linkedin = p => (
+  <I {...p}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V9h4v2" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></I>
 );
 export const Filter = p => (
   <I {...p}><path d="M22 4H2l8 9v6l4 2v-8l8-9z" /></I>
