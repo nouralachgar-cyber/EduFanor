@@ -17,73 +17,53 @@ export default function AuthLayout({ children }) {
     <div className="min-h-screen bg-canvas text-ink">
       <div className="grid min-h-screen lg:grid-cols-2">
         <aside
-          className="relative hidden overflow-hidden bg-scrim bg-cover bg-[center_35%] lg:flex lg:flex-col lg:justify-between px-10 py-10 lg:px-12 lg:py-20"
+          className="relative hidden overflow-hidden bg-cover bg-[center_35%] opacity-100 lg:flex lg:flex-col lg:justify-between h-full px-10 pt-6 pb-8 lg:px-14"
           style={{ backgroundImage: "url('/heroa.jpg')" }}
         >
-          <div
-            className="absolute inset-0 bg-gradient-to-b from-scrim/80 to-scrim/50"
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_18%,var(--palette-highlight),transparent_52%),radial-gradient(ellipse_at_18%_85%,var(--palette-lavender),transparent_46%)] opacity-20"
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0 opacity-[0.16]"
-            style={{
-              backgroundImage:
-                'radial-gradient(var(--palette-highlight) 1px, transparent 1px)',
-              backgroundSize: '22px 22px',
-            }}
-            aria-hidden="true"
-          />
-
           <div className="relative z-10">
             <Link to="/" className="inline-flex items-center">
-              <EduFanorWordmark className="w-36 text-on-dark" />
+              <EduFanorWordmark className="w-44 text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] sm:w-48" />
             </Link>
           </div>
 
-          <div className="relative z-10 max-w-md">
-            <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-on-dark">
-              {isAr ? 'تعلم بثقة ووضوح' : 'Learn with clarity and confidence'}
+          <div className="relative z-10 my-auto max-w-xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]">
+            <p className="text-sm font-bold uppercase tracking-widest text-[#F0D9FF]">
+              {isAr ? 'تعلّم بوضوح وثقة' : 'LEARN WITH CLARITY AND CONFIDENCE'}
             </p>
-            <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight">
+            <h2 className="mt-3 font-['Viga'] text-5xl leading-[1.1] xl:text-[3.5rem]">
               {isAr ? (
                 <>
-                  معرفة صغيرة.
-                  <br />
-                  <span className="italic text-on-dark">استعداد أكبر.</span>
+                  <span className="block text-white">معرفة صغيرة.</span>
+                  <span className="block text-[#F0D9FF]">استجابة أهدأ.</span>
                 </>
               ) : (
                 <>
-                  A little knowledge.
-                  <br />
-                  <span className="italic text-on-dark">A calmer response.</span>
+                  <span className="block text-white">A little knowledge.</span>
+                  <span className="block text-[#F0D9FF]">A calmer response.</span>
                 </>
               )}
             </h2>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-on-dark/75">
+            <p className="mt-5 max-w-lg text-lg font-normal leading-relaxed text-white/95 sm:text-xl">
               {isAr
                 ? 'دروس منظمة، اختبارات قصيرة، وتقدّم محفوظ — مساحة تعلّم هادئة للإسعافات الأولية.'
                 : 'Structured lessons, short quizzes, and saved progress — a calm first-aid learning space.'}
             </p>
 
-            <ul className="mt-8 space-y-3">
+            <ul className="mt-7 space-y-3">
               {points.map((point) => (
-                <li key={point} className="flex items-start gap-2.5 text-xs font-semibold text-on-dark/85">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-on-dark" />
+                <li key={point} className="flex items-start gap-2.5 text-base font-medium text-white sm:text-lg">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#F0D9FF]" />
                   <span className="leading-relaxed">{point}</span>
                 </li>
               ))}
             </ul>
-
-            <p className="relative z-10 max-w-sm text-[10px] leading-relaxed text-on-dark/60">
-              {isAr
-                ? 'المحتوى تعليمي فقط. في الطوارئ، اتصل بخدمات الإسعاف المحلية أولاً.'
-                : 'Educational content only. In an emergency, contact local emergency services first.'}
-            </p>
           </div>
+
+          <p className="relative z-10 max-w-md pb-0 text-xs leading-relaxed text-white/85 drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]">
+            {isAr
+              ? 'المحتوى تعليمي فقط. في الطوارئ، اتصل بخدمات الإسعاف المحلية أولاً.'
+              : 'Educational content only. In an emergency, contact local emergency services first.'}
+          </p>
         </aside>
 
         <main className="flex min-h-screen flex-col">
@@ -113,7 +93,7 @@ export default function AuthLayout({ children }) {
           </div>
 
           <div className="flex flex-1 items-center justify-center px-4 py-10 sm:px-6">
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-[460px]">
               <div className="mb-6 lg:hidden">
                 <EduFanorWordmark className="w-32 text-ink dark:text-on-dark" />
               </div>
