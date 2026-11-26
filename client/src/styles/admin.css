@@ -13,15 +13,81 @@
   --admin-nav-text: var(--palette-lavender);
   --admin-nav-active-text: var(--palette-on-primary);
   --admin-nav-active-bg: var(--palette-primary);
-  --admin-hero-text: var(--palette-on-dark);
+  --admin-hero-text: var(--palette-ink);
   min-height: 100vh;
   background-color: var(--color-surface);
   color: var(--color-ink);
 }
 
+.dark .admin-shell {
+  --admin-hero-text: var(--palette-on-dark);
+}
+
 .admin-sidebar {
   background: linear-gradient(180deg, var(--admin-sidebar-start), var(--admin-sidebar-end));
   color: var(--admin-hero-text);
+  transition: width 0.3s ease;
+}
+
+.admin-sidebar-subtitle,
+.admin-sidebar-secure-label,
+.admin-sidebar-group-label,
+.admin-sidebar-profile-email {
+  color: var(--palette-ink-soft);
+}
+
+.dark .admin-sidebar-subtitle,
+.dark .admin-sidebar-secure-label,
+.dark .admin-sidebar-group-label,
+.dark .admin-sidebar-profile-email {
+  color: var(--palette-lavender);
+}
+
+.admin-sidebar-profile-name {
+  color: var(--palette-ink);
+}
+
+.dark .admin-sidebar-profile-name {
+  color: var(--palette-on-dark);
+}
+
+.admin-sidebar-collapsed .admin-sidebar-header,
+.admin-sidebar-collapsed .admin-sidebar-secure,
+.admin-sidebar-collapsed .admin-sidebar-group-label,
+.admin-sidebar-collapsed .admin-sidebar-profile,
+.admin-sidebar-collapsed .admin-sidebar-nav-label,
+.admin-sidebar-collapsed .admin-sidebar-active-dot,
+.admin-sidebar-collapsed .admin-sidebar-footer-label {
+  display: none;
+}
+
+.admin-sidebar-collapsed .admin-nav-link {
+  justify-content: center;
+  padding-inline: 0.5rem;
+}
+
+.admin-sidebar-collapsed .admin-sidebar-footer-actions {
+  flex-direction: column;
+}
+
+.admin-sidebar-collapsed .back-to-site-link {
+  flex: 0 0 auto;
+  width: 2.75rem;
+  padding-inline: 0;
+  justify-content: center;
+}
+
+.admin-sidebar-overlay {
+  animation: admin-fade-in 0.2s ease-out;
+}
+
+@keyframes admin-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .admin-nav-link {
@@ -283,32 +349,32 @@
   }
 }
 
-:not(.dark) .admin-sidebar {
+html:not(.dark) .admin-sidebar {
   background-color: #F3F1F5 !important;
   border-right: 1px solid #D8C7EB !important;
 }
 
-:not(.dark) .admin-nav-link {
+html:not(.dark) .admin-nav-link {
   background-color: #E5DCF2 !important;
 }
 
-:not(.dark) .admin-nav-link > span:first-child {
+html:not(.dark) .admin-nav-link > span:first-child {
   background-color: #E5DCF2 !important;
 }
 
-:not(.dark) .admin-nav-link > span:last-child,
-:not(.dark) .admin-nav-link .flex-1 {
+html:not(.dark) .admin-nav-link > span:last-child,
+html:not(.dark) .admin-nav-link .flex-1 {
   color: #393053 !important;
 }
 
-:not(.dark) .admin-nav-link .h-3.w-3,
-:not(.dark) .admin-nav-link .h-3.w-3 svg,
-:not(.dark) .admin-nav-link .h-3.w-3 path,
-:not(.dark) .admin-nav-link .h-3.w-3 polygon {
+html:not(.dark) .admin-nav-link .h-3.w-3,
+html:not(.dark) .admin-nav-link .h-3.w-3 svg,
+html:not(.dark) .admin-nav-link .h-3.w-3 path,
+html:not(.dark) .admin-nav-link .h-3.w-3 polygon {
   stroke: #443C68 !important;
 }
 
-:not(.dark) .secure-area-text {
+html:not(.dark) .secure-area-text {
   background-color: #E8E0F3 !important;
   border: 1px solid #BFA2DB !important;
   color: #18122B !important;
@@ -316,67 +382,67 @@
   border-radius: 0.5rem !important;
 }
 
-:not(.dark) .profile-name,
-:not(.dark) .profile-email {
+html:not(.dark) .profile-name,
+html:not(.dark) .profile-email {
   color: #18122B !important;
 }
 
-:not(.dark) .back-to-site-link,
-:not(.dark) .logout-button {
+html:not(.dark) .back-to-site-link,
+html:not(.dark) .logout-button {
   background-color: #E8E0F3 !important;
   border: 1px solid #BFA2DB !important;
   color: #18122B !important;
 }
 
-:not(.dark) .logout-icon {
+html:not(.dark) .logout-icon {
   color: #18122B;
 }
 
 /* Light Mode: Section headings & nav button labels */
-:not(.dark) .admin-scroll .uppercase {
+html:not(.dark) .admin-scroll .uppercase {
   color: #443C68;
   font-weight: 700;
   opacity: 1;
 }
 
 /* Dark Mode: Section headings & nav button labels */
-:dark .admin-scroll .uppercase {
+html.dark .admin-scroll .uppercase {
   color: #f8fafc;
   font-weight: 700;
   opacity: 1;
 }
 
 /* Light Mode: Nav button text & icons */
-:not(.dark) .admin-nav-link .flex-1 {
+html:not(.dark) .admin-nav-link .flex-1 {
   color: #0f172a;
   font-weight: 700;
   opacity: 1;
 }
 
 /* Dark Mode: Nav button text & icons */
-:dark .admin-nav-link .flex-1 {
+html.dark .admin-nav-link .flex-1 {
   color: #f8fafc;
   font-weight: 700;
   opacity: 1;
 }
 
 /* Light Mode: Profile name & email */
-:not(.dark) .profile-name,
-:not(.dark) .profile-email {
+html:not(.dark) .profile-name,
+html:not(.dark) .profile-email {
   color: #18122B;
   opacity: 1;
 }
 
 /* Dark Mode: Profile name & email */
-:dark .profile-name,
-:dark .profile-email {
+html.dark .profile-name,
+html.dark .profile-email {
   color: #f8fafc;
   opacity: 1;
 }
 
 /* Light Mode: Back to site & logout button */
-:not(.dark) .back-to-site-link,
-:not(.dark) .logout-button {
+html:not(.dark) .back-to-site-link,
+html:not(.dark) .logout-button {
   background-color: #E8E0F3;
   border: 1px solid #BFA2DB;
   color: #18122B;
@@ -384,10 +450,24 @@
 }
 
 /* Dark Mode: Back to site & logout button */
-:dark .back-to-site-link,
-:dark .logout-button {
+html.dark .back-to-site-link,
+html.dark .logout-button {
   background-color: #1e293b;
   border: 1px solid #475569;
   color: #f8fafc;
   opacity: 1;
+}
+
+html:not(.dark) .back-to-site-link:hover,
+html:not(.dark) .logout-button:hover {
+  background-color: #D8C7EB !important;
+}
+
+html.dark .back-to-site-link:hover,
+html.dark .logout-button:hover {
+  background-color: #334155 !important;
+}
+
+html.dark .logout-icon {
+  color: #f8fafc;
 }

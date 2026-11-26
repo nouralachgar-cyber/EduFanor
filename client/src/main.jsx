@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import './styles/buttons.css'
 import './i18n/i18n';
 import { AuthProvider } from './context/AuthContext.jsx'
 import { CatalogProvider } from './context/CatalogContext.jsx'

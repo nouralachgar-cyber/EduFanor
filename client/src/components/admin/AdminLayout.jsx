@@ -25,6 +25,7 @@ import { initials } from '../../lib/admin';
 import EduFanorWordmark from '../EduFanorWordmark';
 import ThemeToggle from '../ui/ThemeToggle';
 import '../../styles/admin.css';
+import '../../styles/buttons.css';
 
 const lightText = 'text-[#18122B]';
 const lightBg = 'bg-[#F3F1F5]';
@@ -90,15 +91,15 @@ function SidebarContent({ onNavigate }) {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex flex-col items-start gap-2 px-5 pt-6 pb-5">
+      <div className="admin-sidebar-header flex flex-col items-start gap-2 px-5 pt-6 pb-5">
         <EduFanorWordmark className={`${logoLight} ${logoDark}`} />
-        <p className="text-[10px] font-bold uppercase tracking-[0.16em]">
+        <p className="admin-sidebar-subtitle text-[10px] font-bold uppercase tracking-[0.16em]">
           {t('admin.shell.subtitle')}
         </p>
       </div>
 
-      <div className="mx-3 mb-4 rounded-xl border lightBorder px-3 py-2">
-        <span className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em]">
+      <div className="admin-sidebar-secure mx-3 mb-4 rounded-xl border lightBorder px-3 py-2">
+        <span className="admin-sidebar-secure-label flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.14em]">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full lightIconBg opacity-60" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full lightIconBg" />
@@ -110,7 +111,7 @@ function SidebarContent({ onNavigate }) {
       <nav className="admin-scroll flex-1 overflow-y-auto px-3 pb-4">
         {navGroups.map((group, groupIndex) => (
           <div key={group.labelKey} className={groupIndex ? 'mt-5' : ''}>
-            <p className="mb-1.5 px-2.5 text-[9px] font-extrabold uppercase tracking-[0.2em]">
+            <p className="admin-sidebar-group-label mb-1.5 px-2.5 text-[9px] font-extrabold uppercase tracking-[0.2em]">
               {t(group.labelKey)}
             </p>
             <div className="space-y-1">
@@ -122,6 +123,7 @@ function SidebarContent({ onNavigate }) {
                     to={item.to}
                     end={item.end}
                     onClick={onNavigate}
+                    title={t(item.label)}
                     className={({ isActive }) =>
                       `admin-nav-link ${isActive ? 'admin-nav-link-active' : ''}`
                     }
@@ -135,8 +137,8 @@ function SidebarContent({ onNavigate }) {
                         >
                           <Icon className={`h-3.5 w-3.5 ${lightIconColor}`} />
                         </span>
-                        <span className="flex-1">{t(item.label)}</span>
-                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-current" />}
+                        <span className="admin-sidebar-nav-label flex-1">{t(item.label)}</span>
+                        {isActive && <span className="admin-sidebar-active-dot h-1.5 w-1.5 rounded-full bg-current" />}
                       </>
                     )}
                   </NavLink>
@@ -147,34 +149,36 @@ function SidebarContent({ onNavigate }) {
         ))}
       </nav>
 
-      <div className="border-t footerBorderLight p-3 shrink-0">
-        <div className="mb-2 flex items-center gap-2.5 rounded-xl footerBgLight px-3 py-2.5">
+      <div className="admin-sidebar-footer border-t footerBorderLight p-3 shrink-0">
+        <div className="admin-sidebar-profile mb-2 flex items-center gap-2.5 rounded-xl footerBgLight px-3 py-2.5">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-extrabold lightText">
             {initials(user?.name)}
           </span>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-semibold footerTextLight">{user?.name || t('admin.shell.adminAccount')}</p>
-            <p className="truncate text-[10px] lightSecondary" dir="ltr">
+            <p className="admin-sidebar-profile-name truncate text-xs font-semibold">{user?.name || t('admin.shell.adminAccount')}</p>
+            <p className="admin-sidebar-profile-email truncate text-[10px]" dir="ltr">
               {user?.email}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5">
+        <div className="admin-sidebar-footer-actions flex items-center gap-1.5">
           <Link
             to="/"
-            className={`flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-lg border footerBorderLight px-2 py-2 text-[10px] font-bold footerTextLight transition-colors hover:${footerBtnHoverLight} ${footerBtnBgLight} ${footerBtnBorderLight}`}
+            onClick={onNavigate}
+            className={`back-to-site-link flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-lg border footerBorderLight px-2 py-2 text-[10px] font-bold transition-colors ${footerBtnHoverLight} ${footerBtnBgLight} ${footerBtnBorderLight}`}
+            title={t('admin.shell.backToSite')}
           >
             <ChevronLeft className={`h-3 w-3 ${isAr ? 'rotate-180' : ''}`} />
-            {t('admin.shell.backToSite')}
+            <span className="admin-sidebar-footer-label">{t('admin.shell.backToSite')}</span>
           </Link>
           <button
             type="button"
             onClick={handleLogout}
-            className={`flex h-11 w-11 items-center justify-center rounded-full footerBorderLight ${footerBtnTextLight} transition-colors hover:${footerBtnHoverLight} xl:h-8 xl:w-8`}
+            className={`logout-button flex h-11 w-11 items-center justify-center rounded-full footerBorderLight ${footerBtnTextLight} transition-colors ${footerBtnHoverLight} xl:h-8 xl:w-8`}
             aria-label={t('admin.shell.logout')}
             title={t('admin.shell.logout')}
           >
-            <LogOut className="h-3.5 w-3.5 footerTextLight" />
+            <LogOut className="logout-icon h-3.5 w-3.5" />
           </button>
         </div>
       </div>
@@ -189,8 +193,32 @@ export default function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [desktopCollapsed, setDesktopCollapsed] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches
+  );
   const [search, setSearch] = useState('');
   const isAr = i18n.language === 'ar';
+
+  const menuOpen = isDesktop ? !desktopCollapsed : mobileOpen;
+
+  const toggleSidebar = () => {
+    if (isDesktop) {
+      setDesktopCollapsed((value) => !value);
+    } else {
+      setMobileOpen((value) => !value);
+    }
+  };
+
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 1024px)');
+    const handleChange = (event) => {
+      setIsDesktop(event.matches);
+      setMobileOpen(false);
+    };
+    media.addEventListener('change', handleChange);
+    return () => media.removeEventListener('change', handleChange);
+  }, []);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -228,23 +256,28 @@ export default function AdminLayout() {
 
   return (
     <div className="admin-shell">
-      <aside className="admin-sidebar fixed inset-y-0 start-0 z-40 hidden w-64 lg:block">
+      <aside
+        id="admin-desktop-sidebar"
+        className={`admin-sidebar fixed inset-y-0 start-0 z-40 hidden w-64 transition-[width] duration-300 ease-in-out lg:block ${
+          desktopCollapsed ? 'admin-sidebar-collapsed lg:w-[4.75rem]' : 'lg:w-64'
+        }`}
+      >
         <SidebarContent />
       </aside>
 
       {mobileOpen && (
-        <div className="fixed inset-0 z-[70] lg:hidden">
+        <div className="admin-sidebar-overlay fixed inset-0 z-[70] lg:hidden">
           <button
             type="button"
             className="absolute inset-0 bg-scrim/70 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
             aria-label={t('admin.shell.closeMenu')}
           />
-          <aside className="admin-sidebar admin-rise absolute inset-y-0 start-0 w-[17.5rem] shadow-lift">
+          <aside id="admin-mobile-sidebar" className="admin-sidebar admin-rise absolute inset-y-0 start-0 w-[17.5rem] shadow-lift">
             <button
               type="button"
               onClick={() => setMobileOpen(false)}
-              className="absolute end-3 top-4 flex h-11 w-11 items-center justify-center rounded-full lightBorder text-lightText hover:bg-lightBg/10 hover:lightText"
+              className="absolute end-3 top-4 flex h-11 w-11 items-center justify-center rounded-full lightBorder hover:bg-[#F3F1F5]/10"
               aria-label={t('admin.shell.closeMenu')}
             >
               <X className="h-4 w-4" />
@@ -254,14 +287,16 @@ export default function AdminLayout() {
         </div>
       )}
 
-      <div className="lg:ps-64">
+      <div className={`admin-content transition-[padding] duration-300 ease-in-out ${desktopCollapsed ? 'lg:ps-[4.75rem]' : 'lg:ps-64'}`}>
         <header className="sticky top-0 z-30 border-b border-line bg-surface/90 backdrop-blur-xl">
           <div className="flex h-16 items-center gap-2 px-3 sm:px-5 lg:px-8">
             <button
               type="button"
-              onClick={() => setMobileOpen(true)}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border lightBorder text-lightText lg:hidden"
-              aria-label={t('admin.shell.openMenu')}
+              onClick={toggleSidebar}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border lightBorder transition-colors hover:bg-[#F3F1F5]/10"
+              aria-label={t(menuOpen ? 'admin.shell.closeMenu' : 'admin.shell.openMenu')}
+              aria-expanded={menuOpen}
+              aria-controls={isDesktop ? 'admin-desktop-sidebar' : 'admin-mobile-sidebar'}
             >
               <Menu className="h-4 w-4" />
             </button>
