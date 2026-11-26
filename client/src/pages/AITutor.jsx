@@ -37,6 +37,7 @@ import {
 import Toast from '../components/Toast';
 import AiMarkdown from '../components/ai/AiMarkdown';
 import { aiApi, localizeAiError } from '../lib/ai';
+import { formatDate, toWesternDigits } from '../lib/format';
 
 const CHAT_KEY = 'edu_ai_chat_v1';
 const PLAN_KEY = 'edu_ai_plan_v1';
@@ -577,7 +578,7 @@ function ScenarioPanel({ isAr, lang, t }) {
       {scenario && (
         <article className="card space-y-4 p-5 sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h3 className="font-display text-base font-bold text-ink">{scenario.title}</h3>
+            <h3 className="font-display text-base font-bold text-ink">{toWesternDigits(scenario.title)}</h3>
             <span className="chip bg-surface-2 text-ink-soft">
               {t(`ai.difficulty.${scenario.difficulty || difficulty}`)}
             </span>
@@ -585,7 +586,7 @@ function ScenarioPanel({ isAr, lang, t }) {
           <div className="rounded-2xl border border-line bg-surface-2/50 p-4">
             <AiMarkdown content={scenario.narrative} />
           </div>
-          <p className="text-sm font-extrabold text-ink">{scenario.question}</p>
+          <p className="text-sm font-extrabold text-ink">{toWesternDigits(scenario.question)}</p>
 
           <div className="space-y-2">
             {scenario.options.map((option, index) => {
@@ -612,7 +613,7 @@ function ScenarioPanel({ isAr, lang, t }) {
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-current text-[10px] font-extrabold opacity-70">
                     {String.fromCharCode(65 + index)}
                   </span>
-                  <span className="flex-1">{option.label}</span>
+                  <span className="flex-1">{toWesternDigits(option.label)}</span>
                   {revealed && isSelected && (
                     feedback.correct ? <CheckCircle2 className="h-4 w-4 text-positive-ink" /> : <XCircle className="h-4 w-4 text-negative-ink" />
                   )}
@@ -640,7 +641,7 @@ function ScenarioPanel({ isAr, lang, t }) {
               {feedback.suggestedLessonTitle && (
                 <p className="inline-flex items-center gap-1.5 rounded-lg bg-card px-2.5 py-1.5 text-[11px] font-bold text-ink-soft">
                   <Lightbulb className="h-3 w-3 text-caution-ink" />
-                  {t('ai.scenario.reviewLesson')}: {feedback.suggestedLessonTitle}
+                  {t('ai.scenario.reviewLesson')}: {toWesternDigits(feedback.suggestedLessonTitle)}
                 </p>
               )}
             </div>
@@ -651,7 +652,7 @@ function ScenarioPanel({ isAr, lang, t }) {
       {error && (
         <div className="flex items-center gap-2 rounded-xl border border-line-strong/25 bg-negative-soft px-3.5 py-2.5 text-xs font-bold text-negative-ink">
           <XCircle className="h-4 w-4 shrink-0" />
-          <span className="flex-1">{error}</span>
+          <span className="flex-1">{toWesternDigits(error)}</span>
         </div>
       )}
     </section>
@@ -704,7 +705,7 @@ function PlanPanel({ isAr, lang, t }) {
   }, []);
 
   const ageText = cached && plan?.savedAt
-    ? new Intl.DateTimeFormat(lang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }).format(new Date(plan.savedAt))
+    ? formatDate(plan.savedAt, lang, { hour: '2-digit', minute: '2-digit' })
     : '';
 
   return (
@@ -750,7 +751,7 @@ function PlanPanel({ isAr, lang, t }) {
       {error && (
         <div className="flex items-center gap-2 rounded-xl border border-line-strong/25 bg-negative-soft px-3.5 py-2.5 text-xs font-bold text-negative-ink">
           <XCircle className="h-4 w-4 shrink-0" />
-          <span className="flex-1">{error}</span>
+          <span className="flex-1">{toWesternDigits(error)}</span>
           <button
             type="button"
             onClick={generate}
@@ -774,7 +775,7 @@ function PlanResults({ plan, isAr, t }) {
           <AiMarkdown content={plan.summary} />
           {plan.encouragement && (
             <p className="mt-2 rounded-xl bg-positive-soft px-3.5 py-2.5 text-[11px] font-bold text-positive-ink">
-              {plan.encouragement}
+              {toWesternDigits(plan.encouragement)}
             </p>
           )}
         </div>
@@ -789,8 +790,8 @@ function PlanResults({ plan, isAr, t }) {
                 {index + 1}
               </span>
               <div className="min-w-0">
-                <p className="text-xs font-extrabold text-ink">{step.lesson}</p>
-                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-soft">{step.why}</p>
+                <p className="text-xs font-extrabold text-ink">{toWesternDigits(step.lesson)}</p>
+                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-soft">{toWesternDigits(step.why)}</p>
               </div>
             </div>
           ))}
@@ -804,7 +805,7 @@ function PlanResults({ plan, isAr, t }) {
             {plan.revisionTopics.map((topic, index) => (
               <span key={index} className="chip bg-highlight text-ink-soft">
                 <BookOpen className="h-3 w-3" />
-                {topic}
+                {toWesternDigits(topic)}
               </span>
             ))}
           </div>
@@ -820,11 +821,11 @@ function PlanResults({ plan, isAr, t }) {
           {plan.sevenDayPlan.map((session, index) => (
             <div key={index} className="flex items-start gap-3 rounded-xl border border-line bg-surface-2/50 p-3">
               <span className="chip shrink-0 bg-highlight text-ink-soft dark:text-lavender">
-                {isAr ? 'يوم' : 'Day'} {session.day}
+                {isAr ? 'يوم' : 'Day'} {toWesternDigits(session.day)}
               </span>
               <div className="min-w-0">
-                <p className="text-xs font-extrabold text-ink">{session.focus}</p>
-                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-soft">{session.activity}</p>
+                <p className="text-xs font-extrabold text-ink">{toWesternDigits(session.focus)}</p>
+                <p className="mt-0.5 text-[11px] leading-relaxed text-ink-soft">{toWesternDigits(session.activity)}</p>
               </div>
             </div>
           ))}
@@ -837,7 +838,7 @@ function PlanResults({ plan, isAr, t }) {
           {plan.practiceAdvice.map((advice, index) => (
             <p key={index} className="flex items-start gap-2 text-xs leading-relaxed text-ink">
               <BookCheck />
-              <span>{advice}</span>
+              <span>{toWesternDigits(advice)}</span>
             </p>
           ))}
         </div>

@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useCatalog } from '../context/CatalogContext';
 import { useTheme } from '../context/ThemeContext';
 import { isCourseCompleted } from '../lib/progress';
+import { formatDate, toWesternDigits } from '../lib/format';
 import ThemeToggle from '../components/ui/ThemeToggle';
 import EduFanorWordmark from '../components/EduFanorWordmark';
 import { ArrowLeft, ArrowRight, Award, Download, Linkedin, Printer, Share2, ShieldCheck } from '../components/icons';
@@ -43,11 +44,11 @@ export default function Certificate() {
   const certificateId = useMemo(() => buildCertificateId(courseId || '', studentId, completedAt), [courseId, studentId, completedAt]);
   const completionDate = useMemo(() => {
     try {
-      return new Intl.DateTimeFormat(isAr ? 'ar-MA' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(completedAt));
+      return formatDate(completedAt, i18n.language, { year: 'numeric', month: 'long', day: 'numeric' }, 'ar-MA');
     } catch {
-      return new Date(completedAt).toLocaleDateString();
+      return toWesternDigits(new Date(completedAt).toLocaleDateString());
     }
-  }, [completedAt, isAr]);
+  }, [completedAt, i18n.language]);
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
   const issueDate = new Date(completedAt);
 

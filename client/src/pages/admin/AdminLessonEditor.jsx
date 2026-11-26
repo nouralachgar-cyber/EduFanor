@@ -586,19 +586,25 @@ export default function AdminLessonEditor() {
 
               <div className="grid gap-3 sm:grid-cols-3">
                 <Field label={t('admin.editor.orderLabel')}>
-                  <input
-                    type="number"
-                    min="0"
-                    value={form.order}
+      <input
+        type="number"
+        inputMode="numeric"
+        lang="en"
+        dir="ltr"
+        min="0"
+        value={form.order}
                     onChange={(event) => update(() => ({ order: event.target.value }))}
                     className="w-full rounded-lg border border-line bg-surface px-4 py-3 text-base text-ink focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
                   />
                 </Field>
                 <Field label={t('admin.editor.minutesLabel')}>
-                  <input
-                    type="number"
-                    min="1"
-                    value={form.estimatedMinutes}
+      <input
+        type="number"
+        inputMode="numeric"
+        lang="en"
+        dir="ltr"
+        min="1"
+        value={form.estimatedMinutes}
                     onChange={(event) => update(() => ({ estimatedMinutes: event.target.value }))}
                     className="w-full rounded-lg border border-line bg-surface px-4 py-3 text-base text-ink focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
                   />

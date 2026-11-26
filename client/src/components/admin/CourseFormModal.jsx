@@ -264,10 +264,13 @@ export default function CourseFormModal({ open, course, onClose, onSaved }) {
               </select>
             </Field>
             <Field label={t('admin.courseEditor.estimatedMinutes')}>
-              <input
-                type="number"
-                min="1"
-                value={form.estimatedMinutes}
+      <input
+        type="number"
+        inputMode="numeric"
+        lang="en"
+        dir="ltr"
+        min="1"
+        value={form.estimatedMinutes}
                 onChange={(event) => update((previous) => ({ estimatedMinutes: event.target.value }))}
                 className="input"
               />

@@ -254,11 +254,14 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
               </select>
             </Field>
             <Field label={t('admin.courses.passingScore')}>
-              <input
-                type="number"
-                min="0"
-                max="100"
-                value={form.passingScore}
+      <input
+        type="number"
+        inputMode="numeric"
+        lang="en"
+        dir="ltr"
+        min="0"
+        max="100"
+        value={form.passingScore}
                 onChange={(event) => setForm((previous) => ({ ...previous, passingScore: event.target.value }))}
                 className="input"
               />

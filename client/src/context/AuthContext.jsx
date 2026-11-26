@@ -1,14 +1,22 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
-import { apiRequest, getStoredToken, setStoredToken } from '../lib/api';
+import {
+  apiRequest,
+  clearStoredSession,
+  getStoredSessionStorage,
+  getStoredToken,
+  setStoredToken,
+  setStoredUser,
+} from '../lib/api';
 
 export const AuthContext = createContext();
 
 const readStoredUser = () => {
   try {
-    const stored = localStorage.getItem('edu_user');
+    const storage = getStoredSessionStorage();
+    const stored = storage?.getItem('edu_user');
     return stored ? JSON.parse(stored) : null;
   } catch {
-    localStorage.removeItem('edu_user');
+    clearStoredSession();
     return null;
   }
 };
@@ -18,12 +26,12 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => getStoredToken());
   const [loading, setLoading] = useState(true);
 
-  const persistSession = useCallback((nextUser, nextToken) => {
+  const persistSession = useCallback((nextUser, nextToken, remember = true) => {
     setUser(nextUser);
     setToken(nextToken || '');
-    setStoredToken(nextToken);
+    setStoredToken(nextToken, remember);
     try {
-      localStorage.setItem('edu_user', JSON.stringify(nextUser));
+      setStoredUser(nextUser, remember);
     } catch {
       /* Storage can be unavailable. */
     }
@@ -32,12 +40,7 @@ export const AuthProvider = ({ children }) => {
   const clearSession = useCallback(() => {
     setUser(null);
     setToken('');
-    setStoredToken('');
-    try {
-      localStorage.removeItem('edu_user');
-    } catch {
-      /* Storage can be unavailable. */
-    }
+    clearStoredSession();
   }, []);
 
   useEffect(() => {
@@ -51,12 +54,15 @@ export const AuthProvider = ({ children }) => {
       return undefined;
     }
 
-    apiRequest('/auth/me', { auth: true })
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 8000);
+
+    apiRequest('/auth/me', { auth: true, signal: controller.signal })
       .then((data) => {
         if (!cancelled && data?.user) {
           setUser(data.user);
           try {
-            localStorage.setItem('edu_user', JSON.stringify(data.user));
+            setStoredUser(data.user);
           } catch {
             /* Storage can be unavailable. */
           }
@@ -68,11 +74,14 @@ export const AuthProvider = ({ children }) => {
         }
       })
       .finally(() => {
+        window.clearTimeout(timeoutId);
         if (!cancelled) setLoading(false);
       });
 
     return () => {
       cancelled = true;
+      window.clearTimeout(timeoutId);
+      controller.abort();
     };
   }, [clearSession]);
 
@@ -82,7 +91,7 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('edu:unauthorized', handleUnauthorized);
   }, [clearSession]);
 
-  const login = async (email, password) => {
+  const login = async (email, password, remember = false) => {
     const cleanEmail = String(email || '').trim().toLowerCase();
 
     try {
@@ -114,7 +123,7 @@ export const AuthProvider = ({ children }) => {
         };
       }
 
-      persistSession(authenticatedUser, data.token);
+      persistSession(authenticatedUser, data.token, remember);
       return { success: true, user: authenticatedUser };
     } catch (loginError) {
       return {
@@ -134,7 +143,7 @@ export const AuthProvider = ({ children }) => {
         method: 'POST',
         body: { name, email: cleanEmail, password },
       });
-      persistSession(data, data.token);
+      persistSession(data, data.token, true);
       return { success: true, user: data };
     } catch (error) {
       if (error.status === 0) {
@@ -144,7 +153,7 @@ export const AuthProvider = ({ children }) => {
           role: 'student',
           legacy: true,
         };
-        persistSession(localUser, '');
+        persistSession(localUser, '', true);
         return { success: true, user: localUser };
       }
       return { success: false, message: error.message };
@@ -156,7 +165,7 @@ export const AuthProvider = ({ children }) => {
       if (!previous) return previous;
       const nextUser = { ...previous, ...updates };
       try {
-        localStorage.setItem('edu_user', JSON.stringify(nextUser));
+        setStoredUser(nextUser);
       } catch {
         /* Storage can be unavailable. */
       }
@@ -171,7 +180,7 @@ export const AuthProvider = ({ children }) => {
       if (data?.user) {
         setUser(data.user);
         try {
-          localStorage.setItem('edu_user', JSON.stringify(data.user));
+          setStoredUser(data.user);
         } catch {
           /* Storage can be unavailable. */
         }

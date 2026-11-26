@@ -11,6 +11,7 @@ import {
   Play,
 } from './icons';
 import { resolveAssetUrl } from '../lib/api';
+import { toWesternDigits } from '../lib/format';
 
 export function extractYouTubeId(url) {
   if (!url) return null;
@@ -47,7 +48,7 @@ export const localizeBlockValue = (value, isAr) => {
 
 const textOf = (value, isAr) => {
   const result = localizeBlockValue(value, isAr);
-  return typeof result === 'string' ? result : '';
+  return typeof result === 'string' ? toWesternDigits(result) : '';
 };
 
 const renderInlineText = (text) => {

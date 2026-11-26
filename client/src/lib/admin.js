@@ -1,4 +1,5 @@
 import { apiRequest, resolveAssetUrl } from './api';
+import { toWesternDigits } from './format';
 
 const query = (params = {}) => {
   const search = new URLSearchParams();
@@ -45,54 +46,18 @@ export const adminApi = {
 
 export const localize = (value, language) => {
   if (!value) return '';
-  if (typeof value === 'string') return value;
-  return value[language] || value.en || value.ar || '';
+  if (typeof value === 'string') return toWesternDigits(value);
+  return toWesternDigits(value[language] || value.en || value.ar || '');
 };
 
-export const formatNumber = (value, language) => {
-  if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
-  return new Intl.NumberFormat(language === 'ar' ? 'ar-EG' : 'en-US').format(Number(value));
-};
-
-export const formatPercent = (value, language) => {
-  if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
-  return `${formatNumber(value, language)}%`;
-};
-
-export const formatDate = (value, language, options = {}) => {
-  if (!value) return '—';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return '—';
-  return new Intl.DateTimeFormat(language === 'ar' ? 'ar-EG' : 'en-US', {
-    dateStyle: 'medium',
-    ...options,
-  }).format(date);
-};
-
-export const formatDateTime = (value, language) =>
-  formatDate(value, language, { dateStyle: 'medium', timeStyle: 'short' });
-
-export const relativeTime = (value, language) => {
-  if (!value) return '—';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return '—';
-  const diff = date.getTime() - Date.now();
-  const abs = Math.abs(diff);
-  const units = [
-    ['year', 31536000000],
-    ['month', 2592000000],
-    ['day', 86400000],
-    ['hour', 3600000],
-    ['minute', 60000],
-  ];
-  const formatter = new Intl.RelativeTimeFormat(language === 'ar' ? 'ar' : 'en', { numeric: 'auto' });
-  for (const [unit, ms] of units) {
-    if (abs >= ms || unit === 'minute') {
-      return formatter.format(Math.round(diff / ms), unit);
-    }
-  }
-  return '—';
-};
+export {
+  formatNumber,
+  formatPercent,
+  formatDate,
+  formatDateTime,
+  relativeTime,
+  toWesternDigits,
+} from './format';
 
 export const initials = (name = '') =>
   name

@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiRequest } from '../lib/api';
+import { toWesternDigits } from '../lib/format';
 
 export const CatalogContext = createContext({
   courses: [],
@@ -22,8 +23,8 @@ function mapCourse(course, isAr) {
     id: course.slug,
     databaseId: course._id,
     category: course.category,
-    title: course.title?.[lang] || course.title?.en || course.slug,
-    description: course.description?.[lang] || course.description?.en || '',
+    title: toWesternDigits(course.title?.[lang] || course.title?.en || course.slug),
+    description: toWesternDigits(course.description?.[lang] || course.description?.en || ''),
     duration: `${course.estimatedMinutes || 15} ${isAr ? 'دقيقة' : 'mins'}`,
     minutes: course.estimatedMinutes || 15,
     lessons: lessons.length || course.lessonCount || 0,
@@ -36,12 +37,12 @@ function mapCourse(course, isAr) {
       .sort((a, b) => (a.order || 0) - (b.order || 0))
       .map((lesson) => ({
         id: lesson._id,
-        title: lesson.title?.[lang] || lesson.title?.en || '',
-        content: lesson.content?.[lang] || lesson.content?.en || '',
+        title: toWesternDigits(lesson.title?.[lang] || lesson.title?.en || ''),
+        content: toWesternDigits(lesson.content?.[lang] || lesson.content?.en || ''),
         blocks: lesson.blocks?.[lang] || lesson.blocks?.en || [],
-        warning: lesson.safetyNotes?.[lang] || lesson.safetyNotes?.en || '',
-        safetyNotes: lesson.safetyNotes?.[lang] || lesson.safetyNotes?.en || '',
-        objectives: lesson.objectives?.[lang] || [],
+        warning: toWesternDigits(lesson.safetyNotes?.[lang] || lesson.safetyNotes?.en || ''),
+        safetyNotes: toWesternDigits(lesson.safetyNotes?.[lang] || lesson.safetyNotes?.en || ''),
+        objectives: (lesson.objectives?.[lang] || []).map((objective) => toWesternDigits(objective)),
         sourceRefs: lesson.sourceRefs || [],
         reviewStatus: lesson.reviewStatus,
         videoUrl: lesson.videoUrl,

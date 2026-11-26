@@ -1,4 +1,5 @@
 import React from 'react';
+import { toWesternDigits } from '../../lib/format';
 
 function renderInline(text) {
   const nodes = [];
@@ -104,7 +105,7 @@ const HEADING_CLASS = {
 };
 
 export default function AiMarkdown({ content, className = '' }) {
-  const normalized = String(content ?? '')
+  const normalized = toWesternDigits(String(content ?? ''))
     .replace(/\r\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n');
   const lines = normalized.split('\n');

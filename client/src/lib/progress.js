@@ -1,4 +1,5 @@
 import { apiRequest, getStoredToken } from './api';
+import { formatDate } from './format';
 
 const ACTIVITY_KEY = 'edu_activity_dates';
 const QUIZ_BEST_KEY = 'edu_quiz_best';
@@ -153,9 +154,9 @@ export function getStudentId(email) {
   return `EDU-${year}-${`${hash % 10000}`.padStart(4, '0')}`;
 }
 
-export function getCoursePrintedDate() {
+export function getCoursePrintedDate(language) {
   try {
-    return new Intl.DateTimeFormat(undefined, { month: 'short', year: 'numeric' }).format(new Date());
+    return formatDate(new Date(), language, { month: 'short', year: 'numeric' });
   } catch {
     return String(new Date().getFullYear());
   }

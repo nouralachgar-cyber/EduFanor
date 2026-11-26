@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Loader2, RefreshCw, CheckCircle2, XCircle, ArrowLeft, ArrowRight, Award } from '../icons';
 import { aiApi, localizeAiError } from '../../lib/ai';
 import { saveQuizResult } from '../../lib/progress';
+import { toWesternDigits } from '../../lib/format';
 import AiMarkdown from './AiMarkdown';
 
 export default function AiQuizRunner({ quiz, onDone }) {
@@ -65,7 +66,7 @@ export default function AiQuizRunner({ quiz, onDone }) {
 
       <div className="rounded-2xl border border-line bg-surface-muted/60 p-4">
         <p className="text-[13px] font-extrabold leading-relaxed text-ink sm:text-sm">
-          {questions[step]?.question}
+          {toWesternDigits(questions[step]?.question)}
         </p>
         <div className="mt-3.5 space-y-2">
           {(questions[step]?.options || []).map((option, optionIndex) => {
@@ -88,7 +89,7 @@ export default function AiQuizRunner({ quiz, onDone }) {
                 >
                   {String.fromCharCode(65 + optionIndex)}
                 </span>
-                <span>{option}</span>
+                <span>{toWesternDigits(option)}</span>
               </button>
             );
           })}
@@ -174,7 +175,7 @@ function ResultView({ result, quiz, onDone, isAr }) {
               : 'Review the lesson and try again'}
           </p>
           <p className="mt-1 text-[11px] text-ink-muted">
-            {quiz.lessonTitle ? `${isAr ? 'من' : 'from'}: ${quiz.lessonTitle}` : ''}
+            {quiz.lessonTitle ? `${isAr ? 'من' : 'from'}: ${toWesternDigits(quiz.lessonTitle)}` : ''}
           </p>
         </div>
       </div>
@@ -195,7 +196,7 @@ function ResultView({ result, quiz, onDone, isAr }) {
               )}
               <div className="min-w-0 flex-1 space-y-2">
                 <p className="text-xs font-extrabold leading-relaxed text-ink">
-                  {index + 1}. {item.question}
+                  {index + 1}. {toWesternDigits(item.question)}
                 </p>
                 <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] font-bold text-ink-muted">
                   <span>
@@ -205,13 +206,13 @@ function ResultView({ result, quiz, onDone, isAr }) {
                         ? isAr
                           ? 'بدون إجابة'
                           : 'not answered'
-                        : item.options?.[item.chosen] || '—'}
+                        : toWesternDigits(item.options?.[item.chosen] || '—')}
                     </span>
                   </span>
                   <span>
                     {isAr ? 'الصحيحة' : 'Correct'}:{' '}
                     <span className="text-success-ink">
-                      {item.options?.[item.correctAnswer] || '—'}
+                      {toWesternDigits(item.options?.[item.correctAnswer] || '—')}
                     </span>
                   </span>
                 </div>
@@ -236,7 +237,7 @@ export function RetryHint({ isAr, error, onRetry }) {
   return (
     <div className="flex items-center gap-2 rounded-xl border border-danger/25 bg-danger-soft px-3.5 py-2.5 text-xs font-bold text-danger">
       <XCircle className="h-4 w-4 shrink-0" />
-      <span className="flex-1">{error}</span>
+      <span className="flex-1">{toWesternDigits(error)}</span>
       {onRetry && (
         <button
           type="button"

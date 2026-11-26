@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Eye, EyeOff } from '../components/icons';
 import { AuthContext } from '../context/AuthContext';
+import { hasRememberedSession } from '../lib/api';
 import AuthLayout from '../components/AuthLayout';
 import styles from './Login.module.css';
 
@@ -15,7 +16,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(() => hasRememberedSession());
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
@@ -27,7 +28,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const result = await login(email, password);
+      const result = await login(email, password, rememberMe);
       if (!result?.success) {
         if (result?.code === 'INVALID_CREDENTIALS' || result?.status === 401) {
           setErrorMsg(t('auth.invalidCredentials'));

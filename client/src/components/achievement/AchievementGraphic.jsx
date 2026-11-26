@@ -1,16 +1,17 @@
 import React, { useId } from 'react';
 import { useTranslation } from 'react-i18next';
+import { formatDate } from '../../lib/format';
 
 function formatCompletionDate(value, isAr) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '';
   try {
-    return new Intl.DateTimeFormat(isAr ? 'ar' : 'en', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      timeZone: 'UTC',
-    }).format(date);
+    return formatDate(
+      date,
+      isAr ? 'ar' : 'en',
+      { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' },
+      'ar'
+    );
   } catch {
     return date.toISOString().slice(0, 10);
   }

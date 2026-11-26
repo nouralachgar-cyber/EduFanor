@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatNumber } from '../../lib/admin';
+import { formatDate, formatNumber } from '../../lib/admin';
 
 const palette = [
   'var(--palette-lavender)',
@@ -37,10 +37,7 @@ export function LineChart({
   const shortDate = (value) => {
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return '';
-    return new Intl.DateTimeFormat(language === 'ar' ? 'ar-EG' : 'en-US', {
-      month: 'short',
-      day: 'numeric',
-    }).format(date);
+    return formatDate(date, language, { month: 'short', day: 'numeric' });
   };
 
   if (!data.length) {

@@ -28,21 +28,80 @@ export class ApiError extends Error {
   }
 }
 
-export function getStoredToken() {
-  try {
-    return localStorage.getItem('edu_token') || '';
-  } catch {
-    return '';
-  }
-}
+const TOKEN_KEY = 'edu_token';
+const USER_KEY = 'edu_user';
 
-export function setStoredToken(token) {
+const readStorage = (storage, key) => {
   try {
-    if (token) localStorage.setItem('edu_token', token);
-    else localStorage.removeItem('edu_token');
+    return storage.getItem(key);
+  } catch {
+    return null;
+  }
+};
+
+const writeStorage = (storage, key, value) => {
+  try {
+    if (value) storage.setItem(key, value);
+    else storage.removeItem(key);
   } catch {
     /* Storage can be unavailable. */
   }
+};
+
+const removeStorage = (storage, key) => {
+  try {
+    storage.removeItem(key);
+  } catch {
+    /* Storage can be unavailable. */
+  }
+};
+
+export function getStoredToken() {
+  return (
+    readStorage(window.localStorage, TOKEN_KEY) ||
+    readStorage(window.sessionStorage, TOKEN_KEY) ||
+    ''
+  );
+}
+
+export function getStoredSessionStorage() {
+  if (readStorage(window.localStorage, TOKEN_KEY)) return window.localStorage;
+  if (readStorage(window.sessionStorage, TOKEN_KEY)) return window.sessionStorage;
+  if (readStorage(window.localStorage, USER_KEY)) return window.localStorage;
+  if (readStorage(window.sessionStorage, USER_KEY)) return window.sessionStorage;
+  return null;
+}
+
+export function hasRememberedSession() {
+  return Boolean(
+    readStorage(window.localStorage, TOKEN_KEY) || readStorage(window.localStorage, USER_KEY)
+  );
+}
+
+export function setStoredToken(token, remember = true) {
+  const target = remember ? window.localStorage : window.sessionStorage;
+  const other = remember ? window.sessionStorage : window.localStorage;
+  writeStorage(target, TOKEN_KEY, token);
+  removeStorage(other, TOKEN_KEY);
+}
+
+export function setStoredUser(user, remember) {
+  const target =
+    typeof remember === 'boolean'
+      ? remember
+        ? window.localStorage
+        : window.sessionStorage
+      : getStoredSessionStorage() || window.localStorage;
+  const other = target === window.localStorage ? window.sessionStorage : window.localStorage;
+  writeStorage(target, USER_KEY, user ? JSON.stringify(user) : '');
+  removeStorage(other, USER_KEY);
+}
+
+export function clearStoredSession() {
+  [window.localStorage, window.sessionStorage].forEach((storage) => {
+    removeStorage(storage, TOKEN_KEY);
+    removeStorage(storage, USER_KEY);
+  });
 }
 
 export async function apiRequest(path, options = {}) {
