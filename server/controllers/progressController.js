@@ -2,8 +2,10 @@ const Progress = require('../models/Progress');
 const ActivityEvent = require('../models/ActivityEvent');
 const Lesson = require('../models/Lesson');
 const Quiz = require('../models/Quiz');
+const CourseCertificate = require('../models/CourseCertificate');
 const mongoose = require('mongoose');
 const { getOrCreateLearningAchievement } = require('../services/learningAchievementService');
+const { issueCourseCertificate, serializeCertificate } = require('../services/courseCertificateService');
 
 const allowedTypes = new Set(['course_start', 'course_complete', 'lesson_complete', 'quiz_attempt']);
 
@@ -18,7 +20,14 @@ const getMyProgress = async (req, res) => {
       .limit(50)
       .populate({ path: 'lesson', select: 'title course', populate: { path: 'course', select: 'title slug' } })
       .lean();
-    return res.json({ progress: progress || null, events });
+    const certificates = await CourseCertificate.find({ user: req.user._id })
+      .sort({ issuedAt: -1 })
+      .lean();
+    return res.json({
+      progress: progress || null,
+      events,
+      certificates: certificates.map(serializeCertificate)
+    });
   } catch (error) {
     return res.status(500).json({ message: 'Unable to load progress: ' + error.message });
   }
@@ -138,9 +147,25 @@ const completeLesson = async (req, res) => {
       });
     }
 
+    let certificate = null;
+    let certificateIssued = false;
+    try {
+      const certificateResult = await issueCourseCertificate(
+        req.user._id,
+        lesson.course.slug || lesson.course._id,
+        req.user.name
+      );
+      certificate = certificateResult.certificate;
+      certificateIssued = certificateResult.status === 'issued';
+    } catch {
+      certificateIssued = false;
+    }
+
     const result = await getOrCreateLearningAchievement(req.user._id);
     return res.json({
       completed: true,
+      certificate,
+      certificateIssued,
       achievement: result.achievement
         ? {
             id: String(result.achievement._id),

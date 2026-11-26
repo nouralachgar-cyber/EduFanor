@@ -22,24 +22,16 @@ import { extractYouTubeId } from '../LessonBlocks';
 import { adminApi } from '../../lib/admin';
 import { resolveAssetUrl } from '../../lib/api';
 import { blankBlock } from './LessonBlocksEditor';
+import {
+  LIST_BLOCK_TYPES,
+  MEDIA_BLOCK_TYPES,
+  TEXT_BLOCK_TYPES,
+  anchorFromEditable,
+  insertLessonBlock,
+} from './lessonDocumentModel';
 
-const TEXT_BLOCK_TYPES = new Set([
-  'paragraph',
-  'text',
-  'rich-text',
-  'heading',
-  'subheading',
-  'note',
-  'tip',
-  'warning',
-  'important',
-  'callout',
-  'safety',
-]);
-const LIST_BLOCK_TYPES = new Set(['list', 'numbered-list']);
-const MEDIA_BLOCK_TYPES = new Set(['image', 'video', 'youtube']);
 const MAX_FILE_BYTES = 7.5 * 1024 * 1024;
-const IMAGE_TYPES = 'image/png,image/jpeg,image/webp,image/gif';
+const IMAGE_TYPES = 'image/jpeg,image/jpg,image/png,image/webp,image/gif';
 const VIDEO_TYPES = 'video/mp4,video/webm,video/ogg';
 
 const textOf = (value) => (typeof value === 'string' ? value : '');
@@ -71,6 +63,7 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
   const videoInputRef = useRef(null);
   const blocksRef = useRef(blocks);
   const insertionRef = useRef({ index: null, blockId: null, start: 0, end: 0 });
+  const pendingInsertionRef = useRef(null);
   const focusAfterRenderRef = useRef(null);
   const replaceMediaRef = useRef(null);
   const [activeBlockId, setActiveBlockId] = useState(null);
@@ -157,116 +150,39 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
   }, [blocks]);
 
   const insertBlock = (type, data = {}, explicitIndex = null) => {
-    const current = blocksRef.current;
-    const anchor = insertionRef.current;
-    const anchorIndex =
-      explicitIndex !== null
-        ? explicitIndex
-        : anchor.blockId
-          ? current.findIndex((block) => block.id === anchor.blockId)
-          : Number.isInteger(anchor.index)
-            ? anchor.index
-            : current.length;
-    const inserted = blankBlock(type);
-    inserted.data = { ...inserted.data, ...data };
-    const isMedia = MEDIA_BLOCK_TYPES.has(type);
-    let next;
-    let focusId = inserted.id;
-    let focusOffset = 0;
-
-    if (explicitIndex === null && anchorIndex >= 0 && anchor.blockId) {
-      const original = current[anchorIndex];
-      const isList = LIST_BLOCK_TYPES.has(original.type);
-      if (TEXT_BLOCK_TYPES.has(original.type) || isList) {
-        const source = isList
-          ? (Array.isArray(original.data?.items?.[language]) ? original.data.items[language] : []).join('\n')
-          : textOf(original.content?.[language]);
-        const start = Math.min(Math.max(0, anchor.start), source.length);
-        const end = Math.min(Math.max(start, anchor.end), source.length);
-        const before = source.slice(0, start);
-        const after = source.slice(end);
-        const prefix = isList
-          ? {
-              ...original,
-              data: {
-                ...original.data,
-                items: {
-                  ...(original.data?.items || { ar: [], en: [] }),
-                  [language]: before ? before.split('\n') : [],
-                },
-              },
-            }
-          : { ...original, content: { ...original.content, [language]: before } };
-
-        if (isMedia) {
-          const continuation = blankBlock('paragraph');
-          continuation.content = { ...continuation.content, [language]: isList ? '' : after };
-          const remainder = isList && after
-            ? [{
-                ...blankBlock(original.type),
-                data: {
-                  ...original.data,
-                  items: {
-                    ...(original.data?.items || { ar: [], en: [] }),
-                    [language]: after.split('\n'),
-                  },
-                },
-              }]
-            : [];
-          next = [
-            ...current.slice(0, anchorIndex),
-            prefix,
-            inserted,
-            continuation,
-            ...remainder,
-            ...current.slice(anchorIndex + 1),
-          ];
-          focusId = continuation.id;
-        } else {
-          const continuation = blankBlock(isList ? original.type : 'paragraph');
-          if (isList) {
-            continuation.data.items[language] = after ? after.split('\n') : [];
-          } else {
-            continuation.content = { ...continuation.content, [language]: after };
-          }
-          next = [
-            ...current.slice(0, anchorIndex),
-            prefix,
-            inserted,
-            ...(after ? [continuation] : []),
-            ...current.slice(anchorIndex + 1),
-          ];
-          if (after) focusId = continuation.id;
-        }
-      } else {
-        const index = anchorIndex + 1;
-        const continuation = isMedia ? blankBlock('paragraph') : null;
-        next = [
-          ...current.slice(0, index),
-          inserted,
-          ...(continuation ? [continuation] : []),
-          ...current.slice(index),
-        ];
-        if (continuation) focusId = continuation.id;
-      }
-    } else {
-      const index = Math.max(0, Math.min(explicitIndex ?? anchorIndex, current.length));
-      const continuation = isMedia ? blankBlock('paragraph') : null;
-      next = [
-        ...current.slice(0, index),
-        inserted,
-        ...(continuation ? [continuation] : []),
-        ...current.slice(index),
-      ];
-      if (continuation) focusId = continuation.id;
-    }
-
-    if (!next.length) next = [blankBlock('paragraph')];
+    const { blocks: next, focusId, focusOffset } = insertLessonBlock(
+      blocksRef.current,
+      type,
+      data,
+      insertionRef.current,
+      language,
+      explicitIndex
+    );
     insertionRef.current = { index: null, blockId: focusId, start: focusOffset, end: focusOffset };
     focusAfterRenderRef.current = { blockId: focusId, offset: focusOffset };
     setActiveBlockId(focusId);
     setInsertMenuAt(null);
     changeBlocks(next);
+  };
+
+  const captureInsertion = (index = null) => {
+    const active = typeof document === 'undefined' ? null : document.activeElement;
+    const anchor = Number.isInteger(index)
+      ? { index, blockId: null, start: 0, end: 0 }
+      : anchorFromEditable(active, blocksRef.current, insertionRef.current);
+    insertionRef.current = { ...anchor };
+    return { ...anchor };
+  };
+
+  const consumePendingInsertion = () => {
+    const pending = pendingInsertionRef.current;
+    pendingInsertionRef.current = null;
+    if (pending) insertionRef.current = { ...pending };
+  };
+
+  const resetMediaInput = (kind) => {
+    const input = kind === 'image' ? imageInputRef.current : videoInputRef.current;
+    if (input) input.value = '';
   };
 
   const setInsertionPoint = (index) => {
@@ -288,13 +204,13 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
 
   const openImagePicker = (index = null, replaceId = null) => {
     replaceMediaRef.current = replaceId;
-    if (Number.isInteger(index)) insertionRef.current = { index, blockId: null, start: 0, end: 0 };
+    pendingInsertionRef.current = replaceId ? null : captureInsertion(index);
     imageInputRef.current?.click();
   };
 
   const openVideoPanel = (index = null, replaceId = null) => {
     replaceMediaRef.current = replaceId;
-    if (Number.isInteger(index)) insertionRef.current = { index, blockId: null, start: 0, end: 0 };
+    pendingInsertionRef.current = replaceId ? null : captureInsertion(index);
     setVideoPanelOpen(true);
     setInsertMenuAt(null);
     setError('');
@@ -304,10 +220,12 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
     if (!file) return;
     const allowedTypes = kind === 'image' ? IMAGE_TYPES : VIDEO_TYPES;
     if (!allowedTypes.split(',').includes(file.type)) {
-      setError(label('Choose a supported image or video file.', 'اختر ملف صورة أو فيديو مدعوماً.'));
+      resetMediaInput(kind);
+      setError(label('Choose a JPG, PNG, WEBP, GIF, MP4, WEBM or OGG file.', 'اختر ملف صورة أو فيديو مدعوماً.'));
       return;
     }
     if (file.size > MAX_FILE_BYTES) {
+      resetMediaInput(kind);
       setError(label('Media must be 7.5 MB or smaller.', 'يجب ألا يتجاوز حجم الوسائط 7.5 ميغابايت.'));
       return;
     }
@@ -325,18 +243,18 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
       if (!result?.url) throw new Error(label('The media upload did not return a URL.', 'لم يُرجع رفع الوسائط رابطاً.'));
 
       const replaceId = replaceMediaRef.current;
+      replaceMediaRef.current = null;
       if (replaceId) {
         changeMedia(replaceId, { url: result.url });
-        replaceMediaRef.current = null;
       } else {
+        consumePendingInsertion();
         insertBlock(kind === 'image' ? 'image' : 'video', { url: result.url });
       }
     } catch (uploadError) {
       setError(uploadError.message || label('Media upload failed.', 'تعذر رفع الوسائط.'));
     } finally {
       setUploading('');
-      if (kind === 'image' && imageInputRef.current) imageInputRef.current.value = '';
-      if (kind === 'video' && videoInputRef.current) videoInputRef.current.value = '';
+      resetMediaInput(kind);
     }
   };
 
@@ -346,9 +264,11 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
       setError(label('Enter a valid YouTube URL.', 'أدخل رابط يوتيوب صالحاً.'));
       return;
     }
+    consumePendingInsertion();
     insertBlock('youtube', { url });
     setVideoUrl('');
     setVideoPanelOpen(false);
+    replaceMediaRef.current = null;
     setError('');
   };
 
@@ -628,8 +548,22 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
           <EditorButton icon={Video} onClick={() => openVideoPanel()} disabled={Boolean(uploading)}>{label('Video', 'فيديو')}</EditorButton>
         </div>
 
-        <input ref={imageInputRef} type="file" accept={IMAGE_TYPES} className="hidden" onChange={(event) => handleUpload(event.target.files?.[0], 'image')} />
-        <input ref={videoInputRef} type="file" accept={VIDEO_TYPES} className="hidden" onChange={(event) => handleUpload(event.target.files?.[0], 'video')} />
+        <input
+          ref={imageInputRef}
+          type="file"
+          accept={IMAGE_TYPES}
+          className="hidden"
+          onChange={(event) => handleUpload(event.target.files?.[0], 'image')}
+          onCancel={() => { pendingInsertionRef.current = null; replaceMediaRef.current = null; resetMediaInput('image'); }}
+        />
+        <input
+          ref={videoInputRef}
+          type="file"
+          accept={VIDEO_TYPES}
+          className="hidden"
+          onChange={(event) => handleUpload(event.target.files?.[0], 'video')}
+          onCancel={() => { pendingInsertionRef.current = null; replaceMediaRef.current = null; resetMediaInput('video'); }}
+        />
 
         {videoPanelOpen && (
           <div className="flex flex-col gap-3 border-b border-line bg-card p-3 sm:flex-row sm:items-center" dir={isAr ? 'rtl' : 'ltr'}>
@@ -640,7 +574,7 @@ export default function LessonDocumentEditor({ blocks, onChange, language, onLan
               <input type="url" value={videoUrl} onChange={(event) => setVideoUrl(event.target.value)} onKeyDown={(event) => event.key === 'Enter' && addYouTube()} dir="ltr" placeholder="https://youtube.com/watch?v=…" aria-label={label('YouTube video URL', 'رابط فيديو يوتيوب')} className="input h-9 min-w-0 flex-1 text-xs" />
               <EditorButton icon={Link2} onClick={addYouTube}>{label('Insert YouTube', 'إدراج يوتيوب')}</EditorButton>
             </div>
-            <button type="button" onClick={() => { setVideoPanelOpen(false); setVideoUrl(''); replaceMediaRef.current = null; }} className="px-2 py-1 text-xs font-bold text-ink-muted hover:text-ink">{label('Close', 'إغلاق')}</button>
+            <button type="button" onClick={() => { setVideoPanelOpen(false); setVideoUrl(''); pendingInsertionRef.current = null; replaceMediaRef.current = null; }} className="px-2 py-1 text-xs font-bold text-ink-muted hover:text-ink">{label('Close', 'إغلاق')}</button>
           </div>
         )}
 

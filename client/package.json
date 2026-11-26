@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "test": "node --test test/auth-navigation.test.js",
+    "test": "node --test test/auth-navigation.test.js test/certificate.test.js test/lesson-image-insertion.test.js",
     "preview": "vite preview"
   },
   "dependencies": {

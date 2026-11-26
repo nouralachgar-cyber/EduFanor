@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { Award, CheckCircle2, Circle, Flame, TrendingUp, ArrowRight, ArrowLeft, HelpCircle, Sparkles } from '../components/icons';
 import { getLearningStreak, getQuizBest, isCourseCompleted } from '../lib/progress';
 import { useCatalog } from '../context/CatalogContext';
+import useCertificates from '../hooks/useCertificates';
 
 export default function Progress() {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === 'ar';
 
   const { courses } = useCatalog();
+  const { certificates, byCourse: certificatesByCourse } = useCertificates();
   const courseList = Array.isArray(courses) ? courses : [];
   const completed = courseList.filter((course) => isCourseCompleted(course.id));
   const totalCompleted = completed.length;
@@ -77,8 +79,8 @@ export default function Progress() {
                 },
                 {
                   icon: TrendingUp,
-                  label: isAr ? 'الخطوة التالية' : 'Next step',
-                  value: totalCompleted < courseList.length ? (isAr ? 'واصل' : 'Continue') : isAr ? 'مكتمل' : 'Complete',
+                  label: isAr ? 'الشهادات المكتسبة' : 'Certificates earned',
+                  value: `${certificates.length}`,
                 },
               ].map((stat) => {
                 const Icon = stat.icon;
@@ -112,6 +114,7 @@ export default function Progress() {
           <div className="card divide-y divide-line overflow-hidden">
             {courseList.map((course) => {
               const done = isCourseCompleted(course.id);
+              const certificate = certificatesByCourse[course.id];
               return (
                 <div key={course.id} className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex items-start gap-3">
@@ -137,9 +140,9 @@ export default function Progress() {
                     >
                       {done ? t('coursesPage.completed') : isAr ? 'لم يكتمل' : 'Not completed'}
                     </span>
-                    {done && (
+                    {certificate && (
                       <Link
-                        to={`/certificate/${course.id}`}
+                        to={`/certificate/${certificate.courseKey}`}
                         className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-surface px-3 py-2 text-xs font-extrabold text-ink-soft transition-colors hover:bg-highlight hover:text-ink"
                       >
                         <Award className="h-3.5 w-3.5 text-primary" />

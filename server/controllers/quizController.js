@@ -4,6 +4,7 @@ const Progress = require('../models/Progress');
 const ActivityEvent = require('../models/ActivityEvent');
 const mongoose = require('mongoose');
 const { getOrCreateLearningAchievement } = require('../services/learningAchievementService');
+const { issueCourseCertificate } = require('../services/courseCertificateService');
 
 const hideCorrectAnswers = (quiz) => ({
   ...quiz,
@@ -122,9 +123,25 @@ const submitQuizAttempt = async (req, res) => {
       occurredAt: attemptedAt
     });
 
+    let certificate = null;
+    let certificateIssued = false;
+    try {
+      const certificateResult = await issueCourseCertificate(
+        req.user._id,
+        quiz.lesson.course.slug,
+        req.user.name
+      );
+      certificate = certificateResult.certificate;
+      certificateIssued = certificateResult.status === 'issued';
+    } catch {
+      certificateIssued = false;
+    }
+
     const result = await getOrCreateLearningAchievement(req.user._id);
     return res.json({
       score: { correct, total: quiz.questions.length, percent, passed, passingScore },
+      certificate,
+      certificateIssued,
       achievement: result.achievement
         ? {
             record: {

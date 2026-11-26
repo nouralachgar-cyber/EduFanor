@@ -5,6 +5,7 @@ import { Search, Clock, BookOpen, ArrowRight, ArrowLeft, ShieldCheck, SearchX, C
 import CourseArt from '../components/CourseArt';
 import { isCourseCompleted } from '../lib/progress';
 import { useCatalog } from '../context/CatalogContext';
+import useCertificates from '../hooks/useCertificates';
 
 export default function Courses() {
   const { t, i18n } = useTranslation();
@@ -13,8 +14,9 @@ export default function Courses() {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const { courses } = useCatalog();
+  const { byCourse: certificatesByCourse } = useCertificates();
   const courseList = Array.isArray(courses) ? courses : [];
-  const completedCount = courseList.filter((course) => isCourseCompleted(course.id)).length;
+  const completedCount = courseList.filter((course) => certificatesByCourse[course.id]).length;
 
   const filteredCourses = courseList.filter((course) => {
     const matchesSearch =
@@ -109,6 +111,7 @@ export default function Courses() {
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {filteredCourses.map((course) => {
               const completed = isCourseCompleted(course.id);
+              const certificate = certificatesByCourse[course.id];
               return (
                 <article
                   key={course.id}
@@ -143,9 +146,9 @@ export default function Courses() {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        {completed && (
+                        {certificate && (
                           <Link
-                            to={`/certificate/${course.id}`}
+                            to={`/certificate/${certificate.courseKey}`}
                             className="inline-flex items-center gap-1.5 rounded-xl border border-line bg-surface px-3 py-2.5 text-xs font-extrabold text-ink-soft transition-all hover:bg-highlight hover:text-ink"
                           >
                             <Award className="h-3.5 w-3.5 text-primary" />

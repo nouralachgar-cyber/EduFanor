@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
+import useCertificates from '../hooks/useCertificates';
+import { formatCertificateDate } from '../lib/certificateLayout';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
@@ -71,7 +73,8 @@ export default function Dashboard() {
   const [achievementResponse, setAchievementResponse] = useState(null);
 
   const { courses } = useCatalog();
-  const courseList = Array.isArray(courses) ? courses : [];
+  const { certificates, byCourse: certificatesByCourse } = useCertificates();
+  const courseList = useMemo(() => (Array.isArray(courses) ? courses : []), [courses]);
   const achievementUserId = String(user?._id || user?.id || user?.email || '');
   const currentAchievementResponse =
     achievementResponse?.userId === achievementUserId ? achievementResponse : null;
@@ -153,12 +156,13 @@ export default function Dashboard() {
         return {
           ...course,
           completed: percent >= 100,
+          certificate: certificatesByCourse[course.id] || null,
           done,
           total,
           percent,
         };
       }),
-    [courseList, remoteCompletedIds, remoteCourseCounts]
+    [courseList, remoteCompletedIds, remoteCourseCounts, certificatesByCourse]
   );
 
   const totals = useMemo(
@@ -380,6 +384,44 @@ export default function Dashboard() {
           />
         )}
 
+        {certificates.length > 0 && (
+          <section
+            style={{ animationDelay: '400ms' }}
+            className="animate-fade-up rounded-2xl border border-line/90 bg-surface p-5 shadow-sm dark:border-line dark:bg-surface-2 sm:p-6"
+          >
+            <div className="flex flex-col justify-between gap-3 border-b border-line pb-4 dark:border-line sm:flex-row sm:items-end">
+              <div>
+                <h2 className="section-title">{t('certificate.view')}</h2>
+                <p className="section-subtitle">
+                  {isAr ? 'شهاداتك المكتملة جاهزة للتنزيل والمشاركة.' : 'Your earned certificates are ready to download and share.'}
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {certificates.map((certificate) => (
+                <Link
+                  key={certificate.id}
+                  to={`/certificate/${certificate.courseKey}`}
+                  className="group flex items-center gap-3 rounded-xl border border-line bg-card p-4 transition-all hover:-translate-y-0.5 hover:border-primary hover:shadow-md dark:border-line dark:bg-surface"
+                >
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-positive-soft text-positive-ink">
+                    <Award className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-bold text-ink dark:text-on-dark">
+                      {certificate.courseTitle}
+                    </span>
+                    <span className="mt-0.5 block text-[11px] font-semibold text-ink-soft dark:text-lavender">
+                      {formatCertificateDate(certificate.completedAt)} · {certificate.certificateId}
+                    </span>
+                  </span>
+                  <ArrowRight className={`h-4 w-4 shrink-0 text-ink-soft ${arrowClass}`} />
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section className="space-y-5">
           <div className="flex flex-col justify-between gap-3 border-b border-line pb-4 dark:border-line sm:flex-row sm:items-end">
             <div>
@@ -467,6 +509,15 @@ export default function Dashboard() {
                     <span className="text-[11px] font-bold text-ink-soft dark:text-lavender">
                       {course.lessons} {t('coursesPage.lessonsCount')}
                     </span>
+                    {course.certificate && (
+                      <Link
+                        to={`/certificate/${course.certificate.courseKey}`}
+                        className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-extrabold text-primary transition-colors hover:bg-highlight"
+                      >
+                        <Award className="h-3.5 w-3.5" />
+                        {t('certificate.view')}
+                      </Link>
+                    )}
                     <Link
                       to={`/lesson?id=${course.id}`}
                       className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-extrabold text-ink-soft transition-colors hover:bg-highlight hover:text-ink dark:text-lavender dark:hover:bg-primary/10 dark:hover:text-lavender"
