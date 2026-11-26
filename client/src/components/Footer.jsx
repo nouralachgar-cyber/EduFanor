@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
-            <Link to="/" className="group inline-flex items-center">
+            <Link to="/" onClick={(event) => event.stopPropagation()} className="group inline-flex items-center">
               <EduFanorWordmark
                 className="w-36 text-ink-soft transition-transform duration-300 group-hover:scale-[1.015] dark:text-on-dark"
               />

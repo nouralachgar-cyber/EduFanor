@@ -21,6 +21,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import EduFanorWordmark from './EduFanorWordmark';
 import ThemeToggle from './ui/ThemeToggle';
+import { navigationOnlyClick } from '../lib/authNavigation';
 
 export default function Navbar() {
   const { t, i18n } = useTranslation();
@@ -72,6 +73,13 @@ export default function Navbar() {
     setMobileMenuOpen(false);
     logout();
     navigate('/login');
+  };
+
+  const handleHomeNavigation = (event) => {
+    navigationOnlyClick(event, [
+      () => setProfileDropdownOpen(false),
+      () => setMobileMenuOpen(false),
+    ]);
   };
 
   const navLinks = [
@@ -205,6 +213,7 @@ export default function Navbar() {
                         <Link
                           key={item.to}
                           to={item.to}
+                          onClick={item.to === '/' ? handleHomeNavigation : undefined}
                           role="menuitem"
                           className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-bold text-ink transition-colors hover:bg-highlight hover:text-ink dark:text-lavender dark:hover:bg-surface-2 dark:hover:text-lavender"
                         >
@@ -298,6 +307,7 @@ export default function Navbar() {
                     <Link
                       key={item.to}
                       to={item.to}
+                      onClick={item.to === '/' ? handleHomeNavigation : undefined}
                       className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-ink transition-colors hover:bg-highlight hover:text-ink dark:text-lavender dark:hover:bg-surface-2 dark:hover:text-lavender"
                     >
                       <Icon className="h-5 w-5 text-ink-soft dark:text-lavender" />

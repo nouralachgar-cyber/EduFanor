@@ -65,6 +65,7 @@ export default function AdminLessonEditor() {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === 'ar';
   const fileRef = useRef(null);
+  const saveLockRef = useRef(false);
 
   const [courses, setCourses] = useState([]);
   const [coursesLoading, setCoursesLoading] = useState(true);
@@ -82,6 +83,7 @@ export default function AdminLessonEditor() {
   const [savingMode, setSavingMode] = useState(null);
   const [coverBusy, setCoverBusy] = useState(false);
   const [banner, setBanner] = useState('');
+  const [saveError, setSaveError] = useState('');
   const [toast, setToast] = useState(null);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewLang, setPreviewLang] = useState(isAr ? 'ar' : 'en');
@@ -267,8 +269,10 @@ export default function AdminLessonEditor() {
     setAiPreview(null);
   };
 
-  const update = (patch) =>
+  const update = (patch) => {
+    setSaveError('');
     setForm((previous) => ({ ...previous, ...(typeof patch === 'function' ? patch(previous) : patch) }));
+  };
 
   const buildPayload = (published) => ({
     course: form.course || defaultCourse,
@@ -289,24 +293,30 @@ export default function AdminLessonEditor() {
   });
 
   const validate = () => {
-    if (!(form.course || defaultCourse)) {
-      setBanner(t('admin.editor.validationCourse'));
+    const invalid = (message) => {
+      setBanner(message);
+      setSaveError(message);
       return false;
+    };
+    const courseId = form.course || defaultCourse;
+    if (!courseId || !courses.some((course) => course._id === courseId)) {
+      return invalid(t('admin.editor.validationCourse'));
     }
     if (!form.title.ar.trim() || !form.title.en.trim()) {
-      setBanner(t('admin.editor.validationTitles'));
-      return false;
+      return invalid(t('admin.editor.validationTitles'));
     }
     const contentBlocks = lessonBlocksForSave(lessonBlocks);
     if (!hasBlockContent(contentBlocks)) {
-      setBanner(t('admin.editor.validationContent'));
-      return false;
+      return invalid(t('admin.editor.validationContent'));
     }
     return true;
   };
 
   const save = async (published) => {
+    if (saveLockRef.current) return;
+    setSaveError('');
     if (!validate()) return;
+    saveLockRef.current = true;
     setSavingMode(published ? 'publish' : 'draft');
     setBanner('');
     try {
@@ -323,8 +333,11 @@ export default function AdminLessonEditor() {
       }
       refreshQuizzes((value) => value + 1);
     } catch (err) {
-      setBanner(err.message || t('admin.editor.saveFailed'));
+      const message = err.message || t('admin.editor.saveFailed');
+      setBanner(message);
+      setSaveError(message);
     } finally {
+      saveLockRef.current = false;
       setSavingMode(null);
     }
   };
@@ -423,7 +436,7 @@ export default function AdminLessonEditor() {
   }
 
   return (
-    <div className="space-y-6 bg-canvas min-h-screen p-6 text-ink pb-16">
+    <div className="space-y-6 bg-canvas min-h-screen p-4 text-ink pb-16 sm:p-6">
       <div>
         <button
           type="button"
@@ -721,7 +734,7 @@ export default function AdminLessonEditor() {
           <Panel
             title={t('admin.editor.sectionQuizzes')}
             subtitle={t('admin.editor.sectionQuizzesHint')}
-            className="bg-surface border border-line rounded-2xl p-6 shadow-sm"
+            className="bg-surface border border-line rounded-2xl p-4 shadow-sm sm:p-6"
             actions={
               <div className="flex items-center gap-2">
                 <button
@@ -802,29 +815,45 @@ export default function AdminLessonEditor() {
             )}
           </Panel>
 
-          <div className="sticky bottom-6 z-20 left-1/2 -translate-x-1/2">
-            <div className="rounded-2xl border border-line bg-surface/95 p-3 shadow-xl backdrop-blur flex flex-wrap items-center justify-between gap-2">
-              <p className="max-w-[60%] text-base font-bold text-ink-soft">{t('admin.editor.saveHint')}</p>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => save(false)}
-                  disabled={Boolean(savingMode)}
-                  className="flex items-center gap-1.5 rounded-xl bg-surface-2 px-5 py-3 text-base font-bold text-ink border border-line hover:bg-highlight transition-colors shadow-sm disabled:opacity-50 min-h-12"
-                >
-                  <Save className="h-4 w-4 text-lavender" />
-                  {savingMode === 'draft' ? t('admin.common.saving') : t('admin.editor.saveDraft')}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => save(true)}
-                  disabled={Boolean(savingMode)}
-                  className="flex items-center gap-1.5 rounded-xl bg-primary px-6 py-3 text-extrabold text-on-primary hover:bg-primary-hover shadow-md disabled:opacity-50 min-h-12"
-                >
-                  <ShieldCheck className="h-4 w-4 text-lavender" />
-                  {savingMode === 'publish' ? t('admin.common.saving') : t('admin.editor.publish')}
+          <div className="rounded-2xl border border-line bg-surface/95 p-3 shadow-sm">
+            {saveError && (
+              <div role="alert" className="mb-2 flex w-full items-center gap-2 rounded-xl border border-line bg-negative-soft px-3 py-2 text-xs font-bold text-negative-ink">
+                <XCircle className="h-4 w-4 shrink-0" />
+                <span className="min-w-0 flex-1">{saveError}</span>
+                <button type="button" onClick={() => setSaveError('')} className="shrink-0 text-xs font-extrabold hover:underline">
+                  {t('admin.common.close')}
                 </button>
               </div>
+            )}
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
+              <button
+                type="button"
+                onClick={() => save(false)}
+                disabled={Boolean(savingMode)}
+                aria-busy={savingMode === 'draft'}
+                className="flex min-h-12 w-full items-center justify-center gap-1.5 rounded-xl bg-surface-2 px-5 py-3 text-sm font-bold text-ink border border-line hover:bg-highlight transition-colors shadow-sm disabled:opacity-50 sm:w-auto"
+              >
+                {savingMode === 'draft' ? (
+                  <Loader2 className="h-4 w-4 animate-spin text-lavender" />
+                ) : (
+                  <Save className="h-4 w-4 text-lavender" />
+                )}
+                {savingMode === 'draft' ? t('admin.common.saving') : t('admin.editor.saveDraft')}
+              </button>
+              <button
+                type="button"
+                onClick={() => save(true)}
+                disabled={Boolean(savingMode)}
+                aria-busy={savingMode === 'publish'}
+                className="flex min-h-12 w-full items-center justify-center gap-1.5 rounded-xl bg-primary px-6 py-3 text-sm font-extrabold text-on-primary hover:bg-primary-hover shadow-md disabled:opacity-50 sm:w-auto"
+              >
+                {savingMode === 'publish' ? (
+                  <Loader2 className="h-4 w-4 animate-spin text-lavender" />
+                ) : (
+                  <ShieldCheck className="h-4 w-4 text-lavender" />
+                )}
+                {savingMode === 'publish' ? t('admin.common.saving') : t('admin.editor.publish')}
+              </button>
             </div>
           </div>
         </>

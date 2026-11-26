@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import {
   apiRequest,
   clearStoredSession,
@@ -25,10 +25,16 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(() => getStoredToken());
   const [loading, setLoading] = useState(true);
+  const tokenRef = useRef(token);
+
+  useEffect(() => {
+    tokenRef.current = token;
+  }, [token]);
 
   const persistSession = useCallback((nextUser, nextToken, remember = true) => {
     setUser(nextUser);
     setToken(nextToken || '');
+    tokenRef.current = nextToken || '';
     setStoredToken(nextToken, remember);
     try {
       setStoredUser(nextUser, remember);
@@ -40,6 +46,7 @@ export const AuthProvider = ({ children }) => {
   const clearSession = useCallback(() => {
     setUser(null);
     setToken('');
+    tokenRef.current = '';
     clearStoredSession();
   }, []);
 
@@ -69,7 +76,8 @@ export const AuthProvider = ({ children }) => {
         }
       })
       .catch((error) => {
-        if (!cancelled && error.status === 401) {
+        const currentToken = getStoredToken() || tokenRef.current;
+        if (!cancelled && error.status === 401 && storedToken && currentToken === storedToken) {
           clearSession();
         }
       })
@@ -86,7 +94,12 @@ export const AuthProvider = ({ children }) => {
   }, [clearSession]);
 
   useEffect(() => {
-    const handleUnauthorized = () => clearSession();
+    const handleUnauthorized = (event) => {
+      const currentToken = getStoredToken() || tokenRef.current;
+      const failedToken = event?.detail?.token;
+      if (!currentToken || (failedToken && failedToken !== currentToken)) return;
+      clearSession();
+    };
     window.addEventListener('edu:unauthorized', handleUnauthorized);
     return () => window.removeEventListener('edu:unauthorized', handleUnauthorized);
   }, [clearSession]);

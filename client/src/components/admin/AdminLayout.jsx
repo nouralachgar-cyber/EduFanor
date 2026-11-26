@@ -22,6 +22,7 @@ import {
 import { AuthContext } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { initials } from '../../lib/admin';
+import { navigationOnlyClick } from '../../lib/authNavigation';
 import EduFanorWordmark from '../EduFanorWordmark';
 import ThemeToggle from '../ui/ThemeToggle';
 import '../../styles/admin.css';
@@ -164,7 +165,7 @@ function SidebarContent({ onNavigate }) {
         <div className="admin-sidebar-footer-actions flex items-center gap-1.5">
           <Link
             to="/"
-            onClick={onNavigate}
+            onClick={(event) => navigationOnlyClick(event, [onNavigate])}
             className={`back-to-site-link flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-lg border footerBorderLight px-2 py-2 text-[10px] font-bold transition-colors ${footerBtnHoverLight} ${footerBtnBgLight} ${footerBtnBorderLight}`}
             title={t('admin.shell.backToSite')}
           >

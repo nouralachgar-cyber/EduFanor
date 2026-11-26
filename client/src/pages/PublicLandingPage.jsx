@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -20,9 +20,16 @@ import {
   X,
 } from '../components/icons';
 import { useTheme } from '../context/ThemeContext';
+import { AuthContext } from '../context/AuthContext';
 import { Hero10 } from '../components/Hero10';
 import EduFanorWordmark from '../components/EduFanorWordmark';
 import ThemeToggle from '../components/ui/ThemeToggle';
+import LandingAuthActions from '../components/LandingAuthActions';
+import {
+  landingDashboardLabel,
+  landingDashboardPath,
+  landingProfileLabel,
+} from '../lib/authNavigation';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -394,7 +401,11 @@ function InteractiveGlobe({ isDark, reduceMotion }) {
 
 function LandingFooter() {
   const { t, i18n } = useTranslation();
+  const { user } = useContext(AuthContext);
   const isAr = i18n.language === 'ar';
+  const dashboardPath = landingDashboardPath(user?.role);
+  const dashboardLabel = landingDashboardLabel(user?.role, isAr);
+  const profileLabel = landingProfileLabel(isAr);
 
   return (
     <footer className="relative overflow-hidden border-t border-[#BFA2DB]/60 bg-[#F3F1F5] text-[#18122B] dark:border-[#635985] dark:bg-[#18122B] dark:text-[#F3F1F5]">
@@ -452,12 +463,25 @@ function LandingFooter() {
               <Link to="/about" className="transition-colors hover:text-[#BFA2DB] dark:hover:text-[#F0D9FF]">
                 {isAr ? 'عن المنصة' : 'About'}
               </Link>
-              <Link to="/login" className="transition-colors hover:text-[#BFA2DB] dark:hover:text-[#F0D9FF]">
-                {isAr ? 'تسجيل الدخول' : 'Sign in'}
-              </Link>
-              <Link to="/register" className="transition-colors hover:text-[#BFA2DB] dark:hover:text-[#F0D9FF]">
-                {isAr ? 'حساب جديد' : 'Create account'}
-              </Link>
+              {user ? (
+                <>
+                  <Link to={dashboardPath} className="transition-colors hover:text-[#BFA2DB] dark:hover:text-[#F0D9FF]">
+                    {dashboardLabel}
+                  </Link>
+                  <Link to="/profile" className="transition-colors hover:text-[#BFA2DB] dark:hover:text-[#F0D9FF]">
+                    {profileLabel}
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="transition-colors hover:text-[#BFA2DB] dark:hover:text-[#F0D9FF]">
+                    {isAr ? 'تسجيل الدخول' : 'Sign in'}
+                  </Link>
+                  <Link to="/register" className="transition-colors hover:text-[#BFA2DB] dark:hover:text-[#F0D9FF]">
+                    {isAr ? 'حساب جديد' : 'Create account'}
+                  </Link>
+                </>
+              )}
             </nav>
           </div>
 
@@ -495,7 +519,10 @@ export default function PublicLandingPage() {
   const { i18n } = useTranslation();
   const isAr = i18n.language === 'ar';
   const { isDark, toggleTheme } = useTheme();
+  const { user } = useContext(AuthContext);
   const reduceMotion = useReducedMotion();
+  const dashboardPath = landingDashboardPath(user?.role);
+  const dashboardLabel = landingDashboardLabel(user?.role, isAr);
 
   const missionRef = useRef(null);
   const { scrollYProgress: missionProgress } = useScroll({
@@ -681,24 +708,7 @@ export default function PublicLandingPage() {
               ariaLabel="Toggle dark mode"
             />
 
-            <Link
-              to="/login"
-              className={`hidden min-h-11 items-center rounded-full px-4 py-2.5 text-[15px] font-medium transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 xl:inline-flex ${loginTone}`}
-            >
-              {isAr ? 'تسجيل الدخول' : 'Log in'}
-            </Link>
-
-            <Link
-              to="/register"
-              className={`group hidden min-h-11 items-center gap-2.5 rounded-full px-5.5 py-3 text-[15px] font-extrabold tracking-[0.02em] transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 xl:inline-flex ${ctaTone}`}
-            >
-              {isAr ? 'إنشاء حساب' : 'Sign up'}
-              {isAr ? (
-                <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-x-0.5" />
-              ) : (
-                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-              )}
-            </Link>
+            <LandingAuthActions isAr={isAr} loginTone={loginTone} ctaTone={ctaTone} />
 
             <button
               type="button"
@@ -781,22 +791,13 @@ export default function PublicLandingPage() {
                   </div>
                 </div>
 
-                <div className="mt-3 grid grid-cols-2 gap-2">
-                  <Link
-                    to="/login"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="min-h-11 rounded-full border border-[#7F7C82]/25 py-3 text-center text-sm font-semibold text-[#18122B] transition-colors hover:bg-[#BFA2DB]/20"
-                  >
-                    {isAr ? 'تسجيل الدخول' : 'Log in'}
-                  </Link>
-                  <Link
-                    to="/register"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="min-h-11 rounded-full bg-[#F0D9FF] py-3 text-center text-sm font-extrabold text-[#18122B] transition-colors hover:bg-white"
-                  >
-                    {isAr ? 'إنشاء حساب' : 'Sign up'}
-                  </Link>
-                </div>
+                <LandingAuthActions
+                  isAr={isAr}
+                  loginTone={loginTone}
+                  ctaTone={ctaTone}
+                  variant="mobile"
+                  onNavigate={() => setMobileMenuOpen(false)}
+                />
               </nav>
             </motion.div>
           )}
@@ -868,12 +869,18 @@ export default function PublicLandingPage() {
 
               <motion.div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
-                  to="/register"
+                  to={user ? dashboardPath : '/register'}
                   className={`group inline-flex items-center justify-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-base font-semibold text-[#18122B] shadow-lg transition-all hover:bg-[#F0D9FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 ${
                     isAr ? 'font-arabic' : 'font-copy'
                   }`}
                 >
-                  {isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
+                  {user
+                    ? isAr
+                      ? 'العودة إلى لوحة التحكم'
+                      : 'Back to dashboard'
+                    : isAr
+                      ? 'ابدأ التعلّم الآن'
+                      : 'Start learning now'}
                   {isAr ? (
                     <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
                   ) : (
@@ -1266,10 +1273,10 @@ export default function PublicLandingPage() {
             </div>
             <motion.div {...reveal(0.14)} className="shrink-0">
               <Link
-                to="/register"
+                to={user ? dashboardPath : '/register'}
                 className="group inline-flex h-12 items-center gap-3 rounded-full bg-[#F0D9FF] px-7 text-[12.5px] font-extrabold uppercase tracking-[0.12em] text-[#18122B] shadow-[0_26px_66px_-26px_rgba(99,89,133,0.5),inset_0_1px_0_rgba(243,241,245,0.5)] ring-1 ring-[#BFA2DB] transition-all duration-300 hover:-translate-y-1 hover:bg-[#F0D9FF] hover:ring-[#443C68] dark:bg-[#F0D9FF] dark:text-[#18122B] dark:ring-[#635985] dark:hover:ring-[#F0D9FF]"
               >
-                {isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
+                {user ? dashboardLabel : isAr ? 'ابدأ التعلّم الآن' : 'Start learning now'}
                 {isAr ? (
                   <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                 ) : (

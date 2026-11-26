@@ -146,7 +146,7 @@ export async function apiRequest(path, options = {}) {
 
   if (!response.ok) {
     if (response.status === 401 && auth && token) {
-      window.dispatchEvent(new CustomEvent('edu:unauthorized'));
+      window.dispatchEvent(new CustomEvent('edu:unauthorized', { detail: { token } }));
     }
     throw new ApiError(
       payload?.message || `Request failed with status ${response.status}`,
