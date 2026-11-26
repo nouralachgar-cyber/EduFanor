@@ -831,8 +831,8 @@ export default function PublicLandingPage() {
               initial={reduceMotion ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="relative flex max-w-2xl flex-col text-left"
-              dir="ltr"
+              className="relative flex max-w-2xl flex-col text-start"
+              dir={isAr ? 'rtl' : 'ltr'}
             >
               <motion.h1
                 style={!isAr ? { fontFamily: "'Viga', sans-serif" } : undefined}

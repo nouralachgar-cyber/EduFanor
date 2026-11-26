@@ -341,7 +341,7 @@ Reply in ${lang === 'ar' ? 'Arabic' : 'English'} ONLY as JSON with exactly this 
 
 async function runAdminGeneration({ task, language, sourceText, source = {}, options = {} }) {
   const lang = normalizeLanguage(language);
-  const raw = optionalString(typeof sourceText === 'string' ? sourceText : '', { max: 6000 });
+  const raw = optionalString(typeof sourceText === 'string' ? sourceText : '', { max: 30000 });
 
   if (task === 'course_description') {
     const prompt = `${languageDirective(lang)}

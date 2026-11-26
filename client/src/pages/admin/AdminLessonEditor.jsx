@@ -24,6 +24,7 @@ import {
 import LessonBlocks from '../../components/LessonBlocks';
 import LessonDocumentEditor from '../../components/admin/LessonDocumentEditor';
 import {
+  buildLessonAiMaterial,
   lessonBlocksForSave,
   normalizeLessonDocument,
 } from '../../components/admin/lessonDocumentModel';
@@ -92,7 +93,7 @@ export default function AdminLessonEditor() {
 
   const [quizModalOpen, setQuizModalOpen] = useState(false);
   const [quizEditing, setQuizEditing] = useState(null);
-  const [quizPrefill, setQuizPrefill] = useState(null);
+  const [quizAiDraft, setQuizAiDraft] = useState(null);
 
   const [aiBusy, setAiBusy] = useState(false);
   const [aiError, setAiError] = useState('');
@@ -195,24 +196,30 @@ export default function AdminLessonEditor() {
     [loadedLesson]
   );
 
-  const buildMaterial = useCallback(() => {
-    const lang = isAr ? 'ar' : 'en';
-    const parts = [
-      localize(form.title, isAr ? 'ar' : 'en'),
-      ...lessonBlocks.flatMap((block) => [
-        localize(block.content, lang),
-        (block.data?.items?.[lang] || []).join('\n'),
-      ]),
-    ];
-    return parts.filter(Boolean).join('\n').trim();
-  }, [lessonBlocks, form.title, isAr]);
+  const buildLessonMaterial = useCallback(
+    () =>
+      buildLessonAiMaterial({
+        title: form.title,
+        blocks: lessonBlocks,
+        objectives: { ar: objectivesAr, en: objectivesEn },
+        safetyNotes: form.safetyNotes,
+        courseTitle: selectedCourse?.title,
+      }),
+    [form.title, form.safetyNotes, lessonBlocks, objectivesAr, objectivesEn, selectedCourse]
+  );
 
   const runAdminTask = useCallback(
-    async ({ task, sourceText }) => {
+    async ({ task, sourceText, source, difficulty, language }) => {
       setAiBusy(true);
       setAiError('');
       try {
-        return await aiApi.adminGenerate({ task, language: isAr ? 'ar' : 'en', sourceText });
+        return await aiApi.adminGenerate({
+          task,
+          language: language || (isAr ? 'ar' : 'en'),
+          sourceText,
+          source,
+          difficulty,
+        });
       } catch (error) {
         setAiError(localizeAiError(error, isAr));
         return null;
@@ -246,19 +253,25 @@ export default function AdminLessonEditor() {
 
 
   const draftQuestion = async () => {
-    const material = buildMaterial();
+    const material = buildLessonMaterial();
     if (!material.trim()) {
-      setAiError(t('admin.quizzesPage.aiNeedsContext'));
+      setAiError(t('admin.quizzesPage.aiNeedsLessonContent'));
       return;
     }
-    const data = await runAdminTask({ task: 'quiz_draft', sourceText: material });
+    const difficulty = form.difficulty === 'advanced' ? 'hard' : form.difficulty === 'beginner' ? 'easy' : 'medium';
+    const data = await runAdminTask({
+      task: 'quiz_draft',
+      language: editorLanguage,
+      sourceText: material,
+      source: {
+        lessonId: lessonId || undefined,
+        existingTitle: localize(form.title, editorLanguage),
+        courseTitle: localize(selectedCourse?.title, editorLanguage),
+      },
+      difficulty,
+    });
     if (data?.result) {
-      setQuizPrefill({
-        question: data.result.question,
-        options: data.result.options,
-        correctAnswer: Number(data.result.suggestedCorrectIndex) || 0,
-        explanation: data.result.explanation || { ar: '', en: '' },
-      });
+      setQuizAiDraft({ ...data.result, model: data.model });
       setQuizEditing(null);
       setQuizModalOpen(true);
     }
@@ -386,7 +399,7 @@ export default function AdminLessonEditor() {
   const onQuizSaved = async () => {
     setQuizModalOpen(false);
     setQuizEditing(null);
-    setQuizPrefill(null);
+    setQuizAiDraft(null);
     refreshQuizzes((value) => value + 1);
     if (lessonId) {
       adminApi
@@ -750,7 +763,7 @@ export default function AdminLessonEditor() {
                   type="button"
                   onClick={() => {
                     setQuizEditing(null);
-                    setQuizPrefill(null);
+                    setQuizAiDraft(null);
                     setQuizModalOpen(true);
                   }}
                   className="flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-xs font-extrabold text-on-primary hover:bg-primary-hover shadow-sm"
@@ -776,7 +789,7 @@ export default function AdminLessonEditor() {
                         <div className="min-w-0">
                           <p className="truncate text-xs font-extrabold text-ink">{localize(quiz.title, i18n.language)}</p>
                           <p className="text-[10px] text-ink-soft">
-                            {t('admin.courses.questionsCount')}: {formatNumber(quiz.questions?.length || 0, i18n.language)} ┬╖ {t('admin.common.status')}: {quiz.published ? t('admin.common.published') : t('admin.common.draft')}
+                            {t('admin.courses.questionsCount')}: {formatNumber(quiz.questions?.length || 0, i18n.language)} · {t('admin.common.status')}: {quiz.published ? t('admin.common.published') : t('admin.common.draft')}
                           </p>
                         </div>
                       </div>
@@ -785,7 +798,7 @@ export default function AdminLessonEditor() {
                           type="button"
                           onClick={() => {
                             setQuizEditing(quiz);
-                            setQuizPrefill(null);
+                            setQuizAiDraft(null);
                             setQuizModalOpen(true);
                           }}
                           className="flex h-8 w-8 items-center justify-center rounded-full border border-line bg-surface-2 text-ink transition-colors hover:bg-highlight shadow-sm"
@@ -912,21 +925,25 @@ export default function AdminLessonEditor() {
         quiz={quizEditing}
         lessons={quizLessons}
         defaultLessonId={lessonId || ''}
-        prefillQuestion={quizPrefill}
+        aiDraft={quizAiDraft}
+        lessonMaterial={buildLessonMaterial()}
+        aiLanguage={editorLanguage}
+        quizDifficulty={form.difficulty}
         onClose={() => {
           setQuizModalOpen(false);
           setQuizEditing(null);
-          setQuizPrefill(null);
+          setQuizAiDraft(null);
         }}
         onSaved={onQuizSaved}
       />
+
 
       <AiModal
         open={Boolean(aiPreview)}
         onClose={() => setAiPreview(null)}
         wide
         title={aiPreview?.kind === 'titles' ? t('admin.editor.aiTitlesTitle') : t('admin.editor.aiParagraphTitle')}
-        subtitle={aiPreview?.model ? `Grok ┬╖ ${aiPreview.model}` : 'Grok'}
+        subtitle={aiPreview?.model ? `Grok · ${aiPreview.model}` : 'Grok'}
         icon={<Sparkles className="h-4 w-4 text-lavender" />}
       >
         {aiPreview?.kind === 'titles' && (
@@ -967,11 +984,11 @@ export default function AdminLessonEditor() {
               <button
                 type="button"
                 onClick={() => {
-                  setDrafts((previous) =>
-                    previous.map((draft) =>
-                      draft.id === aiPreview.blockId
-                        ? { ...draft, content: { ar: aiPreview.ar, en: aiPreview.en } }
-                        : draft
+                  setLessonBlocks((previous) =>
+                    previous.map((block) =>
+                      block.id === aiPreview.blockId
+                        ? { ...block, content: { ...block.content, ar: aiPreview.ar, en: aiPreview.en } }
+                        : block
                     )
                   );
                   setAiPreview(null);

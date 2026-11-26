@@ -1,5 +1,5 @@
 import { extractYouTubeId } from '../LessonBlocks';
-import { blankBlock, hasBlockContent, normalizeBlocks } from './LessonBlocksEditor';
+import { blankBlock, hasBlockContent, localizeBlock, normalizeBlocks } from './LessonBlocksEditor';
 
 export const TEXT_BLOCK_TYPES = new Set([
   'paragraph',
@@ -139,6 +139,100 @@ export function insertLessonBlock(blocks, type, data, anchor, language = 'en', e
 
   if (!next.length) next = [blankBlock('paragraph')];
   return { blocks: next, focusId, focusOffset: 0 };
+}
+
+const AI_MATERIAL_SECTION_LIMIT = 12000;
+
+const aiString = (value) => (typeof value === 'string' ? value.trim() : '');
+const aiLines = (value) =>
+  (Array.isArray(value) ? value : aiString(value).split('\n'))
+    .map((item) => (typeof item === 'string' ? item.trim() : ''))
+    .filter(Boolean);
+const aiLocalized = (value, lang) => {
+  if (typeof value === 'string') return value.trim();
+  if (!value || typeof value !== 'object') return '';
+  return aiString(value[lang]) || aiString(value.en) || aiString(value.ar);
+};
+const clipAiSection = (value, max = AI_MATERIAL_SECTION_LIMIT) =>
+  value.length > max ? `${value.slice(0, max)}\n[content truncated]` : value;
+
+function describeAiBlock(block, lang) {
+  const localized = localizeBlock(block, lang);
+  const type = localized.type;
+  const data = localized.data || {};
+  const content = aiString(localized.content);
+  const textTypes = new Set(['paragraph', 'text', 'rich-text', 'heading', 'subheading', 'note', 'tip', 'warning', 'important', 'callout', 'safety']);
+  if (textTypes.has(type)) return content ? `[${type}] ${content}` : '';
+  if (type === 'list' || type === 'numbered-list') {
+    const items = aiLines(data.items);
+    return items.length ? `[${type}]\n${items.map((item) => `- ${item}`).join('\n')}` : '';
+  }
+  if (type === 'image' || type === 'figure') {
+    return [aiString(data.alt), aiString(data.caption)].filter(Boolean).length
+      ? `[${type}] ${[aiString(data.alt), aiString(data.caption)].filter(Boolean).join(' — ')}`
+      : '';
+  }
+  if (type === 'gallery') {
+    const captions = aiLines(data.images?.map((item) => item?.caption));
+    return captions.length ? `[gallery]\n${captions.map((item) => `- ${item}`).join('\n')}` : '';
+  }
+  if (type === 'youtube' || type === 'video') {
+    return aiString(data.title) ? `[${type}] ${aiString(data.title)}` : '';
+  }
+  if (type === 'steps') {
+    const steps = (data.steps || [])
+      .map((step) => [aiString(step?.title), aiString(step?.content)].filter(Boolean).join(': '))
+      .filter(Boolean);
+    return steps.length ? `[steps]\n${steps.map((step) => `- ${step}`).join('\n')}` : '';
+  }
+  if (type === 'table') {
+    const rows = [...aiLines(data.headers), ...(data.rows || []).map((row) => aiLines(row).join(' | '))].filter(Boolean);
+    return rows.length ? `[table]\n${rows.map((row) => `- ${row}`).join('\n')}` : '';
+  }
+  if (type === 'attachment') {
+    return aiString(data.name) ? `[attachment] ${aiString(data.name)}` : '';
+  }
+  return content ? `[${type}] ${content}` : '';
+}
+
+export function buildLessonAiMaterial({
+  title,
+  blocks = [],
+  objectives,
+  safetyNotes,
+  courseTitle,
+  maxChars = AI_MATERIAL_SECTION_LIMIT,
+} = {}) {
+  const section = (lang) => {
+    const parts = [aiLocalized(title, lang), ...(Array.isArray(blocks) ? blocks : []).map((block) => describeAiBlock(block, lang))];
+    const objectiveLines = aiLines(aiLocalized(objectives, lang));
+    const safety = aiLocalized(safetyNotes, lang);
+    const course = aiLocalized(courseTitle, lang);
+    const body = parts.filter(Boolean).join('\n');
+    return {
+      title: aiLocalized(title, lang),
+      course,
+      body: clipAiSection(body, maxChars),
+      objectives: objectiveLines.length ? `- ${objectiveLines.join('\n- ')}` : '',
+      safety,
+    };
+  };
+  const ar = section('ar');
+  const en = section('en');
+  const block = (label, value) => (value ? `${label}:\n${value}` : '');
+  return [
+    block('Lesson title (Arabic)', ar.title),
+    block('Lesson title (English)', en.title),
+    block('Course title', [ar.course, en.course].filter(Boolean).join(' / ')),
+    block('Lesson content (Arabic)', ar.body),
+    block('Lesson content (English)', en.body),
+    block('Lesson objectives (Arabic)', ar.objectives),
+    block('Lesson objectives (English)', en.objectives),
+    block('Safety notes (Arabic)', ar.safety),
+    block('Safety notes (English)', en.safety),
+  ]
+    .filter(Boolean)
+    .join('\n\n');
 }
 
 function expandLegacyParagraphMedia(blocks) {

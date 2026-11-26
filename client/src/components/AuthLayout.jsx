@@ -30,7 +30,7 @@ export default function AuthLayout({ children }) {
             <p className="text-sm font-bold uppercase tracking-widest text-[#F0D9FF]">
               {isAr ? 'تعلّم بوضوح وثقة' : 'LEARN WITH CLARITY AND CONFIDENCE'}
             </p>
-            <h2 className="mt-3 font-['Viga'] text-5xl leading-[1.1] xl:text-[3.5rem]">
+            <h2 className={`mt-3 ${isAr ? 'font-arabic' : "font-['Viga']"} text-5xl leading-[1.1] xl:text-[3.5rem]`}>
               {isAr ? (
                 <>
                   <span className="block text-white">معرفة صغيرة.</span>

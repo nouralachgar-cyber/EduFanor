@@ -205,7 +205,7 @@ async function adminGenerate(req, res) {
     const data = await features.runAdminGeneration({
       task,
       language: lang,
-      sourceText: optionalString(req.body?.sourceText, { max: 6000 }),
+      sourceText: optionalString(req.body?.sourceText, { max: 30000 }),
       source: safeSource,
       options: { difficulty: req.body?.difficulty },
     });

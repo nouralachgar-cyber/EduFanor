@@ -562,3 +562,22 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+html[dir="rtl"] {
+  font-synthesis-weight: none;
+}
+
+html[dir="rtl"] .font-display,
+html[dir="rtl"] .font-inter,
+html[dir="rtl"] .btn,
+html[dir="rtl"] .label,
+html[dir="rtl"] .section-title,
+html[dir="rtl"] .input:not([dir="ltr"]) {
+  font-family: "IBM Plex Sans Arabic", "Tajawal", "Noto Naskh Arabic", system-ui, sans-serif;
+}
+
+html[dir="rtl"] .tracking-tight,
+html[dir="rtl"] .tracking-tighter,
+html[dir="rtl"] [class*="tracking-[-"] {
+  letter-spacing: 0;
+}

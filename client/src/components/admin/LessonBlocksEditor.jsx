@@ -518,7 +518,7 @@ function BilingualRow({ label, value, onChange, multiline = true, rows = 3, plac
             className={`input text-xs ${multiline ? 'resize-y py-2' : 'h-9'}`}
             style={multiline ? { minHeight: `${rows * 24 + 16}px` } : undefined}
             dir="rtl"
-            placeholder={placeholderAr || (multiline ? '╪د┘┘╪╡ ╪ذ╪د┘╪╣╪▒╪ذ┘è╪رظخ' : '╪╣╪▒╪ذ┘è')}
+            placeholder={placeholderAr || (multiline ? 'النص بالعربية…' : 'عربي')}
           />
         </div>
         <div>
@@ -535,7 +535,7 @@ function BilingualRow({ label, value, onChange, multiline = true, rows = 3, plac
             className={`input text-xs ${multiline ? 'resize-y py-2' : 'h-9'}`}
             style={multiline ? { minHeight: `${rows * 24 + 16}px` } : undefined}
             dir="ltr"
-            placeholder={placeholderEn || (multiline ? 'English textظخ' : 'English')}
+            placeholder={placeholderEn || (multiline ? 'English text…' : 'English')}
           />
         </div>
       </div>
@@ -592,8 +592,8 @@ function BlockEditBody({ block, index, helpers }) {
           onChange={(lang, value) => updateContent(index, lang, value)}
           multiline={!isShort}
           rows={type === 'paragraph' ? 4 : 2}
-          placeholderAr={isShort ? '╪╣┘┘ê╪د┘ظخ' : undefined}
-          placeholderEn={isShort ? 'Headingظخ' : undefined}
+          placeholderAr={isShort ? 'عنوان…' : undefined}
+          placeholderEn={isShort ? 'Heading…' : undefined}
           enableLinks
         />
         {onImprove && (
@@ -622,7 +622,7 @@ function BlockEditBody({ block, index, helpers }) {
               onChange={(event) => updateData(index, 'url', event.target.value)}
               className={`input h-9 text-xs ${block.data.url && !isHttpUrl(block.data.url) ? 'border-negative' : ''}`}
               dir="ltr"
-              placeholder="https://ظخ"
+              placeholder="https://…"
             />
             {block.data.url && !isHttpUrl(block.data.url) && (
               <p className="mt-1 text-[10px] font-bold text-negative-ink">{t('admin.courses.blocks.invalidUrl')}</p>
@@ -666,7 +666,7 @@ function BlockEditBody({ block, index, helpers }) {
                   onChange={(event) => gallery.updateImage(index, image.id, { url: event.target.value })}
                   className={`input h-9 text-xs ${image.url && !isHttpUrl(image.url) ? 'border-negative' : ''}`}
                   dir="ltr"
-                  placeholder="https://ظخ"
+                  placeholder="https://…"
                 />
                 <AssetUploader kind="image" onUploaded={(uploadedUrl) => gallery.updateImage(index, image.id, { url: uploadedUrl })} />
                 <BilingualRow label={t('admin.courses.blocks.caption')} value={image.caption || { ar: '', en: '' }} onChange={(lang, value) => gallery.updateImage(index, image.id, { caption: { ...(image.caption || { ar: '', en: '' }), [lang]: value } })} multiline={false} />
@@ -704,7 +704,7 @@ function BlockEditBody({ block, index, helpers }) {
             onChange={(event) => updateData(index, 'url', event.target.value)}
             className={`input h-9 text-xs ${url && !videoId ? 'border-negative' : ''}`}
             dir="ltr"
-            placeholder="https://www.youtube.com/watch?v=ظخ"
+            placeholder="https://www.youtube.com/watch?v=…"
           />
           {url && !videoId && (
             <p className="mt-1 flex items-center gap-1 text-[10px] font-bold text-negative-ink">
@@ -754,7 +754,7 @@ function BlockEditBody({ block, index, helpers }) {
             onChange={(event) => updateData(index, 'url', event.target.value)}
             className={`input h-9 text-xs ${url && !videoId && !directVideo ? 'border-negative' : ''}`}
             dir="ltr"
-            placeholder="https://ظخ/video.mp4"
+            placeholder="https://…/video.mp4"
           />
           {url && !videoId && !directVideo && (
             <p className="mt-1 text-[10px] font-bold text-negative-ink">{t('admin.courses.blocks.invalidUrl')}</p>
@@ -799,7 +799,7 @@ function BlockEditBody({ block, index, helpers }) {
                 onChange={(event) => updateData(index, 'url', event.target.value)}
                 className={`input h-9 text-xs ${url && !isHttpUrl(url) ? 'border-negative' : ''}`}
                 dir="ltr"
-                placeholder="https://ظخ"
+                placeholder="https://…"
               />
               {url && !isHttpUrl(url) && (
                 <p className="mt-1 text-[10px] font-bold text-negative-ink">{t('admin.courses.blocks.invalidUrl')}</p>
@@ -858,7 +858,7 @@ function BlockEditBody({ block, index, helpers }) {
                   onChange={(event) => stepHelpers.update(index, stepIndex, (current) => ({ ...current, image: event.target.value }))}
                   className="input h-9 text-xs"
                   dir="ltr"
-                  placeholder="https://ظخ"
+                  placeholder="https://…"
                 />
               </div>
               <AssetUploader kind="image" onUploaded={(uploadedUrl) => stepHelpers.update(index, stepIndex, (current) => ({ ...current, image: uploadedUrl }))} />

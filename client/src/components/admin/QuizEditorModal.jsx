@@ -4,7 +4,7 @@ import { CheckCircle2, Sparkles, Trash2, Loader2, Plus } from '../../components/
 import AiModal from '../ai/AiModal';
 import { aiApi, localizeAiError } from '../../lib/ai';
 import { adminApi, localize } from '../../lib/admin';
-import { Field, Modal, SectionLabel } from './ui';
+import { ConfirmDialog, Field, Modal, SectionLabel } from './ui';
 
 const newQuestion = () => ({
   question: { ar: '', en: '' },
@@ -31,7 +31,36 @@ const shapeQuestion = (question) => ({
   explanation: { ar: question.explanation?.ar || '', en: question.explanation?.en || '' },
 });
 
-export default function QuizEditorModal({ open, quiz, lessons = [], defaultLessonId = '', prefillQuestion, onClose, onSaved }) {
+const questionFromDraft = (draft) => {
+  if (!draft) return null;
+  const optionsAr = (draft.options?.ar || []).map((option) => String(option).trim()).filter(Boolean);
+  const optionsEn = (draft.options?.en || []).map((option) => String(option).trim()).filter(Boolean);
+  if (!draft.question?.ar || !draft.question?.en || optionsAr.length !== optionsEn.length || optionsAr.length < 2) {
+    return null;
+  }
+  return {
+    question: { ar: draft.question.ar, en: draft.question.en },
+    options: { ar: optionsAr, en: optionsEn },
+    correctAnswer: Math.min(Number(draft.suggestedCorrectIndex) || 0, optionsAr.length - 1),
+    explanation: { ar: draft.explanation?.ar || '', en: draft.explanation?.en || '' },
+  };
+};
+
+const questionHasContent = (question) =>
+  Boolean(question?.question?.ar?.trim() || question?.question?.en?.trim());
+
+export default function QuizEditorModal({
+  open,
+  quiz,
+  lessons = [],
+  defaultLessonId = '',
+  aiDraft,
+  lessonMaterial = '',
+  aiLanguage = 'en',
+  quizDifficulty = 'beginner',
+  onClose,
+  onSaved,
+}) {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === 'ar';
   const [form, setForm] = useState(emptyQuiz());
@@ -40,21 +69,23 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
   const [aiBusy, setAiBusy] = useState(false);
   const [aiError, setAiError] = useState('');
   const [aiPreview, setAiPreview] = useState(null);
+  const [replaceConfirmOpen, setReplaceConfirmOpen] = useState(false);
 
   useEffect(() => {
     if (!open) return undefined;
     setError('');
     setAiError('');
     setAiPreview(null);
-    if (prefillQuestion) {
-      const question = shapeQuestion(prefillQuestion);
+    setReplaceConfirmOpen(false);
+    if (aiDraft) {
       setForm({
         title: { ar: '', en: '' },
-        lesson: quiz?.lesson?._id || quiz?.lesson || defaultLessonId || lessons[0]?._id || '',
-        passingScore: quiz?.passingScore ?? 70,
-        published: quiz?.published ?? true,
-        questions: [question],
+        lesson: defaultLessonId || lessons[0]?._id || '',
+        passingScore: 70,
+        published: true,
+        questions: [],
       });
+      setAiPreview({ result: aiDraft, model: aiDraft.model });
       return undefined;
     }
     if (quiz) {
@@ -69,7 +100,7 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
       setForm(emptyQuiz({ lessonId: defaultLessonId || lessons[0]?._id || '' }));
     }
     return undefined;
-  }, [open, quiz, prefillQuestion, defaultLessonId, lessons]);
+  }, [open, quiz, aiDraft, defaultLessonId, lessons]);
 
   const selectedLesson = useMemo(
     () => lessons.find((lesson) => lesson._id === form.lesson) || null,
@@ -122,20 +153,31 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
     }));
 
   const draftWithAi = async () => {
-    const material = [
+    const fallbackMaterial = [
       selectedLesson ? localize(selectedLesson.title, i18n.language) : '',
       localize(form.title, i18n.language),
     ]
       .filter(Boolean)
       .join('\n');
+    const material = lessonMaterial || fallbackMaterial;
     if (!material.trim()) {
-      setAiError(t('admin.quizzesPage.aiNeedsContext'));
+      setAiError(t('admin.quizzesPage.aiNeedsLessonContent'));
       return;
     }
     setAiBusy(true);
     setAiError('');
     try {
-      const data = await aiApi.adminGenerate({ task: 'quiz_draft', language: isAr ? 'ar' : 'en', sourceText: material });
+      const difficulty = quizDifficulty === 'advanced' ? 'hard' : quizDifficulty === 'beginner' ? 'easy' : 'medium';
+      const data = await aiApi.adminGenerate({
+        task: 'quiz_draft',
+        language: aiLanguage,
+        sourceText: material,
+        source: {
+          lessonId: form.lesson || undefined,
+          existingTitle: localize(form.title, aiLanguage),
+        },
+        difficulty,
+      });
       if (data?.result) {
         setAiPreview({ result: data.result, model: data.model });
       }
@@ -147,34 +189,55 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
   };
 
   const applyAiDraft = () => {
-    if (!aiPreview?.result) return;
-    const draft = aiPreview.result;
+    const question = questionFromDraft(aiPreview?.result);
+    if (!question) {
+      setAiError(t('admin.quizzesPage.invalidQuestion'));
+      return;
+    }
     setForm((previous) => ({
       ...previous,
-      questions: [
-        ...previous.questions,
-        {
-          question: { ar: draft.question?.ar || '', en: draft.question?.en || '' },
-          options: {
-            ar: (draft.options?.ar || []).map(String),
-            en: (draft.options?.en || []).map(String),
-          },
-          correctAnswer: Number(draft.suggestedCorrectIndex) || 0,
-          explanation: { ar: draft.explanation?.ar || '', en: draft.explanation?.en || '' },
-        },
-      ].filter(
-        (question) =>
-          question.options.ar.length >= 2 &&
-          question.options.en.length === question.options.ar.length
-      ),
+      questions: previous.questions.some(questionHasContent)
+        ? [...previous.questions, question]
+        : [question],
     }));
     setAiPreview(null);
+    setAiError('');
+  };
+
+  const replaceQuestionsWithDraft = () => {
+    const question = questionFromDraft(aiPreview?.result);
+    if (!question) {
+      setAiError(t('admin.quizzesPage.invalidQuestion'));
+      return;
+    }
+    setForm((previous) => ({ ...previous, questions: [question] }));
+    setReplaceConfirmOpen(false);
+    setAiPreview(null);
+    setAiError('');
   };
 
   const save = async (event) => {
     event.preventDefault();
     if (!form.title.ar.trim() || !form.title.en.trim() || !form.lesson) {
       setError(t('admin.courses.fieldsRequired'));
+      return;
+    }
+    const questionsValid = form.questions.length > 0 && form.questions.every((question) => {
+      const optionsAr = question.options.ar.map((option) => String(option).trim()).filter(Boolean);
+      const optionsEn = question.options.en.map((option) => String(option).trim()).filter(Boolean);
+      return (
+        Boolean(question.question.ar.trim() && question.question.en.trim()) &&
+        optionsAr.length >= 2 &&
+        optionsAr.length === optionsEn.length &&
+        optionsAr.length === question.options.ar.length &&
+        optionsEn.length === question.options.en.length &&
+        Number.isInteger(question.correctAnswer) &&
+        question.correctAnswer >= 0 &&
+        question.correctAnswer < optionsAr.length
+      );
+    });
+    if (!questionsValid) {
+      setError(t('admin.quizzesPage.invalidQuestion'));
       return;
     }
     setSaving(true);
@@ -300,7 +363,7 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
                   <p className="text-[10px] font-extrabold uppercase tracking-wider text-ink-muted">
                     {t('admin.courses.question')} {questionIndex + 1}
                   </p>
-                  {form.questions.length > 1 && (
+                  {form.questions.length > 0 && (
                     <button
                       type="button"
                       onClick={() => setForm((previous) => ({ ...previous, questions: previous.questions.filter((_, index) => index !== questionIndex) }))}
@@ -409,8 +472,14 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
           {error && (
             <p className="rounded-xl border border-negative/25 bg-negative-soft px-3.5 py-2.5 text-[11px] font-bold text-negative-ink">{error}</p>
           )}
+          {aiBusy && (
+            <p className="flex items-center gap-2 rounded-xl border border-line bg-surface-muted px-3.5 py-2.5 text-[11px] font-bold text-ink-muted">
+              <Loader2 className="h-3.5 w-3.5 animate-spin text-lavender" />
+              {t('admin.quizzesPage.aiGenerating')}
+            </p>
+          )}
           {aiError && !aiBusy && (
-            <p className="rounded-xl border border-negative/25 bg-negative-soft px-3.5 py-2.5 text-[11px] font-bold text-negative-ink">{aiError}</p>
+            <p role="alert" className="rounded-xl border border-negative/25 bg-negative-soft px-3.5 py-2.5 text-[11px] font-bold text-negative-ink">{aiError}</p>
           )}
         </form>
       </Modal>
@@ -422,6 +491,15 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
         subtitle={aiPreview?.model ? `Grok · ${aiPreview.model}` : 'Grok'}
         icon={<Sparkles className="h-4 w-4" />}
       >
+        {aiBusy && (
+          <p className="mb-3 flex items-center gap-2 rounded-xl border border-line bg-surface-muted px-3.5 py-2.5 text-[11px] font-bold text-ink-muted">
+            <Loader2 className="h-3.5 w-3.5 animate-spin text-lavender" />
+            {t('admin.quizzesPage.aiGenerating')}
+          </p>
+        )}
+        {aiError && (
+          <p role="alert" className="mb-3 rounded-xl border border-negative/25 bg-negative-soft px-3.5 py-2.5 text-[11px] font-bold text-negative-ink">{aiError}</p>
+        )}
         {aiPreview?.result && (
           <div className="space-y-4" dir={isAr ? 'rtl' : 'ltr'}>
             <div>
@@ -434,23 +512,48 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
                   key={index}
                   className={`flex items-center gap-2.5 rounded-xl border px-3.5 py-2.5 ${
                      aiPreview.result.suggestedCorrectIndex === index ? 'border-positive/40 bg-positive-soft' : 'border-line bg-card'
-                   }`}
-                 >
-                   {aiPreview.result.suggestedCorrectIndex === index && <CheckCircle2 className="h-4 w-4 shrink-0 text-positive-ink" />}
+                  }`}
+                >
+                  {aiPreview.result.suggestedCorrectIndex === index && <CheckCircle2 className="h-4 w-4 shrink-0 text-positive-ink" />}
                   <span dir="rtl" className="flex-1 text-xs font-bold text-ink">{optionAr}</span>
                   <span dir="ltr" className="text-[11px] text-ink-muted">{aiPreview.result.options?.en?.[index]}</span>
                 </div>
               ))}
             </div>
+            {(aiPreview.result.explanation?.ar || aiPreview.result.explanation?.en) && (
+              <div className="rounded-xl border border-line bg-surface-muted px-3.5 py-2.5 text-[11px] leading-relaxed text-ink-muted">
+                <p dir="rtl">{aiPreview.result.explanation.ar}</p>
+                <p dir="ltr" className="mt-1">{aiPreview.result.explanation.en}</p>
+              </div>
+            )}
             <p className="text-[10px] text-ink-muted">{t('admin.quizzesPage.aiDraftHint')}</p>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
                 type="button"
                 onClick={applyAiDraft}
-                className="flex-1 rounded-xl bg-primary py-3 text-center text-xs font-extrabold text-on-primary transition-all hover:-translate-y-0.5"
+                disabled={aiBusy}
+                className="flex-1 rounded-xl bg-primary py-3 text-center text-xs font-extrabold text-on-primary transition-all hover:-translate-y-0.5 disabled:opacity-50"
               >
                 {t('admin.editor.aiApply')}
               </button>
+              <button
+                type="button"
+                onClick={draftWithAi}
+                disabled={aiBusy}
+                className="rounded-xl border border-line px-4 text-xs font-bold text-ink transition-colors hover:bg-surface-muted disabled:opacity-50"
+              >
+                {t('admin.quizzesPage.aiRegenerate')}
+              </button>
+              {form.questions.some(questionHasContent) && (
+                <button
+                  type="button"
+                  onClick={() => setReplaceConfirmOpen(true)}
+                  disabled={aiBusy}
+                  className="rounded-xl border border-line px-4 text-xs font-bold text-negative-ink transition-colors hover:bg-negative-soft disabled:opacity-50"
+                >
+                  {t('admin.quizzesPage.aiReplace')}
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => setAiPreview(null)}
@@ -462,6 +565,17 @@ export default function QuizEditorModal({ open, quiz, lessons = [], defaultLesso
           </div>
         )}
       </AiModal>
+
+      <ConfirmDialog
+        open={replaceConfirmOpen}
+        onClose={() => setReplaceConfirmOpen(false)}
+        onConfirm={replaceQuestionsWithDraft}
+        title={t('admin.quizzesPage.aiReplaceTitle')}
+        message={t('admin.quizzesPage.aiReplaceMessage')}
+        confirmLabel={t('admin.quizzesPage.aiReplace')}
+        cancelLabel={t('admin.common.cancel')}
+      />
     </>
   );
 }
+

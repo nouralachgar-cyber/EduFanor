@@ -118,7 +118,7 @@ export default function AdminCourses() {
   };
 
   const handleDelete = (id) => {
-    if (window.confirm(isAr ? '┘ç┘ ╪ث┘╪ز ┘à╪ز╪ث┘â╪» ┘à┘ ╪ص╪░┘ ┘ç╪░┘ç ╪د┘╪»┘ê╪▒╪ر╪ا' : 'Are you sure you want to delete this course?')) {
+    if (window.confirm(isAr ? 'هل أنت متأكد من حذف هذه الدورة؟' : 'Are you sure you want to delete this course?')) {
       adminApi.deleteCourse(id)
         .then(() => loadCourses())
         .catch((err) => alert(err.message));
@@ -133,9 +133,9 @@ export default function AdminCourses() {
   return (
     <div className="space-y-6 bg-canvas min-h-screen p-6 text-ink">
       <PageHeader
-        eyebrow={isAr ? '╪ح╪»╪د╪▒╪ر ┘à╪ص╪ز┘ê┘ë ╪د┘┘à┘╪╡╪ر' : 'Content Management'}
-        title={isAr ? '╪ح╪»╪د╪▒╪ر ╪د┘╪»┘ê╪▒╪د╪ز ┘ê╪د┘╪»╪▒┘ê╪│' : 'Courses & Lessons Management'}
-        subtitle={isAr ? '╪ث╪╢┘ ┘ê╪╣╪»┘ّ┘ ╪د┘╪»┘ê╪▒╪د╪ز╪î ╪د╪▒┘╪╣ ╪د┘╪╡┘ê╪▒ ┘à┘ ╪ص╪د╪│┘ê╪ذ┘â ┘ê╪ث╪╢┘ ╪▒┘ê╪د╪ذ╪╖ ╪د┘┘è┘ê╪ز┘è┘ê╪ذ ╪ذ┘â┘ ╪│┘ç┘ê┘╪ر.' : 'Create and manage courses, upload images from your PC and link YouTube videos easily.'}
+        eyebrow={isAr ? 'إدارة محتوى المنصة' : 'Content Management'}
+        title={isAr ? 'إدارة الدورات والدروس' : 'Courses & Lessons Management'}
+        subtitle={isAr ? 'أضف وعدّل الدورات، ارفع الصور من حاسوبك وأضف روابط اليوتيوب بكل سهولة.' : 'Create and manage courses, upload images from your PC and link YouTube videos easily.'}
         actions={
           <div className="flex items-center gap-3">
             <button
@@ -152,7 +152,7 @@ export default function AdminCourses() {
               className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-extrabold text-on-primary shadow-md transition-all hover:bg-primary-hover"
             >
               <Plus className="h-4 w-4 text-lavender" />
-              {isAr ? '╪»┘ê╪▒╪ر ╪ش╪»┘è╪»╪ر' : 'New Course'}
+              {isAr ? 'دورة جديدة' : 'New Course'}
             </button>
           </div>
         }
@@ -164,7 +164,7 @@ export default function AdminCourses() {
           <div className="w-full max-w-3xl rounded-3xl bg-surface-2 border-2 border-line p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-line pb-4 mb-6">
               <h2 className="text-lg font-extrabold text-ink">
-                {currentCourse ? (isAr ? '╪ز╪╣╪»┘è┘ ╪د┘╪»┘ê╪▒╪ر' : 'Edit Course') : (isAr ? '╪ح╪╢╪د┘╪ر ╪»┘ê╪▒╪ر ╪ش╪»┘è╪»╪ر' : 'Add New Course')}
+                {currentCourse ? (isAr ? 'تعديل الدورة' : 'Edit Course') : (isAr ? 'إضافة دورة جديدة' : 'Add New Course')}
               </h2>
               <button 
                 onClick={() => setIsEditing(false)}
@@ -178,7 +178,7 @@ export default function AdminCourses() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-ink mb-1">
-                    {isAr ? '╪د┘╪╣┘┘ê╪د┘ ╪ذ╪د┘╪╣╪▒╪ذ┘è╪ر' : 'Title (Arabic)'}
+                    {isAr ? 'العنوان بالعربية' : 'Title (Arabic)'}
                   </label>
                   <input
                     type="text"
@@ -186,12 +186,12 @@ export default function AdminCourses() {
                     value={titleAr}
                     onChange={(e) => setTitleAr(e.target.value)}
                     className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="┘à╪س╪د┘: ╪ث╪│╪د╪│┘è╪د╪ز ╪د┘╪ح╪│╪╣╪د┘╪د╪ز ╪د┘╪ث┘ê┘┘è╪ر"
+                    placeholder="مثال: أساسيات الإسعافات الأولية"
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-ink mb-1">
-                    {isAr ? '╪د┘╪╣┘┘ê╪د┘ ╪ذ╪د┘╪ح┘╪ش┘┘è╪▓┘è╪ر' : 'Title (English)'}
+                    {isAr ? 'العنوان بالإنجليزية' : 'Title (English)'}
                   </label>
                   <input
                     type="text"
@@ -207,19 +207,19 @@ export default function AdminCourses() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-ink mb-1">
-                    {isAr ? '╪د┘┘ê╪╡┘ ╪ذ╪د┘╪╣╪▒╪ذ┘è╪ر' : 'Description (Arabic)'}
+                    {isAr ? 'الوصف بالعربية' : 'Description (Arabic)'}
                   </label>
                   <textarea
                     rows={3}
                     value={descAr}
                     onChange={(e) => setDescAr(e.target.value)}
                     className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="╪ز┘╪د╪╡┘è┘ ╪د┘╪»┘ê╪▒╪ر ╪ذ╪د┘╪╣╪▒╪ذ┘è╪ر..."
+                    placeholder="تفاصيل الدورة بالعربية..."
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-ink mb-1">
-                    {isAr ? '╪د┘┘ê╪╡┘ ╪ذ╪د┘╪ح┘╪ش┘┘è╪▓┘è╪ر' : 'Description (English)'}
+                    {isAr ? 'الوصف بالإنجليزية' : 'Description (English)'}
                   </label>
                   <textarea
                     rows={3}
@@ -234,21 +234,21 @@ export default function AdminCourses() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-ink mb-1">
-                    {isAr ? '╪د┘┘à╪│╪ز┘ê┘ë' : 'Level'}
+                    {isAr ? 'المستوى' : 'Level'}
                   </label>
                   <select
                     value={level}
                     onChange={(e) => setLevel(e.target.value)}
                     className="w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary"
                   >
-                    <option value="Beginner">{isAr ? '┘à╪ذ╪ز╪»╪خ' : 'Beginner'}</option>
-                    <option value="Intermediate">{isAr ? '┘à╪ز┘ê╪│╪╖' : 'Intermediate'}</option>
-                    <option value="Advanced">{isAr ? '┘à╪ز┘é╪»┘à' : 'Advanced'}</option>
+                    <option value="Beginner">{isAr ? 'مبتدئ' : 'Beginner'}</option>
+                    <option value="Intermediate">{isAr ? 'متوسط' : 'Intermediate'}</option>
+                    <option value="Advanced">{isAr ? 'متقدم' : 'Advanced'}</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-ink mb-1">
-                    {isAr ? '╪د┘┘à╪»╪ر ╪د┘╪▓┘à┘┘è╪ر' : 'Duration'}
+                    {isAr ? 'المدة الزمنية' : 'Duration'}
                   </label>
                   <input
                     type="text"
@@ -264,7 +264,7 @@ export default function AdminCourses() {
               <div>
                 <label className="block text-xs font-bold text-ink mb-1 flex items-center gap-1.5">
                   <Video className="h-4 w-4 text-lavender" />
-                  {isAr ? '╪▒╪د╪ذ╪╖ ┘┘è╪»┘è┘ê ┘è┘ê╪ز┘è┘ê╪ذ (YouTube URL)' : 'YouTube Video URL'}
+                  {isAr ? 'رابط فيديو يوتيوب (YouTube URL)' : 'YouTube Video URL'}
                 </label>
                 <input
                   type="url"
@@ -279,7 +279,7 @@ export default function AdminCourses() {
               <div>
                 <label className="block text-xs font-bold text-ink mb-1 flex items-center gap-1.5">
                   <ImageIcon className="h-4 w-4 text-lavender" />
-                  {isAr ? '╪╡┘ê╪▒╪ر ╪د┘╪»┘ê╪▒╪ر (╪د╪«╪ز╪▒ ┘à┘ ┘à┘┘╪د╪ز ╪ص╪د╪│┘ê╪ذ┘â)' : 'Course Image (Upload from PC)'}
+                  {isAr ? 'صورة الدورة (اختر من ملفات حاسوبك)' : 'Course Image (Upload from PC)'}
                 </label>
                 <input
                   type="file"
@@ -300,14 +300,14 @@ export default function AdminCourses() {
                   onClick={() => setIsEditing(false)}
                   className="rounded-xl bg-surface-2 px-5 py-2.5 text-xs font-bold text-ink hover:bg-highlight"
                 >
-                  {isAr ? '╪ح┘╪║╪د╪ة' : 'Cancel'}
+                  {isAr ? 'إلغاء' : 'Cancel'}
                 </button>
                 <button
                   type="submit"
                   className="flex items-center gap-2 rounded-xl bg-primary px-6 py-2.5 text-xs font-extrabold text-on-primary hover:bg-primary-hover shadow-md"
                 >
                   <Save className="h-4 w-4 text-lavender" />
-                  {isAr ? '╪ص┘╪╕ ╪د┘╪»┘ê╪▒╪ر' : 'Save Course'}
+                  {isAr ? 'حفظ الدورة' : 'Save Course'}
                 </button>
               </div>
             </form>
@@ -320,7 +320,7 @@ export default function AdminCourses() {
         <div className="flex items-center justify-between border-b border-line pb-4 mb-4">
           <h2 className="text-sm font-extrabold text-ink flex items-center gap-2">
             <BookOpen className="h-4 w-4 text-lavender" />
-            {isAr ? '┘é╪د╪خ┘à╪ر ╪د┘╪»┘ê╪▒╪د╪ز ╪د┘╪ص╪د┘┘è╪ر' : 'Current Courses List'}
+            {isAr ? 'قائمة الدورات الحالية' : 'Current Courses List'}
           </h2>
           <Badge tone="outline" className="bg-surface-2 text-ink border-line">
             {formatNumber(courses.length, i18n.language)}
@@ -328,7 +328,7 @@ export default function AdminCourses() {
         </div>
 
         {courses.length === 0 ? (
-          <EmptyState title={isAr ? '┘╪د ╪ز┘ê╪ش╪» ╪»┘ê╪▒╪د╪ز ╪ص╪د┘┘è╪د┘ï' : 'No courses found'} icon={BookOpen} />
+          <EmptyState title={isAr ? 'لا توجد دورات حالياً' : 'No courses found'} icon={BookOpen} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
@@ -355,20 +355,20 @@ export default function AdminCourses() {
 
                 <div className="mt-6 flex items-center justify-between pt-4 border-t border-line">
                   <span className="text-[10px] font-bold text-lavender">
-                    {course.youtubeUrl ? (isAr ? '┘┘è╪»┘è┘ê ┘à╪ز┘ê┘╪▒ ≡اح' : 'Video attached ≡اح') : (isAr ? '╪ذ╪»┘ê┘ ┘┘è╪»┘è┘ê' : 'No video')}
+                    {course.youtubeUrl ? (isAr ? 'فيديو متوفر 🎥' : 'Video attached 🎥') : (isAr ? 'بدون فيديو' : 'No video')}
                   </span>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleOpenEdit(course)}
                       className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-2 text-ink hover:bg-highlight"
-                      title={isAr ? '╪ز╪╣╪»┘è┘' : 'Edit'}
+                      title={isAr ? 'تعديل' : 'Edit'}
                     >
                       <Edit3 className="h-3.5 w-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(course._id || course.id)}
                       className="flex h-8 w-8 items-center justify-center rounded-full bg-negative-soft text-negative-ink hover:bg-highlight"
-                      title={isAr ? '╪ص╪░┘' : 'Delete'}
+                      title={isAr ? 'حذف' : 'Delete'}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>

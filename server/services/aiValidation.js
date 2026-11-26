@@ -34,10 +34,11 @@ function optionalString(value, { max = 4000 } = {}) {
 const isValidObjectIdLike = (value) =>
   typeof value === 'string' && /^[a-f\d]{24}$/i.test(value);
 
-function sanitizeMessageForPrompt(text) {
-  return clipString(text, 4000)
-    .replace(/\u0000/g, '')
-    .replace(/< shiny |<\/?lesson_data>/gi, '');
+function sanitizeMessageForPrompt(text, { max = 4000 } = {}) {
+  return clipString(text, max)
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '')
+    .replace(/<\/?lesson_data>/gi, '')
+    .replace(/<\s*shiny\s*>/gi, '');
 }
 
 module.exports = {
