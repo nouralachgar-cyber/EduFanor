@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  'https://edufanor-client.vercel.app',
+  'https://edu-fanor-client.vercel.app',
   'https://edufanor.vercel.app',
   'http://localhost:5173',
   'http://localhost:3000',
@@ -29,7 +29,7 @@ app.use(
       if (allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
-        callback(null, true); // Allow in development; restrict in production
+        callback(null, false);
       }
     },
     credentials: true,
@@ -37,12 +37,15 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   })
 );
-app.use(express.json({ limit: '12mb' }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '7d' }));
 
 // Explicit OPTIONS preflight handler for all API routes
 app.options('/api/*', (req, res) => {
-  res.set('Access-Control-Allow-Origin', req.headers.origin || '*');
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.indexOf(origin) !== -1) {
+    res.set('Access-Control-Allow-Origin', origin);
+  } else {
+    res.set('Access-Control-Allow-Origin', '*');
+  }
   res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
   res.set('Access-Control-Max-Age', '86400');

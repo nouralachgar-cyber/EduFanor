@@ -1,38 +1,16 @@
 const configuredApiBase =
       import.meta.env.vite_api_url?.trim() || import.meta.env.VITE_API_URL?.trim();
 const isDev = import.meta.env.DEV;
-const defaultApiBase = isDev
+
+// Normalize API base URL: remove ALL trailing slashes, then append /api.
+// Also strip trailing /api if present to prevent /api/api. Supports both
+// vite_api_url and VITE_API_URL environment variables.
+const API_BASE = isDev || !configuredApiBase
   ? `${window.location.protocol}//${window.location.hostname}:5000/api`
-  : '';
-const configuredApiUrl = configuredApiBase
-  ? new URL(configuredApiBase, window.location.origin)
-  : null;
-const useConfiguredApi =
-  configuredApiUrl &&
-  ['http:', 'https:'].includes(configuredApiUrl.protocol) &&
-  configuredApiUrl.origin !== window.location.origin;
-const API_BASE =
-  isDev || useConfiguredApi
-    ? (() => {
-        if (useConfiguredApi) {
-          let base = configuredApiUrl.toString();
-          if (!base.endsWith('/api') && !base.endsWith('/')) base += '/api';
-          else if (!base.endsWith('/api')) base += '/api';
-          return base.replace(/\/$/, '');
-        }
-        return `${window.location.protocol}//${window.location.hostname}:5000/api`;
-      })()
-    : configuredApiBase
-      ? (() => {
-          // Production: ensure the provided URL ends with /api
-          let base = configuredApiBase;
-          if (!base.endsWith('/api') && !base.endsWith('/')) base += '/api';
-          else if (!base.endsWith('/api')) base += '/api';
-          return base.replace(/\/$/, '');
-        })()
-      : isDev
-        ? `${window.location.protocol}//${window.location.hostname}:5000/api`
-        : '';
+  : configuredApiBase
+      .replace(/\/+$/, '')    // Remove ALL trailing slashes
+      .replace(/\/api$/, '')  // Remove trailing /api to prevent /api/api
+      + '/api';
 
 export function resolveAssetUrl(url) {
   if (typeof url !== 'string' || !url.startsWith('/uploads/')) return url || '';
