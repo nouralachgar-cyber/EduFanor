@@ -15,43 +15,36 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  'https://edu-fanor-client.vercel.app',
-  'https://edufanor.vercel.app',
-  'http://localhost:5173',
-  'http://localhost:3000',
-];
+const allowedOrigins = new Set(['https://edu-fanor-client.vercel.app']);
+
+function isLocalhostOrigin(origin) {
+  try {
+    const { protocol, hostname } = new URL(origin);
+    return protocol === 'http:' && (hostname === 'localhost' || hostname === '127.0.0.1');
+  } catch {
+    return false;
+  }
+}
+
+function isAllowedOrigin(origin) {
+  return !origin || allowedOrigins.has(origin) || isLocalhostOrigin(origin);
+}
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(null, false);
-      }
+      callback(null, isAllowedOrigin(origin));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
 
-// Explicit OPTIONS preflight handler for all API routes
-app.options('/api/*', (req, res) => {
-  const origin = req.headers.origin;
-  if (origin && allowedOrigins.indexOf(origin) !== -1) {
-    res.set('Access-Control-Allow-Origin', origin);
-  } else {
-    res.set('Access-Control-Allow-Origin', '*');
-  }
-  res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
-  res.set('Access-Control-Max-Age', '86400');
-  res.set('Vary', 'Origin');
-  res.send();
-});
+app.use(express.json({ limit: '12mb' }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), { maxAge: '7d' }));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -68,6 +61,13 @@ app.get('/', (req, res) => {
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Endpoint not found' });
+});
+
+app.use((err, req, res, next) => {
+  if (res.headersSent) return next(err);
+  const status =
+    Number.isInteger(err.status) && err.status >= 400 && err.status < 600 ? err.status : 500;
+  res.status(status).json({ message: status === 500 ? 'Internal server error' : err.message });
 });
 
 const PORT = process.env.PORT || 5000;
