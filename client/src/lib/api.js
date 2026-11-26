@@ -1,4 +1,5 @@
-const configuredApiBase = import.meta.env.VITE_API_URL?.trim();
+const configuredApiBase =
+      import.meta.env.vite_api_url?.trim() || import.meta.env.VITE_API_URL?.trim();
 const isDev = import.meta.env.DEV;
 const defaultApiBase = isDev
   ? `${window.location.protocol}//${window.location.hostname}:5000/api`
